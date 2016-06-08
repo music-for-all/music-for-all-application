@@ -13,4 +13,7 @@ hs_err_pid*
 
 # IntelliJ IDEA project files
 .idea/
-music-for-all-application.iml
+*.iml
+*.iws
+
+target/
