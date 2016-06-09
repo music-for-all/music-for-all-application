@@ -8,26 +8,4 @@
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
 		  http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 
-    <mvc:annotation-driven />
-
-    <context:component-scan
-            base-package="musicforall.web">
-    </context:component-scan>
-
-    <!--
-    This bean sets up the Velocity environment for us based on a root path for templates.
-    Optionally, a properties file can be specified for more control over the Velocity
-    environment, but the defaults are pretty sane for file based template loading.
-    -->
-    <bean id="velocityConfig"
-          class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
-        <property name="resourceLoaderPath" value="/WEB-INF/velocity/" />
-    </bean>
-
-    <bean id="viewResolver"
-          class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
-        <property name="cache" value="true" />
-        <property name="prefix" value="" />
-        <property name="suffix" value=".vm" />
-    </bean>
 </beans>
