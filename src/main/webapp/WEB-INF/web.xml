@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee">
 
-    <display-name>Music Server</display-name>
+    <display-name>music-for-all</display-name>
 
     <servlet>
         <servlet-name>dispatcherServlet</servlet-name>
@@ -21,7 +21,4 @@
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
-    <welcome-file-list>
-        <welcome-file>index.vm</welcome-file>
-    </welcome-file-list>
 </web-app>
