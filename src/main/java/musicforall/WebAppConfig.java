@@ -4,17 +4,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.servlet.view.velocity.VelocityConfigurer;
 import org.springframework.web.servlet.view.velocity.VelocityView;
+import org.springframework.web.servlet.view.velocity.VelocityViewResolver;
 
 @Configuration
 @ComponentScan("musicforall.web")
 @EnableWebMvc
 public class WebAppConfig {
 	@Bean
-	public UrlBasedViewResolver setupViewResolver() {
-		UrlBasedViewResolver resolver = new UrlBasedViewResolver();
+	public VelocityViewResolver setupViewResolver() {
+		VelocityViewResolver  resolver = new VelocityViewResolver();
 		resolver.setCache(true);
 		resolver.setPrefix("");
 		resolver.setSuffix(".vm");
