@@ -20,7 +20,8 @@ public class IndexController {
 
 	public IndexController() {
 		logger.debug("Sample Debug Message");
-		logger.trace("Sample Trace Message");
+
+		sessionFactory.getCurrentSession().createQuery("from track").getFirstResult();
 	}
 
 	@RequestMapping("/")
