@@ -3,14 +3,16 @@ package musicforall;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.velocity.VelocityConfigurer;
 import org.springframework.web.servlet.view.velocity.VelocityView;
 import org.springframework.web.servlet.view.velocity.VelocityViewResolver;
 
 @Configuration
-@ComponentScan("musicforall.web")
 @EnableWebMvc
+@ComponentScan("musicforall.web")
+@Import({HibernateConfiguration.class})
 public class WebAppConfig {
 	@Bean
 	public VelocityViewResolver setupViewResolver() {
