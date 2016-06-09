@@ -4,35 +4,48 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>music-for-all</groupId>
+    <groupId>com.music.for.all</groupId>
     <artifactId>music-for-all-application</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <version>1.1.0</version>
+    <packaging>pom</packaging>
 
     <name>music-for-all</name>
+
+    <modules>
+        <module>application</module>
+        <module>file-api</module>
+    </modules>
+
+
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+        <application.version>1.1.0</application.version>
+        <spring.version>4.2.6.RELEASE</spring.version>
+    </properties>
 
     <dependencies>
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>4.2.6.RELEASE</version>
-            <type>jar</type>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-            <version>4.2.6.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>4.2.6.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>4.2.6.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <!-- Hibernate -->
@@ -87,14 +100,7 @@
             <version>3.0.1</version>
             <scope>provided</scope>
         </dependency>
-
     </dependencies>
-
-    <properties>
-        <java.version>1.8</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
-    </properties>
 
     <build>
         <plugins>
@@ -110,14 +116,7 @@
                     </compilerArguments>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.6</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
