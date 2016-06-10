@@ -1,4 +1,4 @@
-package org.exschool.pocketworld.dao;
+package com.musicforall.common.dao;
 
 import java.io.Serializable;
 import java.util.ArrayList;

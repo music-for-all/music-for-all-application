@@ -6,7 +6,7 @@
 
     <groupId>com.music.for.all</groupId>
     <artifactId>music-for-all-application</artifactId>
-    <version>1.1.0</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
 
     <name>music-for-all</name>
@@ -19,10 +19,14 @@
 
 
     <properties>
+        <application.version>1.1.0</application.version>
+        <fileapi.version>1.1.0</fileapi.version>
+        <common.version>1.1.0</common.version>
+
+
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
-        <application.version>1.1.0</application.version>
         <spring.version>4.2.6.RELEASE</spring.version>
     </properties>
 

@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.music.for.all</groupId>
         <artifactId>music-for-all-application</artifactId>
-        <version>1.1.0</version>
+        <version>1.0.0</version>
     </parent>
 
     <groupId>com.music.for.all</groupId>
@@ -18,6 +18,11 @@
     <name>application</name>
 
     <dependencies>
+        <dependency>
+            <groupId>com.music.for.all</groupId>
+            <artifactId>common</artifactId>
+            <version>1.1.0</version>
+        </dependency>
 
         <!-- todo add file api dependency-->
 
