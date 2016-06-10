@@ -27,7 +27,7 @@ public class HibernateConfiguration {
 	public LocalSessionFactoryBean sessionFactory() {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource());
-		sessionFactory.setPackagesToScan("musicforall.model");
+		sessionFactory.setPackagesToScan("com.musicforall.model");
 		sessionFactory.setHibernateProperties(additionalProperties());
 		return sessionFactory;
 	}
