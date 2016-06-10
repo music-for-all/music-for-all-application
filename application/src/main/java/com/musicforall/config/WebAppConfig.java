@@ -11,7 +11,7 @@ import org.springframework.web.servlet.view.velocity.VelocityViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("musicforall.web")
+@ComponentScan("com.musicforall.web")
 @Import({HibernateConfiguration.class})
 public class WebAppConfig {
 	@Bean
