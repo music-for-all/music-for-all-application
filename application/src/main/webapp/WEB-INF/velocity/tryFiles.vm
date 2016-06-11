@@ -13,9 +13,7 @@
 <button value="Submit" onclick="uploadJqueryForm()">Upload</button>
 <i>Using JQuery Form Plugin</i><br/>
 
-<audio id="player" src="/file/Love" controls preload="none"></audio>
-
-<button onclick="document.getElementById('player').currentTime = 100">Rewind</button>
+<audio id="player" src="/file/Lie, Cheat, Steal" controls preload="none"></audio>
 
 <div id="result"></div>
 <script>
