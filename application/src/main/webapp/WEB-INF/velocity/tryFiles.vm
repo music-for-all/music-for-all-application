@@ -6,14 +6,14 @@
     <script src="http://malsup.github.com/jquery.form.js"></script>
 </head>
 <body>
-<form id="uploadForm" method="POST" action="/uploadFile" enctype="multipart/form-data">
+<form id="uploadForm" method="POST" action="/upload" enctype="multipart/form-data">
     <input name="file" id="file" type="file"/><br/>
 </form>
 
 <button value="Submit" onclick="uploadJqueryForm()">Upload</button>
 <i>Using JQuery Form Plugin</i><br/>
 
-<audio id="player" src="/getFile" controls preload="none"></audio>
+<audio id="player" src="/file/Love" controls preload="none"></audio>
 
 <button onclick="document.getElementById('player').currentTime = 100">Rewind</button>
 

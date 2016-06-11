@@ -34,7 +34,7 @@ public class WebAppConfig {
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setDefaultEncoding("utf-8");
-        resolver.setMaxUploadSizePerFile(1000000);
+        resolver.setMaxUploadSizePerFile(50000000);
         return resolver;
     }
 }
