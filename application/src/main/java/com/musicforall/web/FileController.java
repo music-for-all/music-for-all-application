@@ -5,8 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -15,6 +17,16 @@ import java.io.IOException;
 
 @Controller
 public class FileController {
+
+    private final String directory = File.separator + "Music";
+    private final FileManager manager = new FileManager(directory);
+
+    @PostConstruct
+    private void prepareWorkingDirectory() {
+        File dir = new File(directory);
+        dir.mkdirs();
+    }
+
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -22,7 +34,7 @@ public class FileController {
         if (!file.isEmpty()) {
             boolean saved = false;
             try {
-                saved = FileManager.getInstance().saveMultipart(file);
+                saved = manager.saveMultipart(file);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -34,7 +46,7 @@ public class FileController {
     @RequestMapping(value = "/file/{name}", method = RequestMethod.GET)
     public void getFileHandler(HttpServletRequest request, HttpServletResponse response, @PathVariable("name") String name) {
         try {
-            FileManager.getInstance().streamFileByName(name, response.getOutputStream());
+            manager.streamFileByName(name, response.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
