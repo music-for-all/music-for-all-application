@@ -1,53 +1,59 @@
 package com.musicforall.files;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
+import org.apache.commons.io.FileUtils;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.net.URL;
 
-import static java.nio.file.Files.copy;
-import static java.nio.file.Files.size;
+import static java.nio.file.Files.*;
 import static java.nio.file.Paths.get;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class FileManagerTest {
 
-    private File testDirectory;
-    private FileManager manager;
-    private final String testResourceName = "test_resource.jpg";
+    private static File testDirectory;
+    private static FileManager manager;
+    private static final URL resourceUrl = FileManagerTest.class.getClassLoader().getResource("test_resource.jpg");
 
-    @Before
-    public void setUp() throws Exception {
+
+    @BeforeClass
+    public static void setUp() throws Exception {
         testDirectory = new File(File.separator + "test");
         testDirectory.mkdirs();
         manager = new FileManager(testDirectory.getAbsolutePath());
-        copy(this.getClass().getResourceAsStream(testResourceName), get(testDirectory.getAbsolutePath(), testResourceName));
+        copy(get(resourceUrl.toURI()), get(testDirectory.getAbsolutePath(), "resource.jpg"));
     }
 
-    @After
-    public void tearDown() throws Exception {
-        if (testDirectory.exists()) testDirectory.delete();
+    @AfterClass
+    public static void tearDown() throws Exception {
+        FileUtils.deleteDirectory(testDirectory);
     }
 
     @Test
     public void testSaveMultipart() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", this.getClass().getResourceAsStream(testResourceName));
+        MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, newInputStream(get(resourceUrl.toURI())));
 
         boolean saved = manager.saveMultipart(file);
 
-        Assert.assertTrue(saved);
+        assertTrue(saved);
     }
 
     @Test
     public void testStreamFileByName() throws Exception {
-        File copyFile = get(testDirectory.getAbsolutePath(), "copy.jpg").toFile();
-        FileOutputStream outputStream = new FileOutputStream(copyFile);
+        File copy = get(testDirectory.getAbsolutePath(), "copy.jpg").toFile();
+        FileOutputStream outputStream = new FileOutputStream(copy);
 
-        manager.streamFileByName(testResourceName, outputStream);
+        manager.streamFileByName("resource.jpg", outputStream);
+        outputStream.flush();
+        outputStream.close();
 
-        Assert.assertEquals(size(get(testDirectory.getAbsolutePath(), testResourceName)), size(copyFile.toPath()));
+        assertEquals(size(get(testDirectory.getAbsolutePath(), "resource.jpg")),
+                size(get(testDirectory.getAbsolutePath(), "copy.jpg")));
     }
 }
