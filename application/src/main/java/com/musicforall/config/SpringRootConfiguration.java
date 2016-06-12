@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
  * Created by kgavrylchenko on 10.06.16.
  */
 @Configuration
-@ComponentScan({"com.musicforall.common"})
+@ComponentScan({"com.musicforall"})
 @Import({HibernateConfiguration.class})
 public class SpringRootConfiguration {
 }
