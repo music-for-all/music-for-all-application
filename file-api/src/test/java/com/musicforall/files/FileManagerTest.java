@@ -24,7 +24,9 @@ public class FileManagerTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        testDirectory = new File(File.separator + "test");
+        String projectDitPath = System.getProperty("user.dir");
+        String testDirPath = projectDitPath + File.separator + "src" + File.separator + "test" + File.separator + "for_test" + File.separator;
+        testDirectory = new File(testDirPath);
         testDirectory.mkdirs();
         manager = new FileManager(testDirectory.getAbsolutePath());
         copy(get(resourceUrl.toURI()), get(testDirectory.getAbsolutePath(), "resource.jpg"));
