@@ -1,5 +1,6 @@
 package com.musicforall.files.manager;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,8 +18,9 @@ import java.nio.file.Paths;
 @Component
 public class FileManager {
 
-    //    @Value("${files.directory}")
-    private String workingDirectory = "/Music";
+    @Value("${files.directory}")
+    private String taleDirectory;
+    private String workingDirectory = System.getProperty("user.home") + File.separator + taleDirectory;
 
     @PostConstruct
     private void prepareWorkingDirectory() {
@@ -38,7 +40,7 @@ public class FileManager {
 
     public Path getFileByName(final String fileName) {
         Path path = Paths.get(workingDirectory, fileName);
-        if (Files.exists(path)) return null;
+        if (!Files.exists(path)) return null;
 
         return path;
     }

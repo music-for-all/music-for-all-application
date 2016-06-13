@@ -13,7 +13,7 @@
 <button value="Submit" onclick="uploadJqueryForm()">Upload</button>
 <i>Using JQuery Form Plugin</i><br/>
 
-<audio id="player" src="/files/Lie, Cheat, Steal" controls preload="none"></audio>
+<audio id="player" src="/files/Angel Duster.mp3" controls preload="none"></audio>
 
 <div id="result"></div>
 <script>

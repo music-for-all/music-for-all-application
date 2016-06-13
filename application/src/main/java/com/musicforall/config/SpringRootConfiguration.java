@@ -1,10 +1,8 @@
 package com.musicforall.config;
 
 import com.musicforall.files.FileApiSpringConfig;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 /**
  * Created by kgavrylchenko on 10.06.16.
@@ -15,4 +13,8 @@ import org.springframework.context.annotation.PropertySource;
         FileApiSpringConfig.class})
 @PropertySource("classpath:/application.properties")
 public class SpringRootConfiguration {
+        @Bean
+        public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+                return new PropertySourcesPlaceholderConfigurer();
+        }
 }
