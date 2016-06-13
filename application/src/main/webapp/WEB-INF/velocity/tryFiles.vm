@@ -6,14 +6,14 @@
     <script src="http://malsup.github.com/jquery.form.js"></script>
 </head>
 <body>
-<form id="uploadForm" method="POST" action="/upload" enctype="multipart/form-data">
+<form id="uploadForm" method="POST" action="/files" enctype="multipart/form-data">
     <input name="file" id="file" type="file"/><br/>
 </form>
 
 <button value="Submit" onclick="uploadJqueryForm()">Upload</button>
 <i>Using JQuery Form Plugin</i><br/>
 
-<audio id="player" src="/file/Lie, Cheat, Steal" controls preload="none"></audio>
+<audio id="player" src="/files/Lie, Cheat, Steal" controls preload="none"></audio>
 
 <div id="result"></div>
 <script>
