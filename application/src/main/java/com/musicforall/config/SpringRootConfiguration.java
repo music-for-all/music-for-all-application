@@ -23,6 +23,6 @@ public class SpringRootConfiguration {
     @Bean
     @Qualifier("files")
     public String filesDirectory() {
-        return env.getProperty("files.directory");
+        return env.getRequiredProperty("files.directory");
     }
 }
