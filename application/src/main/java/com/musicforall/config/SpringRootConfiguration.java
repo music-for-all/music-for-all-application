@@ -1,8 +1,11 @@
 package com.musicforall.config;
 
 import com.musicforall.files.FileApiSpringConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.env.Environment;
 
 /**
  * Created by kgavrylchenko on 10.06.16.
@@ -13,8 +16,13 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
         FileApiSpringConfig.class})
 @PropertySource("classpath:/application.properties")
 public class SpringRootConfiguration {
-        @Bean
-        public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
-                return new PropertySourcesPlaceholderConfigurer();
-        }
+
+    @Autowired
+    private Environment env;
+
+    @Bean
+    @Qualifier("files")
+    public String filesDirectory() {
+        return env.getProperty("files.directory");
+    }
 }
