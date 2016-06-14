@@ -2,7 +2,6 @@ package com.musicforall.files.manager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,10 +22,11 @@ public class FileManager {
     @Autowired
     @Qualifier("files")
     private String taleDirectory;
-    private String workingDirectory = System.getProperty("user.home") + File.separator + taleDirectory;
+    private String workingDirectory;
 
     @PostConstruct
     private void prepareWorkingDirectory() {
+        workingDirectory = System.getProperty("user.home") + File.separator + taleDirectory;
         File dir = new File(workingDirectory);
         dir.mkdirs();
     }
