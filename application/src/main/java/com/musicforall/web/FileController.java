@@ -33,7 +33,7 @@ public class FileController {
         return "File is empty";
     }
 
-    @RequestMapping(value = "/files/{fileName}", method = RequestMethod.GET)
+    @RequestMapping(value = "/files/{fileName:.+}", method = RequestMethod.GET)
     public void getFileHandler(HttpServletRequest request, HttpServletResponse response, @PathVariable("fileName") String name) {
         Path filePath = manager.getFileByName(name);
         if (filePath == null) return;
