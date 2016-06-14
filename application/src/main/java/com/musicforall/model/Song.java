@@ -4,9 +4,7 @@ package com.musicforall.model;
  * Created by ilianik on 11.06.2016.
  */
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -14,6 +12,7 @@ import java.io.Serializable;
 public class Song implements Serializable {
 
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
 
     @Column(name = "tags")
