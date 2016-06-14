@@ -3,8 +3,8 @@ package com.musicforall.files;
 import com.musicforall.files.manager.FileManager;
 import com.musicforall.files.utils.TestUtils;
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -22,20 +22,20 @@ import static org.junit.Assert.assertTrue;
 
 public class FileManagerTest {
 
-    private final URL resourceUrl = FileManagerTest.class.getClassLoader().getResource("test_resource.jpg");
-    private File testDirectory;
-    private FileManager manager;
+    private static final URL resourceUrl = FileManagerTest.class.getClassLoader().getResource("test_resource.jpg");
+    private static File testDirectory;
+    private static FileManager manager;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUp() throws Exception {
         testDirectory = TestUtils.createTestDirectory();
         manager = new FileManager();
         ReflectionTestUtils.setField(manager, "workingDirectory", testDirectory.getAbsolutePath());
         copy(get(resourceUrl.toURI()), get(testDirectory.getAbsolutePath(), "resource.jpg"));
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterClass
+    public static void tearDown() throws Exception {
         FileUtils.deleteDirectory(testDirectory);
     }
 
