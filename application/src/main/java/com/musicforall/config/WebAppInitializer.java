@@ -1,24 +1,21 @@
 package com.musicforall.config;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration.Dynamic;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
+public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-public class WebAppInitializer implements WebApplicationInitializer {
+    @Override
+    protected Class<?>[] getRootConfigClasses() {
+        return new Class[]{SpringRootConfiguration.class};
+    }
 
-	@Override
-	public void onStartup(ServletContext servletContext) throws ServletException {
+    @Override
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class[]{WebAppConfig.class};
+    }
 
-		AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
-		ctx.register(WebAppConfig.class);
-		ctx.setServletContext(servletContext);
-
-		Dynamic servlet = servletContext.addServlet("dispatcherServlet", new DispatcherServlet(ctx));
-		servlet.addMapping("/");
-		servlet.setLoadOnStartup(1);
-	}
+    @Override
+    protected String[] getServletMappings() {
+        return new String[] { "/" };
+    }
 }

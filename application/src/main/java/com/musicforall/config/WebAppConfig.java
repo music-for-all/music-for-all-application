@@ -12,11 +12,10 @@ import org.springframework.web.servlet.view.velocity.VelocityViewResolver;
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.musicforall.web")
-@Import({HibernateConfiguration.class})
 public class WebAppConfig {
 	@Bean
-	public VelocityViewResolver setupViewResolver() {
-		VelocityViewResolver  resolver = new VelocityViewResolver();
+	public VelocityViewResolver viewResolver() {
+		VelocityViewResolver resolver = new VelocityViewResolver();
 		resolver.setCache(true);
 		resolver.setPrefix("");
 		resolver.setSuffix(".vm");
@@ -25,7 +24,7 @@ public class WebAppConfig {
 	}
 
 	@Bean
-	public VelocityConfigurer setupVelocityConfig() {
+	public VelocityConfigurer velocityConfigurer() {
 		VelocityConfigurer conf = new VelocityConfigurer();
 		conf.setResourceLoaderPath("/WEB-INF/velocity/");
 		return conf;
