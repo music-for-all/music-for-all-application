@@ -59,6 +59,14 @@ public class Songlist implements Serializable {
     }
 
 
+    public Set<Song> getSongs() {
+        return songs;
+    }
+
+    public void setSongs(Set<Song> songs) {
+        this.songs = songs;
+    }
+
     public User getUser() {
         return user;
     }

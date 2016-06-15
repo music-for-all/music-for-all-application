@@ -6,6 +6,7 @@ package com.musicforall.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "songs")
@@ -14,10 +15,10 @@ public class Song implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Integer id;
 
-    @Column(name = "tags")
-    private String tags;
+    @ManyToMany
+    private Set<Tag> tags;
 
     @Column(name = "name")
     private String name;
@@ -28,7 +29,7 @@ public class Song implements Serializable {
     public Song() {
     }
 
-    public Song(String tags, String name, String location) {
+    public Song(Set<Tag> tags, String name, String location) {
         this.tags = tags;
         this.name = name;
         this.location = location;
@@ -63,11 +64,11 @@ public class Song implements Serializable {
         this.name = name;
     }
 
-    public String getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(String tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 
