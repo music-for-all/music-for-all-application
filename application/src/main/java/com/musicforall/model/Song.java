@@ -20,10 +20,10 @@ public class Song implements Serializable {
     @ManyToMany
     private Set<Tag> tags;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "location")
+    @Column(name = "location", nullable = false)
     private String location;
 
     public Song() {
@@ -40,11 +40,11 @@ public class Song implements Serializable {
         this.location = location;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
