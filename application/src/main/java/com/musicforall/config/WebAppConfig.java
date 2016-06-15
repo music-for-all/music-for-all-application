@@ -12,6 +12,7 @@ import org.springframework.web.servlet.view.velocity.VelocityViewResolver;
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.musicforall.web")
+@Import(SecurityConfig.class)
 public class WebAppConfig {
 	@Bean
 	public VelocityViewResolver viewResolver() {
@@ -20,6 +21,7 @@ public class WebAppConfig {
 		resolver.setPrefix("");
 		resolver.setSuffix(".vm");
 		resolver.setViewClass(VelocityView.class);
+		resolver.setContentType("text/html; charset=utf-8");
 		return resolver;
 	}
 
