@@ -11,6 +11,7 @@ import java.io.Serializable;
 @Table(name = "songs")
 public class Song implements Serializable {
 
+    @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
