@@ -11,7 +11,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Path;
@@ -60,14 +59,6 @@ public class FileManagerTest {
 
         assertEquals(size(get(testDirectory.getAbsolutePath(), "resource.jpg")),
                 size(get(testDirectory.getAbsolutePath(), "copy.jpg")));
-    }
-
-    @Test(expected = IOException.class)
-    public void testSaveFromEmptyStream() throws Exception {
-        try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), "resource1.jpg"))) {
-            MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, inputStream);
-            manager.save(file);
-        }
     }
 
     @Test
