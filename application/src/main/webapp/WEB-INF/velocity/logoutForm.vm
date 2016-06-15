@@ -1,0 +1,4 @@
+<form action="#springUrl('/logout')" method="post">
+    <input type="hidden" name="$!{_csrf.parameterName}" value="$!{_csrf.token}" />
+    <input type="submit" value="Log out" class="btn btn-default" />
+</form>

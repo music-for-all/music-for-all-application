@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Music Server</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="/music-server.css" />
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
-    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <script src="/music-server.js"></script>
+    <title>Music For All</title>
+    #include("headerIncludes.vm")
 </head>
 <body>
-<h2>Music Server</h2>
+<h2>Music For All</h2>
 <h3>Index</h3>
 <span>It is now $date</span>
+<p>
+    <a href="profile" class="btn btn-primary">Profile</a>
+</p>
+#parse("logoutForm.vm")
 </body>
 </html>
