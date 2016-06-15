@@ -10,11 +10,18 @@
         <version>1.0.0</version>
     </parent>
 
-    <groupId>com.music.for.all</groupId>
     <artifactId>file-api</artifactId>
     <version>${fileapi.version}</version>
     <packaging>jar</packaging>
 
-    <name>music-for-all-file-api</name>
+    <dependencies>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+    </dependencies>
+
+    <name>file-api</name>
 
 </project>

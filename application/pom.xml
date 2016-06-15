@@ -10,7 +10,6 @@
         <version>1.0.0</version>
     </parent>
 
-    <groupId>com.music.for.all</groupId>
     <artifactId>application</artifactId>
     <version>${application.version}</version>
     <packaging>war</packaging>
@@ -21,10 +20,14 @@
         <dependency>
             <groupId>com.music.for.all</groupId>
             <artifactId>common</artifactId>
-            <version>1.1.0</version>
+            <version>${common.version}</version>
         </dependency>
 
-        <!-- todo add file api dependency-->
+        <dependency>
+            <groupId>com.music.for.all</groupId>
+            <artifactId>file-api</artifactId>
+            <version>${fileapi.version}</version>
+        </dependency>
 
     </dependencies>
 
