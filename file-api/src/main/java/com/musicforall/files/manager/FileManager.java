@@ -32,11 +32,12 @@ public class FileManager {
     }
 
     public boolean save(final MultipartFile file) {
-        long savedBytes = 0;
+        long savedBytes;
         try {
             savedBytes = Files.copy(file.getInputStream(), Paths.get(workingDirectory, file.getOriginalFilename()));
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
         return savedBytes == file.getSize();
     }

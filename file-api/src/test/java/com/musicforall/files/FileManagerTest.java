@@ -71,4 +71,16 @@ public class FileManagerTest {
 
         assertFalse(saved);
     }
+
+    @Test
+    public void testSaveAlreadyExistedFile() throws Exception {
+        boolean saved;
+        try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), "resource.jpg"))) {
+            MockMultipartFile file = new MockMultipartFile("file", "saveAlreadyExisted.jpg", null, inputStream);
+            manager.save(file);
+            saved = manager.save(file);
+        }
+
+        assertFalse(saved);
+    }
 }
