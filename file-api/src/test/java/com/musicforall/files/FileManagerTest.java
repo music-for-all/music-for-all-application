@@ -11,14 +11,14 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Path;
 
 import static java.nio.file.Files.*;
 import static java.nio.file.Paths.get;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class FileManagerTest {
 
@@ -40,7 +40,7 @@ public class FileManagerTest {
     }
 
     @Test
-    public void testSaveMultipart() throws Exception {
+    public void testSave() throws Exception {
         boolean saved;
         try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), "resource.jpg"))) {
             MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, inputStream);
@@ -51,7 +51,7 @@ public class FileManagerTest {
     }
 
     @Test
-    public void testStreamFileByName() throws Exception {
+    public void testGetFileByName() throws Exception {
         File copy = get(testDirectory.getAbsolutePath(), "copy.jpg").toFile();
         try (FileOutputStream outputStream = new FileOutputStream(copy)) {
             Path path = manager.getFileByName("resource.jpg");
@@ -60,5 +60,24 @@ public class FileManagerTest {
 
         assertEquals(size(get(testDirectory.getAbsolutePath(), "resource.jpg")),
                 size(get(testDirectory.getAbsolutePath(), "copy.jpg")));
+    }
+
+    @Test(expected = IOException.class)
+    public void testSaveFromEmptyStream() throws Exception {
+        try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), "resource1.jpg"))) {
+            MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, inputStream);
+            manager.save(file);
+        }
+    }
+
+    @Test
+    public void testSaveToNull() throws Exception {
+        boolean saved;
+        try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), "resource.jpg"))) {
+            MockMultipartFile file = new MockMultipartFile("file", null, null, inputStream);
+            saved = manager.save(file);
+        }
+
+        assertFalse(saved);
     }
 }
