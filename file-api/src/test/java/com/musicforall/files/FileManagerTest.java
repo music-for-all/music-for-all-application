@@ -17,8 +17,7 @@ import java.nio.file.Path;
 
 import static java.nio.file.Files.*;
 import static java.nio.file.Paths.get;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class FileManagerTest {
 
@@ -40,18 +39,15 @@ public class FileManagerTest {
     }
 
     @Test
-    public void testSaveMultipart() throws Exception {
-        boolean saved;
+    public void testSave() throws Exception {
         try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), "resource.jpg"))) {
             MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, inputStream);
-            saved = manager.save(file);
+            assertTrue(manager.save(file));
         }
-
-        assertTrue(saved);
     }
 
     @Test
-    public void testStreamFileByName() throws Exception {
+    public void testGetFileByName() throws Exception {
         File copy = get(testDirectory.getAbsolutePath(), "copy.jpg").toFile();
         try (FileOutputStream outputStream = new FileOutputStream(copy)) {
             Path path = manager.getFileByName("resource.jpg");
@@ -60,5 +56,22 @@ public class FileManagerTest {
 
         assertEquals(size(get(testDirectory.getAbsolutePath(), "resource.jpg")),
                 size(get(testDirectory.getAbsolutePath(), "copy.jpg")));
+    }
+
+    @Test
+    public void testSaveToNull() throws Exception {
+        try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), "resource.jpg"))) {
+            MockMultipartFile file = new MockMultipartFile("file", null, null, inputStream);
+            assertFalse(manager.save(file));
+        }
+    }
+
+    @Test
+    public void testSaveAlreadyExistedFile() throws Exception {
+        try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), "resource.jpg"))) {
+            MockMultipartFile file = new MockMultipartFile("file", "saveAlreadyExisted.jpg", null, inputStream);
+            manager.save(file);
+            assertFalse(manager.save(file));
+        }
     }
 }
