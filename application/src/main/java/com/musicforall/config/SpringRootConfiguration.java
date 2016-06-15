@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @ComponentScan({"com.musicforall.common"})
-@Import({HibernateConfiguration.class})
+@Import({HibernateConfiguration.class, SecurityConfig.class})
 public class SpringRootConfiguration {
 }
