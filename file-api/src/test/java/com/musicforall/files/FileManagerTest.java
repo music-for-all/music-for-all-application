@@ -40,13 +40,10 @@ public class FileManagerTest {
 
     @Test
     public void testSave() throws Exception {
-        boolean saved;
         try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), "resource.jpg"))) {
             MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, inputStream);
-            saved = manager.save(file);
+            assertTrue(manager.save(file));
         }
-
-        assertTrue(saved);
     }
 
     @Test
@@ -63,24 +60,18 @@ public class FileManagerTest {
 
     @Test
     public void testSaveToNull() throws Exception {
-        boolean saved;
         try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), "resource.jpg"))) {
             MockMultipartFile file = new MockMultipartFile("file", null, null, inputStream);
-            saved = manager.save(file);
+            assertFalse(manager.save(file));
         }
-
-        assertFalse(saved);
     }
 
     @Test
     public void testSaveAlreadyExistedFile() throws Exception {
-        boolean saved;
         try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), "resource.jpg"))) {
             MockMultipartFile file = new MockMultipartFile("file", "saveAlreadyExisted.jpg", null, inputStream);
             manager.save(file);
-            saved = manager.save(file);
+            assertFalse(manager.save(file));
         }
-
-        assertFalse(saved);
     }
 }
