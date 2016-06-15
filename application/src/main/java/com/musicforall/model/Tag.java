@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
@@ -15,6 +16,7 @@ import java.io.Serializable;
 public class Tag implements Serializable {
 
     @Id
+    @Size(min = 2, max = 30)
     @Column(name = "name", unique = true)
     private String name;
 

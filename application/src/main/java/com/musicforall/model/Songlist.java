@@ -6,6 +6,7 @@ package com.musicforall.model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ public class Songlist implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-
+    @Size(max = 20)
     @Column(name = "name", nullable = false)
     private String name;
 

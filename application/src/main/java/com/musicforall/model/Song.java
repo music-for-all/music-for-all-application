@@ -5,6 +5,7 @@ package com.musicforall.model;
  */
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -20,6 +21,7 @@ public class Song implements Serializable {
     @ManyToMany
     private Set<Tag> tags;
 
+    @Size(min = 2, max = 30)
     @Column(name = "name", nullable = false)
     private String name;
 
