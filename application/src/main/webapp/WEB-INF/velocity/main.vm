@@ -16,10 +16,36 @@
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet">
 </head>
 <body>
+<div id="AddPlaylistModal" class="modal fade">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Add playlist</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="inputNamePlaylist" class="col-sm-2 control-label">Name:</label>
+                    <input type="text" class="form-control" id="inputNamePlaylist" placeholder="Name">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal"
+                        onclick="addPlaylist(document.getElementById('inputNamePlaylist').value)">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
+
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -63,6 +89,8 @@
     </div>
     <div class="well  col-md-2 col-md-offset-1  ">
         <div  class="navbar-collapse collapse">
+            <button class="btn  btn-success  btn-block" type="button" data-toggle="modal"
+                    data-target="#AddPlaylistModal">Create playlist</button>
             <ul id="playlists" class="nav nav-pills nav-stacked">
                 <li class="active"><a href="#">All</a></li>
 
