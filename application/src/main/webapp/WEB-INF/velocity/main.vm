@@ -8,7 +8,7 @@
     <script src="resources/js/jquery.min.js"></script>
     <script src="resources/js/bootstrap.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="resources/js/searchpage.js"></script>
+    <script src="resources/js/mainpage.js"></script>
 
     <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="/resources/css/mainpage.css" rel="stylesheet">
@@ -52,7 +52,7 @@
 
                 <td><button type="button" class="btn btn-xs btn-success">
                     <span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
-                    <button type="button" class="btn btn-xs btn-danger">
+                    <button type="button" class="btn btn-xs btn-danger" onclick="DeleteSongFunction(this)">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></td>
                 <td>John Lennon</td>
                 <td>Imagine</td>
@@ -84,6 +84,7 @@
         $(this).closest('li').addClass('active');
         alert($(this).data('value'));
     });
+
 
 </script>
 </body>
