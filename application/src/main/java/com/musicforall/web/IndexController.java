@@ -16,8 +16,6 @@ import java.util.Date;
 
 @Controller
 public class IndexController {
-	@Autowired
-	HttpServletRequest request;
 
 	private static final Logger LOG = LoggerFactory.getLogger(IndexController.class);
 
