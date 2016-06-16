@@ -24,28 +24,22 @@ public class IndexController {
 	}
 
 	@RequestMapping(value = {"/", "index"})
-	public String index(Model model, CsrfToken csrf) {
-
-		model.addAttribute("date", new Date());
-		model.addAttribute("_csrf", csrf);
+	public String index() {
 		return "index";
 	}
 
 	@RequestMapping("/profile")
-	public String profile(Model model, CsrfToken csrf) {
+	public String profile(Model model) {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetail = (UserDetails) auth.getPrincipal();
+		UserDetails userDetails = (UserDetails) auth.getPrincipal();
 
-		model.addAttribute("userName", userDetail.getUsername());
-		model.addAttribute("_csrf", csrf);
+		model.addAttribute("userName", userDetails.getUsername());
 		return "profile";
 	}
 
 	@RequestMapping("/login")
 	public String login(Model model, CsrfToken csrf) {
-
-		model.addAttribute("_csrf", csrf);
 		return "login";
 	}
 }
