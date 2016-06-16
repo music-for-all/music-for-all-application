@@ -24,11 +24,17 @@ function addPlaylist(Name){
     $('#playlists').append(' <li ><a href="#" data-value="' +Name + '">' + Name +'</a></li>');
 }
 
-function dummy(count){ //Only for demonstration, delete after merging with ajax
+function dummy(){ //Only for demonstration, delete after merging with ajax
+    var min=2;
+    var max=15;
+    var rand = min + Math.random() * (max - min)
+    rand = Math.round(rand);
     clearAll();
-    for(var i=0; i<parseInt(count);i++){
+    for(var i=0; i<rand;i++){
         addRow("test data", "test data", "2:22");
     }
 }
+
+
 
 

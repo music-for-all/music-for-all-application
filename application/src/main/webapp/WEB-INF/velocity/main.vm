@@ -106,13 +106,19 @@
 </div>
 <script language="javascript">
 
-    $('#playlists a').on('click', function(e) {
-        e.preventDefault();
-        $("#playlists li").removeClass("active");
-        $(this).closest('li').addClass('active');
-        alert($(this).data('value'));
-    });
+    $('#playlists').on('click', 'a', function(e) {
+            e.preventDefault();
+            $("#playlists li").removeClass("active");
+            $(this).closest('li').addClass('active');
+            alert("Changed playlist: " + $(this).data('value'));
+            clearAll();
+            dummy();
+        });
 
+    $( document ).ready(function() {
+        clearAll();
+        dummy();
+    });
 
 </script>
 </body>
