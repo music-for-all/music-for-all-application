@@ -88,7 +88,7 @@
         </table>
     </div>
     <div class="well  col-md-2 col-md-offset-1  ">
-        <div  class="navbar-collapse collapse">
+
             <button class="btn  btn-success  btn-block" type="button" data-toggle="modal"
                     data-target="#AddPlaylistModal">Create playlist</button>
             <ul id="playlists" class="nav nav-pills nav-stacked">
@@ -99,9 +99,6 @@
                 <li ><a href="#" data-value="Playlist 3">Playlist 3</a></li>
                 <li ><a href="#" data-value="Playlist 4">Playlist 4</a></li>
             </ul>
-
-        </div>
-
     </div>
 </div>
 <script language="javascript">
