@@ -82,6 +82,7 @@ public class Song implements Serializable {
         Song song = (Song) o;
 
         if (name != null ? !name.equals(song.name) : song.name != null) return false;
+        if (id != null ? !id.equals(song.id) : song.id != null) return false;
         if (tags != null ? !tags.equals(song.tags) : song.tags != null) return false;
         if (location != null ? !location.equals(song.location) : song.location != null) return false;
 
