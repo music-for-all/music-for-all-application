@@ -6,6 +6,17 @@ function addRow(Artist, Title, Duration){
         '<td>' + Artist + ' </td><td>' + Title + ' </td><td>' + Duration + ' </td></tr>');
 }
 
+function addRowArray(Artist, Title, Duration){
+
+    for(var i=0; i<Title.length;i++) {
+        $('#results').append('<tr><td><button type="button" class="btn btn-xs btn-success">' +
+            '<span class="glyphicon glyphicon-play" aria-hidden="true"></span></button> ' +
+            '<button type="button" class="btn btn-xs btn-danger" onclick="DeleteSongFunction(this)"> ' +
+            '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></td>' +
+            '<td>' + Artist[i] + ' </td><td>' + Title[i] + ' </td><td>' + Duration[i] + ' </td></tr>');
+    }
+}
+
 function clearAll(){
     $("#results").find("tr:not(:first)").remove();
 }
@@ -34,6 +45,7 @@ function dummy(){ //Only for demonstration, delete after merging with ajax
         addRow("test data", "test data", "2:22");
     }
 }
+
 
 
 
