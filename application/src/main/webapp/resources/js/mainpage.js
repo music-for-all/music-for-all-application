@@ -16,6 +16,14 @@ function DeleteSongFunction(o) {
     //Write: Send request for deleting song to server
 }
 
+function clearAllPlaylists(){
+    $("#playlists").find("li:not(:first)").remove();
+}
+
+function addPlaylist(Name){
+    $('#playlists').append(' <li ><a href="#" data-value="' +Name + '">' + Name +'</a></li>');
+}
+
 function dummy(count){ //Only for demonstration, delete after merging with ajax
     clearAll();
     for(var i=0; i<parseInt(count);i++){
