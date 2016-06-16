@@ -1,5 +1,9 @@
 function addRow(Artist, Title, Duration){
-    $('#results').append('<tr><td> </td><td>' + Artist + ' </td><td>' + Title + ' </td><td>' + Duration + ' </td></tr>');
+    $('#results').append('<tr><td>  <button type="button" class="btn btn-xs btn-success"> ' +
+        '<span class="glyphicon glyphicon-play"aria-hidden="true"></span></button> ' +
+        '<button type="button" class="btn btn-xs btn-success"> ' +
+        '<span class="glyphicon glyphicon-plus"aria-hidden="true"></span></button> ' +
+        '</td><td>' + Artist + ' </td><td>' + Title + ' </td><td>' + Duration + ' </td></tr>');
 }
 
 function clearAll(){
