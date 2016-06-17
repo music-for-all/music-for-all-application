@@ -111,11 +111,11 @@
         <button id="removePlaylistButton" class="btn  btn-danger btn-block" type="button">Remove selected</button>
 
         <ul id="playlists" class="nav nav-pills nav-stacked">
-            <li class="active" id="allSongsPlaylist"><a href="#" data-value="All">All</a></li>
-            <li><a href="#" data-value="Playlist 1">Playlist 1</a></li>
-            <li><a href="#" data-value="Playlist 2">Playlist 2</a></li>
-            <li><a href="#" data-value="Playlist 3">Playlist 3</a></li>
-            <li><a href="#" data-value="Playlist 4">Playlist 4</a></li>
+            <li class="active"><a href="#" data-value="All">All</a></li>
+            <li id="id_example_1"><a href="#" data-value="Playlist 1">Playlist 1</a></li>
+            <li id="id_example_2"><a href="#" data-value="Playlist 2">Playlist 2</a></li>
+            <li id="id_example_3"><a href="#" data-value="Playlist 3">Playlist 3</a></li>
+            <li id="id_example_4"><a href="#" data-value="Playlist 4">Playlist 4</a></li>
         </ul>
     </div>
 </div>
@@ -131,6 +131,7 @@
 
     $('#acceptRemovingPlaylistButton').on('click', function (e) {
         if ($('#playlists li.active').index() != 0) {
+           // alert("Deleted playlist with ID: " + $("#playlists li.active").attr('id'));
             $("#playlists li.active").remove();
         } else {
             alert("This playlist cannot be deleted");
