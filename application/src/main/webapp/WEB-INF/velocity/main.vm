@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Search</title>
+    <title>Main</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <script src="resources/js/jquery.min.js"></script>
     <script src="resources/js/bootstrap.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="resources/js/mainpage.js"></script>
 
     <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
@@ -16,14 +14,15 @@
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet">
 </head>
 <body>
-<div id="AddPlaylistModal" class="modal fade">
+
+<div id="addPlaylistModal" class="modal fade">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">Add playlist</h4>
+                <h4 class="modal-title">Adding playlist</h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -33,13 +32,32 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal"
-                        onclick="addPlaylist(document.getElementById('inputNamePlaylist').value)">Add</button>
+                <button id="acceptCreatingPlaylistButton" type="button" class="btn btn-success">Add</button>
             </div>
         </div>
     </div>
 </div>
 
+<div id="deletePlaylistModal" class="modal fade">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Deleting playlist</h4>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">No</button>
+                <button type="button" id="acceptRemovingPlaylistButton" class="btn btn-danger" data-dismiss="modal">Yes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
 
@@ -55,8 +73,8 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Main</a></li>
-                <li ><a href="#">Search</a></li>
+                <li class="active"><a href="/main">Main</a></li>
+                <li><a href="/search">Search</a></li>
             </ul>
         </div>
     </div>
@@ -66,7 +84,6 @@
         <table id="results" class="table table-hover table-striped table-condensed ">
             <thead>
             <tr>
-
                 <th>Actions</th>
                 <th>Artist</th>
                 <th>Title</th>
@@ -75,11 +92,12 @@
             </thead>
             <tbody>
             <tr>
-
-                <td><button type="button" class="btn btn-xs btn-success">
-                    <span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
+                <td>
+                    <button type="button" class="btn btn-xs btn-success">
+                        <span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
                     <button type="button" class="btn btn-xs btn-danger" onclick="DeleteSongFunction(this)">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></td>
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                </td>
                 <td>John Lennon</td>
                 <td>Imagine</td>
                 <td>3:45</td>
@@ -87,32 +105,56 @@
             </tbody>
         </table>
     </div>
+
     <div class="well  col-md-2 col-md-offset-1  ">
+        <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">Create playlist</button>
+        <button id="removePlaylistButton" class="btn  btn-danger btn-block" type="button">Remove selected</button>
 
-            <button class="btn  btn-success  btn-block" type="button" data-toggle="modal"
-                    data-target="#AddPlaylistModal">Create playlist</button>
-            <ul id="playlists" class="nav nav-pills nav-stacked">
-                <li class="active"><a href="#">All</a></li>
-
-                <li ><a href="#" data-value="Playlist 1">Playlist 1</a></li>
-                <li ><a href="#" data-value="Playlist 2">Playlist 2</a></li>
-                <li ><a href="#" data-value="Playlist 3">Playlist 3</a></li>
-                <li ><a href="#" data-value="Playlist 4">Playlist 4</a></li>
-            </ul>
+        <ul id="playlists" class="nav nav-pills nav-stacked">
+            <li class="active" id="allSongsPlaylist"><a href="#" data-value="All">All</a></li>
+            <li><a href="#" data-value="Playlist 1">Playlist 1</a></li>
+            <li><a href="#" data-value="Playlist 2">Playlist 2</a></li>
+            <li><a href="#" data-value="Playlist 3">Playlist 3</a></li>
+            <li><a href="#" data-value="Playlist 4">Playlist 4</a></li>
+        </ul>
     </div>
 </div>
 <script language="javascript">
 
-    $('#playlists').on('click', 'a', function(e) {
-            e.preventDefault();
-            $("#playlists li").removeClass("active");
-            $(this).closest('li').addClass('active');
-            alert("Changed playlist: " + $(this).data('value'));
-            clearAll();
-            dummy();
-        });
+    $('#playlists').on('click', 'a', function (e) {
+        e.preventDefault();
+        $("#playlists li").removeClass("active");
+        $(this).closest('li').addClass('active');
+        clearAll();
+        dummy();
+    });
 
-    $( document ).ready(function() {
+    $('#acceptRemovingPlaylistButton').on('click', function (e) {
+        if ($('#playlists li.active').index() != 0) {
+            $("#playlists li.active").remove();
+        } else {
+            alert("This playlist cannot be deleted");
+        }
+    });
+
+    $('#acceptCreatingPlaylistButton').on('click', function (e) {
+        addPlaylist(document.getElementById('inputNamePlaylist').value)
+        $('#addPlaylistModal').modal('hide');
+    });
+
+    $('#removePlaylistButton').on('click', function (e) {
+        if ($('#playlists li.active').index() == 0) {
+            alert("This playlist cannot be deleted");
+        } else {
+            $('#deletePlaylistModal').modal('show');
+        }
+    });
+
+    $('#createPlaylistButton').on('click', function (e) { //Button which call modal window
+        $('#addPlaylistModal').modal('show');
+    });
+
+    $(document).ready(function () {
         clearAll();
         dummy();
     });
