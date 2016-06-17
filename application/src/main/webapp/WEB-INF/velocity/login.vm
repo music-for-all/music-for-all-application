@@ -1,8 +1,9 @@
+#parse("macros.vm")
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Music For All</title>
-    #include("headerIncludes.vm")
+    #headContent()
 </head>
 <body>
 <h2>Spring Demo</h2>
@@ -12,21 +13,21 @@
 </p>
 
 <form action="#springUrl('/login')" method="post">
-    <table>
-        <tr>
-            <td><label for="username">Username</label></td>
-            <td><input type="text" name="username" id="username" /></td>
-        </tr>
-        <tr>
-            <td><label for="password">Password</label></td>
-            <td><input type="password" name="password" id="password" /></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td colspan="2"><input type="submit" value="Log in" class="btn btn-default" /></td>
-        </tr>
-    </table>
-    <input type="hidden" name="$!{_csrf.parameterName}" value="${!_csrf.token}" />
+    <div class="form-group">
+        <label for="inputEmail">Email</label>
+        <input type="email" class="form-control" id="inputEmail"
+               placeholder="Email">
+    </div>
+    <div class="form-group">
+        <label for="inputPassword">Password</label>
+        <input type="password" class="form-control" id="inputPassword"
+               placeholder="Password">
+    </div>
+    <div class="checkbox">
+        <label><input type="checkbox">Remember me</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+    #CSRFToken()
 </form>
 </body>
 </html>
