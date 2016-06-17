@@ -29,8 +29,8 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="/main">Main</a></li>
-                <li class="active"><a href="/search">Search</a></li>
+                <li><a href="#springUrl('/main')">Main</a></li>
+                <li class="active"><a href="#springUrl('/search')">Search</a></li>
             </ul>
         </div>
     </div>
