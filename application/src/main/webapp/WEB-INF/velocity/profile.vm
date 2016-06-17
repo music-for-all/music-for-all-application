@@ -1,8 +1,9 @@
+#parse("macros.vm")
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Profile - Music For All</title>
-    #include("headerIncludes.vm")
+    #headContent()
 </head>
 <body>
 <h2>Profile</h2>
@@ -12,6 +13,6 @@
 </p>
 <h3>Hello, ${userName}</h3>
 
-#parse("logoutForm.vm")
+#logoutForm()
 </body>
 </html>
