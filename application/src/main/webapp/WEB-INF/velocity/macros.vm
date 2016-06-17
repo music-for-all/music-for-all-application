@@ -11,6 +11,13 @@
 <script src="/musicforall.js"></script>
 #end
 
+#macro(logoutForm)
+<form action="#springUrl('/logout')" method="post">
+    <input type="submit" value="Log out" class="btn btn-default" />
+    #CSRFToken()
+</form>
+#end
+
 #macro(CSRFToken)
 <input type="hidden" name="$!{_csrf.parameterName}" value="$!{_csrf.token}" />
 #end
