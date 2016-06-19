@@ -30,7 +30,7 @@ public class Songlist implements Serializable {
 
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "songl_user", nullable = false)
     private User user;
 
 
