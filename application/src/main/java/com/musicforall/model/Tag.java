@@ -29,6 +29,14 @@ public class Tag implements Serializable {
         this.name = name;
     }
 
+    public Tag(String name){
+        this.name = name;
+    }
+    public Tag(){
+
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -50,6 +50,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isUserExist(Integer userId) {
+        if (dao.get(User.class, userId) == null) return false;
+
+        return true;
+    }
+
+    @Override
     public Integer getIdByName(String name) {
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
                 .add(Property.forName("name").eq(name));
@@ -59,7 +66,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(User user) {
+    public void delete(Integer userId) {
+        User user = dao.get(User.class, userId);
         dao.delete(user);
     }
 }
+
+

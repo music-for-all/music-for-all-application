@@ -30,7 +30,6 @@ public class IndexController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(IndexController.class);
 
-	private int counter = 0;
 	public IndexController() {
 		LOG.debug("Sample Debug Message");
 	}
@@ -38,51 +37,6 @@ public class IndexController {
 	@RequestMapping("/")
 	public String index(Model model) {
 		model.addAttribute("date", new Date());
-		if (counter==0) this.addSong();
-		counter++;
 		return "index";
 	}
-
-	private void addDefaultUser(){
-		userService.save(new User("JohnSmith26", "MyLoveIsNotU32", "JohnSmith@gmail.com"));
-	}
-
-
-	private void addDefaultAllSonglist(){
-		addDefaultUser();
-		Integer userId = userService.getIdByName("JohnSmith26");
-		songlistService.save(userId, "All");
-		songlistService.save(userId, "Not_all");
-	}
-
-
-	private void addSong(){
-		addDefaultAllSonglist();
-		Integer songlistId = songlistService.getSonglistId("All");
-		songService.save("somePath", songlistId);
-		songService.save("sonePath2", songlistId);
-		Integer userId = userService.getIdByName("JohnSmith26");
-		User u = userService.get(userId);
-		Integer song_id = songService.getSongId("somePath");
-
-
-
-		for (Songlist songlist:
-				userService.getAllUserSonglist(u)) {
-			LOG.info("Songl" + songlist.getName());
-		}
-
-		for (Song song: songlistService.getAllSongsInSonglist(songlistId)
-			 ) {
-			LOG.info("Song " + song.getName());
-		}
-
-	}
-
-	private void getSongListSong()
-	{
-
-
-	}
-
 }

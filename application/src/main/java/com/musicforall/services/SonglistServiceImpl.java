@@ -41,20 +41,12 @@ public class SonglistServiceImpl implements SonglistService {
         return songlist.getSongs();
     }
 
-    @Override
-    public Integer getSonglistId(String name) {
-        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Songlist.class)
-                .add(Property.forName("name").eq(name));
-
-        Songlist songlist = dao.getBy(detachedCriteria);
-
-        return songlist.getId();
-    }
 
     @Override
     public void addSong(Song song, Songlist songlist) {
         if (songlist.getSongs() == null)
             songlist.setSongs(new HashSet<>());
+
         songlist.getSongs().add(song);
         dao.save(songlist);
     }
@@ -64,6 +56,5 @@ public class SonglistServiceImpl implements SonglistService {
         Songlist songlist = dao.get(Songlist.class, songlistId);
 
         dao.delete(songlist);
-
     }
 }

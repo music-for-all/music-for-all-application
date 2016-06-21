@@ -13,6 +13,7 @@ public interface UserService {
     User get(Integer id);
     Set<Songlist> getAllUserSonglist(User user);
     void update();
+    boolean isUserExist(Integer userId);
     Integer getIdByName(String name);
-    void delete(User user);
+    void delete(Integer userId);
 }
