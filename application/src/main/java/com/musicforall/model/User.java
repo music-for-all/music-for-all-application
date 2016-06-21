@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -22,24 +23,28 @@ public class User implements Serializable {
 
     @Size(min = 2, max = 30)
     @Pattern(regexp = "^(^[a-zA-Z][a-zA-Z0-9-_\\.]+)$")
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
 
     @Size(min = 8, max = 15)
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
 
     @Email
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Songlist> songlists;
 
     public User() {
     }
 
     public User(Integer id, String name, String password) {
         this.id = id;
+
         this.name = name;
         this.password = password;
     }
@@ -91,31 +96,14 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    public List<Songlist> getSonglists() {
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (id != null ? !id.equals(user.id) : user.id != null) return false;
-        if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        if (password != null ? !password.equals(user.password) : user.password != null) return false;
-
-        return true;
+        return songlists;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        return result;
+    public void setSonglists(List<Songlist> songlists) {
+        this.songlists = songlists;
     }
-
 
     @Override
     public String toString() {
@@ -124,7 +112,35 @@ public class User implements Serializable {
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", songlists=" + songlists +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (!email.equals(user.email)) return false;
+        if (!id.equals(user.id)) return false;
+        if (!name.equals(user.name)) return false;
+        if (!password.equals(user.password)) return false;
+        if (songlists != null ? !songlists.equals(user.songlists) : user.songlists != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + email.hashCode();
+        result = 31 * result + (songlists != null ? songlists.hashCode() : 0);
+        return result;
+    }
+
 }
 
