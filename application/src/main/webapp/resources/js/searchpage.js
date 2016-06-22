@@ -10,13 +10,17 @@ function clearAll() {
     $("#results").find("tr:not(:first)").remove();
 }
 
-function ajaxSearch(searchQuery) {
+function ajaxSearch(searchQuery, selectedCategory) {
     clearAll();
     $.ajax({
         type: "GET",
         url: "/searchQuery",
         dataType: "json",
-        data: "search=" + searchQuery,
+        contentType: 'application/json',
+        data:  ({
+            search: searchQuery,
+            category: JSON.stringify(selectedCategory)
+        }),
         success: function (response) {
             $.each(response, function () {
                 addRow(this.id, this.name, this.location);//Only for demonstration
@@ -27,6 +31,7 @@ function ajaxSearch(searchQuery) {
         }
     });
 }
+
 function search() {
     var searchQuery = $("#word").val(); //Key-word for searching
     if (searchQuery.length > 40) {
@@ -39,7 +44,7 @@ function search() {
     console.log("Query for searching: " + searchQuery);
     console.log("Genres for searching: " + selectedCategory);
     if (searchQuery != "") {
-        ajaxSearch(searchQuery);
+        ajaxSearch(searchQuery, selectedCategory);
     }
 }
 

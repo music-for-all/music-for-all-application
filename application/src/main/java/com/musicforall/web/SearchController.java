@@ -1,5 +1,6 @@
 package com.musicforall.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musicforall.model.Song;
 import com.musicforall.model.Tag;
 import org.slf4j.Logger;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -31,8 +34,14 @@ public class SearchController {
 
 	@RequestMapping(value = "/searchQuery", method = RequestMethod.GET)
 	@ResponseBody
-	public Set<Song> dummyFind(@RequestParam("search") String search) {
-		LOG.debug("Requested /searchQuery = " +search);
+	public Set<Song> dummyFind(@RequestParam("search") String search, @RequestParam("category") String jsonCategory) throws IOException {
+		LOG.debug("Requested /searchQuery = " + search);
+		ObjectMapper objectMapper = new ObjectMapper();
+		List<String> listCategorySearch = objectMapper.readValue(
+				jsonCategory,
+				objectMapper.getTypeFactory().constructCollectionType(
+						List.class, String.class));
+
 		Set<Song> array = new HashSet<>();
 		Set<Tag> tag = new HashSet<>();
 		String location = "/home/andrey/MusicForAll";
