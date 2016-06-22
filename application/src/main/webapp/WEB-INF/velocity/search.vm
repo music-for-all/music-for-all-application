@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Search</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="resources/js/jquery.min.js"></script>
+    <script src="resources/js/bootstrap.min.js"></script>
+    <script src="resources/js/searchpage.js"></script>
+
+    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/resources/css/searchpage.css" rel="stylesheet">
+    <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Music for all</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#springUrl('/main')">Main</a></li>
+                <li class="active"><a href="#springUrl('/search')">Search</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <form class="form-inline text-center " id="searchForm" method="post">
+        <div class="input-group " placeholder="Search">
+            <input id="word" class="form-control" type="text" value="" placeholder="Search" name="q"
+                   autofocus="autofocus"/>
+            <div class="input-group-btn">
+                <button id="searchButton" data-style="slide-left" class="btn btn-success " type="button"
+                        onclick="search()"><i id="icon" class="fa fa-search"></i>Search
+                </button>
+            </div>
+        </div>
+
+        <label class="checkbox-inline">
+            <input type="checkbox" name="category" value="Artists"> Artists
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" name="category" value="Titles"> Titles
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" name="category" value="Tags"> Tags
+        </label>
+
+    </form>
+    <div id="resultsd" class="well ">
+        <table id="results" class="table table-hover table-striped table-condensed ">
+            <thead>
+            <tr>
+
+                <th>Actions</th>
+                <th>Artist</th>
+                <th>Title</th>
+                <th>Duration</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+
+                <td>
+                    <button type="button" class="btn btn-xs btn-success"> <span class="glyphicon glyphicon-play"
+                                                                                aria-hidden="true"></span></button>
+                    <button type="button" class="btn btn-xs btn-success"> <span class="glyphicon glyphicon-plus"
+                                                                                aria-hidden="true"></span></button>
+                </td>
+                <td>John Lennon</td>
+                <td>Imagine</td>
+                <td>3:45</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

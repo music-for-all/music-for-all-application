@@ -1,0 +1,18 @@
+#parse("macros.vm")
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Profile - Music For All</title>
+    #headContent()
+</head>
+<body>
+<h2>Profile</h2>
+<h3>User Information</h3>
+<p>
+    <a href="index" class="btn btn-default">Main Page</a>
+</p>
+<h3>Hello, ${userName}</h3>
+
+#logoutForm()
+</body>
+</html>
