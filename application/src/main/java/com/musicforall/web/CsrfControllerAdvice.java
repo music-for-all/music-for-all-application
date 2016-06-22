@@ -9,11 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
 public class CsrfControllerAdvice {
-	@Autowired
-	private HttpServletRequest request;
 
 	@ModelAttribute("_csrf")
-	public CsrfToken appendCsrfToken() {
+	public CsrfToken appendCsrfToken(HttpServletRequest request) {
 		return (CsrfToken) request.getAttribute("org.springframework.security.web.csrf.CsrfToken");
 	}
 }
