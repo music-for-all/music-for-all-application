@@ -19,15 +19,6 @@ import java.util.Date;
 @Controller
 public class IndexController {
 
-	@Autowired
-	private UserService userService;
-
-	@Autowired
-	private SonglistService songlistService;
-
-	@Autowired
-	private SongService songService;
-
 	private static final Logger LOG = LoggerFactory.getLogger(IndexController.class);
 
 	public IndexController() {

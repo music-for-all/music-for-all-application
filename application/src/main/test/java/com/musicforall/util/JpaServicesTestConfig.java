@@ -24,19 +24,15 @@ import java.util.Properties;
                   "com.musicforall.common.dao",
                   "com.musicforall.util",
                   "com.musicforall.services"})
-@PropertySource("classpath:/application.properties")
 public class JpaServicesTestConfig {
-
-    @Autowired
-    private Environment env;
 
     @Bean
     public DriverManagerDataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getRequiredProperty("db.driver"));
-        dataSource.setUrl(env.getRequiredProperty("db.url"));
-        dataSource.setUsername(env.getRequiredProperty("db.userName"));
-        dataSource.setPassword(env.getRequiredProperty("db.password"));
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/music_for_all");
+        dataSource.setUsername("java");
+        dataSource.setPassword("java");
         return dataSource;
     }
 
@@ -52,12 +48,13 @@ public class JpaServicesTestConfig {
 
     private Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", env.getRequiredProperty("hibernate.hbm2ddl.auto"));
-        properties.setProperty("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
-        properties.setProperty("hibernate.format_sql", env.getRequiredProperty("hibernate.format_sql"));
-        properties.setProperty("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
+        properties.setProperty("hibernate.hbm2ddl.auto", "create");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        properties.setProperty("hibernate.format_sql", "true");
+        properties.setProperty("hibernate.show_sql","true");
         return properties;
     }
+
     @Bean
     @Autowired
     public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {

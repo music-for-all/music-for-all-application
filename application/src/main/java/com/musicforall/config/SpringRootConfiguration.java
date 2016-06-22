@@ -17,10 +17,7 @@ import org.springframework.core.env.Environment;
 @ComponentScan({"com.musicforall.common",
                 "com.musicforall.services"})
 @Import({HibernateConfiguration.class,
-        FileApiSpringConfig.class,
-        UserServiceImpl.class,
-        SonglistServiceImpl.class,
-        SongServiceImpl.class})
+        FileApiSpringConfig.class})
 @PropertySource("classpath:/application.properties")
 public class SpringRootConfiguration {
 
