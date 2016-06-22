@@ -30,16 +30,25 @@ public class SongServiceImpl implements SongService {
     @Autowired
     private SonglistService songlistService;
 
+    @Autowired
+    private TagService tagService;
+
     @Override
     public void save(Song song, Integer songlistId) {
         Songlist songlist = dao.get(Songlist.class, songlistId);
-
         songlistService.addSong(song, songlist);
-        dao.save(song);
+        if (song.getTags()!= null) this.save(song);
+        else dao.save(song);
     }
 
     @Override
     public void save(Song song) {
+        if (song.getTags()!=null){
+            for (Tag tag:
+                 song.getTags()) {
+                dao.save(tag);
+            }
+        }
         dao.save(song);
     }
 
@@ -54,7 +63,7 @@ public class SongServiceImpl implements SongService {
         return dao.get(Song.class, id);
     }
 
-    @Override
+
     public Tag checkExisting(String name) {
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Tag.class)
                 .add(Property.forName("name").eq(name));
@@ -67,24 +76,24 @@ public class SongServiceImpl implements SongService {
         return tag;
     }
 
-    @Override
+
     public Set<Tag> getAllSongTag(Integer songId) {
         Song song = dao.get(Song.class, songId);
         return song.getTags();
     }
 
-    @Override
+
     public List<Tag> getAllTags() {
         return dao.all(Tag.class);
     }
 
-    @Override
+
     public void save(String name, String path) {
         dao.save(new Song(name, path));
     }
 
 
-    @Override
+
     public void addTag(Integer songId, String nameTag) {
         Tag tag = checkExisting(nameTag);
 

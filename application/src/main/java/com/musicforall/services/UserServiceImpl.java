@@ -36,24 +36,16 @@ public class UserServiceImpl implements UserService {
         return dao.get(User.class, id);
     }
 
-    @Override
-    public Set<Songlist> getAllUserSonglist(User user) {
-        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Songlist.class)
-                .add(Property.forName("user").eq(user));
-        List<Songlist> usersSonglists = dao.getAllBy(detachedCriteria);
-        return new HashSet<Songlist>(usersSonglists);
-    }
-
-    @Override
-    public void update() {
-        //here is nothing yet
-    }
 
     @Override
     public boolean isUserExist(Integer userId) {
-        if (dao.get(User.class, userId) == null) return false;
-
-        return true;
+        try {
+            dao.get(User.class, userId);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
     }
 
     @Override

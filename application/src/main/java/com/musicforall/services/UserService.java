@@ -11,8 +11,6 @@ import java.util.Set;
 public interface UserService {
     void save(User user);
     User get(Integer id);
-    Set<Songlist> getAllUserSonglist(User user);
-    void update();
     boolean isUserExist(Integer userId);
     Integer getIdByName(String name);
     void delete(Integer userId);

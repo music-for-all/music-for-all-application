@@ -15,9 +15,4 @@ public interface SongService {
      void save(Song song);
      void delete(Integer songId);
      Song get(Integer id);
-     Tag checkExisting(String name);
-     Set<Tag> getAllSongTag(Integer songId);
-     List<Tag> getAllTags();
-     void save(String name, String path);
-     void addTag(Integer songId, String nameTag);
 }

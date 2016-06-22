@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,12 +27,27 @@ public class SonglistServiceImpl implements SonglistService {
     @Autowired
     private Dao dao;
 
+    @Override
+    public Set<Songlist> getAllUserSonglist(Integer userId) {
+
+        User user = userService.get(userId);
+        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Songlist.class)
+                .add(Property.forName("user").eq(user));
+        List<Songlist> usersSonglists = dao.getAllBy(detachedCriteria);
+        return new HashSet<Songlist>(usersSonglists);
+    }
 
     @Override
     public void save(Integer userId, String songlistName) {
         Songlist songlist = new Songlist(); //there is have to be some builder ??
         songlist.setUser(userService.get(userId));
         songlist.setName(songlistName);
+        dao.save(songlist);
+    }
+
+    @Override
+    public void save(Integer userId, Songlist songlist) {
+        songlist.setUser(userService.get(userId));
         dao.save(songlist);
     }
 
