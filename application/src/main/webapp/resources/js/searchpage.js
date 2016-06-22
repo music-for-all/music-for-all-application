@@ -10,11 +10,22 @@ function clearAll() {
     $("#results").find("tr:not(:first)").remove();
 }
 
-function dummy(searchQuery, count) { //Only for demonstration, delete after merging with ajax
+function ajaxSearch(searchQuery) {
     clearAll();
-    for (var i = 0; i < parseInt(count); i++) {
-        addRow(searchQuery, searchQuery, "2:22");
-    }
+    $.ajax({
+        type: "GET",
+        url: "/searchQuery",
+        dataType: "json",
+        data: "search=" + searchQuery,
+        success: function (response) {
+            $.each(response, function () {
+                addRow(this.id, this.name, this.location);//Only for demonstration
+            });
+        },
+        error: function () {
+            alert('Error while request..');
+        }
+    });
 }
 function search() {
     var searchQuery = $("#word").val(); //Key-word for searching
@@ -28,7 +39,7 @@ function search() {
     console.log("Query for searching: " + searchQuery);
     console.log("Genres for searching: " + selectedCategory);
     if (searchQuery != "") {
-        dummy(searchQuery, 15);
+        ajaxSearch(searchQuery);
     }
 }
 
