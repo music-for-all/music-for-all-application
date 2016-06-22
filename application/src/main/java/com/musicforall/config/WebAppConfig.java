@@ -21,6 +21,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 		resolver.setPrefix("");
 		resolver.setSuffix(".vm");
 		resolver.setViewClass(VelocityView.class);
+		resolver.setContentType("text/html; charset=utf-8");
 		return resolver;
 	}
 
