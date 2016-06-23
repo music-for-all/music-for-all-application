@@ -8,6 +8,7 @@ package com.musicforall.model;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -78,27 +79,24 @@ public class Songlist implements Serializable {
 
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Songlist songlist = (Songlist) o;
-
-        if (id != null ? !id.equals(songlist.id) : songlist.id != null) return false;
-        if (name != null ? !name.equals(songlist.name) : songlist.name != null) return false;
-        return !(user != null ? !user.equals(songlist.user) : songlist.user != null);
-
+    public int hashCode() {
+        return Objects.hash(id, name, songs, user);
     }
-
 
     @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        return result;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Songlist other = (Songlist) obj;
+        return Objects.equals(this.id, other.id)
+                && Objects.equals(this.name, other.name)
+                && Objects.equals(this.songs, other.songs)
+                && Objects.equals(this.user, other.user);
     }
-
 
     @Override
     public String toString() {

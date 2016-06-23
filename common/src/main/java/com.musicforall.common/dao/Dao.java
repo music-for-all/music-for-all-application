@@ -1,12 +1,5 @@
 package com.musicforall.common.dao;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -19,6 +12,13 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 /**
  * Created by kgavrylchenko on 10/23/2015.
  */
@@ -26,6 +26,7 @@ import org.springframework.stereotype.Repository;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class Dao {
     private static final Logger LOG = LoggerFactory.getLogger(Dao.class);
+    private final int batch_size = 20;
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -82,7 +83,7 @@ public class Dao {
         List<T> entitiesList = new ArrayList<>(entities);
         for (int i = 0; i < entities.size(); i++) {
             session.save(entitiesList.get(i));
-            if (i % 20 == 0) {
+            if (i % batch_size == 0) {
                 session.flush();
                 session.clear();
             }
@@ -113,17 +114,17 @@ public class Dao {
         LOG.info("going to find entity by hql - {}, with parameters - {}", hql, parameters);
         Query query = currentSession().createQuery(hql);
         query.setProperties(parameters);
-        T entity =  (T) query.uniqueResult();
+        T entity = (T) query.uniqueResult();
         LOG.info("Found entity - {}", entity);
         return entity;
     }
-        
-    public void update(String sql, Map<String, List<Serializable>> parametrs){    		
-    	Query query = currentSession().createSQLQuery(sql);    	
-    	for (Entry<String, List<Serializable>> s : parametrs.entrySet())
-    		query.setParameterList(s.getKey(), s.getValue());
-    	
-    	query.executeUpdate();
+
+    public void update(String sql, Map<String, List<Serializable>> parametrs) {
+        Query query = currentSession().createSQLQuery(sql);
+        for (Entry<String, List<Serializable>> s : parametrs.entrySet())
+            query.setParameterList(s.getKey(), s.getValue());
+
+        query.executeUpdate();
     }
 
     /**
@@ -143,14 +144,12 @@ public class Dao {
         return entities;
     }
 
-    ;
-
     /**
      * Return the persistent instance of the given entity class with the given parameters,
      * It uses Criterians. If there are there several entities that meet given parameters, returns first item.
      *
      * @param criteria criterion to match the search against, for creations of Criterion use
-     *                   Restrictions class e.g Restrictions.eq(propertyName, value)
+     *                 Restrictions class e.g Restrictions.eq(propertyName, value)
      * @return a persistent instance or null
      */
     public <T> T getBy(DetachedCriteria criteria) {
@@ -167,7 +166,7 @@ public class Dao {
      * It uses Criterians.
      *
      * @param criteria criterion to match the search against, for creations of Criterion use
-     *                   Restrictions class e.g Restrictions.eq(propertyName, value)
+     *                 Restrictions class e.g Restrictions.eq(propertyName, value)
      * @return list of persistent instances or null
      */
     @SuppressWarnings("unchecked")

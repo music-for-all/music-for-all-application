@@ -13,7 +13,7 @@ import org.springframework.core.env.Environment;
 @ComponentScan({"com.musicforall.common"})
 @Import({HibernateConfiguration.class,
         FileApiSpringConfig.class,
-		SecurityConfig.class})
+        SecurityConfig.class})
 @PropertySource("classpath:/application.properties")
 public class SpringRootConfiguration {
 
