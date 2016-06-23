@@ -185,7 +185,7 @@
                 </dependencies>
                 <configuration>
                     <configLocation>
-                        google_checks.xml
+                        checkstyle.xml
                     </configLocation>
                     <encoding>UTF-8</encoding>
                 </configuration>
