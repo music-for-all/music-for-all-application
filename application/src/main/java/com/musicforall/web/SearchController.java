@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class SearchController {
 
-	private static final Logger LOG = LoggerFactory.getLogger(SearchController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SearchController.class);
 
-	public SearchController() {
-		LOG.debug("Search controller");
-	}
+    public SearchController() {
+        LOG.debug("Search controller");
+    }
 
-	@RequestMapping("/search")
-	public String welcome(Model model) {
-		LOG.debug("Requested /search");
-		return "search";
-	}
+    @RequestMapping("/search")
+    public String welcome(Model model) {
+        LOG.debug("Requested /search");
+        return "search";
+    }
 }

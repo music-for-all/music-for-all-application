@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -37,7 +36,7 @@ public class FileController {
     }
 
     @RequestMapping(value = "/files/{fileName:.+}", method = RequestMethod.GET)
-    public void getFileHandler(HttpServletRequest request, HttpServletResponse response, @PathVariable("fileName") String name) {
+    public void getFileHandler(HttpServletResponse response, @PathVariable("fileName") String name) {
         Path filePath = manager.getFileByName(name);
         if (filePath == null) return;
 

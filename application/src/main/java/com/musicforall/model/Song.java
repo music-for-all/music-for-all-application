@@ -7,6 +7,7 @@ package com.musicforall.model;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -75,29 +76,24 @@ public class Song implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Song song = (Song) o;
-
-        if (name != null ? !name.equals(song.name) : song.name != null) return false;
-        if (id != null ? !id.equals(song.id) : song.id != null) return false;
-        if (tags != null ? !tags.equals(song.tags) : song.tags != null) return false;
-        if (location != null ? !location.equals(song.location) : song.location != null) return false;
-
-        return true;
+    public int hashCode() {
+        return Objects.hash(id, tags, name, location);
     }
 
     @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (tags != null ? tags.hashCode() : 0);
-        result = 31 * result + (location != null ? location.hashCode() : 0);
-        return result;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Song other = (Song) obj;
+        return Objects.equals(this.id, other.id)
+                && Objects.equals(this.tags, other.tags)
+                && Objects.equals(this.name, other.name)
+                && Objects.equals(this.location, other.location);
     }
-
 
     @Override
     public String toString() {

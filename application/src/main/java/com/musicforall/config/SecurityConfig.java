@@ -8,38 +8,36 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-import javax.sql.DataSource;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-				.authorizeRequests()
-				.antMatchers("/", "/index", "/register").permitAll()
-				.anyRequest().authenticated()
-				.and()
-				.formLogin().permitAll()
-				.and()
-				.logout().permitAll();
-	}
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .antMatchers("/", "/index", "/register").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin().permitAll()
+                .and()
+                .logout().permitAll();
+    }
 
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web
-				.ignoring()
-				.antMatchers("/resources/**");
-	}
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web
+                .ignoring()
+                .antMatchers("/resources/**");
+    }
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
-		auth.inMemoryAuthentication()
-				.withUser("user")
-				.password("password")
-				.roles("USER");
-	}
+        auth.inMemoryAuthentication()
+                .withUser("user")
+                .password("password")
+                .roles("USER");
+    }
 }
 
