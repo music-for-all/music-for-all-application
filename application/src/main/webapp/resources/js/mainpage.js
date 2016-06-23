@@ -68,7 +68,7 @@ function ajaxAddPlaylist(Name) {
             xhr.setRequestHeader(header, token);
         },
         success: function () {
-            console.log("Playlist " + Name + " created successfully");
+            console.log("Request to add was submitted successfully");
         },
         error: function () {
             alert('Error while request..');
@@ -87,7 +87,7 @@ function ajaxDeletePlaylist(Delete) {
             xhr.setRequestHeader(header, token);
         },
         success: function () {
-            console.log("Playlist " + Delete + " deleted successfully");
+            console.log("Request to delete was submitted successfully");
         },
         error: function () {
             alert('Error while request..' + Delete);

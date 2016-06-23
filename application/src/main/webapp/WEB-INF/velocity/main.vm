@@ -93,19 +93,6 @@
                 <th>Duration</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td>
-                    <button type="button" class="btn btn-xs btn-success">
-                        <span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
-                    <button type="button" class="btn btn-xs btn-danger" onclick="DeleteSongFunction(this)">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                </td>
-                <td>John Lennon</td>
-                <td>Imagine</td>
-                <td>3:45</td>
-            </tr>
-            </tbody>
         </table>
     </div>
 
@@ -115,10 +102,6 @@
 
         <ul id="playlists" class="nav nav-pills nav-stacked">
             <li class="active"><a href="#" data-value="All">All</a></li>
-            <li id="id_example_1"><a href="#" data-value="Playlist 1">Playlist 1</a></li>
-            <li id="id_example_2"><a href="#" data-value="Playlist 2">Playlist 2</a></li>
-            <li id="id_example_3"><a href="#" data-value="Playlist 3">Playlist 3</a></li>
-            <li id="id_example_4"><a href="#" data-value="Playlist 4">Playlist 4</a></li>
         </ul>
     </div>
 </div>

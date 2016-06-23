@@ -69,20 +69,6 @@
                 <th>Duration</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-
-                <td>
-                    <button type="button" class="btn btn-xs btn-success"> <span class="glyphicon glyphicon-play"
-                                                                                aria-hidden="true"></span></button>
-                    <button type="button" class="btn btn-xs btn-success"> <span class="glyphicon glyphicon-plus"
-                                                                                aria-hidden="true"></span></button>
-                </td>
-                <td>John Lennon</td>
-                <td>Imagine</td>
-                <td>3:45</td>
-            </tr>
-            </tbody>
         </table>
     </div>
 </div>

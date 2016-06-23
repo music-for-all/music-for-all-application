@@ -50,7 +50,7 @@ public class MainController {
 
 	@RequestMapping(value = "/addPlaylist", method = RequestMethod.POST)
 	public String dummyAddPlaylist(@RequestParam("playlist") String name) {
-		System.out.println("Requested /addPlaylist = " + name);
+		LOG.debug("Requested /addPlaylist = " + name);
 		if (set != null){
 			Songlist songlist = new Songlist(id++);
 			songlist.setName(name);
@@ -61,7 +61,7 @@ public class MainController {
 
 	@RequestMapping(value = "/deletePlaylist", method = RequestMethod.POST)
 	public String dummyDeletePlaylist(@RequestParam("deleteID") String id) {
-		System.out.println("Requested /deletePlaylist = " + id);
+		LOG.debug("Requested /deletePlaylist = " + id);
 		if (set != null){
 			Songlist songlist = new Songlist(this.id++);
 			songlist.setName(id + " deleted");
