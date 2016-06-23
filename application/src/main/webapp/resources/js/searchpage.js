@@ -1,9 +1,9 @@
 function addRow(Artist, Title, Duration, Id) {
-    $('#results').append('<tr><td>  <button type="button" class="btn btn-xs btn-success"> ' +
-        '<span class="glyphicon glyphicon-play"aria-hidden="true"></span></button> ' +
-        '<button type="button" class="btn btn-xs btn-success" onclick="ajaxAddSong(' + Id + ')"> ' +
-        '<span class="glyphicon glyphicon-plus"aria-hidden="true"></span></button> ' +
-        '</td><td>' + Artist + ' </td><td>' + Title + ' </td><td>' + Duration + ' </td></tr>');
+    $("#results").append("<tr><td><button type='button' class='btn btn-xs btn-success'>" +
+        "<span class='glyphicon glyphicon-play'aria-hidden='true'></span></button>" +
+        "<button type='button' class='btn btn-xs btn-success' onclick='ajaxAddSong(" + Id + ")'>" +
+        "<span class='glyphicon glyphicon-plus'aria-hidden='true'></span></button>" +
+        "</td><td>" + Artist + "</td><td>" + Title + "</td><td>" + Duration + "</td></tr>");
 }
 
 function clearAll() {
@@ -16,8 +16,8 @@ function ajaxSearch(searchQuery, selectedCategory) {
         type: "GET",
         url: "/searchQuery",
         dataType: "json",
-        contentType: 'application/json',
-        data:  ({
+        contentType: "application/json",
+        data: ({
             search: searchQuery,
             category: JSON.stringify(selectedCategory)
         }),
@@ -27,23 +27,23 @@ function ajaxSearch(searchQuery, selectedCategory) {
             });
         },
         error: function () {
-            alert('Error while request..');
+            alert("Error while request..");
         }
     });
 }
 
 function search() {
-    var searchQuery = $("#word").val(); //Key-word for searching
+    var searchQuery = $('#word').val(); //Key-word for searching
     if (searchQuery.length > 40) {
         searchQuery = searchQuery.substr(0, 40); //Trimming long line
     }
     var selectedCategory = []; //Array with categories
-    $("input:checkbox[name=category]:checked").each(function () {
+    $('input:checkbox[name=category]:checked').each(function () {
         selectedCategory.push($(this).val());
     });
     console.log("Query for searching: " + searchQuery);
     console.log("Genres for searching: " + selectedCategory);
-    if (searchQuery != "") {
+    if (searchQuery !== "") {
         ajaxSearch(searchQuery, selectedCategory);
     }
 }
@@ -62,8 +62,7 @@ function ajaxAddSong(AddId) {
             console.log("Request to add was submitted successfully");
         },
         error: function () {
-            alert('Error while request..');
+            alert("Error while request..");
         }
     });
 }
-

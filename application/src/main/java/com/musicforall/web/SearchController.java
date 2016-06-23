@@ -20,45 +20,47 @@ import java.util.Set;
 @Controller
 public class SearchController {
 
-	private static final Logger LOG = LoggerFactory.getLogger(SearchController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SearchController.class);
 
-	public SearchController() {
-		LOG.debug("Search controller");
-	}
+    public SearchController() {
+        LOG.debug("Search controller");
+    }
 
-	@RequestMapping("/search")
-	public String welcome(Model model) {
-		LOG.debug("Requested /search");
-		return "search";
-	}
+    @RequestMapping("/search")
+    public String welcome(Model model) {
+        LOG.debug("Requested /search");
+        return "search";
+    }
 
-	@RequestMapping(value = "/searchQuery", method = RequestMethod.GET)
-	@ResponseBody
-	public Set<Song> dummyFind(@RequestParam("search") String search, @RequestParam("category") String jsonCategory) throws IOException {
-		LOG.debug("Requested /searchQuery = " + search);
-		ObjectMapper objectMapper = new ObjectMapper();
-		List<String> listCategorySearch = objectMapper.readValue(
-				jsonCategory,
-				objectMapper.getTypeFactory().constructCollectionType(
-						List.class, String.class));
+    @RequestMapping(value = "/searchQuery", method = RequestMethod.GET)
+    @ResponseBody
+    public Set<Song> dummyFind(@RequestParam("search") String search,
+                               @RequestParam("category") String jsonCategory)
+            throws IOException {
+        LOG.debug("Requested /searchQuery");
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<String> listCategory = objectMapper.readValue(
+                jsonCategory,
+                objectMapper.getTypeFactory().constructCollectionType(
+                        List.class, String.class));
 
-		Set<Song> array = new HashSet<>();
-		Set<Tag> tag = new HashSet<>();
-		String location = "/home/andrey/MusicForAll";
-		Tag t = new Tag();
-		t.setName("music");
-		tag.add(t);
-		array.add(new Song(tag, search, location));
-		array.add(new Song(tag, "Nirvana", location));
-		array.add(new Song(tag, "Disturbed", location));
-		array.add(new Song(tag, "Rob Zombie", location));
-		return array;
-	}
+        Set<Song> array = new HashSet<>();
+        Set<Tag> tag = new HashSet<>();
+        String location = "/home/andrey/MusicForAll";
+        Tag t = new Tag();
+        t.setName("music");
+        tag.add(t);
+        array.add(new Song(tag, search, location));
+        for (int i = 0; i < listCategory.size(); i++) {
+            array.add(new Song(tag, listCategory.get(i), location));
+        }
+        return array;
+    }
 
-	@RequestMapping(value = "/addSong", method = RequestMethod.POST)
-	public String dummyAddSong(@RequestParam("songId") Integer id) {
-		LOG.debug("Requested /addSong = " + id);
+    @RequestMapping(value = "/addSong", method = RequestMethod.POST)
+    public String dummyAddSong(@RequestParam("songId") Integer id) {
+        LOG.debug("Requested /addSong");
 
-		return "search";
-	}
+        return "search";
+    }
 }

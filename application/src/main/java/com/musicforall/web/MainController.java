@@ -17,6 +17,12 @@ public class MainController {
 
     private static final Logger LOG = LoggerFactory.getLogger(MainController.class);
 
+    private static Set<Songlist> set;
+
+    private static int id;
+
+    private static final String MAIN = "main";
+
     public MainController() {
         LOG.debug("Main controller");
     }
@@ -24,13 +30,15 @@ public class MainController {
     @RequestMapping("/main")
     public String welcome(Model model) {
         LOG.debug("Requested /main");
-        return "main";
+        return MAIN;
     }
 
-    private static Set<Songlist> set;
-    private static int id = 4;
 
-    static {//only for test
+    /*
+    * only for test
+     */
+    static {
+        id = 0;
         set = new HashSet<>();
         Set<Song> array;
         String location = "/home/andrey/MusicForAll";
@@ -70,34 +78,39 @@ public class MainController {
 
     @RequestMapping(value = "/addPlaylist", method = RequestMethod.POST)
     public String dummyAddPlaylist(@RequestParam("playlist") String name) {
-        LOG.debug("Requested /addPlaylist = " + name);
+        LOG.debug("Requested /addPlaylist");
 
         Songlist songlist = new Songlist(id++);
         songlist.setName(name);
         set.add(songlist);
-        return "main";
+        return MAIN;
     }
 
     @RequestMapping(value = "/deletePlaylist", method = RequestMethod.POST)
     public String dummyDeletePlaylist(@RequestParam("deleteID") Integer id) {
-        LOG.debug("Requested /deletePlaylist = " + id);
+        LOG.debug("Requested /deletePlaylist");
 
         Songlist songlist = new Songlist(this.id++);
         songlist.setName(id + " deleted");
         set.add(songlist);
-        return "main";
+        return MAIN;
     }
 
     @RequestMapping(value = "/getPlayList", method = RequestMethod.GET)
     @ResponseBody
     public Set<Song> dummyGetPlayList(@RequestParam("playlistID") Integer id) {
-        LOG.debug("Requested /getPlayList id = " + id);
+        LOG.debug("Requested /getPlayList id");
 
         Songlist playlist;
         Iterator<Songlist> iterator = set.iterator();
-        while (iterator.hasNext()){
-            if ((playlist = iterator.next()).getId().equals(id)){
-                return playlist.getSongs() != null ? playlist.getSongs() : new HashSet<>();
+        while (iterator.hasNext()) {
+            playlist = iterator.next();
+            if (playlist.getId().equals(id)) {
+                if (playlist.getSongs() != null) {
+                    return playlist.getSongs();
+                } else {
+                    return new HashSet<>();
+                }
             }
         }
         return new HashSet<>();
@@ -105,8 +118,8 @@ public class MainController {
 
     @RequestMapping(value = "/deleteSong", method = RequestMethod.POST)
     public String dummyDeleteSong(@RequestParam("deleteID") Integer id) {
-        LOG.debug("Requested /deleteSong = " + id);
+        LOG.debug("Requested /deleteSong");
 
-        return "main";
+        return MAIN;
     }
 }
