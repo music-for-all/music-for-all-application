@@ -30,15 +30,21 @@ function addPlaylist(Name, Id) {
     $('#playlists').append(' <li id="' + Id + '"><a href="#" data-value="' + Name + '">' + Name + '</a></li>');
 }
 
-function dummy() { //Only for demonstration, delete after merging with ajax
-    var min = 2;
-    var max = 15;
-    var rand = min + Math.random() * (max - min)
-    rand = Math.round(rand);
-    clearAll();
-    for (var i = 0; i < rand; i++) {
-        addRow("test data", "test data", "2:22");
-    }
+function ajaxGetPlaylist(Play) {
+    $.ajax({
+        type: "GET",
+        url: "/getPlayList",
+        dataType: "json",
+        data: "playlistID=" + Play,
+        success: function (response) {
+            $.each(response, function () {
+                addRow(this.id, this.name, this.location);//Only for demonstration
+            });
+        },
+        error: function () {
+            alert('Error while request..');
+        }
+    });
 }
 
 function ajaxGetPlaylists() {
@@ -63,8 +69,8 @@ function ajaxAddPlaylist(Name) {
     $.ajax({
         type: "POST",
         url: "/addPlaylist",
-        data:  "playlist=" + Name,
-        beforeSend: function(xhr){
+        data: "playlist=" + Name,
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
         success: function () {
@@ -82,8 +88,8 @@ function ajaxDeletePlaylist(Delete) {
     $.ajax({
         type: "POST",
         url: "/deletePlaylist",
-        data:  "deleteID=" + Delete,
-        beforeSend: function(xhr){
+        data: "deleteID=" + Delete,
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
         success: function () {

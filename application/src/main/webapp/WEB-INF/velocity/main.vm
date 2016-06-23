@@ -101,7 +101,7 @@
         <button id="removePlaylistButton" class="btn  btn-danger btn-block" type="button">Remove selected</button>
 
         <ul id="playlists" class="nav nav-pills nav-stacked">
-            <li class="active"><a href="#" data-value="All">All</a></li>
+            <li id="0" class="active"><a href="#" data-value="All">All</a></li>
         </ul>
     </div>
 </div>
@@ -112,7 +112,7 @@
         $("#playlists li").removeClass("active");
         $(this).closest('li').addClass('active');
         clearAll();
-        dummy();
+        ajaxGetPlaylist($('#playlists li.active').attr('id'));
     });
 
     $('#acceptRemovingPlaylistButton').on('click', function (e) {
