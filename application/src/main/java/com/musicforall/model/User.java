@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -55,7 +56,6 @@ public class User implements Serializable {
         this.email = email;
     }
 
-
     public Integer getId() {
         return id;
     }
@@ -63,7 +63,6 @@ public class User implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-
 
     public String getName() {
         return name;
@@ -93,27 +92,23 @@ public class User implements Serializable {
 
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (id != null ? !id.equals(user.id) : user.id != null) return false;
-        if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        if (password != null ? !password.equals(user.password) : user.password != null) return false;
-
-        return true;
+    public int hashCode() {
+        return Objects.hash(id, name, password, email);
     }
 
     @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        return result;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final User other = (User) obj;
+        return Objects.equals(this.id, other.id)
+                && Objects.equals(this.name, other.name)
+                && Objects.equals(this.password, other.password)
+                && Objects.equals(this.email, other.email);
     }
 
 

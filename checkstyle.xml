@@ -16,7 +16,9 @@
         <module name="AvoidNestedBlocks"/>
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
-        <module name="MagicNumber"/>
+        <module name="MagicNumber">
+            <property name="ignoreAnnotation" value="true"/>
+        </module>
         <module name="MissingSwitchDefault"/>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
