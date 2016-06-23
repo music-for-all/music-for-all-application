@@ -79,7 +79,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/deletePlaylist", method = RequestMethod.POST)
-    public String dummyDeletePlaylist(@RequestParam("deleteID") String id) {
+    public String dummyDeletePlaylist(@RequestParam("deleteID") Integer id) {
         LOG.debug("Requested /deletePlaylist = " + id);
 
         Songlist songlist = new Songlist(this.id++);
@@ -101,5 +101,12 @@ public class MainController {
             }
         }
         return new HashSet<>();
+    }
+
+    @RequestMapping(value = "/deleteSong", method = RequestMethod.POST)
+    public String dummyDeleteSong(@RequestParam("deleteID") Integer id) {
+        LOG.debug("Requested /deleteSong = " + id);
+
+        return "main";
     }
 }

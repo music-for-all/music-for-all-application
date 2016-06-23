@@ -54,4 +54,11 @@ public class SearchController {
 		array.add(new Song(tag, "Rob Zombie", location));
 		return array;
 	}
+
+	@RequestMapping(value = "/addSong", method = RequestMethod.POST)
+	public String dummyAddSong(@RequestParam("songId") Integer id) {
+		LOG.debug("Requested /addSong = " + id);
+
+		return "search";
+	}
 }
