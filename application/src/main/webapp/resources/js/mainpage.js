@@ -6,17 +6,6 @@ function addRow(Artist, Title, Duration) {
         '<td>' + Artist + ' </td><td>' + Title + ' </td><td>' + Duration + ' </td></tr>');
 }
 
-function addRowArray(Artist, Title, Duration) {
-
-    for (var i = 0; i < Title.length; i++) {
-        $('#results').append('<tr><td><button type="button" class="btn btn-xs btn-success">' +
-            '<span class="glyphicon glyphicon-play" aria-hidden="true"></span></button> ' +
-            '<button type="button" class="btn btn-xs btn-danger" onclick="DeleteSongFunction(this)"> ' +
-            '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></td>' +
-            '<td>' + Artist[i] + ' </td><td>' + Title[i] + ' </td><td>' + Duration[i] + ' </td></tr>');
-    }
-}
-
 function clearAll() {
     $("#results").find("tr:not(:first)").remove();
 }
@@ -31,14 +20,14 @@ function clearAllPlaylists() {
     $("#playlists").find("li:not(:first)").remove();
 }
 
-function addPlaylist(Name) {
+function addPlaylist(Name, Id) {
     if (Name == "") {
         Name = "Untitled";
     }
     if (Name.length > 20) {
         Name = Name.substr(0, 20); //Trimming long line
     }
-    $('#playlists').append(' <li ><a href="#" data-value="' + Name + '">' + Name + '</a></li>');
+    $('#playlists').append(' <li id="' + Id + '"><a href="#" data-value="' + Name + '">' + Name + '</a></li>');
 }
 
 function dummy() { //Only for demonstration, delete after merging with ajax
@@ -52,6 +41,56 @@ function dummy() { //Only for demonstration, delete after merging with ajax
     }
 }
 
+function ajaxGetPlaylists() {
+    $.ajax({
+        type: "GET",
+        url: "/getPlayLists",
+        dataType: "json",
+        success: function (response) {
+            $.each(response, function () {
+                addPlaylist(this.name, this.id);
+            });
+        },
+        error: function () {
+            alert('Error while request..');
+        }
+    });
+}
 
+function ajaxAddPlaylist(Name) {
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var token = $("meta[name='_csrf']").attr("content");
+    $.ajax({
+        type: "POST",
+        url: "/addPlaylist",
+        data:  "playlist=" + Name,
+        beforeSend: function(xhr){
+            xhr.setRequestHeader(header, token);
+        },
+        success: function () {
+            console.log("Playlist " + Name + " created successfully");
+        },
+        error: function () {
+            alert('Error while request..');
+        }
+    });
+}
 
-
+function ajaxDeletePlaylist(Delete) {
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var token = $("meta[name='_csrf']").attr("content");
+    $.ajax({
+        type: "POST",
+        url: "/deletePlaylist",
+        data:  "deleteID=" + Delete,
+        beforeSend: function(xhr){
+            xhr.setRequestHeader(header, token);
+        },
+        success: function () {
+            console.log("Playlist " + Delete + " deleted successfully");
+        },
+        error: function () {
+            alert('Error while request..' + Delete);
+        }
+    });
+}
