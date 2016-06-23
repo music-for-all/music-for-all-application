@@ -14,27 +14,27 @@ import org.springframework.web.servlet.view.velocity.VelocityViewResolver;
 @EnableWebMvc
 @ComponentScan("com.musicforall.web")
 public class WebAppConfig extends WebMvcConfigurerAdapter {
-	@Bean
-	public VelocityViewResolver viewResolver() {
-		VelocityViewResolver resolver = new VelocityViewResolver();
-		resolver.setCache(true);
-		resolver.setPrefix("");
-		resolver.setSuffix(".vm");
-		resolver.setViewClass(VelocityView.class);
-		resolver.setContentType("text/html; charset=utf-8");
-		return resolver;
-	}
+    @Bean
+    public VelocityViewResolver viewResolver() {
+        VelocityViewResolver resolver = new VelocityViewResolver();
+        resolver.setCache(true);
+        resolver.setPrefix("");
+        resolver.setSuffix(".vm");
+        resolver.setViewClass(VelocityView.class);
+        resolver.setContentType("text/html; charset=utf-8");
+        return resolver;
+    }
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**")
-				.addResourceLocations("/resources/");
-	}
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**")
+                .addResourceLocations("/resources/");
+    }
 
-	@Bean
-	public VelocityConfigurer velocityConfigurer() {
-		VelocityConfigurer conf = new VelocityConfigurer();
-		conf.setResourceLoaderPath("/WEB-INF/velocity/");
-		return conf;
-	}
+    @Bean
+    public VelocityConfigurer velocityConfigurer() {
+        VelocityConfigurer conf = new VelocityConfigurer();
+        conf.setResourceLoaderPath("/WEB-INF/velocity/");
+        return conf;
+    }
 }
