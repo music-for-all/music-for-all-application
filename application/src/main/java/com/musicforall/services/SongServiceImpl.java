@@ -62,45 +62,5 @@ public class SongServiceImpl implements SongService {
     public Song get(Integer id) {
         return dao.get(Song.class, id);
     }
-
-
-    public Tag checkExisting(String name) {
-        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Tag.class)
-                .add(Property.forName("name").eq(name));
-        Tag tag = dao.getBy(detachedCriteria);
-
-        if (tag == null) {
-            tag = new Tag(name);
-            dao.save(tag);
-        }
-        return tag;
-    }
-
-
-    public Set<Tag> getAllSongTag(Integer songId) {
-        Song song = dao.get(Song.class, songId);
-        return song.getTags();
-    }
-
-
-    public List<Tag> getAllTags() {
-        return dao.all(Tag.class);
-    }
-
-
-    public void save(String name, String path) {
-        dao.save(new Song(name, path));
-    }
-
-
-
-    public void addTag(Integer songId, String nameTag) {
-        Tag tag = checkExisting(nameTag);
-
-        Song song = dao.get(Song.class, songId);
-
-        if (song.getTags()==null)  song.setTags(new HashSet<Tag>());
-        song.getTags().add(tag);
-        dao.save(song);
-    }
+    
 }
