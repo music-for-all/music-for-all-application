@@ -1,6 +1,7 @@
 package com.musicforall.services.tag;
 
 import com.musicforall.model.Tag;
+import com.musicforall.model.Track;
 
 import java.util.List;
 import java.util.Set;
@@ -11,9 +12,9 @@ import java.util.Set;
 public interface TagService {
     void save(String name);
 
-    Tag isTagExist(String name);
+    void save(Set<Tag> tags);
+
+    boolean isTagExist(String name);
 
     List<Tag> getAllTags();
-
-    void addTag(Integer songId, Set<Tag> tags);
 }

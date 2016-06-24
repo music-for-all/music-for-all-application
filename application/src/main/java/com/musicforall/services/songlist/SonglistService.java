@@ -16,9 +16,9 @@ public interface SonglistService {
 
     Set<Track> getAllSongsInSonglist(Integer songlistId);
 
-    void addSong(Track song, Playlist songlist);
-
     void delete(Integer songlistId);
+
+    void addTracks(Integer playlistId, Set<Track> tracks);
 
     Set<Playlist> getAllUserSonglist(Integer userId);
 }

@@ -8,6 +8,7 @@ package com.musicforall.model;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,6 +35,11 @@ public class Playlist implements Serializable {
 
 
     public Playlist() {
+    }
+
+    public void addTracks(Set<Track> tracks){
+        if (this.tracks != null) tracks = new HashSet<>();
+        this.tracks.addAll(tracks);
     }
 
     public Integer getId() {

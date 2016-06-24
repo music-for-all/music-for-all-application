@@ -29,10 +29,10 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag isTagExist(String name) {
+    public boolean isTagExist(String name) {
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Tag.class)
                 .add(Property.forName("name").eq(name));
-        return dao.getBy(detachedCriteria);
+        return dao.getBy(detachedCriteria) != null;
     }
 
     @Override
@@ -41,18 +41,12 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void addTag(Integer songId, Set<Tag> tags) {
-        Track song = dao.get(Track.class, songId);
-
-        for (Tag tag :
-                tags) {
-            if (this.isTagExist(tag.getName()) == null) {
+    public void save(Set<Tag> tags) {
+        for (Tag tag:
+             tags) {
+            if (!isTagExist(tag.getName()))
                 dao.save(tag);
-            }
-
-            if (song.getTags() == null) song.setTags(new HashSet<Tag>());
-            song.getTags().add(tag);
-            dao.save(song);
         }
     }
+
 }
