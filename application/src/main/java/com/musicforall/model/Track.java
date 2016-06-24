@@ -11,8 +11,8 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "songs")
-public class Song implements Serializable {
+@Table(name = "tracks")
+public class Track implements Serializable {
 
     @Id
     @Column(name = "id")
@@ -29,16 +29,16 @@ public class Song implements Serializable {
     @Column(name = "location", nullable = false)
     private String location;
 
-    public Song() {
+    public Track() {
     }
 
-    public Song(Set<Tag> tags, String name, String location) {
+    public Track(Set<Tag> tags, String name, String location) {
         this.tags = tags;
         this.name = name;
         this.location = location;
     }
 
-    public Song(String name, String location) {
+    public Track(String name, String location) {
         this.name = name;
         this.location = location;
     }
@@ -88,7 +88,7 @@ public class Song implements Serializable {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final Song other = (Song) obj;
+        final Track other = (Track) obj;
         return Objects.equals(this.id, other.id)
                 && Objects.equals(this.tags, other.tags)
                 && Objects.equals(this.name, other.name)
@@ -97,7 +97,7 @@ public class Song implements Serializable {
 
     @Override
     public String toString() {
-        return "Song{" +
+        return "Track{" +
                 "id='" + id + '\'' +
                 "tags='" + tags + '\'' +
                 ", name='" + name + '\'' +

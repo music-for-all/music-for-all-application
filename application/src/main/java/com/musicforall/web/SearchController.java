@@ -1,7 +1,7 @@
 package com.musicforall.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.musicforall.model.Song;
+import com.musicforall.model.Track;
 import com.musicforall.model.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +34,8 @@ public class SearchController {
 
     @RequestMapping(value = "/searchQuery", method = RequestMethod.GET)
     @ResponseBody
-    public Set<Song> dummyFind(@RequestParam("search") String search,
-                               @RequestParam("category") String jsonCategory)
+    public Set<Track> dummyFind(@RequestParam("search") String search,
+                                @RequestParam("category") String jsonCategory)
             throws IOException {
         LOG.debug("Requested /searchQuery");
         ObjectMapper objectMapper = new ObjectMapper();
@@ -44,15 +44,15 @@ public class SearchController {
                 objectMapper.getTypeFactory().constructCollectionType(
                         List.class, String.class));
 
-        Set<Song> array = new HashSet<>();
+        Set<Track> array = new HashSet<>();
         Set<Tag> tag = new HashSet<>();
         String location = "/home/andrey/MusicForAll";
         Tag t = new Tag();
         t.setName("music");
         tag.add(t);
-        array.add(new Song(tag, search, location));
+        array.add(new Track(tag, search, location));
         for (int i = 0; i < listCategory.size(); i++) {
-            array.add(new Song(tag, listCategory.get(i), location));
+            array.add(new Track(tag, listCategory.get(i), location));
         }
         return array;
     }
