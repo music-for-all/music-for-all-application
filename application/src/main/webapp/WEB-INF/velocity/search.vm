@@ -13,6 +13,9 @@
     <link href="/resources/css/searchpage.css" rel="stylesheet">
     <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet">
+
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -69,20 +72,6 @@
                 <th>Duration</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-
-                <td>
-                    <button type="button" class="btn btn-xs btn-success"> <span class="glyphicon glyphicon-play"
-                                                                                aria-hidden="true"></span></button>
-                    <button type="button" class="btn btn-xs btn-success"> <span class="glyphicon glyphicon-plus"
-                                                                                aria-hidden="true"></span></button>
-                </td>
-                <td>John Lennon</td>
-                <td>Imagine</td>
-                <td>3:45</td>
-            </tr>
-            </tbody>
         </table>
     </div>
 </div>
