@@ -28,8 +28,7 @@ import static org.junit.Assert.assertTrue;
  * Created by Pukho on 22.06.2016.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {JpaServicesTestConfig.class,
-        ServicesTestConfig.class})
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
 public class SonglistServiceTest {
     @Autowired
     private SonglistService songlistService;
@@ -40,13 +39,17 @@ public class SonglistServiceTest {
     @Autowired
     private SongService songService;
 
+    @Autowired
+    private SongListTestBoostrap boostrap;
+
     private Integer defaultUserId;
     private List<Integer> songlistsId;
 
     @Before
     public void setInformation(){
-        testSonglistSave();
-        testGetAllUserSonglist();
+        boostrap.fillDatabase();
+        /*testSonglistSave();
+        testGetAllUserSonglist();*/
     }
 
     @After

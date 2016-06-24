@@ -24,8 +24,7 @@ import static org.junit.Assert.assertTrue;
  * Created by Pukho on 22.06.2016.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {JpaServicesTestConfig.class,
-        ServicesTestConfig.class})
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
 public class TagServiceTest {
 
     @Autowired
