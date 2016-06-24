@@ -7,8 +7,8 @@ function Playlist() {
 Playlist.prototype.delete = function (id, header, token) {
     var dfr = $.Deferred();
     $.ajax({
-        type: "POST",
-        url: "/playlist/delete/",
+        type: "DELETE",
+        url: "/playlist",
         data: {"id": id},
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
@@ -27,7 +27,7 @@ Playlist.prototype.create = function (name, header, token) {
     var dfr = $.Deferred();
     $.ajax({
         type: "POST",
-        url: "/playlist/create",
+        url: "/playlist",
         data: {"name": name},
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
