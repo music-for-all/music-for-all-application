@@ -18,7 +18,7 @@ import org.springframework.core.env.Environment;
                 "com.musicforall.services"})
 @Import({HibernateConfiguration.class,
         FileApiSpringConfig.class,
-		SecurityConfig.class})
+        SecurityConfig.class})
 @PropertySource("classpath:/application.properties")
 public class SpringRootConfiguration {
 

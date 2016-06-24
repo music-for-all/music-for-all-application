@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <if condition='isDefined("catalina.home")'>
+        <then>
+            <property name="log.location" value="${catalina.home}/logs"/>
+        </then>
+        <else>
+            <property name="log.location" value="./target/logs"/>
+        </else>
+    </if>
+
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <Pattern>.%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n </Pattern>
@@ -10,10 +19,10 @@
     </appender>
 
     <appender name="fileAppender" class="ch.qos.logback.core.FileAppender">
-        <file>${catalina.base}/logs/log-music-for-all.txt</file>
+        <file>${log.location}/music-for-all.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>${catalina.base}/logs/log-music-for-all.txt.%d.gz</fileNamePattern>
+            <fileNamePattern>${log.location}/music-for-all.log.%d.gz</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>

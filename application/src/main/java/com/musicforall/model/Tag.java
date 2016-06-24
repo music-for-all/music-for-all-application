@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tags")
@@ -38,19 +39,26 @@ public class Tag implements Serializable {
 
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Tag tag = (Tag) o;
-
-        if (name != null ? !name.equals(tag.name) : tag.name != null) return false;
-
-        return true;
+    public int hashCode() {
+        return Objects.hash(name);
     }
 
     @Override
-    public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Tag other = (Tag) obj;
+        return Objects.equals(this.name, other.name);
+    }
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }
