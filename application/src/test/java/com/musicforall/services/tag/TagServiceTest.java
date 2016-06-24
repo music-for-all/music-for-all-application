@@ -1,4 +1,4 @@
-package com.musicforall;
+package com.musicforall.services.tag;
 
 import com.musicforall.model.Song;
 import com.musicforall.model.Tag;
