@@ -18,7 +18,7 @@ public class User implements Serializable {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Size(min = 2, max = 30)
@@ -37,12 +37,6 @@ public class User implements Serializable {
     private String email;
 
     public User() {
-    }
-
-    public User(Integer id, String name, String password) {
-        this.id = id;
-        this.name = name;
-        this.password = password;
     }
 
     public User(String name, String password) {

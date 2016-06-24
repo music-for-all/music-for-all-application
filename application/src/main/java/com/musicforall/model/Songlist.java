@@ -18,7 +18,7 @@ public class Songlist implements Serializable {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Size(max = 20)
@@ -37,11 +37,6 @@ public class Songlist implements Serializable {
 
     public Songlist() {
     }
-
-    public Songlist(Integer id) {
-        this.id = id;
-    }
-
 
     public Integer getId() {
         return id;
