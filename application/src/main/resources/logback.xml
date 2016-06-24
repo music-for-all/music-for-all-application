@@ -10,10 +10,10 @@
     </appender>
 
     <appender name="fileAppender" class="ch.qos.logback.core.FileAppender">
-        <file>${catalina.base}/logs/log-music-for-all.txt</file>
+        <file>target/logs/log-music-for-all.txt</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>${catalina.base}/logs/log-music-for-all.txt.%d.gz</fileNamePattern>
+            <fileNamePattern>target/logs/log-music-for-all.txt.%d.gz</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>
