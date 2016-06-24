@@ -1,21 +1,16 @@
-package com.musicforall.services;
+package com.musicforall.services.song;
 
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Song;
 import com.musicforall.model.Songlist;
 import com.musicforall.model.Tag;
-import com.musicforall.web.IndexController;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Property;
+import com.musicforall.services.tag.TagService;
+import com.musicforall.services.songlist.SonglistService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Pukho on 15.06.2016.

@@ -1,4 +1,4 @@
-package com.musicforall.services;
+package com.musicforall.services.tag;
 
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Song;

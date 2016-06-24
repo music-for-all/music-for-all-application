@@ -1,4 +1,4 @@
-package com.musicforall.services;
+package com.musicforall.services.user;
 
 import com.musicforall.model.Songlist;
 import com.musicforall.model.User;

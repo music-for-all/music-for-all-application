@@ -1,13 +1,13 @@
-package com.musicforall.services;
+package com.musicforall.services.songlist;
 
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Song;
 import com.musicforall.model.Songlist;
 import com.musicforall.model.User;
+import com.musicforall.services.user.UserService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jca.cci.core.InteractionCallback;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

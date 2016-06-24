@@ -2,11 +2,10 @@ package com.musicforall;
 
 import com.musicforall.model.Song;
 import com.musicforall.model.Tag;
-import com.musicforall.services.SongService;
-import com.musicforall.services.TagService;
+import com.musicforall.services.song.SongService;
+import com.musicforall.services.tag.TagService;
 import com.musicforall.util.JpaServicesTestConfig;
 import com.musicforall.util.ServicesTestConfig;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static junit.framework.TestCase.assertNotNull;

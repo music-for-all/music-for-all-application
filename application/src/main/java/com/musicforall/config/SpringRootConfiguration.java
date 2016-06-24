@@ -1,10 +1,6 @@
 package com.musicforall.config;
 
 import com.musicforall.files.FileApiSpringConfig;
-import com.musicforall.model.Songlist;
-import com.musicforall.services.SongServiceImpl;
-import com.musicforall.services.SonglistServiceImpl;
-import com.musicforall.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;

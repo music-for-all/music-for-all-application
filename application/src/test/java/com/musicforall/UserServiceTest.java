@@ -1,8 +1,7 @@
 package com.musicforall;
 
-import com.musicforall.common.dao.Dao;
 import com.musicforall.model.User;
-import com.musicforall.services.UserService;
+import com.musicforall.services.user.UserService;
 import com.musicforall.util.JpaServicesTestConfig;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
