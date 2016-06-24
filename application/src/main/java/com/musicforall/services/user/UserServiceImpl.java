@@ -34,8 +34,7 @@ public class UserServiceImpl implements UserService {
         try {
             dao.get(User.class, userId);
             return true;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }

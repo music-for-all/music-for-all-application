@@ -1,18 +1,16 @@
 package com.musicforall.services.song;
 
-import com.musicforall.model.Song;
-import com.musicforall.model.Songlist;
-import com.musicforall.model.Tag;
-
-import java.util.List;
-import java.util.Set;
+import com.musicforall.model.Track;
 
 /**
  * Created by Pukho on 15.06.2016.
  */
 public interface SongService {
-     void save(Song song, Integer songlistId);
-     void save(Song song);
-     void delete(Integer songId);
-     Song get(Integer id);
+    void save(Track song, Integer songlistId);
+
+    void save(Track song);
+
+    void delete(Integer songId);
+
+    Track get(Integer id);
 }

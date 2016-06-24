@@ -10,7 +10,10 @@ import java.util.Set;
  */
 public interface TagService {
     void save(String name);
+
     Tag isTagExist(String name);
+
     List<Tag> getAllTags();
+
     void addTag(Integer songId, Set<Tag> tags);
 }

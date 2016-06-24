@@ -1,9 +1,8 @@
 package com.musicforall.services.songlist;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.model.Songlist;
+import com.musicforall.model.Playlist;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.locks.Lock;
@@ -24,9 +23,9 @@ public class SongListTestBoostrap {
         if (bootstraped) return;
         lock.lock();
 
-        dao.save(new Songlist(1));
-        dao.save(new Songlist(2));
-        dao.save(new Songlist(3));
+        dao.save(new Playlist());
+        dao.save(new Playlist());
+        dao.save(new Playlist());
 
         bootstraped = true;
         lock.unlock();

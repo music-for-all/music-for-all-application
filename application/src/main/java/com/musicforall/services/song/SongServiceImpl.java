@@ -1,11 +1,11 @@
 package com.musicforall.services.song;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.model.Song;
-import com.musicforall.model.Songlist;
+import com.musicforall.model.Playlist;
 import com.musicforall.model.Tag;
-import com.musicforall.services.tag.TagService;
+import com.musicforall.model.Track;
 import com.musicforall.services.songlist.SonglistService;
+import com.musicforall.services.tag.TagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class SongServiceImpl implements SongService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SongService.class);
-    @Autowired Dao dao;
+    @Autowired
+    Dao dao;
 
     @Autowired
     private SonglistService songlistService;
@@ -29,18 +30,18 @@ public class SongServiceImpl implements SongService {
     private TagService tagService;
 
     @Override
-    public void save(Song song, Integer songlistId) {
-        Songlist songlist = dao.get(Songlist.class, songlistId);
+    public void save(Track song, Integer songlistId) {
+        Playlist songlist = dao.get(Playlist.class, songlistId);
         songlistService.addSong(song, songlist);
-        if (song.getTags()!= null) this.save(song);
+        if (song.getTags() != null) this.save(song);
         else dao.save(song);
     }
 
     @Override
-    public void save(Song song) {
-        if (song.getTags()!=null){
-            for (Tag tag:
-                 song.getTags()) {
+    public void save(Track song) {
+        if (song.getTags() != null) {
+            for (Tag tag :
+                    song.getTags()) {
                 dao.save(tag);
             }
         }
@@ -49,13 +50,13 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public void delete(Integer songId) {
-        Song song = dao.get(Song.class, songId);
+        Track song = dao.get(Track.class, songId);
         dao.delete(song);
     }
 
     @Override
-    public Song get(Integer id) {
-        return dao.get(Song.class, id);
+    public Track get(Integer id) {
+        return dao.get(Track.class, id);
     }
-    
+
 }

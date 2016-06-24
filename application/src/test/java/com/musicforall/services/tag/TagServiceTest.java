@@ -1,10 +1,8 @@
 package com.musicforall.services.tag;
 
-import com.musicforall.model.Song;
 import com.musicforall.model.Tag;
+import com.musicforall.model.Track;
 import com.musicforall.services.song.SongService;
-import com.musicforall.services.tag.TagService;
-import com.musicforall.util.JpaServicesTestConfig;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,28 +32,30 @@ public class TagServiceTest {
     private TagService tagService;
 
     @Test
-    public void testAddTag(){
+    public void testAddTag() {
         Set<Tag> tags = new HashSet<Tag>();
-        tags.add(new Tag("rock")); tags.add(new Tag("alternative"));
+        tags.add(new Tag("rock"));
+        tags.add(new Tag("alternative"));
 
-        Song song = new Song("song2", "path2");
+        Track song = new Track("song2", "path2");
         songService.save(song);
         tagService.addTag(song.getId(), tags);
 
         tagService.addTag(song.getId(), tags);
 
-        assertTrue(tagService.getAllTags().size()==2);
+        assertTrue(tagService.getAllTags().size() == 2);
         assertNotNull(tagService.isTagExist("rock"));
         assertNull(tagService.isTagExist("rock_is_dead"));
     }
 
     @Test
-    public void testTag(){
-        Set<Tag> tags = new HashSet<>(); tags.add(new Tag("rock"));
-        Song song = new Song(tags, "name", "path");
+    public void testTag() {
+        Set<Tag> tags = new HashSet<>();
+        tags.add(new Tag("rock"));
+        Track song = new Track(tags, "name", "path");
         songService.save(song);
 
-        Song song2 = new Song(tags, "name", "path");
+        Track song2 = new Track(tags, "name", "path");
         songService.save(song2);
     }
 }

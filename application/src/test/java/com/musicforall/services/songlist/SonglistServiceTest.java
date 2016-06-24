@@ -1,12 +1,10 @@
 package com.musicforall.services.songlist;
 
-import com.musicforall.model.Song;
-import com.musicforall.model.Songlist;
+import com.musicforall.model.Playlist;
+import com.musicforall.model.Track;
 import com.musicforall.model.User;
 import com.musicforall.services.song.SongService;
-import com.musicforall.services.songlist.SonglistService;
 import com.musicforall.services.user.UserService;
-import com.musicforall.util.JpaServicesTestConfig;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.After;
 import org.junit.Before;
@@ -46,21 +44,21 @@ public class SonglistServiceTest {
     private List<Integer> songlistsId;
 
     @Before
-    public void setInformation(){
+    public void setInformation() {
         boostrap.fillDatabase();
         /*testSonglistSave();
         testGetAllUserSonglist();*/
     }
 
     @After
-    public void allDelete(){
-        if (songlistService.getAllUserSonglist(defaultUserId).size()>0) {
+    public void allDelete() {
+        if (songlistService.getAllUserSonglist(defaultUserId).size() > 0) {
             testSonglistDelete();
         }
     }
 
     @Test
-    public void testSonglistSave(){
+    public void testSonglistSave() {
 
         if (!userService.isUserExist(defaultUserId)) {
             User user = new User("Jhon", "1234567890", "Jhon@gmail.com");
@@ -73,39 +71,39 @@ public class SonglistServiceTest {
     }
 
     @Test
-    public void testGetAllUserSonglist(){
-        Set<Songlist> songlists = songlistService.getAllUserSonglist(defaultUserId);
+    public void testGetAllUserSonglist() {
+        Set<Playlist> songlists = songlistService.getAllUserSonglist(defaultUserId);
 
         songlistsId = new ArrayList<>();
-            for (Songlist songlist :
-                    songlists) {
-                assertNotNull(songlist);
-                songlistsId.add(songlist.getId());
-            }
+        for (Playlist songlist :
+                songlists) {
+            assertNotNull(songlist);
+            songlistsId.add(songlist.getId());
+        }
 
-        assertTrue(songlists.size()==2);
+        assertTrue(songlists.size() == 2);
     }
 
     @Test
-    public void testGetAllSongsInSonglist(){
-        songService.save(new Song("Sun", "path"),   songlistsId.get(0));
-        songService.save(new Song("Wild", "path2"), songlistsId.get(1));
-        songService.save(new Song("Fire", "path3"), songlistsId.get(1));
+    public void testGetAllSongsInSonglist() {
+        songService.save(new Track("Sun", "path"), songlistsId.get(0));
+        songService.save(new Track("Wild", "path2"), songlistsId.get(1));
+        songService.save(new Track("Fire", "path3"), songlistsId.get(1));
 
-        Set<Song> songs1 = songlistService.getAllSongsInSonglist(songlistsId.get(0));
-        Set<Song> songs2 = songlistService.getAllSongsInSonglist(songlistsId.get(1));
+        Set<Track> songs1 = songlistService.getAllSongsInSonglist(songlistsId.get(0));
+        Set<Track> songs2 = songlistService.getAllSongsInSonglist(songlistsId.get(1));
 
-        assertTrue(songs1.size()==1);
-        for (Song song:
-             songs2) {
+        assertTrue(songs1.size() == 1);
+        for (Track song :
+                songs2) {
             assertTrue(song.getName().equals("Wild") ||
-                       song.getName().equals("Fire"));
+                    song.getName().equals("Fire"));
         }
     }
 
     @Test
-    public void testSonglistDelete(){
-        for (Integer id:
+    public void testSonglistDelete() {
+        for (Integer id :
                 songlistsId) {
             songlistService.delete(id);
         }

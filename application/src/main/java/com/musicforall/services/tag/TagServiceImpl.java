@@ -1,8 +1,8 @@
 package com.musicforall.services.tag;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.model.Song;
 import com.musicforall.model.Tag;
+import com.musicforall.model.Track;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,15 +42,15 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public void addTag(Integer songId, Set<Tag> tags) {
-        Song song = dao.get(Song.class, songId);
+        Track song = dao.get(Track.class, songId);
 
-         for (Tag tag:
-             tags) {
+        for (Tag tag :
+                tags) {
             if (this.isTagExist(tag.getName()) == null) {
                 dao.save(tag);
             }
 
-            if (song.getTags()==null)  song.setTags(new HashSet<Tag>());
+            if (song.getTags() == null) song.setTags(new HashSet<Tag>());
             song.getTags().add(tag);
             dao.save(song);
         }

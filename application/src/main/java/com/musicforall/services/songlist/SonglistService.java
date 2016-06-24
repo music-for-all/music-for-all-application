@@ -1,8 +1,7 @@
 package com.musicforall.services.songlist;
 
-import com.musicforall.model.Song;
-import com.musicforall.model.Songlist;
-import com.musicforall.model.User;
+import com.musicforall.model.Playlist;
+import com.musicforall.model.Track;
 
 import java.util.Set;
 
@@ -12,9 +11,14 @@ import java.util.Set;
 public interface SonglistService {
 
     void save(Integer userId, String songlistName);
-    void save(Integer userId, Songlist songlist);
-    Set<Song> getAllSongsInSonglist(Integer songlistId);
-    void addSong(Song song, Songlist songlist);
+
+    void save(Integer userId, Playlist songlist);
+
+    Set<Track> getAllSongsInSonglist(Integer songlistId);
+
+    void addSong(Track song, Playlist songlist);
+
     void delete(Integer songlistId);
-    Set<Songlist> getAllUserSonglist(Integer userId);
+
+    Set<Playlist> getAllUserSonglist(Integer userId);
 }

@@ -1,8 +1,8 @@
 package com.musicforall.services.songlist;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.model.Song;
-import com.musicforall.model.Songlist;
+import com.musicforall.model.Playlist;
+import com.musicforall.model.Track;
 import com.musicforall.model.User;
 import com.musicforall.services.user.UserService;
 import org.hibernate.criterion.DetachedCriteria;
@@ -28,48 +28,48 @@ public class SonglistServiceImpl implements SonglistService {
     private Dao dao;
 
     @Override
-    public Set<Songlist> getAllUserSonglist(Integer userId) {
+    public Set<Playlist> getAllUserSonglist(Integer userId) {
 
         User user = userService.get(userId);
-        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Songlist.class)
+        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Playlist.class)
                 .add(Property.forName("user").eq(user));
-        List<Songlist> usersSonglists = dao.getAllBy(detachedCriteria);
-        return new HashSet<Songlist>(usersSonglists);
+        List<Playlist> usersSonglists = dao.getAllBy(detachedCriteria);
+        return new HashSet<Playlist>(usersSonglists);
     }
 
     @Override
     public void save(Integer userId, String songlistName) {
-        Songlist songlist = new Songlist(); //there is have to be some builder ??
+        Playlist songlist = new Playlist(); //there is have to be some builder ??
         songlist.setUser(userService.get(userId));
         songlist.setName(songlistName);
         dao.save(songlist);
     }
 
     @Override
-    public void save(Integer userId, Songlist songlist) {
+    public void save(Integer userId, Playlist songlist) {
         songlist.setUser(userService.get(userId));
         dao.save(songlist);
     }
 
     @Override
-    public Set<Song> getAllSongsInSonglist(Integer songlistId) {
-        Songlist songlist = dao.get(Songlist.class, songlistId);
-        return songlist.getSongs();
+    public Set<Track> getAllSongsInSonglist(Integer songlistId) {
+        Playlist songlist = dao.get(Playlist.class, songlistId);
+        return songlist.getTracks();
     }
 
 
     @Override
-    public void addSong(Song song, Songlist songlist) {
-        if (songlist.getSongs() == null)
-            songlist.setSongs(new HashSet<>());
+    public void addSong(Track song, Playlist songlist) {
+        if (songlist.getTracks() == null)
+            songlist.setTracks(new HashSet<>());
 
-        songlist.getSongs().add(song);
+        songlist.getTracks().add(song);
         dao.save(songlist);
     }
 
     @Override
     public void delete(Integer songlistId) {
-        Songlist songlist = dao.get(Songlist.class, songlistId);
+        Playlist songlist = dao.get(Playlist.class, songlistId);
 
         dao.delete(songlist);
     }
