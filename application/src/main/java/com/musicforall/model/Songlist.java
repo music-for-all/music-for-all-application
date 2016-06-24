@@ -38,11 +38,6 @@ public class Songlist implements Serializable {
     public Songlist() {
     }
 
-    public Songlist(Integer id) {
-        this.id = id;
-    }
-
-
     public Integer getId() {
         return id;
     }
