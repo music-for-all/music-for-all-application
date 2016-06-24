@@ -12,10 +12,8 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "songlists")
-public class Songlist implements Serializable {
-
-
+@Table(name = "playlists")
+public class Playlist implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +25,7 @@ public class Songlist implements Serializable {
 
 
     @ManyToMany
-    private Set<Song> songs;
+    private Set<Track> tracks;
 
 
     @ManyToOne
@@ -35,7 +33,7 @@ public class Songlist implements Serializable {
     private User user;
 
 
-    public Songlist() {
+    public Playlist() {
     }
 
     public Integer getId() {
@@ -56,12 +54,12 @@ public class Songlist implements Serializable {
     }
 
 
-    public Set<Song> getSongs() {
-        return songs;
+    public Set<Track> getTracks() {
+        return tracks;
     }
 
-    public void setSongs(Set<Song> songs) {
-        this.songs = songs;
+    public void setTracks(Set<Track> tracks) {
+        this.tracks = tracks;
     }
 
     public User getUser() {
@@ -75,7 +73,7 @@ public class Songlist implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, songs, user);
+        return Objects.hash(id, name, tracks, user);
     }
 
     @Override
@@ -86,19 +84,19 @@ public class Songlist implements Serializable {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final Songlist other = (Songlist) obj;
+        final Playlist other = (Playlist) obj;
         return Objects.equals(this.id, other.id)
                 && Objects.equals(this.name, other.name)
-                && Objects.equals(this.songs, other.songs)
+                && Objects.equals(this.tracks, other.tracks)
                 && Objects.equals(this.user, other.user);
     }
 
     @Override
     public String toString() {
-        return "Songlist{" +
+        return "Playlist{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", songs=" + songs +
+                ", tracks=" + tracks +
                 ", user=" + user +
                 '}';
     }
