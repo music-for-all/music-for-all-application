@@ -19,8 +19,6 @@ public class MainController {
 
     private static Set<Songlist> set;
 
-    private static int id;
-
     private static final String MAIN = "main";
 
     public MainController() {
@@ -38,11 +36,10 @@ public class MainController {
     * only for test
      */
     static {
-        id = 0;
         set = new HashSet<>();
         Set<Song> array;
         String location = "/home/andrey/MusicForAll";
-        Songlist songlist = new Songlist(id++);
+        Songlist songlist = new Songlist();
         songlist.setName("Nirvana");
         array = new HashSet<>();
         for (int i = 0; i < songlist.getId(); i++) {
@@ -50,7 +47,7 @@ public class MainController {
         }
         songlist.setSongs(array);
         set.add(songlist);
-        songlist = new Songlist(id++);
+        songlist = new Songlist();
         songlist.setName("Disturbed");
         array = new HashSet<>();
         for (int i = 0; i < songlist.getId(); i++) {
@@ -58,7 +55,7 @@ public class MainController {
         }
         songlist.setSongs(array);
         set.add(songlist);
-        songlist = new Songlist(id++);
+        songlist = new Songlist();
         songlist.setName("Rob Zombie");
         array = new HashSet<>();
         for (int i = 0; i < songlist.getId(); i++) {
@@ -80,7 +77,7 @@ public class MainController {
     public String dummyAddPlaylist(@RequestParam("playlist") String name) {
         LOG.debug("Requested /addPlaylist");
 
-        Songlist songlist = new Songlist(id++);
+        Songlist songlist = new Songlist();
         songlist.setName(name);
         set.add(songlist);
         return MAIN;
@@ -90,7 +87,7 @@ public class MainController {
     public String dummyDeletePlaylist(@RequestParam("deleteID") Integer id) {
         LOG.debug("Requested /deletePlaylist");
 
-        Songlist songlist = new Songlist(this.id++);
+        Songlist songlist = new Songlist();
         songlist.setName(id + " deleted");
         set.add(songlist);
         return MAIN;
