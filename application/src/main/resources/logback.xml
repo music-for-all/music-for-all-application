@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <if condition='isDefined("catalina.home")'>
+<!--    <if condition='isDefined("catalina.home")'>
         <then>
             <property name="log.location" value="${catalina.home}/logs"/>
         </then>
         <else>
             <property name="log.location" value="./target/logs"/>
         </else>
-    </if>
+    </if>-->
 
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
