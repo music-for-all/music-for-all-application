@@ -1,7 +1,7 @@
 package com.musicforall.web;
 
-import com.musicforall.model.Song;
-import com.musicforall.model.Songlist;
+import com.musicforall.model.Playlist;
+import com.musicforall.model.Track;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,7 @@ public class MainController {
 
     private static final Logger LOG = LoggerFactory.getLogger(MainController.class);
 
-    private static Set<Songlist> set;
+    private static Set<Playlist> set;
 
     private static final String MAIN = "main";
 
@@ -37,37 +37,37 @@ public class MainController {
      */
     static {
         set = new HashSet<>();
-        Set<Song> array;
+        Set<Track> array;
         String location = "/home/andrey/MusicForAll";
-        Songlist songlist = new Songlist();
-        songlist.setName("Nirvana");
+        Playlist playlist = new Playlist();
+        playlist.setName("Nirvana");
         array = new HashSet<>();
-        for (int i = 0; i < songlist.getId(); i++) {
-            array.add(new Song("Nirvana" + i, location));
+        for (int i = 0; i < playlist.getId(); i++) {
+            array.add(new Track("Nirvana" + i, location));
         }
-        songlist.setSongs(array);
-        set.add(songlist);
-        songlist = new Songlist();
-        songlist.setName("Disturbed");
+        playlist.setTracks(array);
+        set.add(playlist);
+        playlist = new Playlist();
+        playlist.setName("Disturbed");
         array = new HashSet<>();
-        for (int i = 0; i < songlist.getId(); i++) {
-            array.add(new Song("Disturbed" + i, location));
+        for (int i = 0; i < playlist.getId(); i++) {
+            array.add(new Track("Disturbed" + i, location));
         }
-        songlist.setSongs(array);
-        set.add(songlist);
-        songlist = new Songlist();
-        songlist.setName("Rob Zombie");
+        playlist.setTracks(array);
+        set.add(playlist);
+        playlist = new Playlist();
+        playlist.setName("Rob Zombie");
         array = new HashSet<>();
-        for (int i = 0; i < songlist.getId(); i++) {
-            array.add(new Song("Rob Zombie" + i, location));
+        for (int i = 0; i < playlist.getId(); i++) {
+            array.add(new Track("Rob Zombie" + i, location));
         }
-        songlist.setSongs(array);
-        set.add(songlist);
+        playlist.setTracks(array);
+        set.add(playlist);
     }
 
     @RequestMapping(value = "/getPlayLists", method = RequestMethod.GET)
     @ResponseBody
-    public Set<Songlist> dummyGetPlayLists() {
+    public Set<Playlist> dummyGetPlayLists() {
         LOG.debug("Requested /getPlayLists");
 
         return set;
@@ -77,9 +77,9 @@ public class MainController {
     public String dummyAddPlaylist(@RequestParam("playlist") String name) {
         LOG.debug("Requested /addPlaylist");
 
-        Songlist songlist = new Songlist();
-        songlist.setName(name);
-        set.add(songlist);
+        Playlist playlist = new Playlist();
+        playlist.setName(name);
+        set.add(playlist);
         return MAIN;
     }
 
@@ -87,24 +87,24 @@ public class MainController {
     public String dummyDeletePlaylist(@RequestParam("deleteID") Integer id) {
         LOG.debug("Requested /deletePlaylist");
 
-        Songlist songlist = new Songlist();
-        songlist.setName(id + " deleted");
-        set.add(songlist);
+        Playlist playlist = new Playlist();
+        playlist.setName(id + " deleted");
+        set.add(playlist);
         return MAIN;
     }
 
     @RequestMapping(value = "/getPlayList", method = RequestMethod.GET)
     @ResponseBody
-    public Set<Song> dummyGetPlayList(@RequestParam("playlistID") Integer id) {
+    public Set<Track> dummyGetPlayList(@RequestParam("playlistID") Integer id) {
         LOG.debug("Requested /getPlayList id");
 
-        Songlist playlist;
-        Iterator<Songlist> iterator = set.iterator();
+        Playlist playlist;
+        Iterator<Playlist> iterator = set.iterator();
         while (iterator.hasNext()) {
             playlist = iterator.next();
             if (playlist.getId().equals(id)) {
-                if (playlist.getSongs() != null) {
-                    return playlist.getSongs();
+                if (playlist.getTracks() != null) {
+                    return playlist.getTracks();
                 } else {
                     return new HashSet<>();
                 }
