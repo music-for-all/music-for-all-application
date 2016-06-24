@@ -19,14 +19,20 @@
     var token = $("meta[name='_csrf']").attr("content");
     var playlist = new Playlist();
 
+    $.ajaxSetup({
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }
+    });
+
     $("#create").on('click', function (event) {
-        playlist.create("Best", header, token)
+        playlist.create("Best")
                 .then(function (response) {
                     console.log("From creatind promise id = %d", response);
                 });
     });
     $("#songs").on('click', function (event) {
-        playlist.songs(2, header, token)
+        playlist.songs(2)
                 .then(function (response) {
                     $.each(response, function () {
                         console.log("Get song with name %s and location %s", this.name, this.location);
@@ -34,7 +40,7 @@
                 });
     });
     $("#deletePlaylist").on('click', function (event) {
-        playlist.delete(1, header, token)
+        playlist.delete(1)
                 .then(function (response) {
                     console.log("From deleting promise id = %d", response);
                 });

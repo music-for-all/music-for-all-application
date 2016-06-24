@@ -1,7 +1,7 @@
 package com.musicforall.web;
 
-import com.musicforall.model.Song;
-import com.musicforall.model.Songlist;
+import com.musicforall.model.Playlist;
+import com.musicforall.model.Track;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -20,48 +20,51 @@ import java.util.Set;
 @RequestMapping("/playlist")
 public class PlaylistController {
     private static final Logger LOG = LoggerFactory.getLogger(MainController.class);
-    private static Set<Songlist> set;
-    private static int id;
+    private static Set<Playlist> set;
 
     /*
     * only for test
      */
     static {
-        id = 0;
+        final int collectionSize = 3;
         set = new HashSet<>();
-        Set<Song> array;
+        Set<Track> array;
         String location = "/home/andrey/MusicForAll";
-        Songlist songlist = new Songlist(id++);
+        Playlist songlist = new Playlist();
         songlist.setName("Nirvana");
+        songlist.setId(0);
         array = new HashSet<>();
-        for (int i = 0; i < songlist.getId(); i++) {
-            array.add(new Song("Nirvana" + i, location));
+        for (int i = 0; i < collectionSize; i++) {
+            array.add(new Track("Nirvana" + i, location));
         }
-        songlist.setSongs(array);
+        songlist.setTracks(array);
         set.add(songlist);
-        songlist = new Songlist(id++);
+        songlist = new Playlist();
         songlist.setName("Disturbed");
+        songlist.setId(1);
         array = new HashSet<>();
-        for (int i = 0; i < songlist.getId(); i++) {
-            array.add(new Song("Disturbed" + i, location));
+        for (int i = 0; i < collectionSize; i++) {
+            array.add(new Track("Disturbed" + i, location));
         }
-        songlist.setSongs(array);
+        songlist.setTracks(array);
         set.add(songlist);
-        songlist = new Songlist(id++);
+        songlist = new Playlist();
         songlist.setName("Rob Zombie");
+        songlist.setId(2);
         array = new HashSet<>();
-        for (int i = 0; i < songlist.getId(); i++) {
-            array.add(new Song("Rob Zombie" + i, location));
+        for (int i = 0; i < collectionSize; i++) {
+            array.add(new Track("Rob Zombie" + i, location));
         }
-        songlist.setSongs(array);
+        songlist.setTracks(array);
         set.add(songlist);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Integer dummyAddPlaylist(@RequestParam("name") String name) {
-        Songlist songlist = new Songlist(id++);
+        Playlist songlist = new Playlist();
         songlist.setName(name);
+        songlist.setId(0);
         set.add(songlist);
         return songlist.getId();
     }
@@ -69,7 +72,7 @@ public class PlaylistController {
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
     public Integer dummyDeletePlaylist(@RequestParam("id") Integer id) {
-        Songlist songlist = new Songlist(this.id++);
+        Playlist songlist = new Playlist();
         songlist.setName(id + " deleted");
         set.add(songlist);
         return id;
@@ -77,19 +80,19 @@ public class PlaylistController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Set<Song> dummyGetPlayList(@RequestParam("id") Integer id) {
-        for (Songlist playlist : set) {
+    public Set<Track> dummyGetPlayList(@RequestParam("id") Integer id) {
+        for (Playlist playlist : set) {
             if (playlist.getId().equals(id)) {
-                if (playlist.getSongs() != null) {
-                    return playlist.getSongs();
+                if (playlist.getTracks() != null) {
+                    return playlist.getTracks();
                 } else {
                     return new HashSet<>();
                 }
             }
         }
-        return new HashSet<Song>() {{
-            add(new Song("DefaultName1", "DefaultLocation1"));
-            add(new Song("DefaultName2", "DefaultLocation2"));
+        return new HashSet<Track>() {{
+            add(new Track("DefaultName1", "DefaultLocation1"));
+            add(new Track("DefaultName2", "DefaultLocation2"));
         }};
     }
 }
