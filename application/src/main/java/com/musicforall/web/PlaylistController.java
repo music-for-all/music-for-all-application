@@ -57,30 +57,27 @@ public class PlaylistController {
         set.add(songlist);
     }
 
-    @RequestMapping(value = "/playlist/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public Integer dummyAddPlaylist(@RequestParam("name") String name) {
-
         Songlist songlist = new Songlist(id++);
         songlist.setName(name);
         set.add(songlist);
         return songlist.getId();
     }
 
-    @RequestMapping(value = "/playlist/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public Integer dummyDeletePlaylist(@RequestParam("id") Integer id) {
-
         Songlist songlist = new Songlist(this.id++);
         songlist.setName(id + " deleted");
         set.add(songlist);
         return id;
     }
 
-    @RequestMapping(value = "/playlist", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Set<Song> dummyGetPlayList(@RequestParam("id") Integer id) {
-
         for (Songlist playlist : set) {
             if (playlist.getId().equals(id)) {
                 if (playlist.getSongs() != null) {
