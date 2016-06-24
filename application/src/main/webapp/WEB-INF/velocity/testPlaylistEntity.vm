@@ -15,41 +15,30 @@
 <div id="songs" class="btn btn-large btn-default">songs</div>
 <div id="deletePlaylist" class="btn btn-large btn-default">deletePlaylist</div>
 <script>
-
-    $("#create").on('click', function (event) {
-        create();
-    });
-    $("#songs").on('click', function (event) {
-        songs();
-    });
-    $("#deletePlaylist").on('click', function (event) {
-        deletePlaylist();
-    });
     var header = $("meta[name='_csrf_header']").attr("content");
     var token = $("meta[name='_csrf']").attr("content");
     var playlist = new Playlist();
-    function create() {
+
+    $("#create").on('click', function (event) {
         playlist.create("Best", header, token)
                 .then(function (response) {
                     console.log("From creatind promise id = %d", response);
                 });
-    }
-
-    function deletePlaylist() {
-        playlist.delete(1, header, token)
-                .then(function (response) {
-                    console.log("From deleting promise id = %d", response);
-                });
-    }
-
-    function songs() {
+    });
+    $("#songs").on('click', function (event) {
         playlist.songs(2, header, token)
                 .then(function (response) {
                     $.each(response, function () {
                         console.log("Get song with name %s and location %s", this.name, this.location);
                     })
                 });
-    }
+    });
+    $("#deletePlaylist").on('click', function (event) {
+        playlist.delete(1, header, token)
+                .then(function (response) {
+                    console.log("From deleting promise id = %d", response);
+                });
+    });
 </script>
 </body>
 </html>
