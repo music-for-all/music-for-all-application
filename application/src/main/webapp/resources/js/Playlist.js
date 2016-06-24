@@ -6,7 +6,19 @@ function Playlist() {
     var self = this;
 
     self.delete = function (id) {
-        return $.when($.delete("/playlist", {"id": id}));
+        var dfr = $.Deferred();
+        $.ajax({
+            type: "DELETE",
+            url: "/playlist",
+            data: {"id": id},
+            success: function (response) {
+                dfr.resolve(response);
+            },
+            error: function () {
+                dfr.reject();
+            }
+        });
+        return dfr.promise();
     };
 
     self.create = function (name) {
