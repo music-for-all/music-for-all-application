@@ -38,11 +38,12 @@ public class MainController {
     static {
         set = new HashSet<>();
         Set<Track> array;
+        int sizePlaylist = 2;
         String location = "/home/andrey/MusicForAll";
         Playlist playlist = new Playlist();
         playlist.setName("Nirvana");
         array = new HashSet<>();
-        for (int i = 0; i < playlist.getId(); i++) {
+        for (int i = 0; i < sizePlaylist; i++) {
             array.add(new Track("Nirvana" + i, location));
         }
         playlist.setTracks(array);
@@ -50,7 +51,7 @@ public class MainController {
         playlist = new Playlist();
         playlist.setName("Disturbed");
         array = new HashSet<>();
-        for (int i = 0; i < playlist.getId(); i++) {
+        for (int i = 0; i < sizePlaylist; i++) {
             array.add(new Track("Disturbed" + i, location));
         }
         playlist.setTracks(array);
@@ -58,7 +59,7 @@ public class MainController {
         playlist = new Playlist();
         playlist.setName("Rob Zombie");
         array = new HashSet<>();
-        for (int i = 0; i < playlist.getId(); i++) {
+        for (int i = 0; i < sizePlaylist; i++) {
             array.add(new Track("Rob Zombie" + i, location));
         }
         playlist.setTracks(array);
