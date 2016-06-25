@@ -5,12 +5,11 @@ function Playlist() {
 
     var self = this;
 
-    self.delete = function (id) {
+    self.remove = function (id) {
         var dfr = $.Deferred();
         $.ajax({
             type: "DELETE",
-            url: "/playlist",
-            data: {"id": id},
+            url: "/playlist/" + id,
             success: function (response) {
                 dfr.resolve(response);
             },

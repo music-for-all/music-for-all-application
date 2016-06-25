@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Upload File Request Page</title>
+    <title>js entities</title>
     <link rel="stylesheet"
           href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
@@ -40,7 +40,7 @@
                 });
     });
     $("#deletePlaylist").on('click', function (event) {
-        playlist.delete(1)
+        playlist.remove(1)
                 .then(function (response) {
                     console.log("From deleting promise id = %d", response);
                 });

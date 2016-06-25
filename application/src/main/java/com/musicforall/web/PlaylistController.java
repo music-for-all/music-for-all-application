@@ -5,10 +5,7 @@ import com.musicforall.model.Track;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -69,9 +66,9 @@ public class PlaylistController {
         return songlist.getId();
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public Integer dummyDeletePlaylist(@RequestParam("id") Integer id) {
+    public Integer dummyDeletePlaylist(@PathVariable("id") Integer id) {
         Playlist songlist = new Playlist();
         songlist.setName(id + " deleted");
         set.add(songlist);
