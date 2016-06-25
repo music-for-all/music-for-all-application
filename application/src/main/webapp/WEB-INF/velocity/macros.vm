@@ -33,10 +33,10 @@
             </button>
             <a class="navbar-brand" href="#">Music for all</a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
+        <div id="navbar" class="navbar-right navbar-collapse collapse ">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#springUrl('/main')">Main</a></li>
-                <li><a href="#springUrl('/search')">Search</a></li>
+                <li class="active"><a href="#springUrl('/main')"><i class="fa fa-home"></i> Main</a></li>
+                <li><a href="#springUrl('/search')"><i class="fa fa-music"></i> Search</a></li>
             </ul>
         </div>
     </div>
