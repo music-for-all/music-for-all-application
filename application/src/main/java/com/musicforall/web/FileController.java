@@ -25,9 +25,8 @@ public class FileController {
     private FileManager manager;
 
     @RequestMapping(value = "/files", method = RequestMethod.POST)
-    public
     @ResponseBody
-    String uploadFileHandler(@RequestParam("file") MultipartFile file) {
+    public String uploadFileHandler(@RequestParam("file") MultipartFile file) {
         if (!file.isEmpty()) {
             boolean saved = manager.save(file);
             return saved ? "Hurray!" : "Oops!";

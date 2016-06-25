@@ -70,6 +70,7 @@ public class PlaylistController {
     @ResponseBody
     public Integer dummyDeletePlaylist(@PathVariable("id") Integer id) {
         Playlist songlist = new Playlist();
+        songlist.setId(id);
         songlist.setName(id + " deleted");
         set.add(songlist);
         return id;
@@ -82,14 +83,14 @@ public class PlaylistController {
             if (playlist.getId().equals(id)) {
                 if (playlist.getTracks() != null) {
                     return playlist.getTracks();
-                } else {
-                    return new HashSet<>();
                 }
             }
         }
-        return new HashSet<Track>() {{
-            add(new Track("DefaultName1", "DefaultLocation1"));
-            add(new Track("DefaultName2", "DefaultLocation2"));
-        }};
+        return new HashSet<Track>() {
+            {
+                add(new Track("DefaultName1", "DefaultLocation1"));
+                add(new Track("DefaultName2", "DefaultLocation2"));
+            }
+        };
     }
 }

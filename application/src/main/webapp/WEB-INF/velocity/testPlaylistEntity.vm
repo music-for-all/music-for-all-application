@@ -32,7 +32,7 @@
                 });
     });
     $("#songs").on('click', function (event) {
-        playlist.songs(2)
+        playlist.songs(4)
                 .then(function (response) {
                     $.each(response, function () {
                         console.log("Get song with name %s and location %s", this.name, this.location);
