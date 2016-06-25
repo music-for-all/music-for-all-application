@@ -17,7 +17,7 @@ function Playlist() {
         return $.when($.post("/playlist", {"name": name}));
     };
 
-    self.songs = function (id) {
+    self.get = function (id) {
         return $.when($.get("/playlist", {"id": id}));
     };
 }

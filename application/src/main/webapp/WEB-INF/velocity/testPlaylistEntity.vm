@@ -32,7 +32,7 @@
                 });
     });
     $("#getPlaylist").on('click', function (event) {
-        playlist.songs(2)
+        playlist.get(2)
                 .then(function (response) {
                     console.log("Playlist with id = %d was requested", response.id);
                     $.each(response.tracks, function () {
