@@ -78,19 +78,20 @@ public class PlaylistController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Set<Track> dummyGetPlayList(@RequestParam("id") Integer id) {
+    public Playlist dummyGetPlayList(@RequestParam("id") Integer id) {
         for (Playlist playlist : set) {
             if (playlist.getId().equals(id)) {
-                if (playlist.getTracks() != null) {
-                    return playlist.getTracks();
+                if (playlist.getTracks() == null || playlist.getTracks().isEmpty()) {
+                    playlist.setTracks(new HashSet<Track>() {
+                        {
+                            add(new Track("DefaultName1", "DefaultLocation1"));
+                            add(new Track("DefaultName2", "DefaultLocation2"));
+                        }
+                    });
                 }
+                return playlist;
             }
         }
-        return new HashSet<Track>() {
-            {
-                add(new Track("DefaultName1", "DefaultLocation1"));
-                add(new Track("DefaultName2", "DefaultLocation2"));
-            }
-        };
+        return null;
     }
 }

@@ -11,9 +11,9 @@
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
 </head>
 <body>
-<div id="create" class="btn btn-large btn-default">create</div>
-<div id="songs" class="btn btn-large btn-default">songs</div>
-<div id="deletePlaylist" class="btn btn-large btn-default">deletePlaylist</div>
+<div id="createPlaylist" class="btn btn-large btn-default">Create playlist</div>
+<div id="getPlaylist" class="btn btn-large btn-default">Get playlist</div>
+<div id="deletePlaylist" class="btn btn-large btn-default">Delete playlist</div>
 <script>
     var header = $("meta[name='_csrf_header']").attr("content");
     var token = $("meta[name='_csrf']").attr("content");
@@ -25,24 +25,25 @@
         }
     });
 
-    $("#create").on('click', function (event) {
+    $("#createPlaylist").on('click', function (event) {
         playlist.create("Best")
                 .then(function (response) {
-                    console.log("From creatind promise id = %d", response);
+                    console.log("Playlist with id = %d was created", response);
                 });
     });
-    $("#songs").on('click', function (event) {
-        playlist.songs(4)
+    $("#getPlaylist").on('click', function (event) {
+        playlist.songs(2)
                 .then(function (response) {
-                    $.each(response, function () {
+                    console.log("Playlist with id = %d was requested", response.id);
+                    $.each(response.tracks, function () {
                         console.log("Get song with name %s and location %s", this.name, this.location);
-                    })
+                    });
                 });
     });
     $("#deletePlaylist").on('click', function (event) {
         playlist.remove(1)
                 .then(function (response) {
-                    console.log("From deleting promise id = %d", response);
+                    console.log("Playlist with id = %d was deleted", response);
                 });
     });
 </script>
