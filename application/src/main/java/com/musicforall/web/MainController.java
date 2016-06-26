@@ -24,10 +24,9 @@ public class MainController {
         return MAIN;
     }
 
-    @RequestMapping("/testPlaylistEntity")
+    @RequestMapping("/testJsEntities")
     public String playListTest(Model model) {
-        LOG.debug("Requested /testPlaylistEntity");
-        return "testPlaylistEntity";
+        return "testJsEntities";
     }
 
     @RequestMapping(value = "/deleteSong", method = RequestMethod.POST)

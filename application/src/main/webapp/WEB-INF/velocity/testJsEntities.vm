@@ -7,6 +7,7 @@
     <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="resources/js/playlist.js"></script>
+    <script src="resources/js/track.js"></script>
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
 </head>
@@ -14,10 +15,16 @@
 <div id="createPlaylist" class="btn btn-large btn-default">Create playlist</div>
 <div id="getPlaylist" class="btn btn-large btn-default">Get playlist</div>
 <div id="deletePlaylist" class="btn btn-large btn-default">Delete playlist</div>
+<br/>
+
+<div id="createTrack" class="btn btn-large btn-default">Create track</div>
+<div id="getTrack" class="btn btn-large btn-default">Get track</div>
+<div id="deleteTrack" class="btn btn-large btn-default">Delete track</div>
 <script>
     var header = $("meta[name='_csrf_header']").attr("content");
     var token = $("meta[name='_csrf']").attr("content");
     var playlist = new Playlist();
+    var track = new Track();
 
     $.ajaxSetup({
         beforeSend: function (xhr) {
@@ -44,6 +51,28 @@
         playlist.remove(1)
                 .then(function (response) {
                     console.log("Playlist with id = %d was deleted", response);
+                });
+    });
+
+    $("#createTrack").on('click', function (event) {
+        track.create("Best")
+                .then(function (response) {
+                    console.log("Track with id = %d was created", response);
+                });
+    });
+    $("#getTrack").on('click', function (event) {
+        track.get(2)
+                .then(function (response) {
+                    console.log("Track with id = %d was requested", response.id);
+                    $.each(response.tags, function () {
+                        console.log("Get tag with name %s", this.name);
+                    });
+                });
+    });
+    $("#deleteTrack").on('click', function (event) {
+        track.remove(1)
+                .then(function (response) {
+                    console.log("Track with id = %d was deleted", response);
                 });
     });
 </script>

@@ -112,15 +112,12 @@
         $("#playlists li").removeClass("active");
         $(this).closest('li').addClass('active');
         clearAll();
-        ajaxGetPlaylist($('#playlists li.active').attr('id'));
     });
 
     $('#acceptRemovingPlaylistButton').on('click', function (e) {
         if ($('#playlists li.active').index() != 0) {
             // alert("Deleted playlist with ID: " + $("#playlists li.active").attr('id'));
-            ajaxDeletePlaylist($('#playlists li.active').attr('id'));
             clearAllPlaylists();
-            ajaxGetPlaylists();
             //$("#playlists li.active").remove();
         } else {
             alert("This playlist cannot be deleted");
@@ -128,9 +125,7 @@
     });
 
     $('#acceptCreatingPlaylistButton').on('click', function (e) {
-        ajaxAddPlaylist(document.getElementById('inputNamePlaylist').value)
         clearAllPlaylists();
-        ajaxGetPlaylists();
         $('#addPlaylistModal').modal('hide');
     });
 
@@ -149,7 +144,6 @@
     $(document).ready(function () {
         clearAll();
         clearAllPlaylists();
-        ajaxGetPlaylists();
     });
 </script>
 </body>

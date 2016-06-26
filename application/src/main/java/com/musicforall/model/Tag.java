@@ -21,6 +21,12 @@ public class Tag implements Serializable {
     @Column(name = "name", unique = true)
     private String name;
 
+    public Tag() {
+    }
+
+    public Tag(String name) {
+        this.name = name;
+    }
 
     public String getName() {
         return name;

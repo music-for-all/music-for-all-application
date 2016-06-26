@@ -1,23 +1,23 @@
 /**
- * @author ENikolskiy on 6/24/2016.
+ * @author ENikolskiy on 6/26/2016.
  */
-function Playlist() {
+function Track() {
 
     var self = this;
 
     self.remove = function (id) {
         return $.when(
             $.ajax({
-                url: "/playlist/" + id,
+                url: "/track/" + id,
                 type: "DELETE"
             }));
     };
 
     self.create = function (name) {
-        return $.when($.post("/playlist", {"name": name}));
+        return $.when($.post("/track", {"name": name}));
     };
 
     self.get = function (id) {
-        return $.when($.get("/playlist", {"id": id}));
+        return $.when($.get("/track", {"id": id}));
     };
 }
