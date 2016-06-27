@@ -72,13 +72,10 @@
 
     $!bodyContent##
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="panel panel-default ">
-            <div class="panel-body">Music for all ©</div>
-        </div>
-    </div>
-</div>
+<footer class="container-fluid">
+    <p>Music for all ©</p>
+</footer>
+
 </body>
 #end
 
