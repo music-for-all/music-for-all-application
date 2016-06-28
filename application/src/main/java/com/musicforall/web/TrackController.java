@@ -35,9 +35,9 @@ public class TrackController {
         return id;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Track getTrack(@RequestParam("id") Integer id) {
+    public Track getTrack(@PathVariable("id") Integer id) {
         Track track = new Track();
         track.setId(id);
         track.setName("My Track");

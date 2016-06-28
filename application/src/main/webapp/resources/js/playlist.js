@@ -18,6 +18,6 @@ function Playlist() {
     };
 
     self.get = function (id) {
-        return $.when($.get("/playlist", {"id": id}));
+        return $.when($.get("/playlist/" + id));
     };
 }

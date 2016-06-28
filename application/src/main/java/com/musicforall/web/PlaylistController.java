@@ -35,9 +35,9 @@ public class PlaylistController {
         return id;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Playlist getPlaylist(@RequestParam("id") Integer id) {
+    public Playlist getPlaylist(@PathVariable("id") Integer id) {
         Playlist playlist = new Playlist();
         playlist.setId(id);
         playlist.setName("My Playlist");

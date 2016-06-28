@@ -18,6 +18,6 @@ function Track() {
     };
 
     self.get = function (id) {
-        return $.when($.get("/track", {"id": id}));
+        return $.when($.get("/track/" + id));
     };
 }
