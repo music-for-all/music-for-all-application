@@ -11,9 +11,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -33,18 +35,32 @@ public class TagServiceTest {
     private TagService tagService;
 
     @Test
-    public void testTagsBasic() {
-        tagService.save("pop");
-        tagService.saveAll(new HashSet<>(Arrays.asList(new Tag("soul"), new Tag("alternative"))));
+    public void testSaveTag_IsTagExist() {
+        final Tag tag = tagService.save("tag_for_save");
 
-        assertTrue(tagService.isTagExist("pop"));
-        assertNotNull(tagService.get("soul"));
+        assertTrue(tagService.isTagExist("tag_for_save"));
+        assertFalse(tagService.isTagExist("tag_is_not_exist"));
+    }
 
-        assertFalse(tagService.isTagExist("pop_not_exist"));
-        assertNull(tagService.get("soul_not_exist"));
+    @Test
+    public void testSaveAllTags_GetAllTags() {
+        Tag tag1 = new Tag("tag_for_save1");
+        Tag tag2 = new Tag("tag_for_save2");
 
-        List<Tag> allTags = tagService.getAllTags();
-        assertTrue(allTags.contains(tagService.get("alternative")));
-        assertFalse(allTags.contains(tagService.get("soul_not_exist")));
+        final Collection<Tag> savesTags = tagService.saveAll(Arrays.asList(tag1, tag2));
+        assertTrue(tagService.getAllTags().containsAll(savesTags));
+    }
+
+    @Test
+    public void testGetTracks() {
+        final Tag tag = tagService.save("tag_for_test_get");
+        final Tag expectedTag = tagService.get("tag_for_test_get");
+
+        assertEquals(tag, expectedTag);
+    }
+
+    @Test
+    public void GetTagIsNotExist() {
+        assertNull(tagService.get("this_tag_isnt_exist"));
     }
 }

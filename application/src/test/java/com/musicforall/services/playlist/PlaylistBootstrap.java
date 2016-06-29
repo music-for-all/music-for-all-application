@@ -17,8 +17,10 @@ import java.util.concurrent.locks.ReentrantLock;
 @Service
 @Transactional
 public class PlaylistBootstrap {
+
     @Autowired
     Dao dao;
+
     private boolean bootstraped;
 
     private final Lock lock = new ReentrantLock();

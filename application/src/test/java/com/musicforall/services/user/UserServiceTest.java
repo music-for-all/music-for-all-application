@@ -2,6 +2,7 @@ package com.musicforall.services.user;
 
 import com.musicforall.model.User;
 import com.musicforall.util.ServicesTestConfig;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +12,8 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+
+import javax.persistence.criteria.CriteriaBuilder;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.*;
@@ -31,7 +34,7 @@ public class UserServiceTest {
 
     @Test
     public void testSaveUser() {
-        User user = new User("Masha", "123456789");
+        final User user = new User("Masha", "123456789");
         userService.save(user);
 
         assertNotNull(user.getId());
@@ -57,17 +60,25 @@ public class UserServiceTest {
         Integer userId = userService.getIdByName("user1");
         assertTrue(userService.isUserExist(userId));
 
-        User user = new User("user3", "12345789");
+        final User user = new User("user3", "12345789");
         assertFalse(userService.isUserExist(user.getName()));
         assertFalse(userService.isUserExist(user.getId()));
     }
 
     @Test
     public void testUserDelete() {
-        User user = userService.getByName("user2");
+        final User user = userService.getByName("user2");
         userService.delete(user.getId());
 
         assertNull(userService.get(user.getId()));
     }
 
+    @Test
+    public void testGetUser() {
+        Integer userId = userService.getIdByName("user");
+        final User user = userService.get(userId);
+
+        assertEquals(user.getName(), "user");
+        assertNotNull(userService.get(userId));
+    }
 }
