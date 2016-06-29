@@ -186,12 +186,17 @@
                                 <branchRate>80</branchRate>
                                 <lineRate>80</lineRate>
                             </regex>
+                            <regex>
+                                <pattern>com.musicforall.services.*</pattern>
+                                <branchRate>80</branchRate>
+                                <lineRate>80</lineRate>
+                            </regex>
                         </regexes>
                     </check>
                 </configuration>
                 <executions>
                     <execution>
-                        <!--<phase>package</phase>-->
+                        <phase>package</phase>
                         <goals>
                             <goal>clean</goal>
                             <goal>check</goal>
