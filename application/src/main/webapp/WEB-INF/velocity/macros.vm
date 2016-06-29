@@ -3,26 +3,20 @@
 <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
-    $!bodyContent##
-#end
-
-#macro(footContent )
 <link rel="stylesheet"
       href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
 <link rel="stylesheet"
       href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-
     $!bodyContent##
 #end
 
-#macro(bodyAuthorized )
 
-<body>
 
+
+
+#macro(navbarAuthorizedh)
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
-
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
                     aria-expanded="false" aria-controls="navbar">
@@ -41,20 +35,9 @@
         </div>
     </div>
 </nav>
-
-    $!bodyContent##
-
-<footer class="container-fluid">
-    <p>Music for all ©</p>
-</footer>
-
-</body>
 #end
 
-#macro(bodyNoAuthorized )
-
-<body>
-
+#macro(navbarNoAuthorized)
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -69,79 +52,91 @@
         </div>
     </div>
 </nav>
+#end
 
+
+#macro(body )
+<body>
     $!bodyContent##
-
-<footer class="container-fluid">
-    <p>Music for all ©</p>
-</footer>
-
 </body>
 #end
 
-#macro(Form $action $method)
+
+#macro(footer)
+<footer class="container-fluid">
+    <p>Music for all ©</p>
+</footer>
+#end
+
+
+
+
+
+#macro(popUp)
+<div id= $id class="modal fade">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        $!bodyContent##
+    </div>
+</div>
+
+#end
+
+
+#macro(popUpAdd $id)
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Adding playlist</h4>
+</div>
+<div class="modal-body">
+    <div class="form-group">
+        <label for="inputNamePlaylist" class="col-sm-2 control-label">Name:</label>
+        <input type="text" class="form-control" id="inputNamePlaylist" placeholder="Name">
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button id="acceptCreatingPlaylistButton" type="button" class="btn btn-success">Add</button>
+</div>
+
+#end
+
+#macro(popUpDelete $id)
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Deleting playlist</h4>
+</div>
+<div class="modal-body">
+    <p>Are you sure?</p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" data-dismiss="modal">No</button>
+    <button type="button" id="acceptRemovingPlaylistButton" class="btn btn-danger" data-dismiss="modal">Yes
+    </button>
+</div>
+
+#end
+
+
+
+
+#macro(form $action $method)
 <form action= #springUrl($action) method=$method>
     $!bodyContent##
     <input type="hidden" name="$!{_csrf.parameterName}" value="$!{_csrf.token}"/>
 </form>
 #end
 
-#macro(popUpAdd $id)
-<div id=$id class="modal fade">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">Adding playlist</h4>
-        </div>
-        <div class="modal-body">
-            <div class="form-group">
-                <label for="inputNamePlaylist" class="col-sm-2 control-label">Name:</label>
-                <input type="text" class="form-control" id="inputNamePlaylist" placeholder="Name">
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button id="acceptCreatingPlaylistButton" type="button" class="btn btn-success">Add</button>
-        </div>
-    </div>
-</div>
-</div>
-#end
-
-#macro(popUpDelete $id)
-<div id= $id class="modal fade">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">Deleting playlist</h4>
-        </div>
-        <div class="modal-body">
-            <p>Are you sure?</p>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-success" data-dismiss="modal">No</button>
-            <button type="button" id="acceptRemovingPlaylistButton" class="btn btn-danger" data-dismiss="modal">Yes
-            </button>
-        </div>
-    </div>
-</div>
-</div>
-#end
-
-
-
 #macro(logoutForm)
-<form action="#springUrl('/logout')" method="post">
-    <input type="submit" value="Log out" class="btn btn-default" />
-    #()
-</form>
+    #@form('/logout',"post")
+    <input type="submit" value="Log out" class="btn btn-default"/>
+    #end
 #end
-
 
 
