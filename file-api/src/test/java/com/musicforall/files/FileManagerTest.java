@@ -50,7 +50,7 @@ public class FileManagerTest {
     public void testGetFileByName() throws Exception {
         File copy = get(testDirectory.getAbsolutePath(), "copy.jpg").toFile();
         try (FileOutputStream outputStream = new FileOutputStream(copy)) {
-            Path path = manager.getFileByName("resource.jpg");
+            Path path = manager.getFilePathByName("resource.jpg");
             copy(path, outputStream);
         }
 
@@ -67,11 +67,17 @@ public class FileManagerTest {
     }
 
     @Test
-    public void testSaveAlreadyExistedFile() throws Exception {
+    public void testSaveAlreadyExistingFile() throws Exception {
         try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), "resource.jpg"))) {
             MockMultipartFile file = new MockMultipartFile("file", "saveAlreadyExisted.jpg", null, inputStream);
             manager.save(file);
             assertFalse(manager.save(file));
         }
+    }
+
+    @Test
+    public void testGetNonExistingFile() throws Exception {
+        Path path = manager.getFilePathByName("fakeResource.jpg");
+        assertNull(path);
     }
 }

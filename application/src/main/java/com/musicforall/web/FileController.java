@@ -37,7 +37,7 @@ public class FileController {
 
     @RequestMapping(value = "/files/{fileName:.+}", method = RequestMethod.GET)
     public void getFileHandler(HttpServletResponse response, @PathVariable("fileName") String name) {
-        Path filePath = manager.getFileByName(name);
+        Path filePath = manager.getFilePathByName(name);
         if (filePath == null) return;
 
         try {

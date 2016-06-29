@@ -27,13 +27,13 @@ public class FileManager {
     @PostConstruct
     private void prepareWorkingDirectory() {
         workingDirectory = System.getProperty("user.home") + File.separator + taleDirectory;
-        File dir = new File(workingDirectory);
+        final File dir = new File(workingDirectory);
         dir.mkdirs();
     }
 
     public boolean save(final MultipartFile file) {
         long savedBytes;
-        Path path = Paths.get(workingDirectory, file.getOriginalFilename());
+        final Path path = Paths.get(workingDirectory, file.getOriginalFilename());
         if (Files.exists(path)) return false;
         try {
             savedBytes = Files.copy(file.getInputStream(), path);
@@ -44,8 +44,8 @@ public class FileManager {
         return savedBytes == file.getSize();
     }
 
-    public Path getFileByName(final String fileName) {
-        Path path = Paths.get(workingDirectory, fileName);
+    public Path getFilePathByName(final String fileName) {
+        final Path path = Paths.get(workingDirectory, fileName);
         if (!Files.exists(path)) return null;
 
         return path;
