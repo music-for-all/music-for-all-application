@@ -1,10 +1,9 @@
-package com.musicforall.services.songlist;
+package com.musicforall.services.playlist;
 
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
-import com.musicforall.model.User;
-import com.musicforall.services.song.SongService;
+import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
@@ -15,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,59 +21,59 @@ import java.util.Set;
 /**
  * Created by Pukho on 15.06.2016.
  */
-@Service("songlistService")
+@Service("playlistService")
 @Transactional
-public class SonglistServiceImpl implements SonglistService {
+public class PlaylistServiceImpl implements PlaylistService {
 
     @Autowired
     private UserService userService;
     @Autowired
-    private SongService songService;
+    private TrackService trackService;
     @Autowired
     private Dao dao;
 
     @Override
-    public Set<Playlist> getAllUserSonglist(Integer userId) {
+    public Set<Playlist> getAllUserPlaylist(Integer userId) {
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Playlist.class)
                 .add(Property.forName("user.id").eq(userId));
-        List<Playlist> usersSonglists = dao.getAllBy(detachedCriteria);
-        return new HashSet<Playlist>(usersSonglists);
+        List<Playlist> usersPlaylists = dao.getAllBy(detachedCriteria);
+        return new HashSet<Playlist>(usersPlaylists);
     }
 
     @Override
-    public void save(Integer userId, String songlistName) {
-        Playlist songlist = new Playlist();
+    public Playlist get(Integer playlistId) {
+        return dao.get(Playlist.class, playlistId);
+    }
+
+    @Override
+    public Integer save(String playlistName) {
+        Playlist playlist = new Playlist();
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
 
-        songlist.setUser(userService.getByName(userDetails.getUsername()));
-        songlist.setName(songlistName);
-        dao.save(songlist);
+        playlist.setUser(userService.getByName(userDetails.getUsername()));
+        playlist.setName(playlistName);
+        dao.save(playlist);
+        return playlist.getId();
     }
 
     @Override
-    public void save(Integer userId, Playlist songlist) {
-        songlist.setUser(userService.get(userId));
-        dao.save(songlist);
+    public Set<Track> getAllTracksInPlaylist(Integer playlistId) {
+        Playlist playlist = dao.get(Playlist.class, playlistId);
+        return playlist.getTracks();
     }
 
     @Override
-    public Set<Track> getAllSongsInSonglist(Integer songlistId) {
-        Playlist songlist = dao.get(Playlist.class, songlistId);
-        return songlist.getTracks();
-    }
-
-    @Override
-    public void delete(Integer songlistId) {
-        Playlist songlist = dao.get(Playlist.class, songlistId);
-        dao.delete(songlist);
+    public void delete(Integer playlistId) {
+        Playlist playlist = dao.get(Playlist.class, playlistId);
+        dao.delete(playlist);
     }
 
     @Override
     public void addTracks(Integer playlistId, Set<Track> tracks) {
         Playlist playlist = dao.get(Playlist.class, playlistId);
         playlist.addTracks(tracks);
-        songService.save(tracks);
+        trackService.save(tracks);
     }
 }

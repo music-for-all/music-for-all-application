@@ -1,10 +1,8 @@
-package com.musicforall.services.song;
+package com.musicforall.services.track;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.model.Playlist;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
-import com.musicforall.services.songlist.SonglistService;
 import com.musicforall.services.tag.TagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +15,11 @@ import java.util.Set;
 /**
  * Created by Pukho on 15.06.2016.
  */
-@Service("songService")
+@Service("trackService")
 @Transactional
-public class SongServiceImpl implements SongService {
+public class TrackServiceImpl implements TrackService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SongService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TrackService.class);
     @Autowired
     Dao dao;
 
@@ -45,9 +43,9 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public void delete(Integer songId) {
-        Track song = dao.get(Track.class, songId);
-        dao.delete(song);
+    public void delete(Integer trackId) {
+        Track track = dao.get(Track.class, trackId);
+        dao.delete(track);
     }
 
     @Override
@@ -58,10 +56,7 @@ public class SongServiceImpl implements SongService {
     @Override
     public void addTags(Integer trackId, Set<Tag> tags) {
         Track track = get(trackId);
-
         track.addTags(tags);
         tagService.save(tags);
-        dao.save(track);
     }
-
 }
