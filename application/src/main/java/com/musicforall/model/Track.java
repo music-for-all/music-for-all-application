@@ -45,8 +45,8 @@ public class Track implements Serializable {
     }
 
     public void addTags(Set<Tag> tags){
-        if (this.tags == null) tags = new HashSet<>();
-        tags.addAll(tags);
+        if (this.tags == null) this.tags = new HashSet<>();
+        this.tags.addAll(tags);
     }
 
     public Integer getId() {
