@@ -30,9 +30,14 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public boolean isTagExist(String name) {
+        return this.get(name) != null;
+    }
+
+    @Override
+    public Tag get(String name) {
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Tag.class)
                 .add(Property.forName("name").eq(name));
-        return dao.getBy(detachedCriteria) != null;
+        return dao.getBy(detachedCriteria);
     }
 
     @Override
@@ -44,8 +49,7 @@ public class TagServiceImpl implements TagService {
     public void save(Set<Tag> tags) {
         for (Tag tag:
              tags) {
-            if (!isTagExist(tag.getName()))
-                dao.save(tag);
+            save(tag.getName());
         }
     }
 

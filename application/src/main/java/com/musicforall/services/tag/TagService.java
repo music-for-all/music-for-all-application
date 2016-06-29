@@ -16,5 +16,7 @@ public interface TagService {
 
     boolean isTagExist(String name);
 
+    Tag get(String name);
+
     List<Tag> getAllTags();
 }
