@@ -12,14 +12,11 @@
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
 </head>
 <body>
-<div id="createPlaylist" class="btn btn-large btn-default">Create playlist</div>
-<div id="getPlaylist" class="btn btn-large btn-default">Get playlist</div>
-<div id="deletePlaylist" class="btn btn-large btn-default">Delete playlist</div>
-<br/>
+<div id="create" class="btn btn-large btn-default">Create</div>
+<div id="get" class="btn btn-large btn-default">Get</div>
+<div id="delete" class="btn btn-large btn-default">Delete</div>
+<div id="all" class="btn btn-large btn-default">All</div>
 
-<div id="createTrack" class="btn btn-large btn-default">Create track</div>
-<div id="getTrack" class="btn btn-large btn-default">Get track</div>
-<div id="deleteTrack" class="btn btn-large btn-default">Delete track</div>
 <script>
     var header = $("meta[name='_csrf_header']").attr("content");
     var token = $("meta[name='_csrf']").attr("content");
@@ -32,13 +29,17 @@
         }
     });
 
-    $("#createPlaylist").on('click', function (event) {
+    $("#create").on('click', function (event) {
         playlist.create("Best")
                 .then(function (response) {
-                    console.log("Playlist with id = %d was created", response);
+                    console.log("Playlist with id = %d was created", response.id);
+                });
+        track.create("Best")
+                .then(function (response) {
+                    console.log("Track with id = %d was created", response.id);
                 });
     });
-    $("#getPlaylist").on('click', function (event) {
+    $("#get").on('click', function (event) {
         playlist.get(2)
                 .then(function (response) {
                     console.log("Playlist with id = %d was requested", response.id);
@@ -46,21 +47,6 @@
                         console.log("Get song with name %s and location %s", this.name, this.location);
                     });
                 });
-    });
-    $("#deletePlaylist").on('click', function (event) {
-        playlist.remove(1)
-                .then(function (response) {
-                    console.log("Playlist with id = %d was deleted", response);
-                });
-    });
-
-    $("#createTrack").on('click', function (event) {
-        track.create("Best")
-                .then(function (response) {
-                    console.log("Track with id = %d was created", response);
-                });
-    });
-    $("#getTrack").on('click', function (event) {
         track.get(2)
                 .then(function (response) {
                     console.log("Track with id = %d was requested", response.id);
@@ -69,12 +55,31 @@
                     });
                 });
     });
-    $("#deleteTrack").on('click', function (event) {
+    $("#delete").on('click', function (event) {
+        playlist.remove(1)
+                .then(function (response) {
+                    console.log("Response status %s", response);
+                });
         track.remove(1)
                 .then(function (response) {
-                    console.log("Track with id = %d was deleted", response);
+                    console.log("Response status %s", response);
                 });
     });
+    $("#all").on('click', function (event) {
+        playlist.all()
+                .then(function (response) {
+                    $.each(response, function () {
+                        console.log("Get playlist with name %s", this.name);
+                    });
+                });
+        track.all()
+                .then(function (response) {
+                    $.each(response, function () {
+                        console.log("Get track with name %s", this.name);
+                    });
+                });
+    });
+
 </script>
 </body>
 </html>

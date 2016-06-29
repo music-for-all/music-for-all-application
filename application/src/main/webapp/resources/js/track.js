@@ -8,16 +8,20 @@ function Track() {
     self.remove = function (id) {
         return $.when(
             $.ajax({
-                url: "/track/" + id,
+                url: "/tracks/" + id,
                 type: "DELETE"
             }));
     };
 
     self.create = function (name) {
-        return $.when($.post("/track", {"name": name}));
+        return $.when($.post("/tracks", {"name": name}));
     };
 
     self.get = function (id) {
-        return $.when($.get("/track/" + id));
+        return $.when($.get("/tracks/" + id));
+    };
+
+    self.all = function () {
+        return $.when($.get("/tracks"));
     };
 }
