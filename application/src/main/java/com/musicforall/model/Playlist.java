@@ -5,7 +5,12 @@ package com.musicforall.model;
  */
 
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -26,6 +31,7 @@ public class Playlist implements Serializable {
 
 
     @ManyToMany
+    @Cascade(CascadeType.SAVE_UPDATE)
     private Set<Track> tracks;
 
 

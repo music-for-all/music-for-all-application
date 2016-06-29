@@ -46,7 +46,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public Integer save(String playlistName) {
+    public Playlist save(String playlistName) {
         Playlist playlist = new Playlist();
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -54,8 +54,12 @@ public class PlaylistServiceImpl implements PlaylistService {
 
         playlist.setUser(userService.getByName(userDetails.getUsername()));
         playlist.setName(playlistName);
-        dao.save(playlist);
-        return playlist.getId();
+        return save(playlist);
+    }
+
+    @Override
+    public Playlist save(Playlist playlist) {
+        return dao.save(playlist);
     }
 
     @Override
@@ -74,6 +78,6 @@ public class PlaylistServiceImpl implements PlaylistService {
     public void addTracks(Integer playlistId, Set<Track> tracks) {
         Playlist playlist = dao.get(Playlist.class, playlistId);
         playlist.addTracks(tracks);
-        trackService.save(tracks);
+        save(playlist);
     }
 }

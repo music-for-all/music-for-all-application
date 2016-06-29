@@ -10,7 +10,9 @@ import java.util.Set;
  */
 public interface PlaylistService {
 
-    Integer save(String tracklistName);
+    Playlist save(String tracklistName);
+
+    Playlist save(Playlist playlist);
 
     Set<Track> getAllTracksInPlaylist(Integer playlistId);
 

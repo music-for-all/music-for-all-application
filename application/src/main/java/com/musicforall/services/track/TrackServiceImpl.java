@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -27,19 +28,13 @@ public class TrackServiceImpl implements TrackService {
     private TagService tagService;
 
     @Override
-    public void save(Track track) {
-        if (track.getTags() != null){
-            tagService.save(track.getTags());
-        }
-        dao.save(track);
+    public Track save(Track track) {
+        return dao.save(track);
     }
 
     @Override
-    public void save(Set<Track> tracks) {
-        for (Track track:
-             tracks) {
-            this.save(track);
-        }
+    public Collection<Track> saveAll(Collection<Track> tracks) {
+        return dao.saveAll(tracks);
     }
 
     @Override
@@ -57,6 +52,6 @@ public class TrackServiceImpl implements TrackService {
     public void addTags(Integer trackId, Set<Tag> tags) {
         Track track = get(trackId);
         track.addTags(tags);
-        tagService.save(tags);
+        save(track);
     }
 }

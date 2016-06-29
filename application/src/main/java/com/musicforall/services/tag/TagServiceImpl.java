@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,8 +25,8 @@ public class TagServiceImpl implements TagService {
     private Dao dao;
 
     @Override
-    public void save(String name) {
-        dao.save(new Tag(name));
+    public Tag save(String name) {
+        return dao.save(new Tag(name));
     }
 
     @Override
@@ -46,11 +47,8 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void save(Set<Tag> tags) {
-        for (Tag tag:
-             tags) {
-            save(tag.getName());
-        }
+    public Collection<Tag> saveAll(Collection<Tag> tags) {
+        return dao.saveAll(tags);
     }
 
 }

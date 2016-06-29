@@ -3,6 +3,7 @@ package com.musicforall.services.track;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -10,9 +11,9 @@ import java.util.Set;
  */
 public interface TrackService {
 
-    void save(Track track);
+    Track save(Track track);
 
-    void save(Set<Track> tracks);
+    Collection<Track> saveAll(Collection<Track> tracks);
 
     void delete(Integer trackId);
 
