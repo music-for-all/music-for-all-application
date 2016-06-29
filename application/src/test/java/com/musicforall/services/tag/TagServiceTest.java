@@ -33,9 +33,9 @@ public class TagServiceTest {
     private TagService tagService;
 
     @Test
-    public void testTagsBasic(){
+    public void testTagsBasic() {
         tagService.save("pop");
-        tagService.save(new HashSet<>(Arrays.asList(new Tag("soul"), new Tag("alternative"))));
+        tagService.saveAll(new HashSet<>(Arrays.asList(new Tag("soul"), new Tag("alternative"))));
 
         assertTrue(tagService.isTagExist("pop"));
         assertNotNull(tagService.get("soul"));

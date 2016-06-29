@@ -34,14 +34,14 @@ public class TrackServiceTest {
     TagService tagService;
 
     @Test
-    public void testSaveTrackWithoutTags(){
+    public void testSaveTrackWithoutTags() {
         Track track = new Track("into the wild", "path1");
         trackService.save(track);
         assertNotNull(trackService.get(track.getId()));
     }
 
     @Test
-    public void testSaveTrackWithTags(){
+    public void testSaveTrackWithTags() {
         Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag("rock"), new Tag("alternative")));
         Track track = new Track(tags, "Maybe", "path2");
 
@@ -50,21 +50,21 @@ public class TrackServiceTest {
     }
 
     @Test
-    public void testSaveSetTracks(){
+    public void testSaveSetTracks() {
         Track track1 = new Track("track1", "loc1");
         Track track2 = new Track("track2", "loc2");
 
-        trackService.save(new HashSet<>(Arrays.asList(track1, track2)));
+        trackService.saveAll(new HashSet<>(Arrays.asList(track1, track2)));
         assertNotNull(trackService.get(track1.getId()));
         assertNotNull(trackService.get(track2.getId()));
     }
 
     @Test
-    public void testAddTagsToSong(){
+    public void testAddTagsToSong() {
         Track track1 = new Track("track_for_tags", "loc1");
         trackService.save(track1);
         Set<Tag> tagsForTrack = new HashSet<Tag>(Arrays.asList(new Tag("rock"),
-                                                                new Tag("pop")));
+                new Tag("pop")));
         trackService.addTags(track1.getId(), tagsForTrack);
 
         List<Tag> allTags = tagService.getAllTags();

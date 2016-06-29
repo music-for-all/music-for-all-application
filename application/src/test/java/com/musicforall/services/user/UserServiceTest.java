@@ -1,10 +1,7 @@
 package com.musicforall.services.user;
 
 import com.musicforall.model.User;
-import com.musicforall.services.ServicesTestBoostrap;
-import com.musicforall.util.JpaServicesTestConfig;
 import com.musicforall.util.ServicesTestConfig;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
-
-import javax.jws.soap.SOAPBinding;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.*;
@@ -29,15 +24,15 @@ public class UserServiceTest {
     UserService userService;
 
     @Autowired
-    ServicesTestBoostrap boostraped;
+    UserBootstrap boostraped;
 
     @Before
-    public void installBoostrap(){
+    public void installBoostrap() {
         boostraped.fillDatabase();
     }
 
     @Test
-    public void testSaveUser(){
+    public void testSaveUser() {
         User user = new User("Masha", "123456789");
         userService.save(user);
 
@@ -46,20 +41,20 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testGetIdUserByName(){
+    public void testGetIdUserByName() {
         Integer userId = userService.getIdByName("user1");
         assertEquals(userService.get(userId).getName(), "user1");
         assertNull(userService.getIdByName("user_not_exist"));
     }
 
     @Test
-    public void testGetUserByName(){
-        assertEquals(userService.getByName("user1").getName(),"user1");
+    public void testGetUserByName() {
+        assertEquals(userService.getByName("user1").getName(), "user1");
         assertNull(userService.getByName("user_not_exist"));
     }
 
     @Test
-    public void testIsUserExist(){
+    public void testIsUserExist() {
         assertTrue(userService.isUserExist("user1"));
         Integer userId = userService.getIdByName("user1");
         assertTrue(userService.isUserExist(userId));
@@ -70,7 +65,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testUserDelete(){
+    public void testUserDelete() {
         User user = userService.getByName("user2");
         userService.delete(user.getId());
 
