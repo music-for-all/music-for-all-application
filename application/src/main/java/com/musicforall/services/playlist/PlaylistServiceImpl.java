@@ -26,17 +26,19 @@ import java.util.Set;
 public class PlaylistServiceImpl implements PlaylistService {
 
     @Autowired
-    private UserService userService;
+    UserService userService;
+
     @Autowired
-    private TrackService trackService;
+    TrackService trackService;
+
     @Autowired
     private Dao dao;
 
     @Override
     public Set<Playlist> getAllUserPlaylist(Integer userId) {
-        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Playlist.class)
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Playlist.class)
                 .add(Property.forName("user.id").eq(userId));
-        List<Playlist> usersPlaylists = dao.getAllBy(detachedCriteria);
+        final List<Playlist> usersPlaylists = dao.getAllBy(detachedCriteria);
         return new HashSet<Playlist>(usersPlaylists);
     }
 
@@ -47,10 +49,10 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     public Playlist save(String playlistName) {
-        Playlist playlist = new Playlist();
+        final Playlist playlist = new Playlist();
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        final UserDetails userDetails = (UserDetails) auth.getPrincipal();
 
         playlist.setUser(userService.getByName(userDetails.getUsername()));
         playlist.setName(playlistName);
@@ -70,7 +72,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     public void delete(Integer playlistId) {
-        Playlist playlist = dao.get(Playlist.class, playlistId);
+        final Playlist playlist = dao.get(Playlist.class, playlistId);
         dao.delete(playlist);
     }
 

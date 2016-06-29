@@ -20,12 +20,8 @@ import java.util.Set;
 @Transactional
 public class TrackServiceImpl implements TrackService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TrackService.class);
     @Autowired
-    Dao dao;
-
-    @Autowired
-    private TagService tagService;
+    private Dao dao;
 
     @Override
     public Track save(Track track) {
@@ -39,7 +35,7 @@ public class TrackServiceImpl implements TrackService {
 
     @Override
     public void delete(Integer trackId) {
-        Track track = dao.get(Track.class, trackId);
+        final Track track = dao.get(Track.class, trackId);
         dao.delete(track);
     }
 
@@ -50,7 +46,7 @@ public class TrackServiceImpl implements TrackService {
 
     @Override
     public void addTags(Integer trackId, Set<Tag> tags) {
-        Track track = get(trackId);
+        final Track track = get(trackId);
         track.addTags(tags);
         save(track);
     }

@@ -30,11 +30,10 @@ public class Tag implements Serializable {
         this.name = name;
     }
 
-    public Tag(String name){
+    public Tag(String name) {
         this.name = name;
     }
-    public Tag(){
-
+    public Tag() {
     }
 
 

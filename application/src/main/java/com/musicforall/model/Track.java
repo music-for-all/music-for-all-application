@@ -50,8 +50,10 @@ public class Track implements Serializable {
         this.location = location;
     }
 
-    public void addTags(Set<Tag> tags){
-        if (this.tags == null) this.tags = new HashSet<>();
+    public void addTags(Set<Tag> tags) {
+        if (this.tags == null) {
+            this.tags = new HashSet<>();
+        }
         this.tags.addAll(tags);
     }
 

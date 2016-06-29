@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.jws.soap.SOAPBinding;
-
 /**
  * Created by Pukho on 16.06.2016.
  */
@@ -41,14 +39,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer getIdByName(String name) {
-        User user = getByName(name);
-        if (user != null) return user.getId();
+        final User user = getByName(name);
+        if (user != null) { return user.getId(); }
         return null;
     }
 
     @Override
     public void delete(Integer userId) {
-        User user = dao.get(User.class, userId);
+        final User user = dao.get(User.class, userId);
         dao.delete(user);
     }
 
@@ -59,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getByName(String name) {
-        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
                 .add(Property.forName("name").eq(name));
 
         return dao.getBy(detachedCriteria);

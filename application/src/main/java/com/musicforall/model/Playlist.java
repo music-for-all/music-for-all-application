@@ -44,7 +44,9 @@ public class Playlist implements Serializable {
     }
 
     public void addTracks(Set<Track> tracks){
-        if (this.tracks != null) this.tracks = new HashSet<>();
+        if (this.tracks != null) {
+            this.tracks = new HashSet<>();
+        }
         this.tracks.addAll(tracks);
     }
 

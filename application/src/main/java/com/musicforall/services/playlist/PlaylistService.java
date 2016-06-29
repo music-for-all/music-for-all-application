@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public interface PlaylistService {
 
-    Playlist save(String tracklistName);
+    Playlist save(String playlistName);
 
     Playlist save(Playlist playlist);
 

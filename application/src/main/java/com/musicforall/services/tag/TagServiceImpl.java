@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Pukho on 22.06.2016.
@@ -36,7 +34,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag get(String name) {
-        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Tag.class)
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Tag.class)
                 .add(Property.forName("name").eq(name));
         return dao.getBy(detachedCriteria);
     }
