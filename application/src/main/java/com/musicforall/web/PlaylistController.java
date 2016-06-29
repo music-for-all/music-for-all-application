@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,7 +56,7 @@ public class PlaylistController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Set<Playlist> getPlaylists() {
+    public Collection<Playlist> getPlaylists() {
         final Playlist playlist0 = new Playlist();
         playlist0.setId(0);
         playlist0.setName("My Playlist0");

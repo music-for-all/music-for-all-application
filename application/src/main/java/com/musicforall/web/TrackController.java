@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,7 +56,7 @@ public class TrackController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Set<Track> getTracks() {
+    public Collection<Track> getTracks() {
         final Track track0 = new Track();
         track0.setId(0);
         track0.setName("My Track0");
