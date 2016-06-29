@@ -31,12 +31,6 @@ public class JpaServicesTestConfig {
         return builder.setName("music_for_all").
                 setType(EmbeddedDatabaseType.H2).
                 build();
-        /*DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.apache.derby.jdbc.EmbeddedDriver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/music_for_all");
-        dataSource.setUsername("java");
-        dataSource.setPassword("java");
-        return dataSource;*/
     }
 
     @Bean
