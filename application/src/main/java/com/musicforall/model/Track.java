@@ -4,9 +4,15 @@ package com.musicforall.model;
  * Created by ilianik on 11.06.2016.
  */
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,6 +26,7 @@ public class Track implements Serializable {
     private Integer id;
 
     @ManyToMany
+    @Cascade(CascadeType.SAVE_UPDATE)
     private Set<Tag> tags;
 
     @Size(min = 2, max = 30)
@@ -41,6 +48,13 @@ public class Track implements Serializable {
     public Track(String name, String location) {
         this.name = name;
         this.location = location;
+    }
+
+    public void addTags(Set<Tag> tags) {
+        if (this.tags == null) {
+            this.tags = new HashSet<>();
+        }
+        this.tags.addAll(tags);
     }
 
     public Integer getId() {

@@ -36,6 +36,14 @@ public class Tag implements Serializable {
         this.name = name;
     }
 
+    public Tag() {
+    }
+
+    public Tag(String name) {
+        this.name = name;
+    }
+
+
     @Override
     public int hashCode() {
         return Objects.hash(name);
