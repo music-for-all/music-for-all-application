@@ -65,7 +65,6 @@
 </div>
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
-
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
                     aria-expanded="false" aria-controls="navbar">
@@ -109,9 +108,9 @@
 
     $('#playlists').on('click', 'a', function (e) {
         e.preventDefault();
-        $("#playlists li").removeClass("active");
+        $("#playlists").find("li").removeClass("active");
         $(this).closest('li').addClass('active');
-        clearAll();
+        clearTracks();
         playlist.get($('#playlists li.active').attr('id'))
                 .then(function (response) {
                     $.each(response.tracks, function () {
@@ -121,13 +120,11 @@
     });
 
     $('#acceptRemovingPlaylistButton').on('click', function (e) {
-        playlist.remove($('#playlists li.active').attr('id'));
-        clearAllPlaylists();
-        playlist.all()
-                .then(function (response) {
-                    $.each(response, function () {
-                        addPlaylist(this.id, this.name);
-                    });
+        var playlistToRemove = $("#playlists").find("li.active")
+        playlist.remove(playlistToRemove.attr('id'))
+                .then(function () {
+                    playlistToRemove.remove();
+                    clearTracks();
                 });
     });
 
@@ -156,17 +153,17 @@
 
     function addRow(id, name) {
         $("#results").append("<tr><td><button type='button' class='btn btn-xs btn-success'>" +
-                "<span class='glyphicon glyphicon-play'aria-hidden='true'></span></button>" +
-                "<button type='button' class='btn btn-xs btn-danger' onclick='deleteSong(this," + id + ")'>" +
-                "<span class='glyphicon glyphicon-remove'aria-hidden='true'></span></button>" +
-                "</td><td>" + name + "</td></tr>");
+        "<span class='glyphicon glyphicon-play'aria-hidden='true'></span></button>" +
+        "<button type='button' class='btn btn-xs btn-danger' onclick='deleteSong(this," + id + ")'>" +
+        "<span class='glyphicon glyphicon-remove'aria-hidden='true'></span></button>" +
+        "</td><td>" + name + "</td></tr>");
     }
 
-    function clearAll() {
+    function clearTracks() {
         $("#results").find("tr:not(:first)").remove();
     }
 
-    function clearAllPlaylists() {
+    function clearPlaylists() {
         $("#playlists").find("li").remove();
     }
 
@@ -189,8 +186,8 @@
                 xhr.setRequestHeader(header, token);
             }
         });
-        clearAll();
-        clearAllPlaylists();
+        clearTracks();
+        clearPlaylists();
         playlist.all()
                 .then(function (response) {
                     $.each(response, function () {
