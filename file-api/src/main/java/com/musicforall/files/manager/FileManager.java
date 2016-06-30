@@ -1,5 +1,7 @@
 package com.musicforall.files.manager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,7 @@ import java.nio.file.Paths;
 
 @Component
 public class FileManager {
+    private static final Logger LOG = LoggerFactory.getLogger(FileManager.class);
 
     @Autowired
     @Qualifier("files")
@@ -27,25 +30,25 @@ public class FileManager {
     @PostConstruct
     private void prepareWorkingDirectory() {
         workingDirectory = System.getProperty("user.home") + File.separator + taleDirectory;
-        File dir = new File(workingDirectory);
+        final File dir = new File(workingDirectory);
         dir.mkdirs();
     }
 
     public boolean save(final MultipartFile file) {
         long savedBytes;
-        Path path = Paths.get(workingDirectory, file.getOriginalFilename());
+        final Path path = Paths.get(workingDirectory, file.getOriginalFilename());
         if (Files.exists(path)) return false;
         try {
             savedBytes = Files.copy(file.getInputStream(), path);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("exception during file saving", e);
             return false;
         }
         return savedBytes == file.getSize();
     }
 
-    public Path getFileByName(final String fileName) {
-        Path path = Paths.get(workingDirectory, fileName);
+    public Path getFilePathByName(final String fileName) {
+        final Path path = Paths.get(workingDirectory, fileName);
         if (!Files.exists(path)) return null;
 
         return path;
