@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 /**
  * @author Evgeniy on 11.06.2016.
@@ -37,14 +38,16 @@ public class FileController {
 
     @RequestMapping(value = "/files/{fileName:.+}", method = RequestMethod.GET)
     public void getFileHandler(HttpServletResponse response, @PathVariable("fileName") String name) {
-        Path filePath = manager.getFilePathByName(name);
-        if (filePath == null) return;
-
-        try {
-            Files.copy(filePath, response.getOutputStream());
-        } catch (IOException e) {
-            LOG.error("Streaming failed!", e);
-        }
+        Optional<Path> filePath = Optional.of(manager.getFilePathByName(name));
+        filePath.ifPresent(file ->
+                {
+                    try {
+                        Files.copy(file, response.getOutputStream());
+                    } catch (IOException e) {
+                        LOG.error("Streaming failed!", e);
+                    }
+                }
+        );
     }
 
     @RequestMapping(value = "/tryFiles", method = RequestMethod.GET)

@@ -1,5 +1,7 @@
 package com.musicforall.files.manager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,7 @@ import java.nio.file.Paths;
 
 @Component
 public class FileManager {
+    private static final Logger LOG = LoggerFactory.getLogger(FileManager.class);
 
     @Autowired
     @Qualifier("files")
@@ -38,7 +41,7 @@ public class FileManager {
         try {
             savedBytes = Files.copy(file.getInputStream(), path);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("exception during file saving", e);
             return false;
         }
         return savedBytes == file.getSize();
