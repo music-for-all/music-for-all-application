@@ -42,7 +42,7 @@ public class MainController {
         Playlist playlist = new Playlist();
         playlist.setName("Nirvana");
         array = new HashSet<>();
-        for (int i = 0; i < playlist.getId(); i++) {
+        for (int i = 0; i < new Integer("1"); i++) {
             array.add(new Track("Nirvana" + i, location));
         }
         playlist.setTracks(array);
@@ -50,7 +50,7 @@ public class MainController {
         playlist = new Playlist();
         playlist.setName("Disturbed");
         array = new HashSet<>();
-        for (int i = 0; i < playlist.getId(); i++) {
+        for (int i = 0; i < new Integer("2"); i++) {
             array.add(new Track("Disturbed" + i, location));
         }
         playlist.setTracks(array);
@@ -58,7 +58,7 @@ public class MainController {
         playlist = new Playlist();
         playlist.setName("Rob Zombie");
         array = new HashSet<>();
-        for (int i = 0; i < playlist.getId(); i++) {
+        for (int i = 0; i < new Integer("3"); i++) {
             array.add(new Track("Rob Zombie" + i, location));
         }
         playlist.setTracks(array);
