@@ -10,7 +10,8 @@ import org.springframework.core.env.Environment;
  * Created by kgavrylchenko on 10.06.16.
  */
 @Configuration
-@ComponentScan({"com.musicforall.common"})
+@ComponentScan({"com.musicforall.common",
+                "com.musicforall.services"})
 @Import({HibernateConfiguration.class,
         FileApiSpringConfig.class,
         SecurityConfig.class})
