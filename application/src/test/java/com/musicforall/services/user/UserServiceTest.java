@@ -2,8 +2,6 @@ package com.musicforall.services.user;
 
 import com.musicforall.model.User;
 import com.musicforall.util.ServicesTestConfig;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +10,6 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-
-import javax.persistence.criteria.CriteriaBuilder;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.*;
@@ -25,12 +21,11 @@ import static org.junit.Assert.*;
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
-        UserTestExecutionListener.class
-})
+        UserTestExecutionListener.class})
 public class UserServiceTest {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Test
     public void testSaveUser() {
@@ -43,7 +38,7 @@ public class UserServiceTest {
 
     @Test
     public void testGetIdUserByName() {
-        Integer userId = userService.getIdByName("user1");
+        final Integer userId = userService.getIdByName("user1");
         assertEquals(userService.get(userId).getName(), "user1");
         assertNull(userService.getIdByName("user_not_exist"));
     }
@@ -57,7 +52,7 @@ public class UserServiceTest {
     @Test
     public void testIsUserExist() {
         assertTrue(userService.isUserExist("user1"));
-        Integer userId = userService.getIdByName("user1");
+        final Integer userId = userService.getIdByName("user1");
         assertTrue(userService.isUserExist(userId));
 
         final User user = new User("user3", "12345789");

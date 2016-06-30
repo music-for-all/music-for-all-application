@@ -9,8 +9,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @ComponentScan({"com.musicforall.services",
-        "com.musicforall.common"
-})
+        "com.musicforall.common"})
 @Import({JpaServicesTestConfig.class})
 public class ServicesTestConfig {
 }

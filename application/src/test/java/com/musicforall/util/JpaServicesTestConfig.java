@@ -27,24 +27,23 @@ public class JpaServicesTestConfig {
 
     @Bean
     public DataSource dataSource() {
-        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        return builder.setName("music_for_all").
-                setType(EmbeddedDatabaseType.H2).
-                build();
+        return new EmbeddedDatabaseBuilder()
+                .setName("music_for_all")
+                .setType(EmbeddedDatabaseType.H2)
+                .build();
     }
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[]{"com.musicforall",
-                "com.musicforall.common"});
+        sessionFactory.setPackagesToScan(new String[]{"com.musicforall", "com.musicforall.common"});
         sessionFactory.setHibernateProperties(additionalProperties());
         return sessionFactory;
     }
 
     private Properties additionalProperties() {
-        Properties properties = new Properties();
+        final Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "create");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         properties.setProperty("hibernate.format_sql", "true");
@@ -55,7 +54,7 @@ public class JpaServicesTestConfig {
     @Bean
     @Autowired
     public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        final HibernateTransactionManager transactionManager = new HibernateTransactionManager();
         transactionManager.setDataSource(dataSource());
         transactionManager.setSessionFactory(sessionFactory);
         return transactionManager;

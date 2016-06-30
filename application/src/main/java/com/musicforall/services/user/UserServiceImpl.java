@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isUserExist(Integer userId) {
-        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
                 .add(Property.forName("id").eq(userId));
 
         return dao.getBy(detachedCriteria) != null;

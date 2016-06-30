@@ -17,13 +17,16 @@ import java.util.concurrent.locks.ReentrantLock;
 @Transactional
 public class UserBootstrap {
     @Autowired
-    Dao dao;
+    private Dao dao;
 
     private boolean bootstraped;
-    private Lock lock = new ReentrantLock();
+
+    private final Lock lock = new ReentrantLock();
 
     public void fillDatabase() {
-        if (bootstraped) return;
+        if (bootstraped) {
+            return;
+        }
         lock.lock();
 
         dao.save(new User("user", "password"));
@@ -37,10 +40,15 @@ public class UserBootstrap {
 
     public void clean() {
         lock.lock();
-        List<User> all = dao.all(User.class);
-        all.stream().forEach(dao::delete);
+        dao.all(User.class)
+                .stream()
+                .forEach(dao::delete);
         bootstraped = false;
         lock.unlock();
+    }
+
+    public void setDao(Dao dao) {
+        this.dao = dao;
     }
 }
 

@@ -4,7 +4,6 @@ import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.services.tag.TagService;
 import com.musicforall.util.ServicesTestConfig;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +29,8 @@ import static org.junit.Assert.assertTrue;
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
 public class TrackServiceTest {
 
+    public static final String ROCK = "rock";
+    public static final String LOC_1 = "loc1";
     @Autowired
     private TrackService trackService;
 
@@ -45,7 +46,7 @@ public class TrackServiceTest {
 
     @Test
     public void testSaveTrackWithTags() {
-        Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag("rock"), new Tag("alternative")));
+        final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag(ROCK), new Tag("alternative")));
         final Track track = new Track(tags, "Maybe", "path2");
 
         trackService.save(track);
@@ -64,7 +65,7 @@ public class TrackServiceTest {
 
     @Test
     public void testSaveSetTracks() {
-        final Track track1 = new Track("track1", "loc1");
+        final Track track1 = new Track("track1", LOC_1);
         final Track track2 = new Track("track2", "loc2");
 
         trackService.saveAll(new HashSet<>(Arrays.asList(track1, track2)));
@@ -82,9 +83,9 @@ public class TrackServiceTest {
 
     @Test
     public void testAddTagsToSong() {
-        final Track track1 = new Track("track_for_tags", "loc1");
+        final Track track1 = new Track("track_for_tags", LOC_1);
         trackService.save(track1);
-        Set<Tag> tagsForTrack = new HashSet<Tag>(Arrays.asList(new Tag("rock"),
+        final Set<Tag> tagsForTrack = new HashSet<Tag>(Arrays.asList(new Tag(ROCK),
                 new Tag("pop")));
         trackService.addTags(track1.getId(), tagsForTrack);
 

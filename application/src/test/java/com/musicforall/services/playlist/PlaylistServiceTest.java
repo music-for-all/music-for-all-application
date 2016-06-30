@@ -25,6 +25,7 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 /**
  * Created by Pukho on 28.06.2016.
@@ -38,19 +39,21 @@ import static org.junit.Assert.assertNull;
         WithSecurityContextTestExecutionListener.class})
 public class PlaylistServiceTest {
 
+    public static final String PLAYLIST_1 = "playlist1";
+    public static final String PLAYLIST_2 = "playlist2";
     @Autowired
-    PlaylistService playlistService;
+    private PlaylistService playlistService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    TrackService trackService;
+    private TrackService trackService;
 
     @Test
     @WithMockUser
     public void testSavePlaylist() {
-        final Playlist savedPlaylist = playlistService.save("playlist1");
+        final Playlist savedPlaylist = playlistService.save(PLAYLIST_1);
 
         final Playlist playlist = playlistService.get(savedPlaylist.getId());
         assertNotNull(playlist);
@@ -59,22 +62,22 @@ public class PlaylistServiceTest {
     @Test
     @WithMockUser(username = "user1", password = "password1")
     public void testGetAllUserPlaylist() {
-        final Playlist playlist1 = playlistService.save("playlist1");
-        final Playlist playlist2 = playlistService.save("playlist2");
+        final Playlist playlist1 = playlistService.save(PLAYLIST_1);
+        playlistService.save(PLAYLIST_2);
 
-        Integer userId = userService.getIdByName("user1");
+        final Integer userId = userService.getIdByName("user1");
 
         final Set<Playlist> allUsersPlaylists = playlistService.getAllUserPlaylist(userId);
 
         assertTrue(allUsersPlaylists.contains(playlistService.get(playlist1.getId())));
-        assertTrue(allUsersPlaylists.size() == 2);
+        assertSame(allUsersPlaylists.size(), 2);
     }
 
     @Test
     @WithMockUser
     public void testDeletePlaylist() {
-        final Playlist playlist = playlistService.save("playlist2");
-        Integer playlistId = playlist.getId();
+        final Playlist playlist = playlistService.save(PLAYLIST_2);
+        final Integer playlistId = playlist.getId();
         playlistService.delete(playlistId);
 
         assertNull(playlistService.get(playlistId));
@@ -93,8 +96,8 @@ public class PlaylistServiceTest {
 
     @Test
     @WithMockUser(username = "user2", password = "password2")
-    public void testGetAllTracksInPlaylist_AddTracksToPlaylist() {
-        final Playlist playlist = playlistService.save("playlist1");
+    public void testGetAllTracksInPlaylistAddTracksToPlaylist() {
+        final Playlist playlist = playlistService.save(PLAYLIST_1);
         Integer playlistId = playlist.getId();
 
         final Track track1 = new Track("track1", "location1");

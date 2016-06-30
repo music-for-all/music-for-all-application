@@ -3,7 +3,6 @@ package com.musicforall.services.playlist;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Playlist;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,14 +18,17 @@ import java.util.concurrent.locks.ReentrantLock;
 public class PlaylistBootstrap {
 
     @Autowired
-    Dao dao;
+    private Dao dao;
 
     private boolean bootstraped;
 
     private final Lock lock = new ReentrantLock();
 
     public void fillDatabase() {
-        if (bootstraped) return;
+        if (bootstraped) {
+            return;
+        }
+
         lock.lock();
         bootstraped = true;
         lock.unlock();
@@ -34,9 +36,13 @@ public class PlaylistBootstrap {
 
     public void clean() {
         lock.lock();
-        List<Playlist> all = dao.all(Playlist.class);
+        final List<Playlist> all = dao.all(Playlist.class);
         all.stream().forEach(dao::delete);
         bootstraped = false;
         lock.unlock();
+    }
+
+    public void setDao(Dao dao) {
+        this.dao = dao;
     }
 }

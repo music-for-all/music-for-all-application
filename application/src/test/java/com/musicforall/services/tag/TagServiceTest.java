@@ -12,12 +12,9 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -28,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
 public class TagServiceTest {
 
+    public static final String TAG_FOR_SAVE = "tag_for_save";
     @Autowired
     public TrackService trackService;
 
@@ -35,17 +33,17 @@ public class TagServiceTest {
     private TagService tagService;
 
     @Test
-    public void testSaveTag_IsTagExist() {
-        final Tag tag = tagService.save("tag_for_save");
+    public void testSaveTagIsTagExist() {
+        tagService.save(TAG_FOR_SAVE);
 
-        assertTrue(tagService.isTagExist("tag_for_save"));
+        assertTrue(tagService.isTagExist(TAG_FOR_SAVE));
         assertFalse(tagService.isTagExist("tag_is_not_exist"));
     }
 
     @Test
-    public void testSaveAllTags_GetAllTags() {
-        Tag tag1 = new Tag("tag_for_save1");
-        Tag tag2 = new Tag("tag_for_save2");
+    public void testSaveAllTagsGetAllTags() {
+        final Tag tag1 = new Tag("tag_for_save1");
+        final Tag tag2 = new Tag("tag_for_save2");
 
         final Collection<Tag> savesTags = tagService.saveAll(Arrays.asList(tag1, tag2));
         assertTrue(tagService.getAllTags().containsAll(savesTags));
@@ -60,7 +58,7 @@ public class TagServiceTest {
     }
 
     @Test
-    public void GetTagIsNotExist() {
+    public void getTagIsNotExist() {
         assertNull(tagService.get("this_tag_isnt_exist"));
     }
 }

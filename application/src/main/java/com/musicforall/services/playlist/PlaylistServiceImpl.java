@@ -3,7 +3,6 @@ package com.musicforall.services.playlist;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
-import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
@@ -27,9 +26,6 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private TrackService trackService;
 
     @Autowired
     private Dao dao;
@@ -78,17 +74,13 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     public void addTracks(Integer playlistId, Set<Track> tracks) {
-        Playlist playlist = dao.get(Playlist.class, playlistId);
+        final Playlist playlist = dao.get(Playlist.class, playlistId);
         playlist.addTracks(tracks);
         save(playlist);
     }
 
     public void setUserService(UserService userService) {
         this.userService = userService;
-    }
-
-    public void setTrackService(TrackService trackService) {
-        this.trackService = trackService;
     }
 
     public void setDao(Dao dao) {
