@@ -24,11 +24,6 @@ public class MainController {
         return MAIN;
     }
 
-    @RequestMapping("/testJsEntities")
-    public String playListTest(Model model) {
-        return "testJsEntities";
-    }
-
     @RequestMapping(value = "/deleteSong", method = RequestMethod.POST)
     public String dummyDeleteSong(@RequestParam("deleteID") Integer id) {
         LOG.debug("Requested /deleteSong");
