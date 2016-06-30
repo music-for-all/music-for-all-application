@@ -5,8 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MainController {
@@ -21,13 +19,6 @@ public class MainController {
     @RequestMapping("/main")
     public String welcome(Model model) {
         LOG.debug("Requested /main");
-        return MAIN;
-    }
-
-    @RequestMapping(value = "/deleteSong", method = RequestMethod.POST)
-    public String dummyDeleteSong(@RequestParam("deleteID") Integer id) {
-        LOG.debug("Requested /deleteSong");
-
         return MAIN;
     }
 }
