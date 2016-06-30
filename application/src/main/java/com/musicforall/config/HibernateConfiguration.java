@@ -18,7 +18,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan("com.musicforall")
-@PropertySource("classpath:/application.properties")
+@PropertySource(value = "file:${user.home}/application.properties")
 public class HibernateConfiguration {
 
     @Autowired
