@@ -5,15 +5,20 @@ import com.musicforall.model.User;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
 
 /**
  * Created by Pukho on 16.06.2016.
  */
 @Service("userService")
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     private Dao dao;
@@ -38,8 +43,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer getIdByName(String name) {
-        final User user = getByName(name);
+    public Integer getIdByUsername(String username) {
+        final User user = getByUsername(username);
         if (user != null) {
             return user.getId();
         }
@@ -53,17 +58,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isUserExist(String name) {
-        return getByName(name) != null;
+    public boolean isUserExist(String username) {
+        return getByUsername(username) != null;
     }
 
     @Override
-    public User getByName(String name) {
+    public User getByUsername(String username) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
-                .add(Property.forName("name").eq(name));
+                .add(Property.forName("username").eq(username));
 
         return dao.getBy(detachedCriteria);
     }
+
+    @Override
+    public Collection<User> findAll() {
+        return dao.all(User.class);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        User user = getByUsername(username);
+        if (user == null)
+            throw new UsernameNotFoundException("Username not found");
+        return user;
+    }
 }
-
-
