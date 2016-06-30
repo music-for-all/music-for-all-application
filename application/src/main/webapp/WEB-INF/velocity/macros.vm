@@ -84,42 +84,44 @@
 
 
 #macro(popUpAdd $id)
-
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    <h4 class="modal-title">Adding playlist</h4>
-</div>
-<div class="modal-body">
-    <div class="form-group">
-        <label for="inputNamePlaylist" class="col-sm-2 control-label">Name:</label>
-        <input type="text" class="form-control" id="inputNamePlaylist" placeholder="Name">
+    #@popUp()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Adding playlist</h4>
     </div>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-    <button id="acceptCreatingPlaylistButton" type="button" class="btn btn-success">Add</button>
-</div>
-
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="inputNamePlaylist" class="col-sm-2 control-label">Name:</label>
+            <input type="text" class="form-control" id="inputNamePlaylist" placeholder="Name">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button id="acceptCreatingPlaylistButton" type="button" class="btn btn-success">Add</button>
+    </div>
+    #end
 #end
 
 #macro(popUpDelete $id)
 
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    <h4 class="modal-title">Deleting playlist</h4>
-</div>
-<div class="modal-body">
-    <p>Are you sure?</p>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-success" data-dismiss="modal">No</button>
-    <button type="button" id="acceptRemovingPlaylistButton" class="btn btn-danger" data-dismiss="modal">Yes
-    </button>
-</div>
+    #@popUp()
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Deleting playlist</h4>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">No</button>
+        <button type="button" id="acceptRemovingPlaylistButton" class="btn btn-danger" data-dismiss="modal">Yes
+        </button>
+    </div>
+    #end
 
 #end
 
