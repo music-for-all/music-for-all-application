@@ -135,6 +135,7 @@
 </form>
 #end
 
+
 #macro(logoutForm)
     #@form('/logout',"post")
     <input type="submit" value="Log out" class="btn btn-default"/>
