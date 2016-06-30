@@ -67,7 +67,7 @@ public class PlaylistServiceTest {
         final Playlist playlist1 = playlistService.save(PLAYLIST_1);
         playlistService.save(PLAYLIST_2);
 
-        final Integer userId = userService.getIdByName("user1");
+        final Integer userId = userService.getIdByUsername("user1");
 
         final Set<Playlist> allUsersPlaylists = playlistService.getAllUserPlaylist(userId);
 

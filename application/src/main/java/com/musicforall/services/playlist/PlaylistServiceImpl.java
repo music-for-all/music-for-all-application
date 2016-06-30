@@ -50,7 +50,7 @@ public class PlaylistServiceImpl implements PlaylistService {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         final UserDetails userDetails = (UserDetails) auth.getPrincipal();
 
-        playlist.setUser(userService.getByName(userDetails.getUsername()));
+        playlist.setUser(userService.getByUsername(userDetails.getUsername()));
         playlist.setName(playlistName);
         return save(playlist);
     }
