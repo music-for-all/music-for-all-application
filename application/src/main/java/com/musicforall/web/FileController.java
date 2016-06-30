@@ -39,8 +39,7 @@ public class FileController {
     @RequestMapping(value = "/files/{fileName:.+}", method = RequestMethod.GET)
     public void getFileHandler(HttpServletResponse response, @PathVariable("fileName") String name) {
         Optional<Path> filePath = Optional.of(manager.getFilePathByName(name));
-        filePath.ifPresent(file ->
-                {
+        filePath.ifPresent(file -> {
                     try {
                         Files.copy(file, response.getOutputStream());
                     } catch (IOException e) {

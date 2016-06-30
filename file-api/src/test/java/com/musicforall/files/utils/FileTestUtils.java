@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 /**
  * @author Evgeniy on 13.06.2016.
  */
-public class TestUtils {
+public class FileTestUtils {
     public static File createTestDirectory() {
         String projectDitPath = System.getProperty("user.dir");
         String testDirPath = Paths.get(projectDitPath, "src", "test", "testDir").toString();

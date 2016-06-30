@@ -1,7 +1,7 @@
 package com.musicforall.files;
 
 import com.musicforall.files.manager.FileManager;
-import com.musicforall.files.utils.TestUtils;
+import com.musicforall.files.utils.FileTestUtils;
 import org.apache.commons.io.FileUtils;
 import org.easymock.EasyMock;
 import org.junit.AfterClass;
@@ -37,7 +37,7 @@ public class FileManagerTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        testDirectory = TestUtils.createTestDirectory();
+        testDirectory = FileTestUtils.createTestDirectory();
         manager = new FileManager();
         ReflectionTestUtils.setField(manager, "workingDirectory", testDirectory.getAbsolutePath());
         copy(get(resourceUrl.toURI()), get(testDirectory.getAbsolutePath(), TEST_FILE_NAME));
