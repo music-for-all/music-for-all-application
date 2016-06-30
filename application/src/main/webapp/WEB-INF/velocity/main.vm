@@ -7,6 +7,8 @@
     <script src="resources/js/jquery.min.js"></script>
     <script src="resources/js/bootstrap.min.js"></script>
     <script src="resources/js/mainpage.js"></script>
+    <script src="resources/js/track.js"></script>
+    <script src="resources/js/playlist.js"></script>
 
     <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="/resources/css/mainpage.css" rel="stylesheet">
@@ -88,9 +90,7 @@
             <thead>
             <tr>
                 <th>Actions</th>
-                <th>Artist</th>
                 <th>Title</th>
-                <th>Duration</th>
             </tr>
             </thead>
         </table>
@@ -100,50 +100,103 @@
         <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">Create playlist</button>
         <button id="removePlaylistButton" class="btn  btn-danger btn-block" type="button">Remove selected</button>
 
-        <ul id="playlists" class="nav nav-pills nav-stacked">
-            <li id="0" class="active"><a href="#" data-value="All">All</a></li>
-        </ul>
+        <ul id="playlists" class="nav nav-pills nav-stacked"/>
     </div>
 </div>
 <script language="javascript">
+    var playlist = new Playlist();
+    var track = new Track();
 
     $('#playlists').on('click', 'a', function (e) {
         e.preventDefault();
         $("#playlists li").removeClass("active");
         $(this).closest('li').addClass('active');
         clearAll();
+        playlist.get($('#playlists li.active').attr('id'))
+                .then(function (response) {
+                    $.each(response.tracks, function () {
+                        addRow(this.id, this.name);
+                    });
+                });
     });
 
     $('#acceptRemovingPlaylistButton').on('click', function (e) {
-        if ($('#playlists li.active').index() != 0) {
-            // alert("Deleted playlist with ID: " + $("#playlists li.active").attr('id'));
-            clearAllPlaylists();
-            //$("#playlists li.active").remove();
-        } else {
-            alert("This playlist cannot be deleted");
-        }
+        playlist.remove($('#playlists li.active').attr('id'));
+        clearAllPlaylists();
+        playlist.all()
+                .then(function (response) {
+                    $.each(response, function () {
+                        addPlaylist(this.id, this.name);
+                    });
+                });
     });
 
     $('#acceptCreatingPlaylistButton').on('click', function (e) {
-        clearAllPlaylists();
-        $('#addPlaylistModal').modal('hide');
+        playlist.create(document.getElementById('inputNamePlaylist').value)
+                .then(function (response) {
+                    addPlaylist(response.id, response.name);
+                    $('#addPlaylistModal').modal('hide');
+                });
     });
 
     $('#removePlaylistButton').on('click', function (e) {
-        if ($('#playlists li.active').index() == 0) {
-            alert("This playlist cannot be deleted");
-        } else {
-            $('#deletePlaylistModal').modal('show');
-        }
+        $('#deletePlaylistModal').modal('show');
     });
 
     $('#createPlaylistButton').on('click', function (e) { //Button which call modal window
         $('#addPlaylistModal').modal('show');
     });
 
+    function deleteSong(o, id) {
+        track.remove(id).then(function () {
+            var p = o.parentNode.parentNode;
+            p.parentNode.removeChild(p);
+        });
+    }
+
+    function addRow(id, name) {
+        $("#results").append("<tr><td><button type='button' class='btn btn-xs btn-success'>" +
+                "<span class='glyphicon glyphicon-play'aria-hidden='true'></span></button>" +
+                "<button type='button' class='btn btn-xs btn-danger' onclick='deleteSong(this," + id + ")'>" +
+                "<span class='glyphicon glyphicon-remove'aria-hidden='true'></span></button>" +
+                "</td><td>" + name + "</td></tr>");
+    }
+
+    function clearAll() {
+        $("#results").find("tr:not(:first)").remove();
+    }
+
+    function clearAllPlaylists() {
+        $("#playlists").find("li").remove();
+    }
+
+    function addPlaylist(id, name) {
+        if (name === "") {
+            name = "Untitled";
+        }
+        if (name.length > 20) {
+            name = name.substr(0, 20); //Trimming long line
+        }
+        $("#playlists").append("<li id='" + id + "'><a href='#' data-value='" + name + "'>" + name + "</a></li>");
+    }
+
     $(document).ready(function () {
+        var header = $("meta[name='_csrf_header']").attr("content");
+        var token = $("meta[name='_csrf']").attr("content");
+
+        $.ajaxSetup({
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            }
+        });
         clearAll();
         clearAllPlaylists();
+        playlist.all()
+                .then(function (response) {
+                    $.each(response, function () {
+                        addPlaylist(this.id, this.name);
+                    });
+                });
     });
 </script>
 </body>

@@ -24,7 +24,7 @@ public class TrackController {
     @ResponseBody
     public Track createTrack(@RequestParam("name") String name) {
         final Track track = new Track();
-        track.setId(0);
+        track.setId(name.hashCode());
         track.setName(name);
         return track;
     }

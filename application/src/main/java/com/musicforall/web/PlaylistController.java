@@ -24,7 +24,7 @@ public class PlaylistController {
     @ResponseBody
     public Playlist createPlaylist(@RequestParam("name") String name) {
         final Playlist playlist = new Playlist();
-        playlist.setId(0);
+        playlist.setId(name.hashCode());
         playlist.setName(name);
         return playlist;
     }
@@ -46,8 +46,12 @@ public class PlaylistController {
         playlist.setName("My Playlist");
         final Set<Track> tracks = new HashSet<Track>() {
             {
-                add(new Track("First Track", "First Location"));
-                add(new Track("Second Track", "Second Location"));
+                final Track track1 = new Track("First Track", "First Location");
+                track1.setId(1);
+                add(track1);
+                final Track track2 = new Track("Second Track", "Second Location");
+                track2.setId(2);
+                add(track2);
             }
         };
         playlist.setTracks(tracks);
