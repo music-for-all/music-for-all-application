@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <title>Music For All</title>
-    #headContent()
+    #head()
 </head>
 <body>
 <h2>Spring Demo</h2>

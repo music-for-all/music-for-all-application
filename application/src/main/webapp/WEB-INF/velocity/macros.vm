@@ -1,145 +1,133 @@
-#macro(headContent )
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<link rel="stylesheet"
-      href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
-<link rel="stylesheet"
-      href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    $!bodyContent##
+#macro(head )
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet"
+          href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
+    <link rel="stylesheet"
+          href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        $!bodyContent##
 #end
-
-
-
-
 
 #macro(navbarAuthorizedh)
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Music for all</a>
-        </div>
-        <div id="navbar" class="navbar-right navbar-collapse collapse ">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#springUrl('/main')"><i class="fa fa-home"></i> Main</a></li>
-                <li><a href="#springUrl('/search')"><i class="fa fa-music"></i> Search</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
-#end
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Music for all</a>
+            </div>
 
-#macro(navbarNoAuthorized)
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Music for all</a>
+            <div id="navbar" class="navbar-right navbar-collapse collapse ">
+                <ul class="nav navbar-nav">
+    ##                todo: path as parameters
+                    <li class="active">
+                        <a href="#springUrl('/main')">
+                            <i class="fa fa-home"/> Main
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#springUrl('/search')">
+                            <i class="fa fa-music"/> Search
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 #end
-
 
 #macro(body )
-<body>
-    $!bodyContent##
-</body>
+    <body>
+        $!bodyContent##
+    </body>
 #end
-
 
 #macro(footer)
-<footer class="container-fluid">
-    <p>Music for all ©</p>
-</footer>
+    <footer class="container-fluid">
+        <p>Music for all ©</p>
+    </footer>
 #end
 
 
-
-
-
-#macro(popUp)
-<div id= $id class="modal fade">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        $!bodyContent##
+##todo: move to separate velocity template
+##todo: create macros for default button set
+#macro(popUp $id)
+    <div id= "$id" class="modal fade">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                $!bodyContent##
+            </div>
+        </div>
     </div>
-</div>
-
 #end
 
-
-#macro(popUpAdd $id)
-    #@popUp()
+#macro(modalHead $title)
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title">Adding playlist</h4>
+        <h4 class="modal-title">$title</h4>
     </div>
+#end
+
+#macro(modalBody)
     <div class="modal-body">
-        <div class="form-group">
-            <label for="inputNamePlaylist" class="col-sm-2 control-label">Name:</label>
-            <input type="text" class="form-control" id="inputNamePlaylist" placeholder="Name">
-        </div>
+        $!bodyContent##
     </div>
+#end
+
+#macro(modalFooter)
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="acceptCreatingPlaylistButton" type="button" class="btn btn-success">Add</button>
+        $!bodyContent##
     </div>
+#end
+
+#macro(popUpAdd $id)
+    #@popUp($id)
+        #modalHead("Adding playlist")
+
+        #@modalBody()
+            <div class="form-group">
+                <label for="inputNamePlaylist" class="col-sm-2 control-label">Name:</label>
+                <input type="text" class="form-control" id="inputNamePlaylist" placeholder="Name">
+            </div>
+        #end
+
+        #@modalFooter()
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button id="acceptCreatingPlaylistButton" type="button" class="btn btn-success">Add</button>
+        #end
     #end
 #end
 
 #macro(popUpDelete $id)
+    #@popUp($id)
+        #modalHead("Deleting playlist")
 
-    #@popUp()
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title">Deleting playlist</h4>
-    </div>
-    <div class="modal-body">
-        <p>Are you sure?</p>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-success" data-dismiss="modal">No</button>
-        <button type="button" id="acceptRemovingPlaylistButton" class="btn btn-danger" data-dismiss="modal">Yes
-        </button>
-    </div>
+        #@modalBody()
+            <p>Are you sure?</p>
+        #end
+
+        #@modalFooter()
+            <button type="button" class="btn btn-success" data-dismiss="modal">No</button>
+            <button type="button" id="acceptRemovingPlaylistButton" class="btn btn-danger" data-dismiss="modal">
+                Yes
+            </button>
+        #end
     #end
-
 #end
-
-
-
-
+##--
 #macro(form $action $method)
-<form action= #springUrl($action) method=$method>
-    $!bodyContent##
-    <input type="hidden" name="$!{_csrf.parameterName}" value="$!{_csrf.token}"/>
-</form>
+    <form action= #springUrl($action) method=$method>
+        <input type="hidden" name="$!{_csrf.parameterName}" value="$!{_csrf.token}"/>
+        $!bodyContent##
+    </form>
 #end
-
 
 #macro(logoutForm)
     #@form('/logout',"post")
-    <input type="submit" value="Log out" class="btn btn-default"/>
+        <input type="submit" value="Log out" class="btn btn-default"/>
     #end
 #end
-
-
