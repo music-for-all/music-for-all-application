@@ -2,6 +2,8 @@ package com.musicforall.services.user;
 
 import com.musicforall.model.User;
 
+import java.util.Collection;
+
 /**
  * Created by Pukho on 16.06.2016.
  */
@@ -12,11 +14,13 @@ public interface UserService {
 
     boolean isUserExist(Integer userId);
 
-    Integer getIdByName(String name);
+    Integer getIdByUsername(String username);
 
     void delete(Integer userId);
 
-    boolean isUserExist(String name);
+    boolean isUserExist(String username);
 
-    User getByName(String name);
+    User getByUsername(String username);
+
+    Collection<User> findAll();
 }
