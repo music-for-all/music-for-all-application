@@ -54,9 +54,9 @@ public class JpaServicesTestConfig {
     @Bean
     @Autowired
     public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-        final HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setDataSource(dataSource());
-        transactionManager.setSessionFactory(sessionFactory);
-        return transactionManager;
+        final HibernateTransactionManager tm = new HibernateTransactionManager();
+        tm.setDataSource(dataSource());
+        tm.setSessionFactory(sessionFactory);
+        return tm;
     }
 }

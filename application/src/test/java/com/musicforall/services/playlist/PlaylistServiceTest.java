@@ -40,7 +40,9 @@ import static org.junit.Assert.assertSame;
 public class PlaylistServiceTest {
 
     public static final String PLAYLIST_1 = "playlist1";
+
     public static final String PLAYLIST_2 = "playlist2";
+
     @Autowired
     private PlaylistService playlistService;
 
@@ -98,7 +100,7 @@ public class PlaylistServiceTest {
     @WithMockUser(username = "user2", password = "password2")
     public void testGetAllTracksInPlaylistAddTracksToPlaylist() {
         final Playlist playlist = playlistService.save(PLAYLIST_1);
-        Integer playlistId = playlist.getId();
+        final Integer playlistId = playlist.getId();
 
         final Track track1 = new Track("track1", "location1");
         final Track track2 = new Track("track2", "location2");

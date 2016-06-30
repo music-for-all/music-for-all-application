@@ -26,8 +26,9 @@ import static org.junit.Assert.assertTrue;
 public class TagServiceTest {
 
     public static final String TAG_FOR_SAVE = "tag_for_save";
+
     @Autowired
-    public TrackService trackService;
+    private TrackService trackService;
 
     @Autowired
     private TagService tagService;
@@ -51,8 +52,9 @@ public class TagServiceTest {
 
     @Test
     public void testGetTracks() {
-        final Tag tag = tagService.save("tag_for_test_get");
-        final Tag expectedTag = tagService.get("tag_for_test_get");
+        String tag_for_test_get = "tag_for_test_get";
+        final Tag tag = tagService.save(tag_for_test_get);
+        final Tag expectedTag = tagService.get(tag_for_test_get);
 
         assertEquals(tag, expectedTag);
     }

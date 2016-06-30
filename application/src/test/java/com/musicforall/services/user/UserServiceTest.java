@@ -24,6 +24,12 @@ import static org.junit.Assert.*;
         UserTestExecutionListener.class})
 public class UserServiceTest {
 
+    public static final String USER_1 = "user1";
+
+    public static final String USER_NOT_EXIST = "user_not_exist";
+
+    public static final String USER = "user";
+
     @Autowired
     private UserService userService;
 
@@ -38,21 +44,21 @@ public class UserServiceTest {
 
     @Test
     public void testGetIdUserByName() {
-        final Integer userId = userService.getIdByName("user1");
-        assertEquals(userService.get(userId).getName(), "user1");
-        assertNull(userService.getIdByName("user_not_exist"));
+        final Integer userId = userService.getIdByName(USER_1);
+        assertEquals(userService.get(userId).getName(), USER_1);
+        assertNull(userService.getIdByName(USER_NOT_EXIST));
     }
 
     @Test
     public void testGetUserByName() {
-        assertEquals(userService.getByName("user1").getName(), "user1");
-        assertNull(userService.getByName("user_not_exist"));
+        assertEquals(userService.getByName(USER_1).getName(), USER_1);
+        assertNull(userService.getByName(USER_NOT_EXIST));
     }
 
     @Test
     public void testIsUserExist() {
-        assertTrue(userService.isUserExist("user1"));
-        final Integer userId = userService.getIdByName("user1");
+        assertTrue(userService.isUserExist(USER_1));
+        final Integer userId = userService.getIdByName(USER_1);
         assertTrue(userService.isUserExist(userId));
 
         final User user = new User("user3", "12345789");
@@ -70,10 +76,10 @@ public class UserServiceTest {
 
     @Test
     public void testGetUser() {
-        Integer userId = userService.getIdByName("user");
+        final Integer userId = userService.getIdByName(USER);
         final User user = userService.get(userId);
 
-        assertEquals(user.getName(), "user");
+        assertEquals(user.getName(), USER);
         assertNotNull(userService.get(userId));
     }
 }

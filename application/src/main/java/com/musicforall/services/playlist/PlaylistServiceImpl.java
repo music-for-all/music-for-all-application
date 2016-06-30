@@ -62,7 +62,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     public Set<Track> getAllTracksInPlaylist(Integer playlistId) {
-        Playlist playlist = dao.get(Playlist.class, playlistId);
+        final Playlist playlist = dao.get(Playlist.class, playlistId);
         return playlist.getTracks();
     }
 

@@ -1,7 +1,6 @@
 package com.musicforall.services.playlist;
 
 import com.musicforall.services.user.UserBootstrap;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 
@@ -12,7 +11,8 @@ public class PlaylistTestExecutionListener extends AbstractTestExecutionListener
     @Override
     public void beforeTestClass(TestContext testContext) throws Exception {
         super.afterTestClass(testContext);
-        final PlaylistBootstrap playlistBootstrap = testContext.getApplicationContext().getBean(PlaylistBootstrap.class);
+        final PlaylistBootstrap playlistBootstrap =
+                testContext.getApplicationContext().getBean(PlaylistBootstrap.class);
         playlistBootstrap.fillDatabase();
         final UserBootstrap userBootstrap = testContext.getApplicationContext().getBean(UserBootstrap.class);
         userBootstrap.fillDatabase();

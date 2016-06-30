@@ -30,7 +30,9 @@ import static org.junit.Assert.assertTrue;
 public class TrackServiceTest {
 
     public static final String ROCK = "rock";
+
     public static final String LOC_1 = "loc1";
+
     @Autowired
     private TrackService trackService;
 
