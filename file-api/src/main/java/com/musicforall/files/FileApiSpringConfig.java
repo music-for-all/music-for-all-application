@@ -13,7 +13,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
  */
 @Configuration
 @ComponentScan("com.musicforall.files.manager")
-@PropertySource(value = "file:${APP_MUSICFORALL_CONFIG_DIR}/files.properties")
+@PropertySource(value = "file:${user.home}/MusicForAll/resources/files.properties")
 public class FileApiSpringConfig {
 
     @Autowired
