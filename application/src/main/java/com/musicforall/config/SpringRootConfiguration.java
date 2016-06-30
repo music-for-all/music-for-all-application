@@ -15,7 +15,7 @@ import org.springframework.core.env.Environment;
 @Import({HibernateConfiguration.class,
         FileApiSpringConfig.class,
         SecurityConfig.class})
-@PropertySource("classpath:/application.properties")
+@PropertySource(value = "file:${APP_MUSICFORALL_CONFIG_DIR}/files.properties")
 public class SpringRootConfiguration {
 
     @Autowired
