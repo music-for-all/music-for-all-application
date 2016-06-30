@@ -182,11 +182,6 @@
                             </regex>
                         </regexes>
                     </check>
-                    <instrumentation>
-                        <excludes>
-                            <exclude>com/musicforall/config/*.class</exclude>
-                        </excludes>
-                    </instrumentation>
                 </configuration>
                 <executions>
                     <execution>
