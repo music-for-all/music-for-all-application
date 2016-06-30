@@ -40,7 +40,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer getIdByName(String name) {
         final User user = getByName(name);
-        if (user != null) { return user.getId(); }
+        if (user != null) {
+            return user.getId();
+        }
         return null;
     }
 

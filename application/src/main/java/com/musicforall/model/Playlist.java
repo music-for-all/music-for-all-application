@@ -5,12 +5,10 @@ package com.musicforall.model;
  */
 
 
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -43,7 +41,7 @@ public class Playlist implements Serializable {
     public Playlist() {
     }
 
-    public void addTracks(Set<Track> tracks){
+    public void addTracks(Set<Track> tracks) {
         if (this.tracks != null) {
             this.tracks = new HashSet<>();
         }

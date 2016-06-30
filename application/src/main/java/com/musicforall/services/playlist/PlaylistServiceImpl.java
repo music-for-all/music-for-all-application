@@ -26,10 +26,10 @@ import java.util.Set;
 public class PlaylistServiceImpl implements PlaylistService {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    TrackService trackService;
+    private TrackService trackService;
 
     @Autowired
     private Dao dao;
@@ -81,5 +81,17 @@ public class PlaylistServiceImpl implements PlaylistService {
         Playlist playlist = dao.get(Playlist.class, playlistId);
         playlist.addTracks(tracks);
         save(playlist);
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    public void setTrackService(TrackService trackService) {
+        this.trackService = trackService;
+    }
+
+    public void setDao(Dao dao) {
+        this.dao = dao;
     }
 }

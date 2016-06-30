@@ -2,7 +2,6 @@ package com.musicforall.services.tag;
 
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Tag;
-import com.musicforall.model.Track;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
