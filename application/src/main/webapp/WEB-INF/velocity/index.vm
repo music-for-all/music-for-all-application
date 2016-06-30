@@ -7,7 +7,12 @@
 </head>
 <body>
 <h2>Music For All</h2>
-<h3>Index</h3>
+<h3>User list</h3>
+<ul>
+    #foreach($user in $userList)
+        <li>$user.username ($user.email)</li>
+    #end
+</ul>
 <p>
     <a href="profile" class="btn btn-primary">Profile</a>
 </p>
