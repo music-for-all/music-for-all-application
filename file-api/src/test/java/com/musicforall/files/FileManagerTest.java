@@ -60,7 +60,7 @@ public class FileManagerTest {
     public void testGetFileByName() throws Exception {
         File copy = get(testDirectory.getAbsolutePath(), "copy.jpg").toFile();
         try (FileOutputStream outputStream = new FileOutputStream(copy)) {
-            Path path = manager.getFilePathByName(TEST_FILE_NAME);
+            final Path path = manager.getFilePathByName(TEST_FILE_NAME);
             copy(path, outputStream);
         }
 
@@ -87,7 +87,7 @@ public class FileManagerTest {
 
     @Test
     public void testGetNonExistingFile() throws Exception {
-        Path path = manager.getFilePathByName("fakeResource.jpg");
+        final Path path = manager.getFilePathByName("fakeResource.jpg");
         assertNull(path);
     }
 
@@ -95,10 +95,11 @@ public class FileManagerTest {
     public void testIOException() throws Exception {
         PowerMock.mockStatic(Files.class);
 
-        EasyMock.expect(Files.copy(anyObject(InputStream.class), anyObject(Path.class))).andThrow(new IOException());
-        EasyMock.expect(Files.exists(anyObject(Path.class))).andReturn(false);
+        EasyMock.expect(copy(anyObject(InputStream.class), anyObject(Path.class))).andThrow(new IOException());
+        EasyMock.expect(exists(anyObject(Path.class))).andReturn(false);
         replayAll();
-        Path testFilePath = get(testDirectory.getAbsolutePath(), TEST_FILE_NAME);
+
+        final Path testFilePath = get(testDirectory.getAbsolutePath(), TEST_FILE_NAME);
         try (InputStream inputStream = new FileInputStream(testFilePath.toFile())) {
             MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, inputStream);
             assertFalse(manager.save(file));
