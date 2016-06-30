@@ -21,7 +21,8 @@ public class PlaylistTestExecutionListener extends AbstractTestExecutionListener
     @Override
     public void afterTestClass(TestContext testContext) throws Exception {
         super.beforeTestClass(testContext);
-        final PlaylistBootstrap playlistBootstrap = testContext.getApplicationContext().getBean(PlaylistBootstrap.class);
+        final PlaylistBootstrap playlistBootstrap =
+                testContext.getApplicationContext().getBean(PlaylistBootstrap.class);
         playlistBootstrap.clean();
         final UserBootstrap userBootstrap = testContext.getApplicationContext().getBean(UserBootstrap.class);
         userBootstrap.clean();

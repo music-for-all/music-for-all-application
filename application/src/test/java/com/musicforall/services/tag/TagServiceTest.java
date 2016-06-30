@@ -28,9 +28,6 @@ public class TagServiceTest {
     public static final String TAG_FOR_SAVE = "tag_for_save";
 
     @Autowired
-    private TrackService trackService;
-
-    @Autowired
     private TagService tagService;
 
     @Test
@@ -52,7 +49,7 @@ public class TagServiceTest {
 
     @Test
     public void testGetTracks() {
-        String tag_for_test_get = "tag_for_test_get";
+        final String tag_for_test_get = "tag_for_test_get";
         final Tag tag = tagService.save(tag_for_test_get);
         final Tag expectedTag = tagService.get(tag_for_test_get);
 
