@@ -78,9 +78,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = getByUsername(username);
-        if (user == null)
+        final User user = getByUsername(username);
+        if (user == null) {
             throw new UsernameNotFoundException("Username not found");
+        }
         return user;
     }
 }

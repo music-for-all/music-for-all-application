@@ -92,7 +92,7 @@ public class UserServiceTest {
 
     @Test
     public void testFindAll() {
-        Collection<User> users = userService.findAll();
+        final Collection<User> users = userService.findAll();
         assertSame(users.size(), 4);
     }
 

@@ -31,7 +31,7 @@ public class IndexController {
     @RequestMapping("/profile")
     public String profile(Model model) {
 
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        final User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("username", user.getUsername());
         return "profile";
     }
