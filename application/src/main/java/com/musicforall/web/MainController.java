@@ -9,15 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 @Controller
 public class MainController {
 
     private static final Logger LOG = LoggerFactory.getLogger(MainController.class);
-
-    private static Set<Playlist> set;
 
     private static final String MAIN = "main";
 
@@ -31,46 +28,12 @@ public class MainController {
         return MAIN;
     }
 
-
-    /*
-    * only for test
-     */
-    static {
-        set = new HashSet<>();
-        Set<Track> array;
-        String location = "/home/andrey/MusicForAll";
-        Playlist playlist = new Playlist();
-        playlist.setName("Nirvana");
-        array = new HashSet<>();
-        for (int i = 0; i < playlist.getId(); i++) {
-            array.add(new Track("Nirvana" + i, location));
-        }
-        playlist.setTracks(array);
-        set.add(playlist);
-        playlist = new Playlist();
-        playlist.setName("Disturbed");
-        array = new HashSet<>();
-        for (int i = 0; i < playlist.getId(); i++) {
-            array.add(new Track("Disturbed" + i, location));
-        }
-        playlist.setTracks(array);
-        set.add(playlist);
-        playlist = new Playlist();
-        playlist.setName("Rob Zombie");
-        array = new HashSet<>();
-        for (int i = 0; i < playlist.getId(); i++) {
-            array.add(new Track("Rob Zombie" + i, location));
-        }
-        playlist.setTracks(array);
-        set.add(playlist);
-    }
-
     @RequestMapping(value = "/getPlayLists", method = RequestMethod.GET)
     @ResponseBody
     public Set<Playlist> dummyGetPlayLists() {
         LOG.debug("Requested /getPlayLists");
 
-        return set;
+        return new HashSet<>();
     }
 
     @RequestMapping(value = "/addPlaylist", method = RequestMethod.POST)
@@ -79,7 +42,6 @@ public class MainController {
 
         Playlist playlist = new Playlist();
         playlist.setName(name);
-        set.add(playlist);
         return MAIN;
     }
 
@@ -89,7 +51,6 @@ public class MainController {
 
         Playlist playlist = new Playlist();
         playlist.setName(id + " deleted");
-        set.add(playlist);
         return MAIN;
     }
 
@@ -98,18 +59,6 @@ public class MainController {
     public Set<Track> dummyGetPlayList(@RequestParam("playlistID") Integer id) {
         LOG.debug("Requested /getPlayList id");
 
-        Playlist playlist;
-        Iterator<Playlist> iterator = set.iterator();
-        while (iterator.hasNext()) {
-            playlist = iterator.next();
-            if (playlist.getId().equals(id)) {
-                if (playlist.getTracks() != null) {
-                    return playlist.getTracks();
-                } else {
-                    return new HashSet<>();
-                }
-            }
-        }
         return new HashSet<>();
     }
 
