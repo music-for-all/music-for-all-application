@@ -1,32 +1,88 @@
+#parse("macros/macros.vm")
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Upload File Request Page</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
-    <script src="http://malsup.github.com/jquery.form.js"></script>
+    #@head()
+        <title>Add song</title>
+        <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
+        <link href="/resources/css/filespage.css" rel="stylesheet">
+    #end
 </head>
-<body>
-<form id="uploadForm" method="POST" action="/files" enctype="multipart/form-data">
-    <input name="file" id="file" type="file"/><br/>
-</form>
+    #@body()
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Music for all</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href=#springUrl("/main")>Main</a></li>
+                    <li><a href=#springUrl("/search")>Search</a></li>
+                    <li class="active"><a href=#springUrl("/tryfiles")>Add track </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-<button value="Submit" onclick="uploadJqueryForm()">Upload</button>
-<i>Using JQuery Form Plugin</i><br/>
+    <div class="container">
+        <div class="col-md-4 col-md-offset-4 well  ">
+            <div id="result" class="alert alert-info collapse" role="alert"></div>
+            #@formDetail("uploadForm" "/files" "POST" "multipart/form-data")
+                <input type="text" name="inputArtist" id="inputArtist" class="form-control" placeholder="Artist"
+                       required/>
+                <input type="text" name="inputTitle" id="inputTitle" class="form-control" placeholder="Title" required/>
 
-<audio id="player" src="/files/Angel Duster.mp3" controls preload="none"></audio>
+                <div class="form-group">
+                    <h4 class="control-label text-center">Tags</h4>
+                    <input type="text" name="tags" id="tags" class="form-control"
+                           data-role="tagsinput" placeholder="New tag"/>
+                </div>
 
-<div id="result"></div>
-<script>
-    function uploadJqueryForm() {
-        $('#result').html('');
+                <div class="text-center">
+                    <label class="btn btn-default btn-file">
+                        Browse file<input type="file" name="file" id="file" style="display:none;">
+                    </label>
+                    <button value="submit" class="btn btn-default btn-primary" onclick="uploadJqueryForm()">Add song
+                    </button>
+                    <div id="fileName" class="control-label" role="alert"></div>
+                </div>
+            #end
+            <script>
 
-        $("#uploadForm").ajaxForm({
-            success: function (data) {
-                $('#result').html(data);
-            },
-            dataType: "text"
-        }).submit();
-    }
-</script>
-</body>
+                $('#file').change(function () {
+                    var filename = $('#file').val();
+                    filename = filename.substring(filename.lastIndexOf("\\") + 1, filename.length);
+                    $('#fileName').html(filename);
+                    $('#result').hide();
+                });
+
+                function uploadJqueryForm() {
+                    if ($('#inputArtist').val() == "" || $('#inputTitle').val() == "") {
+                        return;
+                    }
+                    $('#result').html('');
+
+                    $("#uploadForm").ajaxForm({
+                        success: function (data) {
+                            $('#result').html(data);
+                            $('#result').show();
+                            $('#inputArtist').val('');
+                            $('#inputTitle').val('');
+                        },
+                        dataType: "text"
+                    }).submit();
+
+                }
+            </script>
+        </div>
+    </div>
+    #end
+    #footer()
 </html>
