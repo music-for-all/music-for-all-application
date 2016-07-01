@@ -1,4 +1,4 @@
-#parse("macros.vm")
+#parse("macros/macros.vm")
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,11 +6,12 @@
     #head()
 </head>
 <body>
-<h2>Music For All</h2>
-<h3>Index</h3>
-<p>
-    <a href="profile" class="btn btn-primary">Profile</a>
-</p>
+    <h2>Music For All</h2>
+    <h3>Index</h3>
+    <p>
+        <a href="profile" class="btn btn-primary">Profile</a>
+    </p>
+
     #logoutForm()
 </body>
 </html>
