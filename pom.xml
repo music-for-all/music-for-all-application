@@ -187,7 +187,7 @@
                             <regex>
                                 <pattern>com.musicforall.files.manager.*</pattern>
                                 <branchRate>80</branchRate>
-                                <lineRate>69</lineRate>
+                                <lineRate>80</lineRate>
                             </regex>
                             <regex>
                                 <pattern>com.musicforall.services.*</pattern>
