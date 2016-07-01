@@ -42,16 +42,16 @@ public class FileController {
     String uploadFileHandler(@RequestParam("file") MultipartFile file, @RequestParam("inputTitle") String title,
                              @RequestParam("inputArtist") String artist,
                              @RequestParam(value = "tags", required = false) Set<Tag> tags) {
-        String filename = file.getOriginalFilename();
+        final String filename = file.getOriginalFilename();
         if (!file.isEmpty()) {
             boolean saved = manager.save(file);
             if (saved) {
-                String filepath = manager.getFilePathByName(filename).toString();
+                final String filepath = manager.getFilePathByName(filename).toString();
                 //(Because track dosn't have constructor with Artist)
                 // Track trackForAdding = new Track(artist, title, filepath);
-                Track trackForAdding = new Track(artist + " - " + title, filepath);
+                final Track trackForAdding = new Track(artist + " - " + title, filepath);
 
-                for (Tag tag : tags) {
+                for (final Tag tag : tags) {
                     if (!tagService.isTagExist(tag.getName())) {
                         tagService.save(tag.getName());
                     }
