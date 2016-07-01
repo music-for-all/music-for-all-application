@@ -106,4 +106,20 @@ public class FileManagerTest {
             verifyAll();
         }
     }
+
+    @Test
+    public void testNonEqualSize() throws Exception {
+        PowerMock.mockStatic(Files.class);
+
+        EasyMock.expect(copy(anyObject(InputStream.class), anyObject(Path.class))).andReturn(-1L);
+        EasyMock.expect(exists(anyObject(Path.class))).andReturn(false);
+        replayAll();
+
+        final Path testFilePath = get(testDirectory.getAbsolutePath(), TEST_FILE_NAME);
+        try (InputStream inputStream = new FileInputStream(testFilePath.toFile())) {
+            MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, inputStream);
+            assertFalse(manager.save(file));
+            verifyAll();
+        }
+    }
 }

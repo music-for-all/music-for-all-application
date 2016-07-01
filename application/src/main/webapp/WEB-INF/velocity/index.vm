@@ -1,9 +1,9 @@
-#parse("macros.vm")
+#parse("macros/macros.vm")
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Music For All</title>
-    #headContent()
+    #head()
 </head>
 <body>
 <h2>Music For All</h2>
