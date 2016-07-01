@@ -18,6 +18,8 @@ public class IndexController {
     @Autowired
     private UserService userService;
 
+    private static final Logger LOG = LoggerFactory.getLogger(IndexController.class);
+
     @PostConstruct
     private void init() {
         userService.save(new User("dev", "password", "dev@musicforall.com"));
@@ -26,8 +28,6 @@ public class IndexController {
     public IndexController() {
         LOG.info("");
     }
-
-    private static final Logger LOG = LoggerFactory.getLogger(IndexController.class);
 
     @RequestMapping(value = {"/", "index"})
     public String index(Model model) {
