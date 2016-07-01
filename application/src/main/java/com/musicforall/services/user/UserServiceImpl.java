@@ -4,6 +4,8 @@ import com.musicforall.common.dao.Dao;
 import com.musicforall.model.User;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +23,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private Dao dao;
+
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public void save(User user) {
@@ -79,6 +83,7 @@ public class UserServiceImpl implements UserService {
 
         final User user = getByUsername(username);
         if (user == null) {
+            LOG.info(String.format("User %s not found", username));
             throw new UsernameNotFoundException("Username not found");
         }
         return user;
