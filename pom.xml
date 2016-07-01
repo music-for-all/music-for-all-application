@@ -180,6 +180,11 @@
                 <configuration>
                     <instrumentation>
                         <ignoreTrivial>true</ignoreTrivial>
+                        <ignoreMethodAnnotations>
+                            <ignoreMethodAnnotation>
+                                javax.annotation.PostConstruct
+                            </ignoreMethodAnnotation>
+                        </ignoreMethodAnnotations>
                     </instrumentation>
                     <check>
                         <haltOnFailure>true</haltOnFailure>
