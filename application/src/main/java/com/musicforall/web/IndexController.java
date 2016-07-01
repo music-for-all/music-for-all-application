@@ -35,9 +35,4 @@ public class IndexController {
         model.addAttribute("username", user.getUsername());
         return "profile";
     }
-
-    @RequestMapping("/login")
-    public String login(Model model) {
-        return "login";
-    }
 }
