@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="resources/js/jquery.min.js"></script>
     <script src="resources/js/bootstrap.min.js"></script>
-    <script src="resources/js/mainpage.js"></script>
     <script src="resources/js/track.js"></script>
     <script src="resources/js/playlist.js"></script>
 
@@ -114,7 +113,7 @@
         playlist.get($('#playlists li.active').attr('id'))
                 .then(function (response) {
                     $.each(response.tracks, function () {
-                        addRow(this.id, this.name);
+                        addTrack(this.id, this.name);
                     });
                 });
     });
@@ -144,19 +143,19 @@
         $('#addPlaylistModal').modal('show');
     });
 
-    function deleteSong(o, id) {
+    function deleteTrack(o, id) {
         track.remove(id).then(function () {
             var p = o.parentNode.parentNode;
             p.parentNode.removeChild(p);
         });
     }
 
-    function addRow(id, name) {
+    function addTrack(id, name) {
         $("#results").append("<tr><td><button type='button' class='btn btn-xs btn-success'>" +
-        "<span class='glyphicon glyphicon-play'aria-hidden='true'></span></button>" +
-        "<button type='button' class='btn btn-xs btn-danger' onclick='deleteSong(this," + id + ")'>" +
-        "<span class='glyphicon glyphicon-remove'aria-hidden='true'></span></button>" +
-        "</td><td>" + name + "</td></tr>");
+                "<span class='glyphicon glyphicon-play'aria-hidden='true'></span></button>" +
+                "<button type='button' class='btn btn-xs btn-danger' onclick='deleteTrack(this," + id + ")'>" +
+                "<span class='glyphicon glyphicon-remove'aria-hidden='true'></span></button>" +
+                "</td><td>" + name + "</td></tr>");
     }
 
     function clearTracks() {
@@ -186,8 +185,6 @@
                 xhr.setRequestHeader(header, token);
             }
         });
-        clearTracks();
-        clearPlaylists();
         playlist.all()
                 .then(function (response) {
                     $.each(response, function () {
