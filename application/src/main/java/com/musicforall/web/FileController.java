@@ -44,7 +44,7 @@ public class FileController {
                              @RequestParam(value = "tags", required = false) Set<Tag> tags) {
         final String filename = file.getOriginalFilename();
         if (!file.isEmpty()) {
-            boolean saved = manager.save(file);
+            final boolean saved = manager.save(file);
             if (saved) {
                 final String filepath = manager.getFilePathByName(filename).toString();
                 //(Because track dosn't have constructor with Artist)
