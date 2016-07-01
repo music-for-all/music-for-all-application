@@ -106,7 +106,7 @@
         playlist.get($('#playlists li.active').attr('id'))
                 .then(function (response) {
                     $.each(response.tracks, function () {
-                        addTrack(this.id, this.name);
+                        addTrack(this);
                     });
                 });
     });
@@ -143,12 +143,12 @@
         });
     }
 
-    function addTrack(id, name) {
+    function addTrack(track) {
         $("#results").append("<tr><td><button type='button' class='btn btn-xs btn-success'>" +
-                "<span class='glyphicon glyphicon-play'aria-hidden='true'></span></button>" +
-                "<button type='button' class='btn btn-xs btn-danger' onclick='deleteTrack(this," + id + ")'>" +
-                "<span class='glyphicon glyphicon-remove'aria-hidden='true'></span></button>" +
-                "</td><td>" + name + "</td></tr>");
+        "<span class='glyphicon glyphicon-play' aria-hidden='true'></span></button>" +
+        "<button type='button' class='btn btn-xs btn-danger' onclick='deleteTrack(this," + track.id + ")'>" +
+        "<span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button>" +
+        "</td><td>" + track.name + "</td></tr>");
     }
 
     function clearTracks() {
@@ -160,13 +160,14 @@
     }
 
     function addPlaylist(id, name) {
-        if (name === "") {
-            name = "Untitled";
+        var displayedName = name;
+        if (displayedName === "") {
+            displayedName = "Untitled";
         }
-        if (name.length > 20) {
-            name = name.substr(0, 20); //Trimming long line
+        if (displayedName.length > 15) {
+            displayedName = displayedName.substr(0, 15) + "...";
         }
-        $("#playlists").append("<li id='" + id + "'><a href='#' data-value='" + name + "'>" + name + "</a></li>");
+        $("#playlists").append("<li id='" + id + "' title='" + name + "'><a href='#' data-value='" + name + "'>" + displayedName + "</a></li>");
     }
 
     $(document).ready(function () {
