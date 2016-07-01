@@ -10,17 +10,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.annotation.PostConstruct;
+
 @Controller
 public class IndexController {
 
     @Autowired
     private UserService userService;
 
-    private static final Logger LOG = LoggerFactory.getLogger(IndexController.class);
+    @PostConstruct
+    private void init() {
+        userService.save(new User("dev", "password", "dev@musicforall.com"));
+    }
 
     public IndexController() {
-        LOG.debug("");
+        LOG.info("");
     }
+
+    private static final Logger LOG = LoggerFactory.getLogger(IndexController.class);
 
     @RequestMapping(value = {"/", "index"})
     public String index(Model model) {
