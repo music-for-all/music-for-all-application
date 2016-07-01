@@ -98,8 +98,8 @@ public class UserServiceTest {
 
     @Test(expected = UsernameNotFoundException.class)
     public void testLoadUserByUsername() {
-        final UserDetails user = ((UserDetailsService) userService).loadUserByUsername(USER_1);
+        final UserDetails user = userService.loadUserByUsername(USER_1);
         assertEquals(user.getUsername(), USER_1);
-        assertNotNull(((UserDetailsService) userService).loadUserByUsername(USER_NOT_EXIST));
+        assertNotNull(userService.loadUserByUsername(USER_NOT_EXIST));
     }
 }
