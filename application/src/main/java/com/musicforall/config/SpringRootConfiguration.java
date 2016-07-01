@@ -11,11 +11,11 @@ import org.springframework.core.env.Environment;
  */
 @Configuration
 @ComponentScan({"com.musicforall.common",
-                "com.musicforall.services"})
+        "com.musicforall.services"})
 @Import({HibernateConfiguration.class,
         FileApiSpringConfig.class,
         SecurityConfig.class})
-@PropertySource("classpath:/application.properties")
+@PropertySource(value = "file:${user.home}/application.properties")
 public class SpringRootConfiguration {
 
     @Autowired

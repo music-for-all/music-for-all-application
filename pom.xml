@@ -20,7 +20,7 @@
 
     <properties>
         <application.version>1.1.0</application.version>
-        <fileapi.version>1.1.0</fileapi.version>
+        <fileapi.version>1.2.0</fileapi.version>
         <common.version>1.1.0</common.version>
 
 
@@ -180,6 +180,11 @@
                 <configuration>
                     <instrumentation>
                         <ignoreTrivial>true</ignoreTrivial>
+                        <ignoreMethodAnnotations>
+                            <ignoreMethodAnnotation>
+                                javax.annotation.PostConstruct
+                            </ignoreMethodAnnotation>
+                        </ignoreMethodAnnotations>
                     </instrumentation>
                     <check>
                         <haltOnFailure>true</haltOnFailure>
@@ -187,7 +192,7 @@
                             <regex>
                                 <pattern>com.musicforall.files.manager.*</pattern>
                                 <branchRate>80</branchRate>
-                                <lineRate>69</lineRate>
+                                <lineRate>80</lineRate>
                             </regex>
                             <regex>
                                 <pattern>com.musicforall.services.*</pattern>
