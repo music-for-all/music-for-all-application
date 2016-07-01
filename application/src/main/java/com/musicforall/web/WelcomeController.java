@@ -20,6 +20,12 @@ public class WelcomeController {
     @RequestMapping("/welcome")
     public String welcome(Model model, HttpServletRequest request) {
         LOG.debug("Requested /welcome");
+
+        /* Check if there has been an authentication failure. */
+        Object exception = request.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
+        if (exception != null)
+            model.addAttribute("SPRING_SECURITY_LAST_EXCEPTION", exception);
+
         model.addAttribute("request", request);
         return "welcome";
     }

@@ -40,9 +40,9 @@
                     </ul>
                     #if ($request.getParameter('error'))
                         <div>
-                            Failed to login.
+                            Failed to login:
                             #if(${SPRING_SECURITY_LAST_EXCEPTION})
-                                Reason: ${SPRING_SECURITY_LAST_EXCEPTION.message}
+                                ${SPRING_SECURITY_LAST_EXCEPTION.message}
                             #end
                         </div>
                     #elseif ($request.getParameter('logout'))
