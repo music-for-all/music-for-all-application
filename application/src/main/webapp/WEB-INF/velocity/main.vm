@@ -136,19 +136,36 @@
         $('#addPlaylistModal').modal('show');
     });
 
-    function deleteTrack(o, id) {
+    function deleteTrack(row, id) {
         track.remove(id).then(function () {
-            var p = o.parentNode.parentNode;
-            p.parentNode.removeChild(p);
+            row.remove();
         });
     }
 
     function addTrack(track) {
-        $("#results").append("<tr><td><button type='button' class='btn btn-xs btn-success'>" +
-        "<span class='glyphicon glyphicon-play' aria-hidden='true'></span></button>" +
-        "<button type='button' class='btn btn-xs btn-danger' onclick='deleteTrack(this," + track.id + ")'>" +
-        "<span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button>" +
-        "</td><td>" + track.name + "</td></tr>");
+        var playButton = $("<button>").attr({
+            class: "btn btn-xs btn-success"
+        }).append($("<span>").attr({
+            class: "glyphicon glyphicon-play"
+        }));
+
+        var deleteButton = $("<button>").attr({
+            class: "btn btn-xs btn-danger"
+        }).append($("<span>").attr({
+            class: "glyphicon glyphicon-remove"
+        }));
+
+        deleteButton.on("click", function (e) {
+            deleteTrack(row, track.id)
+        });
+
+        var row = $("<tr>")
+                .append($("<td>")
+                        .append(playButton)
+                        .append(deleteButton))
+                .append($("<td>").html(track.name));
+
+        $("#results").append(row);
     }
 
     function clearTracks() {
