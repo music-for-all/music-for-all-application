@@ -97,13 +97,13 @@
 </div>
 <script type="text/template" class="tableRowTemplate">
     <tbody>
-    <% _.each(data.tracks, function(track){ %>
-    <tr>
+    <% _.each(data, function(track){ %>
+    <tr id="<%= track.id %>">
         <td>
             <button type='button' class='btn btn-xs btn-success'>
                 <span class='glyphicon glyphicon-play' aria-hidden='true'/>
             </button>
-            <button type='button' class='btn btn-xs btn-danger'>
+            <button type='button' class='btn btn-xs btn-danger delete-song-button'>
                 <span class='glyphicon glyphicon-remove' aria-hidden='true'/>
             </button>
         </td>
@@ -117,8 +117,8 @@
 <script language="javascript">
     var playlist = new Playlist();
     var track = new Track();
-    _.templateSettings.variable = "data";
 
+    _.templateSettings.variable = "data";
     var template = _.template(
             $("script.tableRowTemplate").html()
     );
@@ -131,7 +131,7 @@
         playlist.get($('#playlists li.active').attr('id'))
                 .then(function (response) {
                     $("#results").find("thead").after(
-                            template(response)
+                            template(response.tracks)
                     );
                 });
     });
@@ -157,41 +157,17 @@
         $('#deletePlaylistModal').modal('show');
     });
 
-    $('#createPlaylistButton').on('click', function (e) { //Button which call modal window
+    $('#createPlaylistButton').on('click', function (e) {
         $('#addPlaylistModal').modal('show');
     });
 
-    function deleteTrack(row, id) {
+    $("#results").on("click", ".delete-song-button", function (e) {
+        var row = $(this).closest("tr");
+        var id = row.attr("id");
         track.remove(id).then(function () {
             row.remove();
         });
-    }
-
-    function addTrack(track) {
-        var playButton = $("<button>").attr({
-            class: "btn btn-xs btn-success"
-        }).append($("<span>").attr({
-            class: "glyphicon glyphicon-play"
-        }));
-
-        var deleteButton = $("<button>").attr({
-            class: "btn btn-xs btn-danger"
-        }).append($("<span>").attr({
-            class: "glyphicon glyphicon-remove"
-        }));
-
-        deleteButton.on("click", function (e) {
-            deleteTrack(row, track.id)
-        });
-
-        var row = $("<tr>")
-                .append($("<td>")
-                        .append(playButton)
-                        .append(deleteButton))
-                .append($("<td>").html(track.name));
-
-        $("#results").append(row);
-    }
+    });
 
     function clearTracks() {
         $("#results").find("tr:not(:first)").remove();
