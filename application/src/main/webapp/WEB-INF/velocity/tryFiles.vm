@@ -10,9 +10,9 @@
 </head>
     #@body()
         #navigation([
-            {"isActive": false, "url": "#springUrl('/main')", "title": "Main"},
-            {"isActive": false, "url": "#springUrl('/search')", "title": "Search"},
-            {"isActive": true, "url": "#springUrl('/tryFiles')", "title": "Add track"}
+        {"isActive": false, "url": "#springUrl('/main')", "title": "Main"},
+        {"isActive": false, "url": "#springUrl('/search')", "title": "Search"},
+        {"isActive": true, "url": "#springUrl('/tryFiles')", "title": "Add track"}
         ])
 
     <div class="container">
@@ -38,36 +38,50 @@
                     <div id="fileName" class="control-label" role="alert"></div>
                 </div>
             #end
-            <script>
-
-                $('#file').change(function () {
-                    var filename = $('#file').val();
-                    filename = filename.substring(filename.lastIndexOf("\\") + 1, filename.length);
-                    $('#fileName').html(filename);
-                    $('#result').hide();
-                });
-
-                function uploadJqueryForm() {
-                    if ($('#inputArtist').val() == "" || $('#inputTitle').val() == "") {
-                        return;
-                    }
-                    $('#result').html('');
-
-                    $("#uploadForm").ajaxForm({
-                        success: function (data) {
-                            $('#result').html(data);
-                            $('#result').show();
-                            $('#inputArtist').val('');
-                            $('#inputTitle').val('');
-                            $('#tags').tagsinput('removeAll');
-                        },
-                        dataType: "text"
-                    }).submit();
-
-                }
-            </script>
         </div>
     </div>
     #end
     #footer()
+<script>
+
+    function showFilename() {
+        var filename = $('#file').val();
+        filename = filename.substring(filename.lastIndexOf("\\") + 1, filename.length);
+        $('#fileName').html(filename);
+    }
+
+    function clearInputs() {
+        $('#inputArtist').val('');
+        $('#inputTitle').val('');
+        $('#tags').tagsinput('removeAll');
+    }
+
+    $('#file').change(function () {
+        $('#result').hide();
+        showFilename()
+    });
+
+    function isEmptyInputs() {
+        if ($('#inputArtist').val() == "" || $('#inputTitle').val() == "") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function uploadJqueryForm() {
+        if (!isEmptyInputs()) {
+            $('#result').html('');
+            $("#uploadForm").ajaxForm({
+                success: function (data) {
+                    $('#result').html(data);
+                    $('#result').show();
+                    clearInputs();
+                },
+                dataType: "text"
+            }).submit();
+        }
+    }
+
+</script>
 </html>
