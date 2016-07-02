@@ -44,7 +44,7 @@
 
     <li #if($isActive) class="active" #end>
         <a href="$item.url">
-            <i class="fa"/> $item.title
+            $item.title
         </a>
     </li>
 #end

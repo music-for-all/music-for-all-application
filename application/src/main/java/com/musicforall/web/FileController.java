@@ -49,15 +49,13 @@ public class FileController {
                 final String filepath = manager.getFilePathByName(filename).toString();
                 //(Because track dosn't have constructor with Artist)
                 // Track trackForAdding = new Track(artist, title, filepath);
-                final Track trackForAdding = new Track(artist + " - " + title, filepath);
-
+                final Track trackForAdding = new Track(tags, artist + " - " + title, filepath);
+                trackService.save(trackForAdding);
                 for (final Tag tag : tags) {
                     if (!tagService.isTagExist(tag.getName())) {
                         tagService.save(tag.getName());
                     }
-                    trackForAdding.addTags(tags);
                 }
-                trackService.save(trackForAdding);
             }
             return saved ? "Song successfully saved" : "Something wrong"; //fileApi have problem with returning status
         }
