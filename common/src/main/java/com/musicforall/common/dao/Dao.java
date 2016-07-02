@@ -26,7 +26,8 @@ import java.util.Map.Entry;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class Dao {
     private static final Logger LOG = LoggerFactory.getLogger(Dao.class);
-    private final int batch_size = 20;
+
+    private final int batchSize = 20;
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -41,7 +42,7 @@ public class Dao {
      */
     @SuppressWarnings("unchecked")
     public <T> T get(Class<T> entityClass, Serializable id) {
-        T entity = currentSession().get(entityClass, id);
+        final T entity = currentSession().get(entityClass, id);
         LOG.info("retrieved entity - {}", entity);
         return entity;
     }
@@ -55,12 +56,12 @@ public class Dao {
      */
     @SuppressWarnings("unchecked")
     public <T> List<T> all(Class<T> entityClass) {
-        List<T> entities = currentSession().createCriteria(entityClass).list();
+        final List<T> entities = currentSession().createCriteria(entityClass).list();
         LOG.info("retrieved entites - {}", entities);
         return entities;
     }
 
-    /**
+    /*
      * Persist the given transient instance.
      *
      * @param entity a transient instance of a persistent class
@@ -79,11 +80,11 @@ public class Dao {
      */
     public <T> Collection<T> saveAll(Collection<T> entities) {
         LOG.info("going to save entities - {}", entities);
-        Session session = currentSession();
-        List<T> entitiesList = new ArrayList<>(entities);
+        final Session session = currentSession();
+        final List<T> entitiesList = new ArrayList<>(entities);
         for (int i = 0; i < entities.size(); i++) {
             session.save(entitiesList.get(i));
-            if (i % batch_size == 0) {
+            if (i % batchSize == 0) {
                 session.flush();
                 session.clear();
             }
@@ -112,18 +113,18 @@ public class Dao {
      */
     public <T> T getBy(String hql, Map<String, String> parameters) {
         LOG.info("going to find entity by hql - {}, with parameters - {}", hql, parameters);
-        Query query = currentSession().createQuery(hql);
+        final Query query = currentSession().createQuery(hql);
         query.setProperties(parameters);
-        T entity = (T) query.uniqueResult();
+        final T entity = (T) query.uniqueResult();
         LOG.info("Found entity - {}", entity);
         return entity;
     }
 
     public void update(String sql, Map<String, List<Serializable>> parametrs) {
-        Query query = currentSession().createSQLQuery(sql);
-        for (Entry<String, List<Serializable>> s : parametrs.entrySet())
+        final Query query = currentSession().createSQLQuery(sql);
+        for (final Entry<String, List<Serializable>> s : parametrs.entrySet()) {
             query.setParameterList(s.getKey(), s.getValue());
-
+        }
         query.executeUpdate();
     }
 
@@ -137,7 +138,7 @@ public class Dao {
     @SuppressWarnings("unchecked")
     public <T> List<T> getAllBy(String hql, Map<String, String> parameters) {
         LOG.info("going to find entities by hql - {}, with parameters - {}", hql, parameters);
-        Query query = currentSession().createQuery(hql);
+        final Query query = currentSession().createQuery(hql);
         query.setProperties(parameters);
         List<T> entities = (List<T>) query.list();
         LOG.info("Found entities - {}", entities);
@@ -154,8 +155,8 @@ public class Dao {
      */
     public <T> T getBy(DetachedCriteria criteria) {
         LOG.info("going to find entity by criteria - {}", criteria);
-        Criteria executableCriteria = criteria.getExecutableCriteria(currentSession());
-        T entity = (T) executableCriteria.uniqueResult();
+        final Criteria executableCriteria = criteria.getExecutableCriteria(currentSession());
+        final T entity = (T) executableCriteria.uniqueResult();
         LOG.info("Found entity - {}", entity);
         return entity;
     }
@@ -172,8 +173,8 @@ public class Dao {
     @SuppressWarnings("unchecked")
     public <T> List<T> getAllBy(DetachedCriteria criteria) {
         LOG.info("going to find entities by criteria - {}", criteria);
-        Criteria executableCriteria = criteria.getExecutableCriteria(currentSession());
-        List<T> entities = executableCriteria.list();
+        final Criteria executableCriteria = criteria.getExecutableCriteria(currentSession());
+        final List<T> entities = executableCriteria.list();
         LOG.info("Found entities - {}", entities);
         return entities;
     }
