@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 /**
  * Created by kgavrylchenko on 10.06.16.
@@ -25,5 +26,12 @@ public class SpringRootConfiguration {
     @Qualifier("files")
     public String filesDirectory() {
         return env.getRequiredProperty("files.directory");
+    }
+
+    @Bean(name = "filterMultipartResolver")
+    public CommonsMultipartResolver filterMultipartResolver() {
+        CommonsMultipartResolver filterMultipartResolver = new CommonsMultipartResolver();
+        filterMultipartResolver.setDefaultEncoding("utf-8");
+        return filterMultipartResolver;
     }
 }
