@@ -45,10 +45,9 @@ public class FileController {
         if (!file.isEmpty()) {
             final boolean saved = manager.save(file);
             if (saved) {
-                final String filepath = manager.getFilePathByName(filename).toString();
                 //(Because track dosn't have constructor with Artist)
                 // Track trackForAdding = new Track(artist, title, filepath);
-                final Track trackForAdding = new Track(tags, artist + " - " + title, filepath);
+                final Track trackForAdding = new Track(tags, artist + " - " + title, filename);
                 trackService.save(trackForAdding);
 
                 for (final Tag tag : tags) {
