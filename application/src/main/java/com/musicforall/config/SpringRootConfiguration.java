@@ -28,10 +28,4 @@ public class SpringRootConfiguration {
         return env.getRequiredProperty("files.directory");
     }
 
-    @Bean(name = "filterMultipartResolver")
-    public CommonsMultipartResolver filterMultipartResolver() {
-        CommonsMultipartResolver filterMultipartResolver = new CommonsMultipartResolver();
-        filterMultipartResolver.setDefaultEncoding("utf-8");
-        return filterMultipartResolver;
-    }
 }
