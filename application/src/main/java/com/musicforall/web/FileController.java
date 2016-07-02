@@ -37,19 +37,17 @@ public class FileController {
     private TagService tagService;
 
     @RequestMapping(value = "/files", method = RequestMethod.POST)
-    public
     @ResponseBody
-    String uploadFileHandler(@RequestParam("file") MultipartFile file, @RequestParam("inputTitle") String title,
+    public String uploadFileHandler(@RequestParam("file") MultipartFile file, @RequestParam("inputTitle") String title,
                              @RequestParam("inputArtist") String artist,
                              @RequestParam(value = "tags", required = false) Set<Tag> tags) {
         final String filename = file.getOriginalFilename();
         if (!file.isEmpty()) {
             final boolean saved = manager.save(file);
             if (saved) {
-                final String filepath = manager.getFilePathByName(filename).toString();
                 //(Because track dosn't have constructor with Artist)
                 // Track trackForAdding = new Track(artist, title, filepath);
-                final Track trackForAdding = new Track(artist + " - " + title, filepath);
+                final Track trackForAdding = new Track(artist + " - " + title, filename);
 
                 for (final Tag tag : tags) {
                     if (!tagService.isTagExist(tag.getName())) {
