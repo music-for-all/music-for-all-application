@@ -61,14 +61,15 @@ public class FileManagerTest {
 
     @Test
     public void testGetFileByName() throws Exception {
-        final File copy = get(testDirectory.getAbsolutePath(), "copy.jpg").toFile();
+        final String COPY_FILE = "copy.jpg";
+        final File copy = get(testDirectory.getAbsolutePath(), COPY_FILE).toFile();
         try (FileOutputStream outputStream = new FileOutputStream(copy)) {
             final Path path = manager.getFilePathByName(TEST_FILE_NAME);
             copy(path, outputStream);
         }
 
         assertEquals(size(get(testDirectory.getAbsolutePath(), TEST_FILE_NAME)),
-                size(get(testDirectory.getAbsolutePath(), "copy.jpg")));
+                size(get(testDirectory.getAbsolutePath(), COPY_FILE)));
     }
 
     @Test
