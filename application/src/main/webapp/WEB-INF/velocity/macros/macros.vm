@@ -16,11 +16,11 @@
 
 
 ## #navigagtion(
-##        ({"isActive": false, "url": url, "title": "Title"},
-##         {"isActive": false, "url": url, "title": "Title"})
+##        [{"isActive": false, "url": url, "title": "Title"},
+##         {"isActive": false, "url": url, "title": "Title"}]
 ##              )
 
-#macro(navigagtion $items)
+#macro(navigation $items)
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -44,7 +44,7 @@
 
     <li #if($isActive) class="active" #end>
         <a href="$item.url">
-            <i class="fa"/> $item.title
+            <i class="fa"></i> $item.title
         </a>
     </li>
 #end
