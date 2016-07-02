@@ -9,8 +9,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -21,9 +21,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
@@ -53,7 +51,7 @@ public class PlaylistServiceTest {
     private TrackService trackService;
 
     @Test
-    @WithMockUser
+    @WithUserDetails
     public void testSavePlaylist() {
         final Playlist savedPlaylist = playlistService.save(PLAYLIST_1);
 
@@ -62,7 +60,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    @WithMockUser(username = "user1", password = "password1")
+    @WithUserDetails("user1")
     public void testGetAllUserPlaylist() {
         final Playlist playlist1 = playlistService.save(PLAYLIST_1);
         playlistService.save(PLAYLIST_2);
@@ -76,7 +74,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    @WithMockUser
+    @WithUserDetails
     public void testDeletePlaylist() {
         final Playlist playlist = playlistService.save(PLAYLIST_2);
         final Integer playlistId = playlist.getId();
@@ -86,7 +84,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    @WithMockUser
+    @WithUserDetails
     public void testGetTracks() {
         final Playlist playlist = playlistService.save("playlist_for_get");
         final Playlist expectedPlaylist = playlistService.get(playlist.getId());
@@ -97,7 +95,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    @WithMockUser(username = "user2", password = "password2")
+    @WithUserDetails("user2")
     public void testGetAllTracksInPlaylistAddTracksToPlaylist() {
         final Playlist playlist = playlistService.save(PLAYLIST_1);
         final Integer playlistId = playlist.getId();
