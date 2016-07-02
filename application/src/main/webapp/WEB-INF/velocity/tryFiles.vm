@@ -9,9 +9,11 @@
     #end
 </head>
     #@body()
-     #navigagtion(
-            {"isActive": false, "url": "ya.ru", "title": "Example 1"},
-             {"isActive": false, "url": "google.com", "title": "Example 2"})
+        #navigation([
+            {"isActive": false, "url": "#springUrl('/main')", "title": "Main"},
+            {"isActive": false, "url": "#springUrl('/search')", "title": "Search"},
+            {"isActive": true, "url": "#springUrl('/tryFiles')", "title": "Add track"}
+        ])
 
     <div class="container">
         <div class="col-md-4 col-md-offset-4 well  ">
@@ -57,6 +59,7 @@
                             $('#result').show();
                             $('#inputArtist').val('');
                             $('#inputTitle').val('');
+                            $('#tags').tagsinput('removeAll');
                         },
                         dataType: "text"
                     }).submit();

@@ -15,12 +15,9 @@
 #end
 
 
-## #navigagtion(
-##        ({"isActive": false, "url": url, "title": "Title"},
-##         {"isActive": false, "url": url, "title": "Title"})
-##              )
 
-#macro(navigagtion $items)
+
+#macro(navigation $items)
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -30,7 +27,7 @@
             <div id="navbar" class="navbar-right navbar-collapse collapse ">
                 <ul class="nav navbar-nav">
                     #foreach($item in $items)
-                        #navigationItem($item)
+                        #naviationItem($item)
                     #end
                 </ul>
             </div>
@@ -38,13 +35,13 @@
     </nav>
 #end
 
-#macro(navigationItem $item)
+#macro(naviationItem $item)
     #set($isActive = false)
     #set($isActive = $item.isActive)
 
     <li #if($isActive) class="active" #end>
         <a href="$item.url">
-            $item.title
+            <i class="fa"></i> $item.title
         </a>
     </li>
 #end
