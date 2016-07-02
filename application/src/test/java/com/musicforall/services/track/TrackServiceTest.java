@@ -41,7 +41,7 @@ public class TrackServiceTest {
 
     @Test
     public void testSaveTrackWithoutTags() {
-        final Track track = new Track("into the wild", "path1");
+        final Track track = new Track("test_artist", "into the wild", "path1");
         trackService.save(track);
         assertNotNull(trackService.get(track.getId()));
     }
@@ -49,7 +49,7 @@ public class TrackServiceTest {
     @Test
     public void testSaveTrackWithTags() {
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag(ROCK), new Tag("alternative")));
-        final Track track = new Track(tags, "Maybe", "path2");
+        final Track track = new Track(tags,"Artst", "Maybe", "path2");
 
         trackService.save(track);
         assertNotNull(trackService.get(track.getId()));
@@ -57,7 +57,7 @@ public class TrackServiceTest {
 
     @Test
     public void testGetTracks() {
-        final Track track = trackService.save(new Track("track_for_test_get", "location"));
+        final Track track = trackService.save(new Track("artist_for_test_get", "track_for_test_get", "location"));
         final Track expectedTrack = trackService.get(track.getId());
 
         assertNotNull(expectedTrack);
@@ -67,8 +67,8 @@ public class TrackServiceTest {
 
     @Test
     public void testSaveSetTracks() {
-        final Track track1 = new Track("track1", LOC_1);
-        final Track track2 = new Track("track2", "loc2");
+        final Track track1 = new Track("artist1", "track1", LOC_1);
+        final Track track2 = new Track("artist2", "track2", "loc2");
 
         trackService.saveAll(new HashSet<>(Arrays.asList(track1, track2)));
         assertNotNull(trackService.get(track1.getId()));
@@ -77,7 +77,7 @@ public class TrackServiceTest {
 
     @Test
     public void testDeleteTrack() {
-        final Track track = trackService.save(new Track("track_for_delete", "l1"));
+        final Track track = trackService.save(new Track("artist_for_delete", "track_for_delete", "l1"));
         trackService.delete(track.getId());
 
         assertNull(trackService.get(track.getId()));
@@ -85,7 +85,7 @@ public class TrackServiceTest {
 
     @Test
     public void testAddTagsToSong() {
-        final Track track1 = new Track("track_for_tags", LOC_1);
+        final Track track1 = new Track("artist_for_tags", "track_for_tags", LOC_1);
         trackService.save(track1);
         final Set<Tag> tagsForTrack = new HashSet<Tag>(Arrays.asList(new Tag(ROCK),
                 new Tag("pop")));

@@ -1,8 +1,8 @@
 package com.musicforall.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.musicforall.model.Track;
 import com.musicforall.model.Tag;
+import com.musicforall.model.Track;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -50,9 +50,11 @@ public class SearchController {
         Tag t = new Tag();
         t.setName("music");
         tag.add(t);
-        array.add(new Track(tag, search, location));
+        ////todo: rewrite for using constructor with Artist
+        array.add(new Track(tag, search, search, location));
         for (int i = 0; i < listCategory.size(); i++) {
-            array.add(new Track(tag, listCategory.get(i), location));
+            //todo: rewrite for using constructor with Artist
+            array.add(new Track(tag, listCategory.get(i), listCategory.get(i), location));
         }
         return array;
     }

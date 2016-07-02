@@ -30,6 +30,10 @@ public class Track implements Serializable {
     private Set<Tag> tags;
 
     @Size(min = 2, max = 30)
+    @Column(name = "artist", nullable = false)
+    private String artist;
+
+    @Size(min = 2, max = 30)
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -39,13 +43,15 @@ public class Track implements Serializable {
     public Track() {
     }
 
-    public Track(Set<Tag> tags, String name, String location) {
+    public Track(Set<Tag> tags, String artist, String name, String location) {
         this.tags = tags;
+        this.artist= artist;
         this.name = name;
         this.location = location;
     }
 
-    public Track(String name, String location) {
+    public Track(String artist, String name, String location) {
+        this.artist= artist;
         this.name = name;
         this.location = location;
     }
@@ -73,6 +79,14 @@ public class Track implements Serializable {
         this.location = location;
     }
 
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
     public String getName() {
         return name;
     }
@@ -91,7 +105,7 @@ public class Track implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, tags, name, location);
+        return Objects.hash(id, tags, artist, name, location);
     }
 
     @Override
@@ -105,6 +119,7 @@ public class Track implements Serializable {
         final Track other = (Track) obj;
         return Objects.equals(this.id, other.id)
                 && Objects.equals(this.tags, other.tags)
+                && Objects.equals(this.artist, other.artist)
                 && Objects.equals(this.name, other.name)
                 && Objects.equals(this.location, other.location);
     }
@@ -114,8 +129,11 @@ public class Track implements Serializable {
         return "Track{" +
                 "id='" + id + '\'' +
                 "tags='" + tags + '\'' +
+                ", artist='" + artist + '\'' +
                 ", name='" + name + '\'' +
                 ", location='" + location + '\'' +
                 '}';
     }
+
+
 }

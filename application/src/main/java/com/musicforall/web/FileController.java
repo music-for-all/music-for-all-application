@@ -48,7 +48,7 @@ public class FileController {
                 final String filepath = manager.getFilePathByName(filename).toString();
                 //(Because track dosn't have constructor with Artist)
                 // Track trackForAdding = new Track(artist, title, filepath);
-                final Track trackForAdding = new Track(tags, artist + " - " + title, filepath);
+                final Track trackForAdding = new Track(tags, artist, title, filepath);
                 trackService.save(trackForAdding);
 
                 for (final Tag tag : tags) {
