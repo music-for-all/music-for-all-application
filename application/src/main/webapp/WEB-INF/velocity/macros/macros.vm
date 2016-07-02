@@ -31,7 +31,7 @@
             <div id="navbar" class="navbar-right navbar-collapse collapse ">
                 <ul class="nav navbar-nav">
                     #foreach($item in $items)
-                        #naviationItem($item)
+                        #navigationItem($item)
                     #end
                 </ul>
             </div>
@@ -39,7 +39,7 @@
     </nav>
 #end
 
-#macro(naviationItem $item)
+#macro(navigationItem $item)
     #set($isActive = false)
     #set($isActive = $item.isActive)
 
@@ -62,22 +62,15 @@
     </footer>
 #end
 
-#macro(form $action $method)
-    <form action= #springUrl($action) method=$method>
+#macro(form $id $action $method $enctype)
+    <form id=$id action= #springUrl($action) method=$method #if($method=="post"||$method=="POST") enctype=$enctype #end>
         <input type="hidden" name="$!{_csrf.parameterName}" value="$!{_csrf.token}"/>
         $!bodyContent##
     </form>
 #end
 
-#macro(formDetail $id $action $method $enctype)
-<form id=$id action= #springUrl($action) method=$method enctype=$enctype>
-    <input type="hidden" name="$!{_csrf.parameterName}" value="$!{_csrf.token}"/>
-    $!bodyContent##
-</form>
-#end
-
 #macro(logoutForm)
-    #@form('/logout',"post")
+    #@form("logoutform",'/logout', "post", "application/x-www-form-urlencoded")
         <input type="submit" value="Log out" class="btn btn-default"/>
     #end
 #end
