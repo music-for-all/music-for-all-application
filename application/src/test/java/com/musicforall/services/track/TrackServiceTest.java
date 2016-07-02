@@ -16,9 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.*;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -49,7 +47,7 @@ public class TrackServiceTest {
     @Test
     public void testSaveTrackWithTags() {
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag(ROCK), new Tag("alternative")));
-        final Track track = new Track(tags,"Artst", "Maybe", "path2");
+        final Track track = new Track(tags, "Artst", "Maybe", "path2");
 
         trackService.save(track);
         assertNotNull(trackService.get(track.getId()));

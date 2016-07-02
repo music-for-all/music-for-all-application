@@ -3,7 +3,6 @@ package com.musicforall.web;
 import com.musicforall.files.manager.FileManager;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
-import com.musicforall.services.tag.TagService;
 import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,9 +31,6 @@ public class FileController {
 
     @Autowired
     private TrackService trackService;
-
-    @Autowired
-    private TagService tagService;
 
     @RequestMapping(value = "/files", method = RequestMethod.POST)
     @ResponseBody
