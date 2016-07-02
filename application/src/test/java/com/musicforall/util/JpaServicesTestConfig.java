@@ -37,7 +37,7 @@ public class JpaServicesTestConfig {
     public LocalSessionFactoryBean sessionFactory() {
         final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[]{"com.musicforall", "com.musicforall.common"});
+        sessionFactory.setPackagesToScan(new String[] {"com.musicforall.model"});
         sessionFactory.setHibernateProperties(additionalProperties());
         return sessionFactory;
     }
