@@ -25,6 +25,7 @@ public class FileManager {
     @Autowired
     @Qualifier("files")
     private String taleDirectory;
+
     private String workingDirectory;
 
     @PostConstruct
@@ -35,9 +36,11 @@ public class FileManager {
     }
 
     public boolean save(final MultipartFile file) {
-        long savedBytes;
         final Path path = Paths.get(workingDirectory, file.getOriginalFilename());
-        if (Files.exists(path)) return false;
+        if (Files.exists(path)) {
+            return false;
+        }
+        long savedBytes;
         try {
             savedBytes = Files.copy(file.getInputStream(), path);
         } catch (IOException e) {
@@ -49,8 +52,9 @@ public class FileManager {
 
     public Path getFilePathByName(final String fileName) {
         final Path path = Paths.get(workingDirectory, fileName);
-        if (!Files.exists(path)) return null;
-
+        if (!Files.exists(path)) {
+            return null;
+        }
         return path;
     }
 }
