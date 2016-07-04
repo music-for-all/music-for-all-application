@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Upload File Request Page</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
-    <script src="http://malsup.github.com/jquery.form.js"></script>
+
 </head>
-<body>
+
+<head>
+    <title>Upload File Request Page</title>
+    #@head()
+        <script src="http://malsup.github.com/jquery.form.js"></script>
+    #end
+</head>
+
+    #@body()
 <form id="uploadForm" method="POST" action="/files" enctype="multipart/form-data">
     <input name="file" id="file" type="file"/><br/>
 </form>
@@ -28,5 +34,5 @@
         }).submit();
     }
 </script>
-</body>
+    #end
 </html>

@@ -1,20 +1,22 @@
+#parse("macros/macros.vm")
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Welcome</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    #@head()
 
-    <script src="resources/js/jquery.min.js"></script>
-    <script src="resources/js/bootstrap.min.js"></script>
-    <script src="resources/js/welcomepage.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/resources/css/welcomepage.css" rel="stylesheet">
-    <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
-    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet">
+        <script src="resources/js/welcomepage.js"></script>
+
+        <link href="/resources/css/welcomepage.css" rel="stylesheet">
+        <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
+        <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic"
+              rel="stylesheet">
+
+    #end
 </head>
-<body>
+    #@body()
 <div class="intro-header">
     <div class="container">
         <div class="row">
@@ -55,5 +57,5 @@
     </div>
 </div>
 
-</body>
+    #end
 </html>

@@ -1,79 +1,32 @@
+#parse("macros/macros.vm")
+#parse("macros/popup_macros.vm")
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Main</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="resources/js/jquery.min.js"></script>
-    <script src="resources/js/bootstrap.min.js"></script>
-    <script src="resources/js/mainpage.js"></script>
+    #@head()
 
-    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/resources/css/mainpage.css" rel="stylesheet">
-    <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
-    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+        <script src="resources/js/mainpage.js"></script>
+
+        <link href="/resources/css/mainpage.css" rel="stylesheet">
+        <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
+        <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic"
+              rel="stylesheet">
+
+    #end
 </head>
-<body>
 
-<div id="addPlaylistModal" class="modal fade">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Adding playlist</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="inputNamePlaylist" class="col-sm-2 control-label">Name:</label>
-                    <input type="text" class="form-control" id="inputNamePlaylist" placeholder="Name">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="acceptCreatingPlaylistButton" type="button" class="btn btn-success">Add</button>
-            </div>
-        </div>
-    </div>
-</div>
+    #@body()
 
-<div id="deletePlaylistModal" class="modal fade">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Deleting playlist</h4>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal">No</button>
-                <button type="button" id="acceptRemovingPlaylistButton" class="btn btn-danger" data-dismiss="modal">Yes
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Music for all</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#springUrl('/main')">Main</a></li>
-                <li><a href="#springUrl('/search')">Search</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+        #popUpAdd("addPlaylistModal")
+
+        #popUpDelete("deletePlaylistModal")
+
+        #navigation([{"isActive": true, "url": '/main', "title": "Main"},
+        {"isActive": false, "url": '/search', "title": "Search"}])
+
 <div class="container">
     <div id="resultsd" class="well col-md-9 ">
         <table id="results" class="table table-hover table-striped table-condensed ">
@@ -144,5 +97,5 @@
         ajaxGetPlaylists();
     });
 </script>
-</body>
+    #end
 </html>
