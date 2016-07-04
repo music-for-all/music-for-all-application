@@ -38,16 +38,16 @@ public class SearchController {
                                 @RequestParam("category") String jsonCategory)
             throws IOException {
         LOG.debug("Requested /searchQuery");
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<String> listCategory = objectMapper.readValue(
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final List<String> listCategory = objectMapper.readValue(
                 jsonCategory,
                 objectMapper.getTypeFactory().constructCollectionType(
                         List.class, String.class));
 
-        Set<Track> array = new HashSet<>();
-        Set<Tag> tag = new HashSet<>();
-        String location = "/home/andrey/MusicForAll";
-        Tag t = new Tag();
+        final Set<Track> array = new HashSet<>();
+        final Set<Tag> tag = new HashSet<>();
+        final String location = "/home/andrey/MusicForAll";
+        final Tag t = new Tag();
         t.setName("music");
         tag.add(t);
         array.add(new Track(tag, search, location));

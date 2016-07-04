@@ -40,7 +40,7 @@ public class MainController {
     public String dummyAddPlaylist(@RequestParam("playlist") String name) {
         LOG.debug("Requested /addPlaylist");
 
-        Playlist playlist = new Playlist();
+        final Playlist playlist = new Playlist();
         playlist.setName(name);
         return MAIN;
     }
