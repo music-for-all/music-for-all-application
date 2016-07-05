@@ -1,9 +1,6 @@
 #parse("macros/macros.vm")
 <!DOCTYPE html>
 <html lang="en">
-<head>
-
-</head>
 
 <head>
     <title>Upload File Request Page</title>
