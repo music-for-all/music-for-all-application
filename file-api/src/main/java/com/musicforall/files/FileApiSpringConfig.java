@@ -21,7 +21,7 @@ public class FileApiSpringConfig {
 
     @Bean
     public CommonsMultipartResolver multipartResolver() {
-        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        final CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setDefaultEncoding("utf-8");
         resolver.setMaxUploadSizePerFile(Long.valueOf(env.getRequiredProperty("web.max_upload_size_per_file")));
         return resolver;

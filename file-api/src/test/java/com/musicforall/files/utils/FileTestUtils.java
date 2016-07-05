@@ -8,9 +8,9 @@ import java.nio.file.Paths;
  */
 public final class FileTestUtils {
     public static File createTestDirectory() {
-        String projectDitPath = System.getProperty("user.dir");
-        String testDirPath = Paths.get(projectDitPath, "src", "test", "testDir").toString();
-        File testDirectory = new File(testDirPath);
+        final String projectDitPath = System.getProperty("user.dir");
+        final String testDirPath = Paths.get(projectDitPath, "src", "test", "testDir").toString();
+        final File testDirectory = new File(testDirPath);
         testDirectory.mkdirs();
         return testDirectory;
     }

@@ -33,12 +33,12 @@ function ajaxSearch(searchQuery, selectedCategory) {
 }
 
 function search() {
-    var searchQuery = $('#word').val(); //Key-word for searching
+    var searchQuery = $("#word").val(); //Key-word for searching
     if (searchQuery.length > 40) {
         searchQuery = searchQuery.substr(0, 40); //Trimming long line
     }
     var selectedCategory = []; //Array with categories
-    $('input:checkbox[name=category]:checked').each(function () {
+    $("input:checkbox[name=category]:checked").each(function () {
         selectedCategory.push($(this).val());
     });
     console.log("Query for searching: " + searchQuery);

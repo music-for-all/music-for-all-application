@@ -31,8 +31,11 @@ import static org.powermock.api.easymock.PowerMock.verifyAll;
 public class FileManagerTest {
 
     public static final String TEST_FILE_NAME = "resource.jpg";
+
     private static final URL resourceUrl = FileManagerTest.class.getClassLoader().getResource("test_resource.jpg");
+
     private static File testDirectory;
+
     private static FileManager manager;
 
     @BeforeClass
@@ -58,20 +61,21 @@ public class FileManagerTest {
 
     @Test
     public void testGetFileByName() throws Exception {
-        File copy = get(testDirectory.getAbsolutePath(), "copy.jpg").toFile();
+        final String COPY_FILE = "copy.jpg";
+        final File copy = get(testDirectory.getAbsolutePath(), COPY_FILE).toFile();
         try (FileOutputStream outputStream = new FileOutputStream(copy)) {
             final Path path = manager.getFilePathByName(TEST_FILE_NAME);
             copy(path, outputStream);
         }
 
         assertEquals(size(get(testDirectory.getAbsolutePath(), TEST_FILE_NAME)),
-                size(get(testDirectory.getAbsolutePath(), "copy.jpg")));
+                size(get(testDirectory.getAbsolutePath(), COPY_FILE)));
     }
 
     @Test
     public void testSaveToNull() throws Exception {
         try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), TEST_FILE_NAME))) {
-            MockMultipartFile file = new MockMultipartFile("file", null, null, inputStream);
+            final MockMultipartFile file = new MockMultipartFile("file", null, null, inputStream);
             assertFalse(manager.save(file));
         }
     }
@@ -79,7 +83,7 @@ public class FileManagerTest {
     @Test
     public void testSaveAlreadyExistingFile() throws Exception {
         try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), TEST_FILE_NAME))) {
-            MockMultipartFile file = new MockMultipartFile("file", "saveAlreadyExisted.jpg", null, inputStream);
+            final MockMultipartFile file = new MockMultipartFile("file", "saveAlreadyExisted.jpg", null, inputStream);
             manager.save(file);
             assertFalse(manager.save(file));
         }
@@ -101,7 +105,7 @@ public class FileManagerTest {
 
         final Path testFilePath = get(testDirectory.getAbsolutePath(), TEST_FILE_NAME);
         try (InputStream inputStream = new FileInputStream(testFilePath.toFile())) {
-            MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, inputStream);
+            final MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, inputStream);
             assertFalse(manager.save(file));
             verifyAll();
         }

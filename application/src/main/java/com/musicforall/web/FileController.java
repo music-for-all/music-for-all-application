@@ -29,8 +29,8 @@ public class FileController {
     @ResponseBody
     public String uploadFileHandler(@RequestParam("file") MultipartFile file) {
         if (!file.isEmpty()) {
-            boolean saved = manager.save(file);
-            return saved ? "Hurray!" : "Oops!";
+            final boolean saved = manager.save(file);
+            return saved ? "success" : "error";
         }
         return "File is empty";
     }
@@ -39,13 +39,12 @@ public class FileController {
     public void getFileHandler(HttpServletResponse response, @PathVariable("fileName") String name) {
         final Optional<Path> filePath = Optional.of(manager.getFilePathByName(name));
         filePath.ifPresent(file -> {
-                    try {
-                        Files.copy(file, response.getOutputStream());
-                    } catch (IOException e) {
-                        LOG.error("Streaming failed!", e);
-                    }
-                }
-        );
+            try {
+                Files.copy(file, response.getOutputStream());
+            } catch (IOException e) {
+                LOG.error("Streaming failed!", e);
+            }
+        });
     }
 
     @RequestMapping(value = "/tryFiles", method = RequestMethod.GET)
