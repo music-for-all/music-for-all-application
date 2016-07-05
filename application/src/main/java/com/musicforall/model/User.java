@@ -30,7 +30,7 @@ public class User implements UserDetails, Serializable {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Size(min = 4, max = 32)
+    @Size(min = 4, max = 128)
     @Column(nullable = false)
     private String password;
 
