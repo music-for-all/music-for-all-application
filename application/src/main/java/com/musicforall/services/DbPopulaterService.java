@@ -3,6 +3,7 @@ package com.musicforall.services;
 import com.musicforall.model.User;
 import com.musicforall.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -15,6 +16,9 @@ public class DbPopulaterService {
 
     @PostConstruct
     private void addSampleUsers() {
-        userService.save(new User("dev", "password", "dev@musicforall.com"));
+        userService.save(new User(
+                "dev",
+                new StandardPasswordEncoder().encode("password"),
+                "dev@musicforall.com"));
     }
 }
