@@ -115,8 +115,9 @@
     </tbody>
 </script>
 <script language="javascript">
-    var playlist = new Playlist();
-    var track = new Track();
+    var contextPath = "#springUrl('')";
+    var playlist = new Playlist(contextPath);
+    var track = new Track(contextPath);
 
     _.templateSettings.variable = "data";
     var template = _.template(
