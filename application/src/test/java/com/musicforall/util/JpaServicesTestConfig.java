@@ -19,9 +19,7 @@ import java.util.Properties;
  */
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({"com.musicforall.model",
-        "com.musicforall.common.dao",
-        "com.musicforall.util",
+@ComponentScan({"com.musicforall.common.dao",
         "com.musicforall.services"})
 public class JpaServicesTestConfig {
 
