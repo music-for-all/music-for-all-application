@@ -7,6 +7,8 @@ import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,19 +36,26 @@ public class FileController {
 
     @RequestMapping(value = "/files", method = RequestMethod.POST)
     @ResponseBody
-    public String uploadFileHandler(@RequestParam("file") MultipartFile file, @RequestParam("inputTitle") String title,
-                                    @RequestParam("inputArtist") String artist,
-                                    @RequestParam(value = "tags", required = false) Set<Tag> tags) {
+    public ResponseEntity<String> uploadFileHandler(@RequestParam("file") MultipartFile file,
+                                                    @RequestParam("inputTitle") String title,
+                                                    @RequestParam("inputArtist") String artist,
+                                                    @RequestParam(value = "tags", required = false) Set<Tag> tags) {
         final String filename = file.getOriginalFilename();
-        if (!file.isEmpty()) {
-            final boolean saved = manager.save(file);
-            if (saved) {
-                final Track trackForAdding = new Track(tags, artist, title, filename);
-                trackService.save(trackForAdding);
-            }
-            return saved ? "Song successfully saved" : "Something wrong"; //fileApi have problem with returning status
+        if (file.isEmpty()) {
+            return new ResponseEntity<String>("File is empty", HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        return "File is empty";
+        if (manager.getFilePathByName(filename) != null) {
+            return new ResponseEntity<String>("File exist", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        final boolean saved = manager.save(file);
+        if (saved) {
+            final Track trackForAdding = new Track(tags, artist, title, filename);
+            trackService.save(trackForAdding);
+            return new ResponseEntity<String>("Song successfully saved", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @RequestMapping(value = "/files/{fileName:.+}", method = RequestMethod.GET)

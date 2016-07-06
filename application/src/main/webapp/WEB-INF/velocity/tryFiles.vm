@@ -17,7 +17,7 @@
 
     <div class="container">
         <div class="col-md-4 col-md-offset-4 well  ">
-            <div id="result" class="alert alert-info collapse" role="alert"></div>
+            <div id="result" role="alert"></div>
             #@form("uploadForm" "/files?${_csrf.parameterName}=${_csrf.token}" "POST" "multipart/form-data")
                 <input type="text" name="inputArtist" id="inputArtist" class="form-control" placeholder="Artist"
                        required/>
@@ -31,9 +31,9 @@
 
                 <div class="text-center">
                     <label class="btn btn-default btn-file">
-                        Browse file<input type="file" name="file" id="file" style="display:none;">
+                        Browse file<input type="file" name="file" id="file" style="display:none;" required>
                     </label>
-                    <button value="submit" class="btn btn-default btn-primary" onclick="uploadJqueryForm()">Add song
+                    <button type="button" class="btn btn-default btn-primary" onclick="uploadJqueryForm()">Add song
                     </button>
                     <div id="fileName" class="control-label" role="alert"></div>
                 </div>
@@ -62,21 +62,36 @@
     });
 
     function isEmptyInputs() {
-        if ($('#inputArtist').val() == "" || $('#inputTitle').val() == "") {
+        if ($('#inputArtist').val() == "" || $('#inputTitle').val() == "" || $('#file').val() == "") {
+            showMessage("Fill all fields", "warning");
             return true;
         } else {
             return false;
         }
     }
 
+    function showMessage(message, type) {
+        $("#result").removeClass();
+        $('#result').addClass("alert collapse alert-" + type);
+        $('#result').html(message);
+        $('#result').show();
+    }
+
     function uploadJqueryForm() {
+        const max_length_error = 200;
         if (!isEmptyInputs()) {
             $('#result').html('');
             $("#uploadForm").ajaxForm({
                 success: function (data) {
-                    $('#result').html(data);
-                    $('#result').show();
+                    showMessage(data, "success");
                     clearInputs();
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.responseText.length < max_length_error) {
+                        showMessage(xhr.responseText, "danger");
+                    } else {
+                        showMessage(error, "danger");
+                    }
                 },
                 dataType: "text"
             }).submit();
