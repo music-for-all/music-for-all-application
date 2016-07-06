@@ -18,7 +18,7 @@
 ## #navigation([
 ##      {"isActive": false, "url": "#springUrl('/main')", "title": "Main"},
 ##      {"isActive": false, "url": "#springUrl('/search')", "title": "Search"},
-##      {"isActive": true, "url": "#springUrl('/tryFiles')", "title": "Add track"}
+##      {"isActive": true, "url": "#springUrl('/uploadFile')", "title": "Add track"}
 ##      ])
 
 #macro(navigation $items)

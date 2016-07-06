@@ -71,8 +71,8 @@ public class FileController {
         );
     }
 
-    @RequestMapping(value = "/tryFiles", method = RequestMethod.GET)
+    @RequestMapping(value = "/uploadFile", method = RequestMethod.GET)
     public String signUp() {
-        return "tryFiles";
+        return "uploadFile";
     }
 }
