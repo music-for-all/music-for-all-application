@@ -19,10 +19,8 @@ import java.util.Properties;
  * Created by Pukho on 04.07.2016.
  */
 
-
 @Configuration
 @EnableTransactionManagement
-@ComponentScan("com.musicforall")
 @Profile("dev")
 public class HibernateConfigDev {
 
