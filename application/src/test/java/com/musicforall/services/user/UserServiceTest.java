@@ -1,10 +1,14 @@
 package com.musicforall.services.user;
 
+import com.musicforall.config.HibernateConfigDev;
+import com.musicforall.config.SpringRootConfiguration;
 import com.musicforall.model.User;
 import com.musicforall.util.ServicesTestConfig;
+import org.hibernate.Hibernate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -22,6 +26,7 @@ import static org.junit.Assert.*;
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
         UserTestExecutionListener.class})
+@ActiveProfiles("dev")
 public class UserServiceTest {
 
     public static final String USER_1 = "user1";
