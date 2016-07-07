@@ -1,5 +1,7 @@
 package com.musicforall.util;
 
+import com.musicforall.config.HibernateConfigDev;
+import com.musicforall.config.HibernateConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -9,7 +11,9 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @ComponentScan({"com.musicforall.services",
-        "com.musicforall.common"})
-@Import({JpaServicesTestConfig.class})
-public class ServicesTestConfig {
+                "com.musicforall.common"})
+@Import({HibernateConfigDev.class,
+         HibernateConfiguration.class})
+public class ServicesTestConfig{
+
 }
