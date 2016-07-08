@@ -38,10 +38,10 @@ public class FileController {
     public ResponseEntity<String> addPerson(
             @RequestParam("track") String trackJson,
             @RequestParam("file") MultipartFile file) throws IOException {
-        final String filename = file.getOriginalFilename();
         if (file.isEmpty()) {
             return new ResponseEntity<String>("File is empty", HttpStatus.UNPROCESSABLE_ENTITY);
         }
+        final String filename = file.getOriginalFilename();
         if (manager.getFilePathByName(filename) != null) {
             return new ResponseEntity<String>("File exist", HttpStatus.INTERNAL_SERVER_ERROR);
         }
