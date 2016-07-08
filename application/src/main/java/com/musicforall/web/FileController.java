@@ -1,5 +1,6 @@
 package com.musicforall.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musicforall.files.manager.FileManager;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
@@ -36,10 +37,9 @@ public class FileController {
 
     @RequestMapping(value = "/files", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> uploadFileHandler(@RequestParam("file") MultipartFile file,
-                                                    @RequestParam("inputTitle") String title,
-                                                    @RequestParam("inputArtist") String artist,
-                                                    @RequestParam(value = "tags", required = false) Set<Tag> tags) {
+    public ResponseEntity<String> addPerson(
+            @RequestParam("track") String trackJson,
+            @RequestParam("file") MultipartFile file) throws IOException {
         final String filename = file.getOriginalFilename();
         if (file.isEmpty()) {
             return new ResponseEntity<String>("File is empty", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -47,10 +47,10 @@ public class FileController {
         if (manager.getFilePathByName(filename) != null) {
             return new ResponseEntity<String>("File exist", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
         final boolean saved = manager.save(file);
         if (saved) {
-            final Track trackForAdding = new Track(tags, artist, title, filename);
+            final Track trackForAdding = parseJson(trackJson);
+            trackForAdding.setLocation(filename);
             trackService.save(trackForAdding);
             return new ResponseEntity<String>("Song successfully saved", HttpStatus.OK);
         } else {
@@ -74,5 +74,11 @@ public class FileController {
     @RequestMapping(value = "/uploadFile", method = RequestMethod.GET)
     public String signUp() {
         return "uploadFile";
+    }
+
+    private Track parseJson(String trackJson) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        LOG.debug("Parsing Json");
+        return mapper.readValue(trackJson, Track.class);
     }
 }

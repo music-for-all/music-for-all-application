@@ -6,6 +6,9 @@
         <title>Add song</title>
         <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
         <link href="/resources/css/filespage.css" rel="stylesheet">
+        <script src="resources/js/track.js"></script>
+        <meta name="_csrf" content="${_csrf.token}"/>
+        <meta name="_csrf_header" content="${_csrf.headerName}"/>
     #end
 </head>
     #@body()
@@ -43,6 +46,14 @@
     #end
     #footer()
 <script>
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var token = $("meta[name='_csrf']").attr("content");
+    var track = new Track();
+    $.ajaxSetup({
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }
+    });
 
     function showFilename() {
         var filename = $('#file').val();
@@ -81,20 +92,31 @@
         const max_length_error = 200;
         if (!isEmptyInputs()) {
             $('#result').html('');
-            $("#uploadForm").ajaxForm({
-                success: function (data) {
-                    showMessage(data, "success");
-                    clearInputs();
-                },
-                error: function (xhr, status, error) {
-                    if (xhr.responseText.length < max_length_error) {
-                        showMessage(xhr.responseText, "danger");
-                    } else {
-                        showMessage(error, "danger");
-                    }
-                },
-                dataType: "text"
-            }).submit();
+            track.create($('#tags').val(), $('#inputArtist').val(), $('#inputTitle').val())
+                    .then(function (response) {
+                        var formData = new FormData();
+                        formData.append("track", JSON.stringify(response));
+                        formData.append("file", $('input[type=file]')[0].files[0]);
+                        $.ajax({
+                            url: "/files",
+                            type: 'POST',
+                            data: formData,
+                            cache: false,
+                            processData: false,
+                            contentType: false,
+                            success: function (data) {
+                                showMessage(data, "success");
+                                clearInputs();
+                            },
+                            error: function (xhr, status, error) {
+                                if (xhr.responseText.length < max_length_error) {
+                                    showMessage(xhr.responseText, "danger");
+                                } else {
+                                    showMessage(error, "danger");
+                                }
+                            }
+                        });
+                    });
         }
     }
 
