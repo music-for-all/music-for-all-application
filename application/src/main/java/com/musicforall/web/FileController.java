@@ -35,7 +35,7 @@ public class FileController {
 
     @RequestMapping(value = "/files", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addPerson(
+    public ResponseEntity<String> uploadFileHandler(
             @RequestParam("track") String trackJson,
             @RequestParam("file") MultipartFile file) throws IOException {
         if (file.isEmpty()) {

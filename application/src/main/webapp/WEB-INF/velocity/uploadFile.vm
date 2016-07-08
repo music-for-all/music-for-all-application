@@ -90,34 +90,35 @@
 
     function uploadJqueryForm() {
         const max_length_error = 200;
-        if (!isEmptyInputs()) {
-            $('#result').html('');
-            track.create($('#tags').val(), $('#inputArtist').val(), $('#inputTitle').val())
-                    .then(function (response) {
-                        var formData = new FormData();
-                        formData.append("track", JSON.stringify(response));
-                        formData.append("file", $('input[type=file]')[0].files[0]);
-                        $.ajax({
-                            url: "/files",
-                            type: 'POST',
-                            data: formData,
-                            cache: false,
-                            processData: false,
-                            contentType: false,
-                            success: function (data) {
-                                showMessage(data, "success");
-                                clearInputs();
-                            },
-                            error: function (xhr, status, error) {
-                                if (xhr.responseText.length < max_length_error) {
-                                    showMessage(xhr.responseText, "danger");
-                                } else {
-                                    showMessage(error, "danger");
-                                }
-                            }
-                        });
-                    });
+        if (isEmptyInputs()) {
+            return;
         }
+        $('#result').html('');
+        track.create($('#tags').val(), $('#inputArtist').val(), $('#inputTitle').val())
+                .then(function (response) {
+                    var formData = new FormData();
+                    formData.append("track", JSON.stringify(response));
+                    formData.append("file", $('input[type=file]')[0].files[0]);
+                    $.ajax({
+                        url: "/files",
+                        type: 'POST',
+                        data: formData,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        success: function (data) {
+                            showMessage(data, "success");
+                            clearInputs();
+                        },
+                        error: function (xhr, status, error) {
+                            if (xhr.responseText.length < max_length_error) {
+                                showMessage(xhr.responseText, "danger");
+                            } else {
+                                showMessage(error, "danger");
+                            }
+                        }
+                    });
+                });
     }
 
 </script>
