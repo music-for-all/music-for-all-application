@@ -2,7 +2,6 @@ package com.musicforall.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musicforall.files.manager.FileManager;
-import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
@@ -19,7 +18,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * @author Evgeniy on 11.06.2016.
@@ -77,7 +75,7 @@ public class FileController {
     }
 
     private Track parseJson(String trackJson) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new ObjectMapper();
         LOG.debug("Parsing Json");
         return mapper.readValue(trackJson, Track.class);
     }
