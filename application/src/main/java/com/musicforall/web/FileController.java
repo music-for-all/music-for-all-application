@@ -1,6 +1,5 @@
 package com.musicforall.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musicforall.files.manager.FileManager;
 import com.musicforall.model.Track;
 import com.musicforall.services.track.TrackService;
@@ -47,9 +46,8 @@ public class FileController {
         }
         final boolean saved = manager.save(file);
         if (saved) {
-            final Track trackForAdding = /*parseJson(trackJson)*/trackJson;
-            trackForAdding.setLocation(filename);
-            trackService.save(trackForAdding);
+            trackJson.setLocation(filename);
+            trackService.save(trackJson);
             return new ResponseEntity<String>("Song successfully saved", HttpStatus.OK);
         } else {
             return new ResponseEntity<String>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -74,9 +72,4 @@ public class FileController {
         return "uploadFile";
     }
 
-    private Track parseJson(String trackJson) throws IOException {
-        final ObjectMapper mapper = new ObjectMapper();
-        LOG.debug("Parsing Json");
-        return mapper.readValue(trackJson, Track.class);
-    }
 }
