@@ -36,8 +36,8 @@ public class FileController {
     @RequestMapping(value = "/files", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> uploadFileHandler(
-            @RequestParam("track") String trackJson,
-            @RequestParam("file") MultipartFile file) throws IOException {
+            @RequestPart("track") Track trackJson,
+            @RequestPart("file") MultipartFile file) {
         if (file.isEmpty()) {
             return new ResponseEntity<String>("File is empty", HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -47,7 +47,7 @@ public class FileController {
         }
         final boolean saved = manager.save(file);
         if (saved) {
-            final Track trackForAdding = parseJson(trackJson);
+            final Track trackForAdding = /*parseJson(trackJson)*/trackJson;
             trackForAdding.setLocation(filename);
             trackService.save(trackForAdding);
             return new ResponseEntity<String>("Song successfully saved", HttpStatus.OK);

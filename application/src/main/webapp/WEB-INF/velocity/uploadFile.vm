@@ -22,9 +22,9 @@
         <div class="col-md-4 col-md-offset-4 well  ">
             <div id="result" role="alert"></div>
             #@form("uploadForm" "/files?${_csrf.parameterName}=${_csrf.token}" "POST" "multipart/form-data")
-                <input type="text" name="inputArtist" id="inputArtist" class="form-control" placeholder="Artist"
+                <input type="text" name="artist" id="inputArtist" class="form-control" placeholder="Artist"
                        required/>
-                <input type="text" name="inputTitle" id="inputTitle" class="form-control" placeholder="Title" required/>
+                <input type="text" name="name" id="inputTitle" class="form-control" placeholder="Title" required/>
 
                 <div class="form-group">
                     <h4 class="control-label text-center">Tags</h4>
@@ -45,7 +45,7 @@
     </div>
     #end
     #footer()
-<script>
+<script type="text/javascript">
     var header = $("meta[name='_csrf_header']").attr("content");
     var token = $("meta[name='_csrf']").attr("content");
     var track = new Track();
@@ -97,7 +97,9 @@
         track.create($('#tags').val(), $('#inputArtist').val(), $('#inputTitle').val())
                 .then(function (response) {
                     var formData = new FormData();
-                    formData.append("track", JSON.stringify(response));
+                    formData.append('track', new Blob([JSON.stringify(response)], {
+                        type: "application/json"
+                    }));
                     formData.append("file", $('input[type=file]')[0].files[0]);
                     $.ajax({
                         url: "/files",
