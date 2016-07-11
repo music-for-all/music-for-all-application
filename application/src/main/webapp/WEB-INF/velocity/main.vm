@@ -3,11 +3,12 @@
 <html lang="en">
 <head>
     <title>Main</title>
-    #head()
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-    <script src="resources/js/track.js"></script>
-    <script src="resources/js/playlist.js"></script>
+    #@head()
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+        <script src="resources/js/track.js"></script>
+        <script src="resources/js/playlist.js"></script>
+    #end
 </head>
     #@body()
 
