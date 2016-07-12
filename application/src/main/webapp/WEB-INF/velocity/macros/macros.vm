@@ -3,13 +3,14 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-        <script src="//max4cdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
         <link rel="stylesheet"
-              href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquedry-ui.css"/>
+              href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
         <link rel="stylesheet"
               href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-
+        <meta name="_csrf" content="${_csrf.token}"/>
+        <meta name="_csrf_header" content="${_csrf.headerName}"/>
         $!bodyContent##
     </head>
 #end
@@ -28,38 +29,48 @@
                 <a class="navbar-brand" href="#">Music for all</a>
             </div>
 
-            <div id="navbar" class="navbar-right navbar-collapse collapse ">
-                <ul class="nav navbar-nav">
-                    #foreach($item in $items)
+        <div id="navbar" class="navbar-right navbar-collapse collapse ">
+            <ul class="nav navbar-nav">
+                #foreach($item in $items)
                         #navigationItem($item)
                     #end
-                </ul>
-            </div>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
 #end
 
 #macro(navigationItem $item)
     #set($isActive = false)
     #set($isActive = $item.isActive)
 
-    <li #if($isActive) class="active" #end>
-        <a href="$item.url">
-            <i class="fa"></i> $item.title
-        </a>
-    </li>
+<li #if($isActive) class="active" #end>
+    <a href="$item.url">
+        <i class="fa"></i> $item.title
+    </a>
+</li>
 #end
 
 #macro(body )
-    <body>
-        $!bodyContent##
-    </body>
+<body>
+    $!bodyContent##
+    <script type="text/javascript">
+        var header = $("meta[name='_csrf_header']").attr("content");
+        var token = $("meta[name='_csrf']").attr("content");
+
+        $.ajaxSetup({
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            }
+        });
+    </script>
+</body>
 #end
 
 #macro(footer)
-    <footer class="container-fluid">
-        <p>Music for all ©</p>
-    </footer>
+<footer class="container-fluid">
+    <p>Music for all ©</p>
+</footer>
 #end
 
 #macro(form $action $method $id)

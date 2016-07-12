@@ -1,10 +1,9 @@
 #parse("macros/macros.vm")
 <!DOCTYPE html>
 <html lang="en">
-<head>
+    #@head()
     <title>Music For All</title>
-    #head()
-</head>
+    #end
     #@body()
     <h2>Music For All</h2>
     <h3>Index</h3>
