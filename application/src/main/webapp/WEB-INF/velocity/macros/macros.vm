@@ -1,16 +1,17 @@
 #macro(head)
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+        <script src="//max4cdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-<link rel="stylesheet"
-      href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
-<link rel="stylesheet"
-      href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<meta name="_csrf" content="${_csrf.token}"/>
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
-    $!bodyContent##
+        <link rel="stylesheet"
+              href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquedry-ui.css"/>
+        <link rel="stylesheet"
+              href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        $!bodyContent##
+    </head>
 #end
 
 
@@ -20,11 +21,12 @@
 ##              )
 
 #macro(navigation $items)
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Music for all</a>
-        </div>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                $!bodyContent##
+                <a class="navbar-brand" href="#">Music for all</a>
+            </div>
 
         <div id="navbar" class="navbar-right navbar-collapse collapse ">
             <ul class="nav navbar-nav">
@@ -70,15 +72,15 @@
 </footer>
 #end
 
-#macro(form $action $method)
-<form action= #springUrl($action) method=$method>
-    <input type="hidden" name="$!{_csrf.parameterName}" value="$!{_csrf.token}"/>
-    $!bodyContent##
-</form>
+#macro(form $action $method $id)
+    <form id="$id" action="#springUrl($action)" method="$method">
+        <input type="hidden" name="$!{_csrf.parameterName}" value="$!{_csrf.token}"/>
+        $!bodyContent##
+    </form>
 #end
 
 #macro(logoutForm)
-    #@form('/logout',"post")
-    <input type="submit" value="Log out" class="btn btn-default"/>
+    #@form('/logout',"post", "logout-form")
+        <input type="submit" value="Log out" class="btn btn-default"/>
     #end
 #end
