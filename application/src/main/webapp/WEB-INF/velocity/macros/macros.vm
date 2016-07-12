@@ -60,15 +60,15 @@
     </footer>
 #end
 
-#macro(form $action $method)
-    <form action= #springUrl($action) method=$method>
+#macro(form $action $method $id)
+    <form id="$id" action="#springUrl($action)" method="$method">
         <input type="hidden" name="$!{_csrf.parameterName}" value="$!{_csrf.token}"/>
         $!bodyContent##
     </form>
 #end
 
 #macro(logoutForm)
-    #@form('/logout',"post")
+    #@form('/logout',"post", "logout-form")
         <input type="submit" value="Log out" class="btn btn-default"/>
     #end
 #end
