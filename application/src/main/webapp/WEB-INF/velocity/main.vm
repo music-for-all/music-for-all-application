@@ -2,100 +2,94 @@
 #parse("macros/popup_macros.vm")
 <!DOCTYPE html>
 <html lang="en">
-<head>
+#@head()
     <title>Main</title>
-    #@head()
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="resources/js/mainpage.js"></script>
+    <link href="/resources/css/mainpage.css" rel="stylesheet">
+    <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic"
+          rel="stylesheet">
+#end
 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+#@body()
 
-        <script src="resources/js/mainpage.js"></script>
+    #popUpAdd("addPlaylistModal")
 
-        <link href="/resources/css/mainpage.css" rel="stylesheet">
-        <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
-        <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic"
-              rel="stylesheet">
+    #popUpDelete("deletePlaylistModal")
 
-    #end
-</head>
-
-    #@body()
-
-        #popUpAdd("addPlaylistModal")
-
-        #popUpDelete("deletePlaylistModal")
-
-        #navigation([{"isActive": true, "url": '/main', "title": "Main"},
+    #navigation([{"isActive": true, "url": '/main', "title": "Main"},
         {"isActive": false, "url": '/search', "title": "Search"}])
 
-<div class="container">
-    <div id="resultsd" class="well col-md-9 ">
-        <table id="results" class="table table-hover table-striped table-condensed ">
-            <thead>
-            <tr>
-                <th>Actions</th>
-                <th>Artist</th>
-                <th>Title</th>
-                <th>Duration</th>
-            </tr>
-            </thead>
-        </table>
+    <div class="container">
+        <div id="resultsd" class="well col-md-9 ">
+            <table id="results" class="table table-hover table-striped table-condensed ">
+                <thead>
+                <tr>
+                    <th>Actions</th>
+                    <th>Artist</th>
+                    <th>Title</th>
+                    <th>Duration</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div class="well  col-md-2 col-md-offset-1  ">
+            <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">Create playlist</button>
+            <button id="removePlaylistButton" class="btn  btn-danger btn-block" type="button">Remove selected</button>
+
+            <ul id="playlists" class="nav nav-pills nav-stacked">
+                <li id="0" class="active"><a href="#" data-value="All">All</a></li>
+            </ul>
+        </div>
     </div>
+    <script language="javascript">
 
-    <div class="well  col-md-2 col-md-offset-1  ">
-        <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">Create playlist</button>
-        <button id="removePlaylistButton" class="btn  btn-danger btn-block" type="button">Remove selected</button>
+        $('#playlists').on('click', 'a', function (e) {
+            e.preventDefault();
+            $("#playlists li").removeClass("active");
+            $(this).closest('li').addClass('active');
+            clearAll();
+            ajaxGetPlaylist($('#playlists li.active').attr('id'));
+        });
 
-        <ul id="playlists" class="nav nav-pills nav-stacked">
-            <li id="0" class="active"><a href="#" data-value="All">All</a></li>
-        </ul>
-    </div>
-</div>
-<script language="javascript">
+        $('#acceptRemovingPlaylistButton').on('click', function (e) {
+            if ($('#playlists li.active').index() != 0) {
+                // alert("Deleted playlist with ID: " + $("#playlists li.active").attr('id'));
+                ajaxDeletePlaylist($('#playlists li.active').attr('id'));
+                clearAllPlaylists();
+                ajaxGetPlaylists();
+                //$("#playlists li.active").remove();
+            } else {
+                alert("This playlist cannot be deleted");
+            }
+        });
 
-    $('#playlists').on('click', 'a', function (e) {
-        e.preventDefault();
-        $("#playlists li").removeClass("active");
-        $(this).closest('li').addClass('active');
-        clearAll();
-        ajaxGetPlaylist($('#playlists li.active').attr('id'));
-    });
-
-    $('#acceptRemovingPlaylistButton').on('click', function (e) {
-        if ($('#playlists li.active').index() != 0) {
-            // alert("Deleted playlist with ID: " + $("#playlists li.active").attr('id'));
-            ajaxDeletePlaylist($('#playlists li.active').attr('id'));
+        $('#acceptCreatingPlaylistButton').on('click', function (e) {
+            ajaxAddPlaylist(document.getElementById('inputNamePlaylist').value)
             clearAllPlaylists();
             ajaxGetPlaylists();
-            //$("#playlists li.active").remove();
-        } else {
-            alert("This playlist cannot be deleted");
-        }
-    });
+            $('#addPlaylistModal').modal('hide');
+        });
 
-    $('#acceptCreatingPlaylistButton').on('click', function (e) {
-        ajaxAddPlaylist(document.getElementById('inputNamePlaylist').value)
-        clearAllPlaylists();
-        ajaxGetPlaylists();
-        $('#addPlaylistModal').modal('hide');
-    });
+        $('#removePlaylistButton').on('click', function (e) {
+            if ($('#playlists li.active').index() == 0) {
+                alert("This playlist cannot be deleted");
+            } else {
+                $('#deletePlaylistModal').modal('show');
+            }
+        });
 
-    $('#removePlaylistButton').on('click', function (e) {
-        if ($('#playlists li.active').index() == 0) {
-            alert("This playlist cannot be deleted");
-        } else {
-            $('#deletePlaylistModal').modal('show');
-        }
-    });
+        $('#createPlaylistButton').on('click', function (e) { //Button which call modal window
+            $('#addPlaylistModal').modal('show');
+        });
 
-    $('#createPlaylistButton').on('click', function (e) { //Button which call modal window
-        $('#addPlaylistModal').modal('show');
-    });
-
-    $(document).ready(function () {
-        clearAll();
-        clearAllPlaylists();
-        ajaxGetPlaylists();
-    });
-</script>
-    #end
+        $(document).ready(function () {
+            clearAll();
+            clearAllPlaylists();
+            ajaxGetPlaylists();
+        });
+    </script>
+#end
 </html>

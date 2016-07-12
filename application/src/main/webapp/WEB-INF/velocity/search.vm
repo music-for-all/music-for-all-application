@@ -1,19 +1,17 @@
 #parse("macros/macros.vm")
 <!DOCTYPE html>
 <html lang="en">
-<head>
+#@head()
     <title>Search</title>
-    #@head()
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script src="resources/js/searchpage.js"></script>
+    <script src="resources/js/searchpage.js"></script>
 
-        <link href="/resources/css/searchpage.css" rel="stylesheet">
-        <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
-        <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic"
-              rel="stylesheet">
-    #end
-</head>
+    <link href="/resources/css/searchpage.css" rel="stylesheet">
+    <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic"
+          rel="stylesheet">
+#end
 #@body()
 
     #@navigation([{"isActive": false, "url": '/search', "title": "Search"}],
