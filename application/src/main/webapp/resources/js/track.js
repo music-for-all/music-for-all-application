@@ -4,8 +4,14 @@
 function Track() {
 
     var self = this;
-
-    self.create = function (tags, artist, name) {
-        return $.when($.post("/tracks", {"tags": tags, "artist": artist, "name": name}));
-    };
+    
+    self.createJson = function (tags,artist,name) {
+        var obj = new Object();
+        obj.tags= tags.split(",");
+        obj.artist  = artist;
+        obj.name = name;
+        obj.location= "unknown";
+        var jsonString= JSON.stringify(obj);
+        return jsonString;
+    }
 }

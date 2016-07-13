@@ -94,33 +94,31 @@
             return;
         }
         $('#result').html('');
-        track.create($('#tags').val(), $('#inputArtist').val(), $('#inputTitle').val())
-                .then(function (response) {
-                    var formData = new FormData();
-                    formData.append('track', new Blob([JSON.stringify(response)], {
-                        type: "application/json"
-                    }));
-                    formData.append("file", $('input[type=file]')[0].files[0]);
-                    $.ajax({
-                        url: "/files",
-                        type: 'POST',
-                        data: formData,
-                        cache: false,
-                        processData: false,
-                        contentType: false,
-                        success: function (data) {
-                            showMessage(data, "success");
-                            clearInputs();
-                        },
-                        error: function (xhr, status, error) {
-                            if (xhr.responseText.length < max_length_error) {
-                                showMessage(xhr.responseText, "danger");
-                            } else {
-                                showMessage(error, "danger");
-                            }
-                        }
-                    });
-                });
+        var formData = new FormData();
+        var jsTrack = track.createJson($('#tags').val(), $('#inputArtist').val(), $('#inputTitle').val());
+        formData.append('track', new Blob([jsTrack], {
+            type: "application/json"
+        }));
+        formData.append("file", $('#file')[0].files[0]);
+        $.ajax({
+            url: "/files",
+            type: 'POST',
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                showMessage(data, "success");
+                clearInputs();
+            },
+            error: function (xhr, status, error) {
+                if (xhr.responseText.length < max_length_error) {
+                    showMessage(xhr.responseText, "danger");
+                } else {
+                    showMessage(error, "danger");
+                }
+            }
+        });
     }
 
 </script>
