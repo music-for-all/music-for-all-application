@@ -40,11 +40,10 @@
             <id>mysql</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
-                <property>
-                    <name>spring.profiles.active</name>
-                    <value>mysql</value>
-                </property>
             </activation>
+            <properties>
+                <spring.profile>mysql</spring.profile>
+            </properties>
             <dependencies>
                 <!-- Database -->
                 <dependency>
@@ -56,12 +55,9 @@
         </profile>
         <profile>
             <id>dev</id>
-            <activation>
-                <property>
-                    <name>spring.profiles.active</name>
-                    <value>dev</value>
-                </property>
-            </activation>
+            <properties>
+                <spring.profile>dev</spring.profile>
+            </properties>
         </profile>
     </profiles>
 
