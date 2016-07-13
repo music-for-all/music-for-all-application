@@ -33,12 +33,12 @@ function ajaxSearch(searchQuery, selectedCategory) {
 }
 
 function search() {
-    var searchQuery = $('#word').val(); //Key-word for searching
+    var searchQuery = $("#word").val(); //Key-word for searching
     if (searchQuery.length > 40) {
         searchQuery = searchQuery.substr(0, 40); //Trimming long line
     }
     var selectedCategory = []; //Array with categories
-    $('input:checkbox[name=category]:checked').each(function () {
+    $("input:checkbox[name=category]:checked").each(function () {
         selectedCategory.push($(this).val());
     });
     console.log("Query for searching: " + searchQuery);
@@ -46,23 +46,4 @@ function search() {
     if (searchQuery !== "") {
         ajaxSearch(searchQuery, selectedCategory);
     }
-}
-
-function ajaxAddSong(AddId) {
-    var header = $("meta[name='_csrf_header']").attr("content");
-    var token = $("meta[name='_csrf']").attr("content");
-    $.ajax({
-        type: "POST",
-        url: "/addSong",
-        data: "songId=" + AddId,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader(header, token);
-        },
-        success: function () {
-            console.log("Request to add was submitted successfully");
-        },
-        error: function () {
-            alert("Error while request..");
-        }
-    });
 }
