@@ -39,8 +39,10 @@ public class SearchRestController {
         t.setName("music");
         tag.add(t);
         array.add(new Track(tag, search, location));
+        Track track;
         for (int i = 0; i < listCategory.size(); i++) {
-            array.add(new Track(tag, listCategory.get(i), location));
+            track = new Track(tag, listCategory.get(i), location);
+            array.add(track);
         }
         return array;
     }
