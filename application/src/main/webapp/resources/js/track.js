@@ -4,14 +4,13 @@
 function Track() {
 
     var self = this;
-    
-    self.createJson = function (tags,artist,name) {
+
+    self.createJson = function (tags, artist, name) {
         var obj = new Object();
-        obj.tags= tags.split(",");
-        obj.artist  = artist;
+        obj.tags = tags.split(",");
+        obj.artist = artist;
         obj.name = name;
-        obj.location= "unknown";
-        var jsonString= JSON.stringify(obj);
-        return jsonString;
+        obj.location = "unknown";
+        return JSON.stringify(obj);
     }
 }
