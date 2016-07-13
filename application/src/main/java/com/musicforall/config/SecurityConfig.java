@@ -3,7 +3,7 @@ package com.musicforall.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -14,8 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -52,8 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationSuccessHandler successHandler() {
 
-        final SavedRequestAwareAuthenticationSuccessHandler authSuccessHandler =
-                new SavedRequestAwareAuthenticationSuccessHandler();
+        final CustomAuthenticationSuccessHandler authSuccessHandler =
+                new CustomAuthenticationSuccessHandler();
         authSuccessHandler.setDefaultTargetUrl("/");
         return authSuccessHandler;
     }
@@ -61,18 +59,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationFailureHandler failureHandler() {
 
-        final SimpleUrlAuthenticationFailureHandler authFailureHandler = new SimpleUrlAuthenticationFailureHandler();
+        final CustomAuthenticationFailureHandler authFailureHandler =
+                new CustomAuthenticationFailureHandler();
         authFailureHandler.setDefaultFailureUrl("/welcome?error");
         return authFailureHandler;
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider());
+    }
 
-        final DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        final CustomAuthenticationProvider authenticationProvider = new CustomAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-        auth.authenticationProvider(authenticationProvider);
+        return authenticationProvider;
     }
 
     @Bean
