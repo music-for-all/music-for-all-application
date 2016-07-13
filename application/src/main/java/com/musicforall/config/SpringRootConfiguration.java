@@ -13,6 +13,7 @@ import org.springframework.core.env.Environment;
 @ComponentScan({"com.musicforall.common",
         "com.musicforall.services"})
 @Import({HibernateConfiguration.class,
+        HibernateConfigDev.class,
         FileApiSpringConfig.class,
         SecurityConfig.class})
 @PropertySource(value = "file:${user.home}/application.properties")
