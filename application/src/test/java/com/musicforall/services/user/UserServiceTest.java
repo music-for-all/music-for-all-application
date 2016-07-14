@@ -46,8 +46,10 @@ public class UserServiceTest {
         final User user = new User("Masha", "123456789", "masha@example.com");
         userService.save(user);
 
-        Assert.assertTrue(user.getId() > 0);
-        assertNotNull(userService.get(user.getId()));
+        Integer id = user.getId();
+        Assert.assertTrue(id > 0);
+        assertNotNull(userService.get(id));
+        userService.delete(id);
     }
 
     @Test
