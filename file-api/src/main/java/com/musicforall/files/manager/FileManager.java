@@ -1,5 +1,6 @@
 package com.musicforall.files.manager;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,18 +39,37 @@ public class FileManager {
     }
 
     public boolean save(final MultipartFile file) {
-        final Path path = Paths.get(workingDirectory, file.getOriginalFilename());
+        long savedBytes = 0L;
+        try (InputStream stream = file.getInputStream()) {
+            savedBytes = save(stream, file.getOriginalFilename());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return savedBytes == file.getSize();
+    }
+
+    public void save(final URL url) {
+        final String fileName = FilenameUtils.getName(url.toString());
+        try (InputStream in = url.openStream()) {
+            save(in, fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private long save(final InputStream stream, final String fileName) {
+        final Path path = Paths.get(workingDirectory, fileName);
         if (Files.exists(path)) {
-            return false;
+            return 0L;
         }
         long savedBytes;
         try {
-            savedBytes = Files.copy(file.getInputStream(), path);
+            savedBytes = Files.copy(stream, path);
         } catch (IOException e) {
             LOG.error("exception during file saving", e);
-            return false;
+            return 0L;
         }
-        return savedBytes == file.getSize();
+        return savedBytes;
     }
 
     public Path getFilePathByName(final String fileName) {
