@@ -65,7 +65,8 @@ public class UserServiceTest {
 
     @Test
     public void testUserDelete() {
-        final User user = userService.getByUsername("user2");
+        final User user = new User("Test", "123456789", "test@example.com");
+        userService.save(user);
         userService.delete(user.getId());
 
         assertNull(userService.get(user.getId()));
