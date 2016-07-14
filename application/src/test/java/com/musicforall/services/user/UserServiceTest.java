@@ -2,13 +2,12 @@ package com.musicforall.services.user;
 
 import com.musicforall.model.User;
 import com.musicforall.util.ServicesTestConfig;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -19,7 +18,8 @@ import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by Pukho on 22.06.2016.
@@ -46,8 +46,8 @@ public class UserServiceTest {
         final User user = new User("Masha", "123456789", "masha@example.com");
         userService.save(user);
 
-        Integer id = user.getId();
-        Assert.assertTrue(id > 0);
+        final Integer id = user.getId();
+        assertTrue(id > 0);
         assertNotNull(userService.get(id));
         userService.delete(id);
     }
