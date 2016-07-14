@@ -84,7 +84,7 @@ public class UserServiceTest {
     @Test
     public void testFindAll() {
         final List<User> users = userService.findAll();
-        assertSame(users.size(), 4);
+        assertEquals(4, users.size());
     }
 
     @Test(expected = UsernameNotFoundException.class)
