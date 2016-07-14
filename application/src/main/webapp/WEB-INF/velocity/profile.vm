@@ -11,7 +11,7 @@
 <p>
     <a href="index" class="btn btn-default">Main Page</a>
 </p>
-<h3>Hello, ${userName}</h3>
+<h3>Hello, ${username}</h3>
 
 #logoutForm()
     #end

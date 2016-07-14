@@ -28,9 +28,9 @@ public class UserBootstrap {
         }
         lock.lock();
 
-        dao.save(new User("user", "password"));
+        dao.save(new User("user", "password", "user@example.com"));
         dao.save(new User("user1", "password1", "user1@gmail.com"));
-        dao.save(new User("user2", "password2"));
+        dao.save(new User("user2", "password2", "user2@example.com"));
 
 
         bootstraped = true;
