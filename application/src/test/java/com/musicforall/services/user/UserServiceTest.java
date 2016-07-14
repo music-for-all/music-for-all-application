@@ -2,6 +2,7 @@ package com.musicforall.services.user;
 
 import com.musicforall.model.User;
 import com.musicforall.util.ServicesTestConfig;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+
+import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
@@ -43,8 +46,8 @@ public class UserServiceTest {
         final User user = new User("Masha", "123456789", "masha@example.com");
         userService.save(user);
 
-        assertNotNull(user.getId());
-        assertNotNull(userService.isUserExist(user.getId()));
+        Assert.assertTrue(user.getId() > 0);
+        assertNotNull(userService.get(user.getId()));
     }
 
     @Test
@@ -58,17 +61,6 @@ public class UserServiceTest {
     public void testGetUserByUserame() {
         assertEquals(userService.getByUsername(USER_1).getUsername(), USER_1);
         assertNull(userService.getByUsername(USER_NOT_EXIST));
-    }
-
-    @Test
-    public void testIsUserExist() {
-        assertTrue(userService.isUserExist(USER_1));
-        final Integer userId = userService.getIdByUsername(USER_1);
-        assertTrue(userService.isUserExist(userId));
-
-        final User user = new User("user3", "12345789", "user3@example.com");
-        assertFalse(userService.isUserExist(user.getUsername()));
-        assertFalse(userService.isUserExist(user.getId()));
     }
 
     @Test
@@ -91,7 +83,7 @@ public class UserServiceTest {
 
     @Test
     public void testFindAll() {
-        final Collection<User> users = userService.findAll();
+        final List<User> users = userService.findAll();
         assertSame(users.size(), 4);
     }
 
