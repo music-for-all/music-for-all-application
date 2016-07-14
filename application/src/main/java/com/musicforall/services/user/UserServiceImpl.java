@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Pukho on 16.06.2016.
@@ -41,15 +41,6 @@ public class UserServiceImpl implements UserService {
         return dao.get(User.class, id);
     }
 
-
-    @Override
-    public boolean isUserExist(Integer userId) {
-        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
-                .add(Property.forName("id").eq(userId));
-
-        return dao.getBy(detachedCriteria) != null;
-    }
-
     @Override
     public Integer getIdByUsername(String username) {
         final User user = getByUsername(username);
@@ -66,11 +57,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isUserExist(String username) {
-        return getByUsername(username) != null;
-    }
-
-    @Override
     public User getByUsername(String username) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
                 .add(Property.forName("username").eq(username));
@@ -79,7 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Collection<User> findAll() {
+    public List<User> findAll() {
         return dao.all(User.class);
     }
 
