@@ -90,7 +90,7 @@ public class UserServiceTest {
     public void testFindAll() {
         List<User> usersInDB = userBootstrap.bootstrapedEntities();
         List<User> users = userService.findAll();
-        int numUsers = users.size();
+        final int numUsers = users.size();
         assertEquals(usersInDB.size(), numUsers);
 
         /* Add another user to ensure that findAll returns one more entry. */
