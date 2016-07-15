@@ -15,7 +15,6 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @Profile("mysql")
-@PropertySource(value = "file:${user.home}/application.properties")
 public class HibernateConfiguration {
 
     @Autowired
