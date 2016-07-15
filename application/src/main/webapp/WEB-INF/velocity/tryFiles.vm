@@ -1,32 +1,34 @@
+#parse("macros/macros.vm")
 <!DOCTYPE html>
 <html lang="en">
-<head>
+#@head()
     <title>Upload File Request Page</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
     <script src="http://malsup.github.com/jquery.form.js"></script>
-</head>
-<body>
-<form id="uploadForm" method="POST" action="/files" enctype="multipart/form-data">
-    <input name="file" id="file" type="file"/><br/>
-</form>
+#end
 
-<button value="Submit" onclick="uploadJqueryForm()">Upload</button>
-<i>Using JQuery Form Plugin</i><br/>
 
-<audio id="player" src="/files/Angel Duster.mp3" controls preload="none"></audio>
+#@body()
+    <form id="uploadForm" method="POST" action="/files" enctype="multipart/form-data">
+        <input name="file" id="file" type="file"/><br/>
+    </form>
 
-<div id="result"></div>
-<script>
-    function uploadJqueryForm() {
-        $('#result').html('');
+    <button value="Submit" onclick="uploadJqueryForm()">Upload</button>
+    <i>Using JQuery Form Plugin</i><br/>
 
-        $("#uploadForm").ajaxForm({
-            success: function (data) {
-                $('#result').html(data);
-            },
-            dataType: "text"
-        }).submit();
-    }
-</script>
-</body>
+    <audio id="player" src="/files/Angel Duster.mp3" controls preload="none"></audio>
+
+    <div id="result"></div>
+    <script>
+        function uploadJqueryForm() {
+            $('#result').html('');
+
+            $("#uploadForm").ajaxForm({
+                success: function (data) {
+                    $('#result').html(data);
+                },
+                dataType: "text"
+            }).submit();
+        }
+    </script>
+#end
 </html>

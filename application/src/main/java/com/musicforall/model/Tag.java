@@ -21,6 +21,12 @@ public class Tag implements Serializable {
     @Column(name = "name", unique = true)
     private String name;
 
+    public Tag() {
+    }
+
+    public Tag(String name) {
+        this.name = name;
+    }
 
     public String getName() {
         return name;
@@ -29,14 +35,6 @@ public class Tag implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
-    public Tag() {
-    }
-
-    public Tag(String name) {
-        this.name = name;
-    }
-
 
     @Override
     public int hashCode() {

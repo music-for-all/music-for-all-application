@@ -47,22 +47,3 @@ function search() {
         ajaxSearch(searchQuery, selectedCategory);
     }
 }
-
-function ajaxAddSong(AddId) {
-    var header = $("meta[name='_csrf_header']").attr("content");
-    var token = $("meta[name='_csrf']").attr("content");
-    $.ajax({
-        type: "POST",
-        url: "/addSong",
-        data: "songId=" + AddId,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader(header, token);
-        },
-        success: function () {
-            console.log("Request to add was submitted successfully");
-        },
-        error: function () {
-            alert("Error while request..");
-        }
-    });
-}

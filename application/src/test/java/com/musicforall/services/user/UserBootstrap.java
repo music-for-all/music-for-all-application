@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -28,9 +29,9 @@ public class UserBootstrap {
         }
         lock.lock();
 
-        dao.save(new User("user", "password"));
+        dao.save(new User("user", "password", "user@example.com"));
         dao.save(new User("user1", "password1", "user1@gmail.com"));
-        dao.save(new User("user2", "password2"));
+        dao.save(new User("user2", "password2", "user2@example.com"));
 
 
         bootstraped = true;
@@ -44,6 +45,10 @@ public class UserBootstrap {
                 .forEach(dao::delete);
         bootstraped = false;
         lock.unlock();
+    }
+
+    public List<User> bootstrapedEntities() {
+        return dao.all(User.class);
     }
 
     public void setDao(Dao dao) {

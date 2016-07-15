@@ -1,5 +1,5 @@
 #macro(popUp $id)
-    <div id= "$id" class="modal fade">
+    <div id="$id" class="modal fade">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 $!bodyContent##

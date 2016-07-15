@@ -18,7 +18,9 @@
     </modules>
 
 
+
     <properties>
+
         <application.version>1.1.0</application.version>
         <fileapi.version>1.2.0</fileapi.version>
         <common.version>1.1.0</common.version>
@@ -32,6 +34,33 @@
 
     </properties>
 
+
+    <profiles>
+        <profile>
+            <id>mysql</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <spring.profile>mysql</spring.profile>
+            </properties>
+            <dependencies>
+                <!-- Database -->
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <version>5.1.39</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <spring.profile>dev</spring.profile>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
         <!-- Spring -->
         <dependency>
@@ -44,6 +73,8 @@
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
         </dependency>
+
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
@@ -94,12 +125,7 @@
             <version>5.2.4.Final</version>
         </dependency>
 
-        <!-- Database -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.39</version>
-        </dependency>
+
 
         <!-- Template engine -->
         <dependency>
