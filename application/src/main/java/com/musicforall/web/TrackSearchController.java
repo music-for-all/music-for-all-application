@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.PostConstruct;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -28,11 +27,11 @@ public class TrackSearchController {
     @Autowired
     private TrackService trackService;
 
-    private static final Logger log = LoggerFactory.getLogger("TrackSearchController");
+    private static final Logger LOG = LoggerFactory.getLogger("TrackSearchController");
 
     @PostConstruct
     private void addSampleRecords() {
-        log.info("Post construct");
+        LOG.info("Post construct");
         trackService.save(new Track("Track 1", "/track1.mp3"));
         trackService.save(new Track("Track 2", "/track2.mp3"));
     }
