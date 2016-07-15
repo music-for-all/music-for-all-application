@@ -29,7 +29,7 @@ public class FileController {
     @ResponseBody
     public String uploadFileHandler(@RequestParam("file") MultipartFile file) {
         if (!file.isEmpty()) {
-            Optional<Path> saved = Optional.of(manager.save(file));
+            final Optional<Path> saved = Optional.of(manager.save(file));
             return saved.isPresent() ? "success" : "error";
         }
         return "File is empty";

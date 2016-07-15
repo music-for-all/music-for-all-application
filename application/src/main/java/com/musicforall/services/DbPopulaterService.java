@@ -3,6 +3,8 @@ package com.musicforall.services;
 import com.musicforall.files.manager.FileManager;
 import com.musicforall.model.User;
 import com.musicforall.services.user.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import java.net.URL;
 
 @Service
 public class DbPopulaterService {
+    private static final Logger LOG = LoggerFactory.getLogger(DbPopulaterService.class);
 
     @Autowired
     private UserService userService;
@@ -25,7 +28,7 @@ public class DbPopulaterService {
         try {
             fileManager.save(new URL("http://cdndl.zaycev.net/46015/2158629/garbage_-_cherry_lips_(zaycev.net).mp3"));
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            LOG.error("downloading failed", e);
         }
     }
 }
