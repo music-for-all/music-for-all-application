@@ -5,7 +5,6 @@ import com.musicforall.model.Track;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -15,13 +14,12 @@ import java.util.Set;
 /**
  * @author Evgeniy on 26.06.2016.
  */
-@Controller
+@RestController
 @RequestMapping("/tracks")
-public class TrackController {
+public class TrackRestController {
     private static final Logger LOG = LoggerFactory.getLogger(MainController.class);
 
     @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
     public Track createTrack(@RequestParam("name") String name) {
         final Track track = new Track();
         track.setId(name.hashCode());
@@ -30,7 +28,6 @@ public class TrackController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @ResponseBody
     public HttpStatus deleteTrack(@PathVariable("id") Integer id) {
         final Track track = new Track();
         track.setId(id);
@@ -39,7 +36,6 @@ public class TrackController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseBody
     public Track getTrack(@PathVariable("id") Integer id) {
         final Track track = new Track();
         track.setId(id);
@@ -55,7 +51,6 @@ public class TrackController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
     public Collection<Track> getTracks() {
         final Track track0 = new Track();
         track0.setId(0);

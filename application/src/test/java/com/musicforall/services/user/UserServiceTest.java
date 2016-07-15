@@ -41,6 +41,9 @@ public class UserServiceTest {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserBootstrap userBootstrap;
+
     @Test
     public void testSaveUser() {
         final User user = new User("Masha", "123456789", "masha@example.com");
@@ -49,7 +52,6 @@ public class UserServiceTest {
         final Integer id = user.getId();
         assertTrue(id > 0);
         assertNotNull(userService.get(id));
-        userService.delete(id);
     }
 
     @Test
@@ -60,7 +62,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testGetUserByUserame() {
+    public void testGetUserByUsername() {
         assertEquals(userService.getByUsername(USER_1).getUsername(), USER_1);
         assertNull(userService.getByUsername(USER_NOT_EXIST));
     }
@@ -86,8 +88,10 @@ public class UserServiceTest {
 
     @Test
     public void testFindAll() {
+        final List<User> usersInDB = userBootstrap.bootstrapedEntities();
         final List<User> users = userService.findAll();
-        assertEquals(4, users.size());
+        assertEquals(usersInDB.size(), users.size());
+        assertTrue(users.stream().allMatch(usersInDB::contains));
     }
 
     @Test(expected = UsernameNotFoundException.class)

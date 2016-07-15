@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -44,6 +45,10 @@ public class UserBootstrap {
                 .forEach(dao::delete);
         bootstraped = false;
         lock.unlock();
+    }
+
+    public List<User> bootstrapedEntities() {
+        return dao.all(User.class);
     }
 
     public void setDao(Dao dao) {
