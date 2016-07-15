@@ -5,7 +5,6 @@ import com.musicforall.model.Track;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -15,13 +14,12 @@ import java.util.Set;
 /**
  * @author ENikolskiy.
  */
-@Controller
+@RestController
 @RequestMapping("/playlists")
-public class PlaylistController {
+public class PlaylistRestController {
     private static final Logger LOG = LoggerFactory.getLogger(MainController.class);
 
     @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
     public Playlist createPlaylist(@RequestParam("name") String name) {
         final Playlist playlist = new Playlist();
         playlist.setId(name.hashCode());
@@ -30,7 +28,6 @@ public class PlaylistController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @ResponseBody
     public HttpStatus deletePlaylist(@PathVariable("id") Integer id) {
         final Playlist playlist = new Playlist();
         playlist.setId(id);
@@ -39,7 +36,6 @@ public class PlaylistController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseBody
     public Playlist getPlaylist(@PathVariable("id") Integer id) {
         final Playlist playlist = new Playlist();
         playlist.setId(id);
@@ -59,7 +55,6 @@ public class PlaylistController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
     public Collection<Playlist> getPlaylists() {
         final Playlist playlist0 = new Playlist();
         playlist0.setId(0);
