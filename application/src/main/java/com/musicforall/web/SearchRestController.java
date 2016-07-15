@@ -2,7 +2,6 @@ package com.musicforall.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musicforall.model.Track;
-import com.musicforall.model.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -33,15 +32,11 @@ public class SearchRestController {
                         List.class, String.class));
 
         final Set<Track> array = new HashSet<>();
-        final Set<Tag> tag = new HashSet<>();
         final String location = "/home/andrey/MusicForAll";
-        final Tag t = new Tag();
-        t.setName("music");
-        tag.add(t);
-        array.add(new Track(tag, search, location));
-        Track track;
-        for (int i = 0; i < listCategory.size(); i++) {
-            track = new Track(tag, listCategory.get(i), location);
+        array.add(new Track(search, location));
+        if (!listCategory.isEmpty()) {
+            Track track;
+            track = new Track(listCategory.get(0), location);
             array.add(track);
         }
         return array;
