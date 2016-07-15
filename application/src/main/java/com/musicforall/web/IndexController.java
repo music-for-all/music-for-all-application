@@ -35,9 +35,4 @@ public class IndexController {
         model.addAttribute("username", user.getUsername());
         return "profile";
     }
-
-    @RequestMapping("/tracksearch")
-    public String search(Model model) {
-        return "tracksearch";
-    }
 }

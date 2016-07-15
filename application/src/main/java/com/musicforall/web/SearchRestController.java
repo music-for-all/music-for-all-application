@@ -1,18 +1,31 @@
 package com.musicforall.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musicforall.model.Track;
+import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.IOException;
-import java.util.HashSet;
+import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Set;
 
-@RestController
+/**
+ * This RESTful Web service provides the track search facility.
+ */
+@Controller
+@ResponseBody
+@RequestMapping("/api/search")
 public class SearchRestController {
+
+    @Autowired
+    private TrackService trackService;
 
     private static final Logger LOG = LoggerFactory.getLogger(SearchRestController.class);
 
@@ -20,25 +33,39 @@ public class SearchRestController {
         LOG.debug("Search RestController");
     }
 
-    @RequestMapping(value = "/searchQuery", method = RequestMethod.GET)
-    public Set<Track> dummyFind(@RequestParam("search") String search,
-                                @RequestParam("category") String jsonCategory)
-            throws IOException {
-        LOG.debug("Requested /searchQuery");
-        final ObjectMapper objectMapper = new ObjectMapper();
-        final List<String> listCategory = objectMapper.readValue(
-                jsonCategory,
-                objectMapper.getTypeFactory().constructCollectionType(
-                        List.class, String.class));
+    @PostConstruct
+    private void addSampleRecords() {
+        LOG.info("Post construct");
+        trackService.save(new Track("Track 1", "/track1.mp3"));
+        trackService.save(new Track("Track 2", "/track2.mp3"));
+    }
 
-        final Set<Track> array = new HashSet<>();
-        final String location = "/home/andrey/MusicForAll";
-        array.add(new Track(search, location));
-        if (!listCategory.isEmpty()) {
-            Track track;
-            track = new Track(listCategory.get(0), location);
-            array.add(track);
+    /**
+     * Searches tracks by the specified <code>query</code> in the specified <code>category</code>.
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity search(@RequestParam String query, @RequestParam String category) {
+
+        /* Limit the query string length. */
+        final int MAX_QUERY = 16;
+        final int MIN_QUERY = 2;
+
+        if (query.length() < MIN_QUERY || query.length() > MAX_QUERY) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        return array;
+
+        List<Track> tracks;
+
+        /* Perform search in the appropriate repository corresponding to the category. */
+        switch (category) {
+            case "title":
+                tracks = trackService.getAllByName(query);
+                break;
+            case "artist":
+            case "album":
+            default:
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<List<Track>>(tracks, HttpStatus.OK);
     }
 }
