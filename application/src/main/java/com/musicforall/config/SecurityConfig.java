@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         final CustomAuthenticationSuccessHandler authSuccessHandler =
                 new CustomAuthenticationSuccessHandler();
-        authSuccessHandler.setDefaultTargetUrl("/");
+        authSuccessHandler.setTargetUrlParameter("targetUrl");
         return authSuccessHandler;
     }
 
