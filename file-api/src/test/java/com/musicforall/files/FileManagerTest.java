@@ -13,6 +13,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.net.URL;
@@ -52,7 +53,7 @@ public class FileManagerTest {
     }
 
     @Test
-    public void testSave() throws Exception {
+    public void testSaveFile() throws Exception {
         try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), TEST_FILE_NAME))) {
             MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, inputStream);
             assertNotNull(manager.save(file));
@@ -101,5 +102,29 @@ public class FileManagerTest {
             assertNull(manager.save(file));
             verifyAll();
         }
+    }
+
+    @Test
+    public void testSaveByUrl() throws Exception {
+        final URL url = resourceUrl;
+        assertNotNull(manager.save(url));
+    }
+
+    @Test
+    public void saveByUrlWithIOException() throws Exception {
+        final URL url = PowerMock.createMock(URL.class);
+        EasyMock.expect(url.openStream()).andThrow(new IOException());
+        replayAll();
+        assertNull(manager.save(url));
+        verifyAll();
+    }
+
+    @Test
+    public void saveFileWithIOException() throws Exception {
+        final MultipartFile file = PowerMock.createMock(MultipartFile.class);
+        EasyMock.expect(file.getInputStream()).andThrow(new IOException());
+        replayAll();
+        assertNull(manager.save(file));
+        verifyAll();
     }
 }
