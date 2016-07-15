@@ -55,7 +55,7 @@ public class FileManagerTest {
     public void testSave() throws Exception {
         try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), TEST_FILE_NAME))) {
             MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, inputStream);
-            assertTrue(manager.save(file));
+            assertNotNull(manager.save(file));
         }
     }
 
@@ -73,19 +73,11 @@ public class FileManagerTest {
     }
 
     @Test
-    public void testSaveToNull() throws Exception {
-        try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), TEST_FILE_NAME))) {
-            final MockMultipartFile file = new MockMultipartFile("file", null, null, inputStream);
-            assertFalse(manager.save(file));
-        }
-    }
-
-    @Test
     public void testSaveAlreadyExistingFile() throws Exception {
         try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), TEST_FILE_NAME))) {
             final MockMultipartFile file = new MockMultipartFile("file", "saveAlreadyExisted.jpg", null, inputStream);
             manager.save(file);
-            assertFalse(manager.save(file));
+            assertNotNull(manager.save(file));
         }
     }
 
@@ -106,23 +98,7 @@ public class FileManagerTest {
         final Path testFilePath = get(testDirectory.getAbsolutePath(), TEST_FILE_NAME);
         try (InputStream inputStream = new FileInputStream(testFilePath.toFile())) {
             final MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, inputStream);
-            assertFalse(manager.save(file));
-            verifyAll();
-        }
-    }
-
-    @Test
-    public void testNonEqualSize() throws Exception {
-        PowerMock.mockStatic(Files.class);
-
-        EasyMock.expect(copy(anyObject(InputStream.class), anyObject(Path.class))).andReturn(-1L);
-        EasyMock.expect(exists(anyObject(Path.class))).andReturn(false);
-        replayAll();
-
-        final Path testFilePath = get(testDirectory.getAbsolutePath(), TEST_FILE_NAME);
-        try (InputStream inputStream = new FileInputStream(testFilePath.toFile())) {
-            MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, inputStream);
-            assertFalse(manager.save(file));
+            assertNull(manager.save(file));
             verifyAll();
         }
     }

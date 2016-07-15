@@ -38,38 +38,41 @@ public class FileManager {
         dir.mkdirs();
     }
 
-    public boolean save(final MultipartFile file) {
-        long savedBytes = 0L;
-        try (InputStream stream = file.getInputStream()) {
-            savedBytes = save(stream, file.getOriginalFilename());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return savedBytes == file.getSize();
-    }
-
-    public void save(final URL url) {
-        final String fileName = FilenameUtils.getName(url.toString());
-        try (InputStream in = url.openStream()) {
-            save(in, fileName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private long save(final InputStream stream, final String fileName) {
-        final Path path = Paths.get(workingDirectory, fileName);
-        if (Files.exists(path)) {
-            return 0L;
-        }
-        long savedBytes;
-        try {
-            savedBytes = Files.copy(stream, path);
+    public Path save(final MultipartFile file) {
+        Path path;
+        try (InputStream in = file.getInputStream()) {
+            path = save(in, file.getOriginalFilename());
         } catch (IOException e) {
             LOG.error("exception during file saving", e);
-            return 0L;
+            return null;
         }
-        return savedBytes;
+        return path;
+    }
+
+    public Path save(final URL url) {
+        final String fileName = FilenameUtils.getName(url.toString());
+        Path path;
+        try (InputStream in = url.openStream()) {
+            path = save(in, fileName);
+        } catch (IOException e) {
+            LOG.error("exception during file saving", e);
+            return null;
+        }
+        return path;
+    }
+
+    private Path save(final InputStream stream, final String fileName) {
+        final Path path = Paths.get(workingDirectory, fileName);
+        if (Files.exists(path)) {
+            return path;
+        }
+        try {
+            Files.copy(stream, path);
+        } catch (IOException e) {
+            LOG.error("exception during file saving", e);
+            return null;
+        }
+        return path;
     }
 
     public Path getFilePathByName(final String fileName) {
