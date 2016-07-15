@@ -60,7 +60,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testGetUserByUserame() {
+    public void testGetUserByUsername() {
         assertEquals(userService.getByUsername(USER_1).getUsername(), USER_1);
         assertNull(userService.getByUsername(USER_NOT_EXIST));
     }
