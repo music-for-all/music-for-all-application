@@ -88,9 +88,17 @@ public class UserServiceTest {
 
     @Test
     public void testFindAll() {
-        final List<User> usersInDB = userBootstrap.bootstrapedEntities();
-        final List<User> users = userService.findAll();
-        assertEquals(usersInDB.size(), users.size());
+        List<User> usersInDB = userBootstrap.bootstrapedEntities();
+        List<User> users = userService.findAll();
+        int numUsers = users.size();
+        assertEquals(usersInDB.size(), numUsers);
+
+        /* Add another user to ensure that findAll returns one more entry. */
+        userService.save(new User("Test2", "123456789", "test2@example.com"));
+        usersInDB = userBootstrap.bootstrapedEntities();
+        users = userService.findAll();
+        assertEquals(numUsers + 1, users.size());
+
         assertTrue(users.stream().allMatch(usersInDB::contains));
     }
 
