@@ -27,7 +27,8 @@ public class DbPopulateService {
     private final String[] links = {
             "http://cdndl.zaycev.net/46015/2158629/garbage_-_cherry_lips_(zaycev.net).mp3",
             "http://cdndl.zaycev.net/151375/2982474/kendrick_lamar_-_m.a.a.d._city_eprom_remix_(zaycev.net).mp3",
-            "http://cdndl.zaycev.net/151375/1782090/kendrick_lamar_-_swimming_pool_(zaycev.net).mp3"
+            "http://cdndl.zaycev.net/151375/1782090/kendrick_lamar_-_swimming_pool_(zaycev.net).mp3",
+            "http://cdndl.zaycev.net/38302/3956198/drake_-_hotling_bling_(zaycev.net).mp3"
     };
 
     @Autowired
@@ -48,7 +49,7 @@ public class DbPopulateService {
                 .map(link -> new Track(parseTrackLink(link)[1], getName(link)))
                 .collect(Collectors.toSet());
 
-        final Playlist playlist = new Playlist("So much first", tracks, user);
+        final Playlist playlist = new Playlist("Hype", tracks, user);
         playlistService.save(playlist);
 
         try {
