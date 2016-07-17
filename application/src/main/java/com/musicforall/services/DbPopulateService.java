@@ -15,8 +15,6 @@ import javax.annotation.PostConstruct;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -46,14 +44,10 @@ public class DbPopulateService {
         final User user = new User("dev", "password", "dev@musicforall.com");
         userService.save(user);
 
-        final List<String[]> artistAndSong = Arrays.stream(links)
-                .map(this::parseTrackLink)
-                .collect(Collectors.toList());
+        final Set<Track> tracks = Arrays.stream(links)
+                .map(link -> new Track(parseTrackLink(link)[1], getName(link)))
+                .collect(Collectors.toSet());
 
-        final Set<Track> tracks = new HashSet<>();
-        for (int i = 0; i < links.length; i++) {
-            tracks.add(new Track(artistAndSong.get(i)[1], getName(links[i])));
-        }
         final Playlist playlist = new Playlist("So much first", tracks, user);
         playlistService.save(playlist);
 
