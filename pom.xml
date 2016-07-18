@@ -211,11 +211,11 @@
                                 javax.annotation.PostConstruct
                             </ignoreMethodAnnotation>
                         </ignoreMethodAnnotations>
-                        <ignores>
-                            <ignore>
-                                com.musicforall.services.DbPopulateService
-                            </ignore>
-                        </ignores>
+                        <excludes>
+                            <exclude>
+                                com/musicforall/services/DbPopulateService.class
+                            </exclude>
+                        </excludes>
                     </instrumentation>
                     <check>
                         <haltOnFailure>true</haltOnFailure>
