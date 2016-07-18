@@ -26,10 +26,15 @@ public class DbPopulateService {
     private static final Logger LOG = LoggerFactory.getLogger(DbPopulateService.class);
 
     private final String[] links = {
-            "http://cdndl.zaycev.net/46015/2158629/garbage_-_cherry_lips_(zaycev.net).mp3",
-            "http://cdndl.zaycev.net/151375/2982474/kendrick_lamar_-_m.a.a.d._city_eprom_remix_(zaycev.net).mp3",
-            "http://cdndl.zaycev.net/151375/1782090/kendrick_lamar_-_swimming_pool_(zaycev.net).mp3",
-            "http://cdndl.zaycev.net/38302/3956198/drake_-_hotling_bling_(zaycev.net).mp3"
+            "http://dl.last.fm/static/1468876051/131211148" +
+                    "/a3c35916e23dcb5dafd20667e4015eeaa38460c16c45365ad2bcd0098b1266f1/Death+Grips+-+Get+Got.mp3",
+            "http://dl.last.fm/static/1468876051" +
+                    "/126178029/2a3dc38084d8fc698a86888b314a146c25057eb383d639a4d5f5116615ec7935" +
+                    "/Death+Grips+-+Guillotine.mp3",
+            "http://dl.last.fm/static/1468876051/133527789/" +
+                    "76ccb5716e7e9efb54ef1efab70fff2e0aea05e2d0b4866def49bc1167db240a/Death+Grips+-+No+Love.mp3",
+            "http://dl.last.fm/static/1468876051/131211149/" +
+                    "ce5e43359f661b8abdb7d42e406379eca867a90214312b770ddab3ebb2b94adb/Death+Grips+-+Lost+Boys.mp3"
     };
 
     @Autowired
@@ -77,6 +82,6 @@ public class DbPopulateService {
     }
 
     private String[] parseTrackLink(final String link) {
-        return getName(link).replaceAll("_", " ").replace("(zaycev.net).mp3", "").trim().split(" - ");
+        return getName(link).replace("+", " ").trim().split(" - ");
     }
 }
