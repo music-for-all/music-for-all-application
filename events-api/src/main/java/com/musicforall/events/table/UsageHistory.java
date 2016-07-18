@@ -1,15 +1,14 @@
 package com.musicforall.events.table;
 
-/**
- * @author IliaNik on 17.07.2016.
- */
 
 import com.musicforall.events.handlers.EventType;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
-
+/**
+ * @author IliaNik on 17.07.2016.
+ */
 
 @Entity
 @Table(name = "usage_history")
@@ -20,7 +19,7 @@ public class UsageHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "track_id", nullable = false)
+    @Column(name = "track_id")
     private int track_id;
 
     @Column(name = "user_id", nullable = false)
@@ -37,6 +36,46 @@ public class UsageHistory {
         this.user_id = user_id;
         this.date = date;
         this.eventType = eventType;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public EventType getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public int getTrack_id() {
+        return track_id;
+    }
+
+    public void setTrack_id(int track_id) {
+        this.track_id = track_id;
     }
 
     @Override

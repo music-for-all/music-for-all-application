@@ -1,13 +1,15 @@
 package com.musicforall.events.handlers;
 
+import com.musicforall.events.table.UsageHistory;
+
 import java.util.Date;
 
 /**
  * @author IliaNik on 17.07.2016.
  */
-public class AddTrackEvent {
+public class AddTrackEvent implements HistoryEvent {
 
-    private final EventType eventType = EventType.TRACKADDED;
+    private final EventType eventType = EventType.TRACKADD;
 
     private int track_id;
     private int user_id;
@@ -45,5 +47,12 @@ public class AddTrackEvent {
         track_id = builder.track_id;
         user_id = builder.user_id;
         date = builder.date;
+    }
+
+    public UsageHistory getUsageHistory() {
+
+        UsageHistory usageHistory = new UsageHistory(track_id, user_id, date, eventType);
+
+        return usageHistory;
     }
 }

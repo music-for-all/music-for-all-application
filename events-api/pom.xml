@@ -15,4 +15,12 @@
     <packaging>jar</packaging>
 
     <name>events-api</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.music.for.all</groupId>
+            <artifactId>common</artifactId>
+            <version>${common.version}</version>
+        </dependency>
+    </dependencies>
 </project>
