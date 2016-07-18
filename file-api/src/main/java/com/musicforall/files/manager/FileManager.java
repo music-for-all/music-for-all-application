@@ -26,6 +26,7 @@ import static java.util.Objects.requireNonNull;
 @Component
 public class FileManager {
     private static final Logger LOG = LoggerFactory.getLogger(FileManager.class);
+
     private static final String SAVE_ERROR_MSG = "Exception during file saving!";
 
     /**
