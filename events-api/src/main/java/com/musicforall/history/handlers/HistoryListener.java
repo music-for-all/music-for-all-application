@@ -18,7 +18,7 @@ public class HistoryListener {
     @EventListener
     public void handleHistoryEvent(HistoryEvent event) {
 
-        UsageHistory usageHistory = event.getUsageHistory();
+        final UsageHistory usageHistory = event.getUsageHistory();
         dao.save(usageHistory);
 
     }

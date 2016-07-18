@@ -12,7 +12,9 @@ public class AuditionTrackEvent implements HistoryEvent {
     private final EventType eventType = EventType.TRACK_AUDITIONED;
 
     private int trackId;
+
     private int userId;
+
     private Date date = new Date();
 
     public AuditionTrackEvent(int trackId, Date date, int userId) {
