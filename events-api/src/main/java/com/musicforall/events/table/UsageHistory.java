@@ -7,7 +7,7 @@ package com.musicforall.events.table;
 import com.musicforall.events.handlers.EventType;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
+import java.util.Date;
 import java.util.Objects;
 
 
@@ -20,20 +20,19 @@ public class UsageHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "track_id")
+    @Column(name = "track_id", nullable = false)
     private int track_id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private int user_id;
 
-    @Pattern(regexp = "^[0-9]{2}/[0-9]{2}/[0-9]{4} ([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$")
     @Column(name = "date")
-    private String date;
+    private Date date;
 
     @Enumerated(EnumType.STRING)
     private EventType eventType;
 
-    public UsageHistory(int track_id, int user_id, String date, EventType eventType) {
+    public UsageHistory(int track_id, int user_id, Date date, EventType eventType) {
         this.track_id = track_id;
         this.user_id = user_id;
         this.date = date;

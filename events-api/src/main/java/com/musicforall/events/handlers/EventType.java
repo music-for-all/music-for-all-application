@@ -5,5 +5,5 @@ package com.musicforall.events.handlers;
  */
 public enum EventType {
     TRACKADDED, TRACKDELETED,
-    SONGLISTADDED, SONGLISTDELETED
+    PLAYISTADDED, PLAYLISTDELETED
 }
