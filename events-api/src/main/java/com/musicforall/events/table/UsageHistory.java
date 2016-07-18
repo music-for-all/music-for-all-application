@@ -25,7 +25,7 @@ public class UsageHistory {
     @Column(name = "user_id", nullable = false)
     private int user_id;
 
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     private Date date;
 
     @Enumerated(EnumType.STRING)
