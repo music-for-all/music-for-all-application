@@ -13,40 +13,34 @@ public class AuditionTrackEvent implements HistoryEvent {
 
     private int track_id;
     private int user_id;
-    private Date date;
+    private Date date = new Date();
 
-    public static class Builder {
-
-        private int track_id = 0;
-        private int user_id = 0;
-        private Date date = new Date();
-
-
-        public Builder trackID(int val) {
-            track_id = val;
-            return this;
-        }
-
-        public Builder userID(int val) {
-            user_id = val;
-            return this;
-        }
-
-        public Builder date(Date val) {
-            date = val;
-            return this;
-        }
-
-
-        public AuditionTrackEvent build() {
-            return new AuditionTrackEvent(this);
-        }
+    public EventType getEventType() {
+        return eventType;
     }
 
-    private AuditionTrackEvent(Builder builder) {
-        track_id = builder.track_id;
-        user_id = builder.user_id;
-        date = builder.date;
+    public int getTrack_id() {
+        return track_id;
+    }
+
+    public void setTrack_id(int track_id) {
+        this.track_id = track_id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public UsageHistory getUsageHistory() {
