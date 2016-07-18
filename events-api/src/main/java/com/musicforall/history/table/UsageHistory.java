@@ -20,10 +20,10 @@ public class UsageHistory {
     private int id;
 
     @Column(name = "track_id")
-    private int track_id;
+    private int trackId;
 
     @Column(name = "user_id", nullable = false)
-    private int user_id;
+    private int userId;
 
     @Column(name = "date", nullable = false)
     private Date date;
@@ -31,10 +31,10 @@ public class UsageHistory {
     @Enumerated(EnumType.STRING)
     private EventType eventType;
 
-    public UsageHistory(int track_id, int user_id, Date date, EventType eventType) {
-        this.track_id = track_id;
-        this.user_id = user_id;
+    public UsageHistory(int trackId, Date date, int userId, EventType eventType) {
+        this.trackId = trackId;
         this.date = date;
+        this.userId = userId;
         this.eventType = eventType;
     }
 
@@ -46,12 +46,20 @@ public class UsageHistory {
         this.id = id;
     }
 
-    public EventType getEventType() {
-        return eventType;
+    public int getTrackId() {
+        return trackId;
     }
 
-    public void setEventType(EventType eventType) {
-        this.eventType = eventType;
+    public void setTrackId(int trackId) {
+        this.trackId = trackId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public Date getDate() {
@@ -62,25 +70,17 @@ public class UsageHistory {
         this.date = date;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public EventType getEventType() {
+        return eventType;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
-
-    public int getTrack_id() {
-        return track_id;
-    }
-
-    public void setTrack_id(int track_id) {
-        this.track_id = track_id;
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user_id, track_id, date, eventType);
+        return Objects.hash(id, userId, trackId, date, eventType);
     }
 
     @Override
@@ -93,8 +93,8 @@ public class UsageHistory {
         }
         final UsageHistory other = (UsageHistory) obj;
         return Objects.equals(this.id, other.id)
-                && Objects.equals(this.track_id, other.track_id)
-                && Objects.equals(this.user_id, other.user_id)
+                && Objects.equals(this.trackId, other.trackId)
+                && Objects.equals(this.userId, other.userId)
                 && Objects.equals(this.date, other.date)
                 && Objects.equals(this.eventType, other.eventType);
     }
@@ -103,8 +103,8 @@ public class UsageHistory {
     public String toString() {
         return "UsageHistory{" +
                 "id=" + id +
-                ", track_id=" + track_id +
-                ", user_id=" + user_id +
+                ", track_id=" + trackId +
+                ", user_id=" + userId +
                 ", date='" + date + '\'' +
                 ", eventType=" + eventType +
                 '}';

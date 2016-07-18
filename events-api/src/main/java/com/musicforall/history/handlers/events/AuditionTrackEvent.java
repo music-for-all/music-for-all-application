@@ -9,22 +9,36 @@ import java.util.Date;
  */
 public class AuditionTrackEvent implements HistoryEvent {
 
-    private final EventType eventType = EventType.TRACKAUDITIONED;
+    private final EventType eventType = EventType.TRACK_AUDITIONED;
 
-    private int track_id;
-    private int user_id;
+    private int trackId;
+    private int userId;
     private Date date = new Date();
+
+    public AuditionTrackEvent(int trackId, Date date, int userId) {
+        this.trackId = trackId;
+        this.date = date;
+        this.userId = userId;
+    }
 
     public EventType getEventType() {
         return eventType;
     }
 
-    public int getTrack_id() {
-        return track_id;
+    public int getTrackId() {
+        return trackId;
     }
 
-    public void setTrack_id(int track_id) {
-        this.track_id = track_id;
+    public void setTrackId(int trackId) {
+        this.trackId = trackId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public Date getDate() {
@@ -35,18 +49,7 @@ public class AuditionTrackEvent implements HistoryEvent {
         this.date = date;
     }
 
-    public int getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
-
     public UsageHistory getUsageHistory() {
-
-        UsageHistory usageHistory = new UsageHistory(track_id, user_id, date, eventType);
-
-        return usageHistory;
+        return new UsageHistory(trackId, date, userId, eventType);
     }
 }
