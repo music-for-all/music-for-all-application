@@ -25,12 +25,22 @@ import java.nio.file.Paths;
 public class FileManager {
     private static final Logger LOG = LoggerFactory.getLogger(FileManager.class);
 
+    /**
+     * The name of the directory which stores the uploaded files.
+     */
     @Autowired
     @Qualifier("files")
     private String taleDirectory;
 
+    /**
+     * The absolute path to the upload directory.
+     */
     private String workingDirectory;
 
+    /**
+     * Builds the absolute path to the upload directory;
+     * Creates the directory if it does not exist.
+     */
     @PostConstruct
     private void prepareWorkingDirectory() {
         workingDirectory = System.getProperty("user.home") + File.separator + taleDirectory;
@@ -75,8 +85,13 @@ public class FileManager {
         return path;
     }
 
-    public Path getFilePathByName(final String fileName) {
-        final Path path = Paths.get(workingDirectory, fileName);
+    /**
+     * Converts the given filename to the Path containing the full path to the file.
+     * @param filename the filename of the file
+     * @return the path
+     */
+    public Path getFilePathByName(final String filename) {
+        final Path path = Paths.get(workingDirectory, filename);
         if (!Files.exists(path)) {
             return null;
         }
