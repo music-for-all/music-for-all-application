@@ -42,6 +42,11 @@ public class DbPopulateService {
 
     @PostConstruct
     private void populate() {
+        final boolean hasUsers = !userService.findAll().isEmpty();
+        if (hasUsers) {
+            return;
+        }
+
         final User user = new User("dev", "password", "dev@musicforall.com");
         userService.save(user);
 
