@@ -2,6 +2,7 @@ package com.musicforall.services;
 
 import com.musicforall.files.manager.FileManager;
 import com.musicforall.model.Playlist;
+import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
 import com.musicforall.services.playlist.PlaylistService;
@@ -14,10 +15,10 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.io.FilenameUtils.getName;
 
 @Component
@@ -59,14 +60,17 @@ public class DbPopulateService {
         final User user = new User("dev", "password", "dev@musicforall.com");
         userService.save(user);
 
-        final Set<Track> tracks = Arrays.stream(links)
-                .map(link -> new Track(parseTrackLink(link)[1], getName(link)))
-                .collect(Collectors.toSet());
+        final Set<Tag> tags = Stream.of(new Tag("Dummy"), new Tag("Classic"), new Tag("2016"))
+                .collect(toSet());
+
+        final Set<Track> tracks = Stream.of(links)
+                .map(link -> new Track(tags, parseTrackLink(link)[1], getName(link)))
+                .collect(toSet());
 
         final Playlist playlist = new Playlist("Hype", tracks, user);
         playlistService.save(playlist);
 
-        Arrays.stream(links).map(DbPopulateService::toURL)
+        Stream.of(links).map(DbPopulateService::toURL)
                 .filter(l -> l != null)
                 .forEach(fileManager::save);
 
