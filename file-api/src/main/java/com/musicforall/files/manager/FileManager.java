@@ -62,20 +62,13 @@ public class FileManager {
             return false;
         }
         long savedBytes;
-        InputStream in = null;
-        try {
-            in = file.getInputStream();
+        try (InputStream in = file.getInputStream()) {
             savedBytes = Files.copy(in, path);
         } catch (IOException e) {
             LOG.error("Exception during file saving", e);
             return false;
-        } finally {
-            try {
-                in.close();
-            } catch (IOException e) {
-                LOG.error(e.toString());
-            }
         }
+
         return savedBytes == file.getSize();
     }
 
