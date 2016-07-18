@@ -7,9 +7,9 @@ import java.util.Date;
 /**
  * @author IliaNik on 17.07.2016.
  */
-public class AddTrackEvent implements HistoryEvent {
+public class AuditionTrackEvent implements HistoryEvent {
 
-    private final EventType eventType = EventType.TRACKADD;
+    private final EventType eventType = EventType.TRACKAUDITIONED;
 
     private int track_id;
     private int user_id;
@@ -38,12 +38,12 @@ public class AddTrackEvent implements HistoryEvent {
         }
 
 
-        public AddTrackEvent build() {
-            return new AddTrackEvent(this);
+        public AuditionTrackEvent build() {
+            return new AuditionTrackEvent(this);
         }
     }
 
-    private AddTrackEvent(Builder builder) {
+    private AuditionTrackEvent(Builder builder) {
         track_id = builder.track_id;
         user_id = builder.user_id;
         date = builder.date;
