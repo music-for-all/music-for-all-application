@@ -40,12 +40,13 @@ public class FileManager {
      * Creates the directory if it does not exist.
      */
     @PostConstruct
-    private void prepareWorkingDirectory() {
+    private void prepareWorkingDirectory() throws IOException {
         workingDirectory = System.getProperty("user.home") + File.separator + taleDirectory;
         final File dir = new File(workingDirectory);
 
         if (!dir.exists() && !dir.mkdirs()) {
-            throw new Error("Could not create the upload directory");
+            LOG.error("Could not create the upload directory: " + dir.getName());
+            throw new IOException();
         }
     }
 
