@@ -217,7 +217,7 @@
                         <regexes>
                             <regex>
                                 <pattern>com.musicforall.files.manager.*</pattern>
-                                <branchRate>80</branchRate>
+                                <branchRate>70</branchRate> //because of https://sourceforge.net/p/cobertura/bugs/178/
                                 <lineRate>80</lineRate>
                             </regex>
                             <regex>
