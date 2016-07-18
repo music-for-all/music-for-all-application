@@ -217,7 +217,7 @@
                         <regexes>
                             <regex>
                                 <pattern>com.musicforall.files.manager.*</pattern>
-                                <branchRate>80</branchRate>
+                                <branchRate>77</branchRate> //because of https://sourceforge.net/p/cobertura/bugs/178/
                                 <lineRate>80</lineRate>
                             </regex>
                             <regex>
@@ -237,6 +237,13 @@
                         </goals>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.ow2.asm</groupId>
+                        <artifactId>asm</artifactId>
+                        <version>5.0.3</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
