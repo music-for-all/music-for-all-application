@@ -8,6 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * AuthenticationSuccessHandler which can be configured with a default URL which
+ * users should be sent to upon successful authentication.
+ */
 public class CustomAuthenticationSuccessHandler
         extends SimpleUrlAuthenticationSuccessHandler {
 
