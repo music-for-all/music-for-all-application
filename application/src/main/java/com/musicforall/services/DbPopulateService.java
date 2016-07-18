@@ -40,6 +40,15 @@ public class DbPopulateService {
     @Autowired
     private FileManager fileManager;
 
+    private static URL toURL(String url) {
+        try {
+            return new URL(url);
+        } catch (MalformedURLException e) {
+            LOG.error("URL is malformed {}", url, e);
+        }
+        return null;
+    }
+
     @PostConstruct
     private void populate() {
         final boolean hasUsers = !userService.findAll().isEmpty();
@@ -57,13 +66,10 @@ public class DbPopulateService {
         final Playlist playlist = new Playlist("Hype", tracks, user);
         playlistService.save(playlist);
 
-        try {
-            for (final String link : links) {
-                fileManager.save(new URL(link));
-            }
-        } catch (MalformedURLException e) {
-            LOG.error("downloading failed", e);
-        }
+        Arrays.stream(links).map(DbPopulateService::toURL)
+                .filter(l -> l != null)
+                .forEach(fileManager::save);
+
     }
 
     private String[] parseTrackLink(final String link) {

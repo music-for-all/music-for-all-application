@@ -17,6 +17,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * @author Evgeniy on 11.06.2016.
  */
@@ -24,6 +26,7 @@ import java.nio.file.Paths;
 @Component
 public class FileManager {
     private static final Logger LOG = LoggerFactory.getLogger(FileManager.class);
+    private static final String SAVE_ERROR_MSG = "Exception during file saving!";
 
     /**
      * The name of the directory which stores the uploaded files.
@@ -49,23 +52,25 @@ public class FileManager {
     }
 
     public Path save(final MultipartFile file) {
+        requireNonNull(file, "file must not be null");
         Path path;
         try (InputStream in = file.getInputStream()) {
             path = save(in, file.getOriginalFilename());
         } catch (IOException e) {
-            LOG.error("exception during file saving", e);
+            LOG.error(SAVE_ERROR_MSG, e);
             return null;
         }
         return path;
     }
 
     public Path save(final URL url) {
+        requireNonNull(url, "url must not be null");
         final String fileName = FilenameUtils.getName(url.toString());
         Path path;
         try (InputStream in = url.openStream()) {
             path = save(in, fileName);
         } catch (IOException e) {
-            LOG.error("exception during file saving", e);
+            LOG.error(SAVE_ERROR_MSG, e);
             return null;
         }
         return path;
@@ -79,7 +84,7 @@ public class FileManager {
         try {
             Files.copy(stream, path);
         } catch (IOException e) {
-            LOG.error("exception during file saving", e);
+            LOG.error(SAVE_ERROR_MSG, e);
             return null;
         }
         return path;
@@ -91,6 +96,7 @@ public class FileManager {
      * @return the path
      */
     public Path getFilePathByName(final String filename) {
+        requireNonNull(filename, "filename must not be null");
         final Path path = Paths.get(workingDirectory, filename);
         if (!Files.exists(path)) {
             return null;
