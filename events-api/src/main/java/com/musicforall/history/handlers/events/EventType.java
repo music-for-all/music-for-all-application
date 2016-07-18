@@ -1,4 +1,4 @@
-package com.musicforall.events.handlers;
+package com.musicforall.history.handlers.events;
 
 /**
  * @author IliaNik on 17.07.2016.

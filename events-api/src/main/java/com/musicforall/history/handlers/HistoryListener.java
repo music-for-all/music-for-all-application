@@ -1,7 +1,8 @@
-package com.musicforall.events.handlers;
+package com.musicforall.history.handlers;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.events.table.UsageHistory;
+import com.musicforall.history.handlers.events.HistoryEvent;
+import com.musicforall.history.table.UsageHistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 

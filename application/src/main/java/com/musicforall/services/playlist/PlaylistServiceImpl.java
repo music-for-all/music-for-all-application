@@ -7,7 +7,6 @@ import com.musicforall.model.User;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,9 +24,6 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Autowired
     private Dao dao;
-
-    @Autowired
-    private ApplicationEventPublisher publisher;
 
     @Override
     public Set<Playlist> getAllUserPlaylist(Integer userId) {

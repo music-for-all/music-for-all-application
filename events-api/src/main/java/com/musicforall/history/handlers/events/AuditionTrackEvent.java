@@ -1,6 +1,6 @@
-package com.musicforall.events.handlers;
+package com.musicforall.history.handlers.events;
 
-import com.musicforall.events.table.UsageHistory;
+import com.musicforall.history.table.UsageHistory;
 
 import java.util.Date;
 

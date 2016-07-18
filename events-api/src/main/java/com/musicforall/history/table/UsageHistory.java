@@ -1,7 +1,7 @@
-package com.musicforall.events.table;
+package com.musicforall.history.table;
 
 
-import com.musicforall.events.handlers.EventType;
+import com.musicforall.history.handlers.events.EventType;
 
 import javax.persistence.*;
 import java.util.Date;
