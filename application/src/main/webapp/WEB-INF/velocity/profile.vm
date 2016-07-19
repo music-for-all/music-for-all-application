@@ -9,7 +9,7 @@
 <h2>Profile</h2>
 <h3>User Information</h3>
 <p>
-    <a href="index" class="btn btn-default">Main Page</a>
+    <a href="main" class="btn btn-default">Main Page</a>
 </p>
 <h3>Hello, ${username}</h3>
 

@@ -37,8 +37,13 @@ public class Playlist implements Serializable {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-
     public Playlist() {
+    }
+
+    public Playlist(String name, Set<Track> tracks, User user) {
+        this.name = name;
+        this.tracks = tracks;
+        this.user = user;
     }
 
     public void addTracks(Set<Track> tracks) {
