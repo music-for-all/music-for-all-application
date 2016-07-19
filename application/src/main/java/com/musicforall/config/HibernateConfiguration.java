@@ -26,7 +26,7 @@ public class HibernateConfiguration {
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan("com.musicforall.model");
         sessionFactory.setHibernateProperties(additionalProperties());
@@ -35,7 +35,7 @@ public class HibernateConfiguration {
 
     @Bean
     public DriverManagerDataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        final DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getRequiredProperty("db.driver"));
         dataSource.setUrl(env.getRequiredProperty("db.url"));
         dataSource.setUsername(env.getRequiredProperty("db.userName"));
@@ -46,14 +46,14 @@ public class HibernateConfiguration {
     @Bean
     @Autowired
     public HibernateTransactionManager transactionManager(SessionFactory s) {
-        HibernateTransactionManager txManager = new HibernateTransactionManager();
+        final HibernateTransactionManager txManager = new HibernateTransactionManager();
         txManager.setSessionFactory(s);
         txManager.setDataSource(dataSource());
         return txManager;
     }
 
     private Properties additionalProperties() {
-        Properties properties = new Properties();
+        final Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", env.getRequiredProperty("hibernate.hbm2ddl.auto"));
         properties.setProperty("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
         properties.setProperty("hibernate.format_sql", env.getRequiredProperty("hibernate.format_sql"));

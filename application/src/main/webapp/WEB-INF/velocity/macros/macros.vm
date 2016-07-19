@@ -1,4 +1,5 @@
 #macro(head)
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
@@ -11,7 +12,10 @@
           href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.6/flatly/bootstrap.min.css">
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
     $!bodyContent##
+</head>
 #end
 
 
@@ -22,55 +26,66 @@
 ##      ])
 
 #macro(navigation $items)
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Music for all</a>
-            </div>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            $!bodyContent##
+            <a class="navbar-brand" href="#">Music for all</a>
+        </div>
 
-            <div id="navbar" class="navbar-right navbar-collapse collapse ">
-                <ul class="nav navbar-nav">
-                    #foreach($item in $items)
+        <div id="navbar" class="navbar-right navbar-collapse collapse ">
+            <ul class="nav navbar-nav">
+                #foreach($item in $items)
                         #navigationItem($item)
                     #end
-                </ul>
-            </div>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
 #end
 
 #macro(navigationItem $item)
     #set($isActive = false)
     #set($isActive = $item.isActive)
 
-    <li #if($isActive) class="active" #end>
-        <a href="$item.url">
-            <i class="fa"></i> $item.title
-        </a>
-    </li>
+<li #if($isActive) class="active" #end>
+    <a href="$item.url">
+        <i class="fa"></i> $item.title
+    </a>
+</li>
 #end
 
 #macro(body )
-    <body>
-        $!bodyContent##
-    </body>
+<body>
+    $!bodyContent##
+<script type="text/javascript">
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var token = $("meta[name='_csrf']").attr("content");
+
+    $.ajaxSetup({
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }
+    });
+</script>
+</body>
 #end
 
 #macro(footer)
-    <footer class="container-fluid">
-        <p>Music for all ©</p>
-    </footer>
+<footer class="container-fluid">
+    <p>Music for all ©</p>
+</footer>
 #end
 
 #macro(form $id $action $method $enctype)
-    <form id=$id action= #springUrl($action) method=$method #if($method=="post"||$method=="POST") enctype=$enctype #end>
-        <input type="hidden" name="$!{_csrf.parameterName}" value="$!{_csrf.token}"/>
-        $!bodyContent##
-    </form>
+<form id=$idaction= #springUrl($action) method=$method #if($method=="post"||$method=="POST") enctype=$enctype #end>
+    <input type="hidden" name="$!{_csrf.parameterName}" value="$!{_csrf.token}"/>
+    $!bodyContent##
+</form>
 #end
 
 #macro(logoutForm)
     #@form("logoutform",'/logout', "post", "application/x-www-form-urlencoded")
-        <input type="submit" value="Log out" class="btn btn-default"/>
+    <input type="submit" value="Log out" class="btn btn-default"/>
     #end
 #end

@@ -1,148 +1,158 @@
+#parse("macros/macros.vm")
+#parse("macros/popup_macros.vm")
 <!DOCTYPE html>
 <html lang="en">
-<head>
+#@head()
     <title>Main</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="resources/js/jquery.min.js"></script>
-    <script src="resources/js/bootstrap.min.js"></script>
-    <script src="resources/js/mainpage.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <script src="/resources/js/playlist.js"></script>
+    <script src="/resources/js/track.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <link href="/resources/css/mainpage.css" rel="stylesheet"/>
+    <link href="/resources/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic"
+          rel="stylesheet"/>
+#end
 
-    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/resources/css/mainpage.css" rel="stylesheet">
-    <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
-    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet">
+#@body()
 
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
-</head>
-<body>
+    #popUpAdd("addPlaylistModal")
 
-<div id="addPlaylistModal" class="modal fade">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Adding playlist</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="inputNamePlaylist" class="col-sm-2 control-label">Name:</label>
-                    <input type="text" class="form-control" id="inputNamePlaylist" placeholder="Name">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="acceptCreatingPlaylistButton" type="button" class="btn btn-success">Add</button>
-            </div>
-        </div>
-    </div>
-</div>
+    #popUpDelete("deletePlaylistModal")
 
-<div id="deletePlaylistModal" class="modal fade">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Deleting playlist</h4>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal">No</button>
-                <button type="button" id="acceptRemovingPlaylistButton" class="btn btn-danger" data-dismiss="modal">Yes
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<nav class="navbar navbar-default navbar-fixed-top">
+##    #navigation([{"isActive": true, "url": '/main', "title": "Main"},
+##        {"isActive": false, "url": '/search', "title": "Search"}])
+
     <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Music for all</a>
+        <div id="resultsd" class="well col-md-9 ">
+            <table id="results" class="table table-hover table-striped table-condensed ">
+                <thead>
+                <tr>
+                    <th>Actions</th>
+                    <th>Artist</th>
+                    <th>Title</th>
+                    <th>Duration</th>
+                </tr>
+                </thead>
+            </table>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#springUrl('/main')">Main</a></li>
-                <li><a href="#springUrl('/search')">Search</a></li>
-            </ul>
+
+        <div class="well  col-md-2 col-md-offset-1  ">
+            <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">Create playlist</button>
+            <button id="removePlaylistButton" class="btn  btn-danger btn-block" type="button">Remove selected</button>
+
+            <ul id="playlists" class="nav nav-pills nav-stacked"/>
+
         </div>
     </div>
-</nav>
-<div class="container">
-    <div id="resultsd" class="well col-md-9 ">
-        <table id="results" class="table table-hover table-striped table-condensed ">
-            <thead>
-            <tr>
-                <th>Actions</th>
-                <th>Artist</th>
-                <th>Title</th>
-                <th>Duration</th>
-            </tr>
-            </thead>
-        </table>
-    </div>
+    <script type="text/template" class="trackRowTemplate">
+        <tbody>
+        <% _.each(data, function(track){ %>
+        <tr id="<%= track.id %>">
+            <td>
+                <button type='button' class='btn btn-xs btn-success'>
+                    <span class='glyphicon glyphicon-play' aria-hidden='true'/>
+                </button>
+                <button type='button' class='btn btn-xs btn-danger delete-song-button'>
+                    <span class='glyphicon glyphicon-remove' aria-hidden='true'/>
+                </button>
+            </td>
+            <td>
+                <%= track.name %>
+            </td>
+        </tr>
+        <% }); %>
+        </tbody>
+    </script>
+    <script type="text/template" class="playlistRowTemplate">
+        <li id="<%= data.id %>" title="<%= data.name %>">
+            <a href='#' data-value="<%= data.name %>">
+                <%= data.name %>
+            </a>
+        </li>
+    </script>
+    <script type="text/javascript">
+        var contextPath = "#springUrl('')";
+        var playlist = new Playlist(contextPath);
+        var track = new Track(contextPath);
 
-    <div class="well  col-md-2 col-md-offset-1  ">
-        <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">Create playlist</button>
-        <button id="removePlaylistButton" class="btn  btn-danger btn-block" type="button">Remove selected</button>
+        _.templateSettings.variable = "data";
+        var trackTable = _.template(
+                $("script.trackRowTemplate").html()
+        );
 
-        <ul id="playlists" class="nav nav-pills nav-stacked">
-            <li id="0" class="active"><a href="#" data-value="All">All</a></li>
-        </ul>
-    </div>
-</div>
-<script language="javascript">
+        var playlistTable = _.template(
+                $("script.playlistRowTemplate").html()
+        );
 
-    $('#playlists').on('click', 'a', function (e) {
-        e.preventDefault();
-        $("#playlists li").removeClass("active");
-        $(this).closest('li').addClass('active');
-        clearAll();
-        ajaxGetPlaylist($('#playlists li.active').attr('id'));
-    });
+        $('#playlists').on('click', 'a', function (e) {
+            e.preventDefault();
+            $("#playlists").find("li").removeClass("active");
+            $(this).closest('li').addClass('active');
+            clearTracks();
+            playlist.get($('#playlists li.active').attr('id'))
+                    .then(function (response) {
+                        $("#results").find("thead").after(
+                                trackTable(response.tracks)
+                        );
+                    });
+        });
 
-    $('#acceptRemovingPlaylistButton').on('click', function (e) {
-        if ($('#playlists li.active').index() != 0) {
-            // alert("Deleted playlist with ID: " + $("#playlists li.active").attr('id'));
-            ajaxDeletePlaylist($('#playlists li.active').attr('id'));
-            clearAllPlaylists();
-            ajaxGetPlaylists();
-            //$("#playlists li.active").remove();
-        } else {
-            alert("This playlist cannot be deleted");
-        }
-    });
+        $('#acceptRemovingPlaylistButton').on('click', function (e) {
+            var playlistToRemove = $("#playlists").find("li.active")
+            playlist.remove(playlistToRemove.attr('id'))
+                    .then(function () {
+                        playlistToRemove.remove();
+                        clearTracks();
+                    });
+        });
 
-    $('#acceptCreatingPlaylistButton').on('click', function (e) {
-        ajaxAddPlaylist(document.getElementById('inputNamePlaylist').value)
-        clearAllPlaylists();
-        ajaxGetPlaylists();
-        $('#addPlaylistModal').modal('hide');
-    });
+        $('#acceptCreatingPlaylistButton').on('click', function (e) {
+            playlist.create(document.getElementById('inputNamePlaylist').value)
+                    .then(function (playlist) {
+                        addPlaylist(playlist);
+                        $('#addPlaylistModal').modal('hide');
+                    });
+        });
 
-    $('#removePlaylistButton').on('click', function (e) {
-        if ($('#playlists li.active').index() == 0) {
-            alert("This playlist cannot be deleted");
-        } else {
+        $('#removePlaylistButton').on('click', function (e) {
             $('#deletePlaylistModal').modal('show');
+        });
+
+        $('#createPlaylistButton').on('click', function (e) {
+            $('#addPlaylistModal').modal('show');
+        });
+
+        $("#results").on("click", ".delete-song-button", function (e) {
+            var row = $(this).closest("tr");
+            var id = row.attr("id");
+            track.remove(id).then(function () {
+                row.remove();
+            });
+        });
+
+        function clearTracks() {
+            $("#results").find("tr:not(:first)").remove();
         }
-    });
 
-    $('#createPlaylistButton').on('click', function (e) { //Button which call modal window
-        $('#addPlaylistModal').modal('show');
-    });
+        function clearPlaylists() {
+            $("#playlists").find("li").remove();
+        }
 
-    $(document).ready(function () {
-        clearAll();
-        clearAllPlaylists();
-        ajaxGetPlaylists();
-    });
-</script>
-</body>
+        function addPlaylist(playlist) {
+            $("#playlists").append(
+                    playlistTable(playlist)
+            );
+        }
+
+        $(document).ready(function () {
+            playlist.all()
+                    .then(function (response) {
+                        $.each(response, function () {
+                            addPlaylist(this);
+                        });
+                    });
+        });
+    </script>
+    #end
 </html>
