@@ -4,6 +4,7 @@
 
 function Track(contextPath) {
 
+    const max_length_error = 200;
     var self = this;
     var baseUrl = contextPath + "/tracks";
 

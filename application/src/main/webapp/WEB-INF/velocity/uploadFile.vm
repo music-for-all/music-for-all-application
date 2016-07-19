@@ -85,7 +85,6 @@
     }
 
     function uploadJqueryForm() {
-        const max_length_error = 200;
         if (isEmptyInputs()) {
             return;
         }
