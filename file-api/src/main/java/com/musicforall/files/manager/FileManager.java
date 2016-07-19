@@ -54,7 +54,7 @@ public class FileManager {
 
     public Path save(final MultipartFile file) {
         requireNonNull(file, "file must not be null");
-        LOG.error("save file from multipart {}", file);
+        LOG.info("save file from multipart {}", file);
         Path path;
         try (InputStream in = file.getInputStream()) {
             path = save(in, file.getOriginalFilename());
