@@ -18,7 +18,6 @@
 </head>
 #end
 
-
 ## #navigation([
 ##      {"isActive": false, "url": "#springUrl('/main')", "title": "Main"},
 ##      {"isActive": false, "url": "#springUrl('/search')", "title": "Search"},
@@ -32,12 +31,11 @@
             $!bodyContent##
             <a class="navbar-brand" href="#">Music for all</a>
         </div>
-
         <div id="navbar" class="navbar-right navbar-collapse collapse ">
             <ul class="nav navbar-nav">
                 #foreach($item in $items)
-                        #navigationItem($item)
-                    #end
+                         #navigationItem($item)
+                #end
             </ul>
         </div>
     </div>
@@ -47,7 +45,6 @@
 #macro(navigationItem $item)
     #set($isActive = false)
     #set($isActive = $item.isActive)
-
 <li #if($isActive) class="active" #end>
     <a href="$item.url">
         <i class="fa"></i> $item.title

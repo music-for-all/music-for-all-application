@@ -1,23 +1,19 @@
 #parse("macros/macros.vm")
 <!DOCTYPE html>
 <html lang="en">
-<head>
     #@head()
-        <title>Add song</title>
-        <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
-        <link href="/resources/css/filespage.css" rel="stylesheet">
-        <script src="resources/js/track.js"></script>
-        <meta name="_csrf" content="${_csrf.token}"/>
-        <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <title>Add song</title>
+    <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
+    <link href="/resources/css/filespage.css" rel="stylesheet">
+    <script src="resources/js/track.js"></script>
     #end
-</head>
-    #@body()
-        #navigation([
-        {"isActive": false, "url": "#springUrl('/main')", "title": "Main"},
-        {"isActive": false, "url": "#springUrl('/search')", "title": "Search"},
-        {"isActive": true, "url": "#springUrl('/uploadFile')", "title": "Add track"}
-        ])
 
+    #navigation([
+    {"isActive": false, "url": "#springUrl('/main')", "title": "Main"},
+    {"isActive": false, "url": "#springUrl('/search')", "title": "Search"},
+    {"isActive": true, "url": "#springUrl('/uploadFile')", "title": "Add track"}
+    ])
+    #@body()
     <div class="container">
         <div class="col-md-4 col-md-offset-4 well  ">
             <div id="result" role="alert"></div>
@@ -94,7 +90,7 @@
             return;
         }
         $('#result').html('');
-        track.createJson($('#tags').val(), $('#inputArtist').val(), $('#inputTitle').val(),$('#file')[0].files[0]);
+        track.createJson($('#tags').val(), $('#inputArtist').val(), $('#inputTitle').val(), $('#file')[0].files[0]);
     }
 
 </script>
