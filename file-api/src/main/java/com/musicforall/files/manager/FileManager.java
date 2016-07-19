@@ -54,6 +54,7 @@ public class FileManager {
 
     public Path save(final MultipartFile file) {
         requireNonNull(file, "file must not be null");
+        LOG.error("save file from multipart {}", file);
         Path path;
         try (InputStream in = file.getInputStream()) {
             path = save(in, file.getOriginalFilename());
@@ -66,6 +67,7 @@ public class FileManager {
 
     public Path save(final URL url) {
         requireNonNull(url, "url must not be null");
+        LOG.info("save file by url {}", url);
         final String fileName = FilenameUtils.getName(url.toString());
         Path path;
         try (InputStream in = url.openStream()) {
