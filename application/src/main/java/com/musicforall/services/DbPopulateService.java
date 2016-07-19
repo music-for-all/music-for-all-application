@@ -87,7 +87,7 @@ public class DbPopulateService {
 
         LOG.info("playlist {} is saved", playlist);
 
-        List<Callable<Path>> tasks = LINKS.stream().map(DbPopulateService::toURL)
+        final List<Callable<Path>> tasks = LINKS.stream().map(DbPopulateService::toURL)
                 .filter(u -> u != null)
                 .peek(u -> LOG.info("going to save file by url - {}", u))
                 .map(url -> (Callable<Path>) () -> fileManager.save(url))

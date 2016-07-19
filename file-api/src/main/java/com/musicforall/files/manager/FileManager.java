@@ -55,41 +55,32 @@ public class FileManager {
     public Path save(final MultipartFile file) {
         requireNonNull(file, "file must not be null");
         LOG.info("save file from multipart {}", file);
-        Path path;
         try (InputStream in = file.getInputStream()) {
-            path = save(in, file.getOriginalFilename());
+            return save(in, file.getOriginalFilename());
         } catch (IOException e) {
             LOG.error(SAVE_ERROR_MSG, e);
-            return null;
         }
-        return path;
+        return null;
     }
 
     public Path save(final URL url) {
         requireNonNull(url, "url must not be null");
         LOG.info("save file by url {}", url);
         final String fileName = FilenameUtils.getName(url.toString());
-        Path path;
         try (InputStream in = url.openStream()) {
-            path = save(in, fileName);
+            return save(in, fileName);
         } catch (IOException e) {
             LOG.error(SAVE_ERROR_MSG, e);
-            return null;
         }
-        return path;
+        return null;
     }
 
-    private Path save(final InputStream stream, final String fileName) {
+    private Path save(final InputStream stream, final String fileName) throws IOException {
         final Path path = Paths.get(workingDirectory, fileName);
         if (Files.exists(path)) {
             return path;
         }
-        try {
-            Files.copy(stream, path);
-        } catch (IOException e) {
-            LOG.error(SAVE_ERROR_MSG, e);
-            return null;
-        }
+        Files.copy(stream, path);
         return path;
     }
 
