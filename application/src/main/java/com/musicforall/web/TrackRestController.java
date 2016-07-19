@@ -31,7 +31,7 @@ public class TrackRestController {
     public HttpStatus deleteTrack(@PathVariable("id") Integer id) {
         final Track track = new Track();
         track.setId(id);
-        track.setName(id + " deleted");
+        track.setName(id + " deleted ");
         return HttpStatus.NO_CONTENT;
     }
 
