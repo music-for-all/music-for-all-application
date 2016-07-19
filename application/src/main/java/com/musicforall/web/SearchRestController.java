@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -44,28 +45,43 @@ public class SearchRestController {
      * Searches tracks by the specified <code>query</code> in the specified <code>category</code>.
      */
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity search(@RequestParam String query, @RequestParam String category) {
+    public ResponseEntity search(@RequestParam String title, @RequestParam String artist,
+                                 @RequestParam String album, @RequestParam String tag) {
 
         /* Limit the query string length. */
         final int MAX_QUERY = 16;
         final int MIN_QUERY = 2;
 
-        if (query.length() < MIN_QUERY || query.length() > MAX_QUERY) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
+        List<Track> tracks = null;
 
-        List<Track> tracks;
-
-        /* Perform search in the appropriate repository corresponding to the category. */
-        switch (category) {
-            case "title":
-                tracks = trackService.getAllByName(query);
-                break;
-            case "artist":
-            case "album":
-            default:
+        if (title != null) {
+            if (title.length() < MIN_QUERY || title.length() > MAX_QUERY) {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
+            tracks.addAll(trackService.getAllByName(title));
         }
+
+        if (artist != null) {
+            if (artist.length() < MIN_QUERY || artist.length() > MAX_QUERY) {
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
+            tracks.addAll(trackService.getAllByName(artist));
+        }
+
+        if (album != null) {
+            if (album.length() < MIN_QUERY || album.length() > MAX_QUERY) {
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
+            tracks.addAll(trackService.getAllByName(album));
+        }
+
+        if (tag != null) {
+            if (tag.length() < MIN_QUERY || tag.length() > MAX_QUERY) {
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
+            tracks.addAll(trackService.getTracksByTags(Arrays.asList(tag)));
+        }
+
         return new ResponseEntity<List<Track>>(tracks, HttpStatus.OK);
     }
 }
