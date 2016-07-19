@@ -1,15 +1,11 @@
 package com.musicforall.history.handlers.events;
 
-import com.musicforall.history.table.UsageHistory;
-
 import java.util.Date;
 
 /**
  * @author IliaNik on 17.07.2016.
  */
-public class AuditionTrackEvent implements HistoryEvent {
-
-    private final EventType eventType = EventType.TRACK_AUDITIONED;
+public class AuditionTrackEvent {
 
     private int trackId;
 
@@ -21,10 +17,6 @@ public class AuditionTrackEvent implements HistoryEvent {
         this.trackId = trackId;
         this.date = date;
         this.userId = userId;
-    }
-
-    public EventType getEventType() {
-        return eventType;
     }
 
     public int getTrackId() {
@@ -51,7 +43,4 @@ public class AuditionTrackEvent implements HistoryEvent {
         this.date = date;
     }
 
-    public UsageHistory getUsageHistory() {
-        return new UsageHistory(trackId, date, userId, eventType);
-    }
 }

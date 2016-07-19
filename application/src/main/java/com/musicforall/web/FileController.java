@@ -4,6 +4,7 @@ import com.musicforall.files.manager.FileManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +25,9 @@ public class FileController {
 
     @Autowired
     private FileManager manager;
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     @RequestMapping(value = "/files", method = RequestMethod.POST)
     @ResponseBody

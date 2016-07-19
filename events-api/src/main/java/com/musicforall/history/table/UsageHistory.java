@@ -38,6 +38,9 @@ public class UsageHistory {
         this.eventType = eventType;
     }
 
+    public UsageHistory() {
+    }
+
     public int getId() {
         return id;
     }
