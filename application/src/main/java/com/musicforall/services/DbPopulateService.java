@@ -31,15 +31,14 @@ public class DbPopulateService {
     private static final List<String> LINKS = new ArrayList<>();
 
     static {
-        LINKS.add("http://dl.last.fm/static/1468876051/131211148" +
-                "/a3c35916e23dcb5dafd20667e4015eeaa38460c16c45365ad2bcd0098b1266f1/Death+Grips+-+Get+Got.mp3");
-        LINKS.add("http://dl.last.fm/static/1468876051" +
-                "/126178029/2a3dc38084d8fc698a86888b314a146c25057eb383d639a4d5f5116615ec7935" +
-                "/Death+Grips+-+Guillotine.mp3");
-        LINKS.add("http://dl.last.fm/static/1468876051/133527789/" +
-                "76ccb5716e7e9efb54ef1efab70fff2e0aea05e2d0b4866def49bc1167db240a/Death+Grips+-+No+Love.mp3");
-        LINKS.add("http://dl.last.fm/static/1468876051/131211149/" +
-                "ce5e43359f661b8abdb7d42e406379eca867a90214312b770ddab3ebb2b94adb/Death+Grips+-+Lost+Boys.mp3");
+        LINKS.add("http://dl.last.fm/static/1468934504/131564291/" +
+                "16465bd6d0a968d21008d9f3618e657c5b8a71969f33040eeb66287b6eef1a5a/Best+Coast+-+The+Only+Place.mp3");
+        LINKS.add("http://dl.last.fm/static/1468934504/134306392/" +
+                "c15e941ca23aa69313dc1f2285af995ccfd00ef6c613e3fe2fadab64b7247e4f/Nils+Frahm+-+You.mp3");
+        LINKS.add("http://dl.last.fm/static/1468934504/122620941/" +
+                "9bbd58da2e510d432156315dad2b68ce56a992f13c81f600029b150e42fbad1f/Com+Truise+-+Cyanide+Sisters.mp3");
+        LINKS.add("http://dl.last.fm/static/1468935011/125708103/" +
+                "d6b7099525cb66b3891dc560786f11a18b34c84d13f30f8b3d3f428c8ca0598d/Starfucker+-+Bury+Us+Alive.mp3");
     }
 
     @Autowired
@@ -88,13 +87,13 @@ public class DbPopulateService {
 
         LOG.info("playlist {} is saved", playlist);
 
-        List<Callable<Path>> aaa = LINKS.stream().map(DbPopulateService::toURL)
+        List<Callable<Path>> tasks = LINKS.stream().map(DbPopulateService::toURL)
                 .filter(u -> u != null)
                 .peek(u -> LOG.info("going to save file by url - {}", u))
                 .map(url -> (Callable<Path>) () -> fileManager.save(url))
                 .collect(toList());
         try {
-            executorService.invokeAll(aaa);
+            executorService.invokeAll(tasks);
         } catch (InterruptedException e) {
             LOG.error("interrupted ", e);
         } finally {
