@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(User user) {
+        /* Encode the password before saving the user. */
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         dao.save(user);
     }
