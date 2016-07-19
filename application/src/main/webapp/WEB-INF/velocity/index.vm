@@ -3,6 +3,9 @@
 <html lang="en">
     #@head()
     <title>Music For All</title>
+    <script src="/resources/js/jquery.min.js"></script>
+    <script src="/resources/player/mediaelement-and-player.min.js"></script>
+    <link rel="stylesheet" href="/resources/player/mediaelementplayer.css" />
     #end
     #@body()
     <h2>Music For All</h2>
@@ -12,9 +15,20 @@
             <li>$user.username ($user.email)</li>
         #end
     </ul>
+        <p><button type='button' class='btn btn-xs btn-success' onclick=play("/resources/tracks/Survival.mp3")>play</button></p>
     <p>
         <a href="profile" class="btn btn-primary">Profile</a>
+
+        <audio id='audio' controls="controls">
+            <source type="audio/mp3" >
+        </audio>
+
+        <audio id='audio2' controls="controls">
+            <source type="audio/mp3">
+        </audio>
     </p>
+
+    <script src="resources/js/player.js"></script>
     #logoutForm()
     #end
 </html>
