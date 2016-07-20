@@ -60,8 +60,8 @@ public class TrackServiceTest {
         final Track expectedTrack = trackService.get(track.getId());
 
         assertNotNull(expectedTrack);
-        assertEquals(track.getName(), expectedTrack.getName());
-        assertEquals(track.getLocation(), expectedTrack.getLocation());
+        assertEquals(expectedTrack.getName(), track.getName());
+        assertEquals(expectedTrack.getLocation(), track.getLocation());
     }
 
     @Test
@@ -105,7 +105,19 @@ public class TrackServiceTest {
 
         trackService.saveAll(Arrays.asList(track1, track2, track3, track4));
         Collection<Track> tracks = trackService.getAllByName("Sim");
-        assertTrue(tracks.size() > 1);
+        assertEquals(3, tracks.size());
+    }
+
+    @Test
+    public void testGetAllByCriteria() {
+        final Track track1 = new Track("sim", LOC_1);
+        final Track track2 = new Track("Sim2", LOC_1);
+        final Track track3 = new Track("asdfsimiliar", LOC_1);
+        final Track track4 = new Track("asdifferent", LOC_1);
+
+        trackService.saveAll(Arrays.asList(track1, track2, track3, track4));
+        List<Track> tracks = trackService.getAllByCriteria("Sim", null, null, null);
+        assertEquals(6, tracks.size());
     }
 
     @Test
@@ -126,6 +138,6 @@ public class TrackServiceTest {
             tagNames.add(tag.getName());
         }
         Collection<Track> tracks1 = trackService.getTracksByTags(tagNames);
-        assertTrue(tracks1.size() > 0);
+        assertEquals(2, tracks1.size());
     }
 }
