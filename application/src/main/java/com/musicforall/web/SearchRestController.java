@@ -52,35 +52,31 @@ public class SearchRestController {
         final int MAX_QUERY = 16;
         final int MIN_QUERY = 2;
 
-        final List<Track> tracks = null;
-
         if (title != null) {
             if (title.length() < MIN_QUERY || title.length() > MAX_QUERY) {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
             }
-            tracks.addAll(trackService.getAllByName(title));
         }
 
         if (artist != null) {
             if (artist.length() < MIN_QUERY || artist.length() > MAX_QUERY) {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
             }
-            tracks.addAll(trackService.getAllByName(artist));
         }
 
         if (album != null) {
             if (album.length() < MIN_QUERY || album.length() > MAX_QUERY) {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
             }
-            tracks.addAll(trackService.getAllByName(album));
         }
 
         if (tag != null) {
             if (tag.length() < MIN_QUERY || tag.length() > MAX_QUERY) {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
             }
-            tracks.addAll(trackService.getTracksByTags(Arrays.asList(tag)));
         }
+
+        final List<Track> tracks = trackService.getAllByCriteria(title, artist, album, tag);
 
         return new ResponseEntity<List<Track>>(tracks, HttpStatus.OK);
     }

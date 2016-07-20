@@ -24,6 +24,8 @@ public interface TrackService {
 
     List<Track> getAllByName(String name);
 
+    List<Track> getAllByCriteria(String title, String artist, String album, String tag);
+
     List<Track> getTracksByTags(Collection<String> tagsName);
 
     List<Track> findAll();

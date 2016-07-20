@@ -58,6 +58,16 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
+    public List<Track> getAllByCriteria(String title, String artist, String album, String tag) {
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class)
+                .add(Restrictions.like("title", "%" + title + "%").ignoreCase())
+                .add(Restrictions.like("artist", "%" + artist + "%").ignoreCase())
+                .add(Restrictions.like("album", "%" + album + "%").ignoreCase())
+                .add(Restrictions.like("tag", "%" + tag + "%").ignoreCase());
+        return dao.getAllBy(detachedCriteria);
+    }
+
+    @Override
     public List<Track> getTracksByTags(Collection<String> tagsName) {
 
         Disjunction disjuction = Restrictions.disjunction();
