@@ -3,6 +3,7 @@ package com.musicforall.services.track;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
+import com.musicforall.model.TrackSearch;
 import org.hibernate.criterion.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,28 +59,31 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
-    public List<Track> getAllByCriteria(String title, String artist, String album, String tag) {
-        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class)
-                .add(Restrictions.like("name", "%" + title + "%").ignoreCase());
-        /*
-                .add(Restrictions.like("artist", "%" + artist + "%").ignoreCase())
-                .add(Restrictions.like("album", "%" + album + "%").ignoreCase())
-                .add(Restrictions.like("tag", "%" + tag + "%").ignoreCase());
-        */
+    public List<Track> getAllLike(TrackSearch trackSearch) {
+
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class);
+        if (trackSearch.getTitle() != null) {
+            detachedCriteria.add(Restrictions.like("name", "%" + trackSearch.getTitle() + "%").ignoreCase());
+        }
+        if (trackSearch.getArtist() != null) {
+            detachedCriteria.add(Restrictions.like("artist", "%" + trackSearch.getArtist() + "%").ignoreCase());
+        }
+        if (trackSearch.getAlbum() != null) {
+            detachedCriteria.add(Restrictions.like("album", "%" + trackSearch.getAlbum() + "%").ignoreCase());
+        }
         return dao.getAllBy(detachedCriteria);
     }
 
     @Override
     public List<Track> getTracksByTags(Collection<String> tagsName) {
 
-        Disjunction disjuction = Restrictions.disjunction();
-        for (String t :
-                tagsName) {
-            disjuction.add(Restrictions.eq("tgs.name", t).ignoreCase());
+        Disjunction disjunction = Restrictions.disjunction();
+        for (String t : tagsName) {
+            disjunction.add(Restrictions.eq("tgs.name", t).ignoreCase());
         }
         DetachedCriteria subcriteria = DetachedCriteria.forClass(Track.class)
                 .createAlias("tags", "tgs")
-                .add(disjuction)
+                .add(disjunction)
                 .setProjection(Projections.property("id"));
 
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class)
