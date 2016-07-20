@@ -2,6 +2,7 @@ package com.musicforall.services.track;
 
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
+import com.musicforall.model.TrackSearch;
 import com.musicforall.services.tag.TagService;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
@@ -14,9 +15,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.util.*;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.*;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -48,7 +47,7 @@ public class TrackServiceTest {
     @Test
     public void testSaveTrackWithTags() {
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag(ROCK), new Tag("alternative")));
-        final Track track = new Track(tags, "Maybe", "path2");
+        final Track track = new Track("Maybe", "path2", tags);
 
         trackService.save(track);
         assertNotNull(trackService.get(track.getId()));
@@ -109,23 +108,23 @@ public class TrackServiceTest {
     }
 
     @Test
-    public void testGetAllByCriteria() {
-        final Track track1 = new Track("sim", LOC_1);
-        final Track track2 = new Track("Sim2", LOC_1);
-        final Track track3 = new Track("asdfsimiliar", LOC_1);
-        final Track track4 = new Track("asdifferent", LOC_1);
+    public void testGetAllLike() {
+        final Track track1 = new Track("abc", LOC_1);
+        final Track track2 = new Track("ABC", LOC_1);
+        final Track track3 = new Track("123ABc123", LOC_1);
+        trackService.saveAll(Arrays.asList(track1, track2, track3));
 
-        trackService.saveAll(Arrays.asList(track1, track2, track3, track4));
-        List<Track> tracks = trackService.getAllByCriteria("Sim", null, null, null);
-        assertEquals(6, tracks.size());
+        TrackSearch trackSearch = new TrackSearch("aBc");
+        List<Track> tracks = trackService.getAllLike(trackSearch);
+        assertEquals(3, tracks.size());
     }
 
     @Test
     public void testSearchForTags() {
         final Set<Tag> tagsForTrack = new HashSet<Tag>(Arrays.asList(new Tag(ROCK),
                 new Tag("pop")));
-        final Track track1 = new Track(tagsForTrack, "search_track", LOC_1);
-        final Track track2 = new Track(tagsForTrack, "search_track2", LOC_1);
+        final Track track1 = new Track("search_track", LOC_1, tagsForTrack);
+        final Track track2 = new Track("search_track2", LOC_1, tagsForTrack);
 
       //  tagsForTrack.add(new Tag("nanana"));
         final Set<Tag> tagsForTrack2 = new HashSet<Tag>(Arrays.asList(new Tag("hahah"),
