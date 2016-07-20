@@ -1,6 +1,7 @@
 package com.musicforall.web;
 
 import com.musicforall.model.Track;
+import com.musicforall.model.TrackSearch;
 import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.PostConstruct;
@@ -41,34 +43,21 @@ public class SearchRestController {
     }
 
     /**
-     * Searches tracks by the specified <code>query</code> in the specified <code>category</code>.
+     * Searches tracks by the specified criteria.
      */
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity search(@RequestParam String title, @RequestParam String artist,
-                                 @RequestParam String album, @RequestParam String tag) {
+    public ResponseEntity search(@ModelAttribute TrackSearch trackSearch, BindingResult bindingResult) {
 
-        /* Limit the query string length. */
-        final int MAX_QUERY = 16;
-        final int MIN_QUERY = 2;
-
-        if (title != null && title.length() < MIN_QUERY || title.length() > MAX_QUERY) {
+        if (bindingResult.hasErrors()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+        final List<Track> tracks = trackService.getAllLike(trackSearch);
 
-        if (artist != null && artist.length() < MIN_QUERY || artist.length() > MAX_QUERY) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        for (Track track : tracks) {
+            if (track.getTags().contains(trackSearch.getTag())) {
+                tracks.remove(track);
+            }
         }
-
-        if (album != null && album.length() < MIN_QUERY || album.length() > MAX_QUERY) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-
-        if (tag != null && tag.length() < MIN_QUERY || tag.length() > MAX_QUERY) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-
-        final List<Track> tracks = trackService.getAllByCriteria(title, artist, album, tag);
-
         return new ResponseEntity<List<Track>>(tracks, HttpStatus.OK);
     }
 }
