@@ -79,7 +79,7 @@ public class DbPopulateService {
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag("Dummy"), new Tag("Classic"), new Tag("2016")));
 
         final Set<Track> tracks = LINKS.stream()
-                .map(link -> new Track(tags, trackName(link), getName(link)))
+                .map(link -> new Track(trackName(link), getName(link), tags))
                 .collect(toSet());
 
         final Playlist playlist = new Playlist("Hype", tracks, user);

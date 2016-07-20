@@ -4,12 +4,10 @@ package com.musicforall.model;
  * Created by ilianik on 11.06.2016.
  */
 
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -33,13 +31,22 @@ public class Track implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Size(min = 2, max = 30)
+    private String title;
+
+    @Size(min = 2, max = 30)
+    private String artist;
+
+    @Size(min = 2, max = 30)
+    private String album;
+
     @Column(name = "location", nullable = false)
     private String location;
 
     public Track() {
     }
 
-    public Track(Set<Tag> tags, String name, String location) {
+    public Track(String name, String location, Set<Tag> tags) {
         this.tags = tags;
         this.name = name;
         this.location = location;
