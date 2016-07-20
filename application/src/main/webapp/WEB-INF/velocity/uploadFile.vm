@@ -44,6 +44,7 @@
 <script type="text/javascript">
     var header = $("meta[name='_csrf_header']").attr("content");
     var token = $("meta[name='_csrf']").attr("content");
+    const max_length_error = 200;
     var track = new Track();
     $.ajaxSetup({
         beforeSend: function (xhr) {
@@ -89,7 +90,32 @@
             return;
         }
         $('#result').html('');
-        track.createJson($('#tags').val(), $('#inputArtist').val(), $('#inputTitle').val(), $('#file')[0].files[0]);
+
+
+        var obj = new Object();
+        obj.artist = $('#inputArtist').val();
+        obj.name = $('#inputTitle').val();
+        obj.location = "unknown";
+        if ($('#tags').val() != "") {
+            obj.tags = $('#tags').val().split(",");
+        }
+        var formData = new FormData();
+        formData.append("track", new Blob([JSON.stringify(obj)], {
+            type: "application/json"
+        }));
+        formData.append("file", $('#file')[0].files[0]);
+        track.createJson(formData)
+                .then(function (data) {
+                    showMessage(data, "success");
+                    clearInputs();
+                })
+                .then(null, function (xhr, status, error) {
+                    if (xhr.responseText.length < max_length_error) {
+                        showMessage(xhr.responseText, "danger");
+                    } else {
+                        showMessage(error, "danger");
+                    }
+                });
     }
 
 </script>
