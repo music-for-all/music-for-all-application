@@ -52,7 +52,7 @@ public class SearchRestController {
         final int MAX_QUERY = 16;
         final int MIN_QUERY = 2;
 
-        List<Track> tracks = null;
+        final List<Track> tracks = null;
 
         if (title != null) {
             if (title.length() < MIN_QUERY || title.length() > MAX_QUERY) {
