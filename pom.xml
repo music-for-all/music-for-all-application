@@ -15,7 +15,7 @@
         <module>application</module>
         <module>file-api</module>
         <module>common</module>
-        <module>events-api</module>
+        <module>history</module>
     </modules>
 
 

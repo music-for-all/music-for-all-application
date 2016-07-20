@@ -3,7 +3,7 @@ package com.musicforall.history.handlers;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.history.handlers.events.AuditionTrackEvent;
 import com.musicforall.history.handlers.events.EventType;
-import com.musicforall.history.table.UsageHistory;
+import com.musicforall.history.table.HistoryDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 
@@ -11,7 +11,7 @@ import org.springframework.context.event.EventListener;
  * @author IliaNik on 17.07.2016.
  */
 
-public class HistoryListener {
+public class HistoryEventListener {
 
     @Autowired
     private Dao dao;
@@ -19,14 +19,14 @@ public class HistoryListener {
     @EventListener
     public void handleAuditionTrack(AuditionTrackEvent event) {
 
-        UsageHistory usageHistory = new UsageHistory();
+        final HistoryDB historyDB = new HistoryDB();
 
-        usageHistory.setEventType(EventType.TRACK_AUDITIONED);
-        usageHistory.setTrackId(event.getTrackId());
-        usageHistory.setUserId(event.getUserId());
-        usageHistory.setDate(event.getDate());
+        historyDB.setEventType(EventType.TRACK_LISTENED);
+        historyDB.setTrackId(event.getTrackId());
+        historyDB.setUserId(event.getUserId());
+        historyDB.setDate(event.getDate());
 
-        dao.save(usageHistory);
+        dao.save(historyDB);
 
     }
 }

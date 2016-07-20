@@ -6,13 +6,14 @@ import com.musicforall.history.handlers.events.EventType;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
+
 /**
  * @author IliaNik on 17.07.2016.
  */
 
 @Entity
 @Table(name = "usage_history")
-public class UsageHistory {
+public class HistoryDB {
 
     @Id
     @Column(name = "id")
@@ -31,14 +32,14 @@ public class UsageHistory {
     @Enumerated(EnumType.STRING)
     private EventType eventType;
 
-    public UsageHistory(int trackId, Date date, int userId, EventType eventType) {
+    public HistoryDB(int trackId, Date date, int userId, EventType eventType) {
         this.trackId = trackId;
         this.date = date;
         this.userId = userId;
         this.eventType = eventType;
     }
 
-    public UsageHistory() {
+    public HistoryDB() {
     }
 
     public int getId() {
@@ -94,7 +95,7 @@ public class UsageHistory {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final UsageHistory other = (UsageHistory) obj;
+        final HistoryDB other = (HistoryDB) obj;
         return Objects.equals(this.id, other.id)
                 && Objects.equals(this.trackId, other.trackId)
                 && Objects.equals(this.userId, other.userId)
