@@ -53,7 +53,7 @@ public class SearchRestController {
         }
         final List<Track> tracks = trackService.getAllLike(trackSearch);
 
-        for (Track track : tracks) {
+        for (final Track track : tracks) {
             if (track.getTags().contains(trackSearch.getTag())) {
                 tracks.remove(track);
             }

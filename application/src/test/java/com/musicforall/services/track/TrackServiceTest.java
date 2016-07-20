@@ -114,8 +114,8 @@ public class TrackServiceTest {
         final Track track3 = new Track("123ABc123", LOC_1);
         trackService.saveAll(Arrays.asList(track1, track2, track3));
 
-        TrackSearch trackSearch = new TrackSearch("aBc");
-        List<Track> tracks = trackService.getAllLike(trackSearch);
+        final TrackSearch trackSearch = new TrackSearch("aBc");
+        final List<Track> tracks = trackService.getAllLike(trackSearch);
         assertEquals(3, tracks.size());
     }
 

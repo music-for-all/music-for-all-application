@@ -77,8 +77,8 @@ public class TrackServiceImpl implements TrackService {
     @Override
     public List<Track> getTracksByTags(Collection<String> tagsName) {
 
-        Disjunction disjunction = Restrictions.disjunction();
-        for (String t : tagsName) {
+        final Disjunction disjunction = Restrictions.disjunction();
+        for (final String t : tagsName) {
             disjunction.add(Restrictions.eq("tgs.name", t).ignoreCase());
         }
         DetachedCriteria subcriteria = DetachedCriteria.forClass(Track.class)
