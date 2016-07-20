@@ -1,5 +1,6 @@
 package com.musicforall.files.manager;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,12 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author Evgeniy on 11.06.2016.
@@ -22,6 +26,8 @@ import java.nio.file.Paths;
 @Component
 public class FileManager {
     private static final Logger LOG = LoggerFactory.getLogger(FileManager.class);
+
+    private static final String SAVE_ERROR_MSG = "Exception during file saving!";
 
     /**
      * The name of the directory which stores the uploaded files.
@@ -40,36 +46,42 @@ public class FileManager {
      * Creates the directory if it does not exist.
      */
     @PostConstruct
-    private void prepareWorkingDirectory() throws IOException {
+    private void prepareWorkingDirectory() {
         workingDirectory = System.getProperty("user.home") + File.separator + taleDirectory;
         final File dir = new File(workingDirectory);
-
-        if (!dir.exists() && !dir.mkdirs()) {
-            LOG.error("Could not create the upload directory: " + dir.getName());
-            throw new IOException();
-        }
+        dir.mkdirs();
     }
 
-    /**
-     * Copies the uploaded file to the upload directory.
-     * @param file the file to be stored
-     * @return <code>true</code> if the file has been saved successfully;
-     * <code>false</code> otherwise.
-     */
-    public boolean save(final MultipartFile file) {
-        final Path path = Paths.get(workingDirectory, file.getOriginalFilename());
-        if (Files.exists(path)) {
-            return false;
-        }
-        long savedBytes;
+    public Path save(final MultipartFile file) {
+        requireNonNull(file, "file must not be null");
+        LOG.info("save file from multipart {}", file);
         try (InputStream in = file.getInputStream()) {
-            savedBytes = Files.copy(in, path);
+            return save(in, file.getOriginalFilename());
         } catch (IOException e) {
-            LOG.error("Exception during file saving", e);
-            return false;
+            LOG.error(SAVE_ERROR_MSG, e);
         }
+        return null;
+    }
 
-        return savedBytes == file.getSize();
+    public Path save(final URL url) {
+        requireNonNull(url, "url must not be null");
+        LOG.info("save file by url {}", url);
+        final String fileName = FilenameUtils.getName(url.toString());
+        try (InputStream in = url.openStream()) {
+            return save(in, fileName);
+        } catch (IOException e) {
+            LOG.error(SAVE_ERROR_MSG, e);
+        }
+        return null;
+    }
+
+    private Path save(final InputStream stream, final String fileName) throws IOException {
+        final Path path = Paths.get(workingDirectory, fileName);
+        if (Files.exists(path)) {
+            return path;
+        }
+        Files.copy(stream, path);
+        return path;
     }
 
     /**
@@ -78,6 +90,7 @@ public class FileManager {
      * @return the path
      */
     public Path getFilePathByName(final String filename) {
+        requireNonNull(filename, "filename must not be null");
         final Path path = Paths.get(workingDirectory, filename);
         if (!Files.exists(path)) {
             return null;
