@@ -28,19 +28,20 @@
 
     <div class="container">
         <form id="search-form" class="form-inline text-center ">
-            <div class="input-group " placeholder="Search">
-                <input id="query" class="form-control" type="text" value="tr" placeholder="Search"
-                       name="query" autofocus="autofocus" />
+            <div class="input-group">
+                <input id="title" class="form-control" type="text" value="tr" placeholder="Title"
+                       name="title" autofocus="autofocus" />
+                <input id="artist" class="form-control" type="text" value="" placeholder="Artist"
+                       name="artist" />
+                <input id="album" class="form-control" type="text" value="" placeholder="Album"
+                       name="album" />
+                <input id="tag" class="form-control" type="text" value="" placeholder="Tag"
+                       name="tag" />
                 <div class="input-group-btn">
                     <input id="searchButton" data-style="slide-left" class="btn btn-success "
                            type="submit" value="Search" />
                 </div>
             </div>
-            <select name="category">
-                <option value="title">Title</option>
-                <option value="artist">Artist</option>
-                <option value="album">Album</option>
-            </select>
         </form>
         <span id="status-message" class="well"></span>
         <div id="resultsd" class="well ">
