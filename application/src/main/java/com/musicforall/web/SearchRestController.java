@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -52,28 +51,20 @@ public class SearchRestController {
         final int MAX_QUERY = 16;
         final int MIN_QUERY = 2;
 
-        if (title != null) {
-            if (title.length() < MIN_QUERY || title.length() > MAX_QUERY) {
+        if (title != null && title.length() < MIN_QUERY || title.length() > MAX_QUERY) {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
-            }
         }
 
-        if (artist != null) {
-            if (artist.length() < MIN_QUERY || artist.length() > MAX_QUERY) {
+        if (artist != null &&artist.length() < MIN_QUERY || artist.length() > MAX_QUERY) {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
-            }
         }
 
-        if (album != null) {
-            if (album.length() < MIN_QUERY || album.length() > MAX_QUERY) {
+        if (album != null && album.length() < MIN_QUERY || album.length() > MAX_QUERY) {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
-            }
         }
 
-        if (tag != null) {
-            if (tag.length() < MIN_QUERY || tag.length() > MAX_QUERY) {
+        if (tag != null && tag.length() < MIN_QUERY || tag.length() > MAX_QUERY) {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
-            }
         }
 
         final List<Track> tracks = trackService.getAllByCriteria(title, artist, album, tag);
