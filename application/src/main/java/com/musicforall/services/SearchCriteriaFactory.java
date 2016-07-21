@@ -8,9 +8,10 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 
-public class SearchCriteriaFactory {
+public final class SearchCriteriaFactory {
 
-    private SearchCriteriaFactory() {}
+    private SearchCriteriaFactory() {
+    }
 
     public static DetachedCriteria buildTrackSearchCriteria(TrackSearch trackSearch) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class);
