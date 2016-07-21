@@ -12,7 +12,6 @@
             <li>$user.username ($user.email)</li>
         #end
     </ul>
-        <p><button type='button' class='btn btn-xs btn-success')>play</button></p>
     <p>
         <a href="profile" class="btn btn-primary">Profile</a>
     </p>
