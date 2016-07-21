@@ -1,13 +1,11 @@
 package com.musicforall.services.track;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.model.TrackSearch;
-import org.hibernate.criterion.CriteriaSpecification;
+import com.musicforall.services.SearchCriteriaFactory;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,25 +62,8 @@ public class TrackServiceImpl implements TrackService {
 
     @Override
     public List<Track> getAllLike(TrackSearch trackSearch) {
-        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class);
-        if (trackSearch.getTitle() != null) {
-            detachedCriteria.add(Restrictions.ilike("name", QueryUtil.like(trackSearch.getTitle())));
-        }
-        if (trackSearch.getArtist() != null) {
-            detachedCriteria.add(Restrictions.ilike("artist", QueryUtil.like(trackSearch.getArtist())));
-        }
-        if (trackSearch.getAlbum() != null) {
-            detachedCriteria.add(Restrictions.ilike("album", QueryUtil.like(trackSearch.getAlbum())));
-        }
-        if (trackSearch.getTags() != null) {
-            Disjunction disjunction = Restrictions.disjunction();
-            trackSearch.getTags().stream()
-                    .map(QueryUtil::like)
-                    .map(likeTag -> Restrictions.ilike("name", likeTag)).forEach(disjunction::add);
-            detachedCriteria.createCriteria("tags").add(disjunction);
-            detachedCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-        }
 
+        final DetachedCriteria detachedCriteria = SearchCriteriaFactory.buildTrackSearchCriteria(trackSearch);
         return dao.getAllBy(detachedCriteria);
     }
 }
