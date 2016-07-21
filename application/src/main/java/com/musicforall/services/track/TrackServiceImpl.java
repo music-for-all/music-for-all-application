@@ -71,6 +71,10 @@ public class TrackServiceImpl implements TrackService {
         if (trackSearch.getAlbum() != null) {
             detachedCriteria.add(Restrictions.like("album", "%" + trackSearch.getAlbum() + "%").ignoreCase());
         }
+        if (trackSearch.getTag() != null) {
+            detachedCriteria.createCriteria("tags").add(Restrictions.like("name", "%" + trackSearch.getTag() + "%").ignoreCase());
+        }
+
         return dao.getAllBy(detachedCriteria);
     }
 
