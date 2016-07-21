@@ -59,20 +59,6 @@
                 <spring.profile>dev</spring.profile>
             </properties>
         </profile>
-
-        <profile>
-            <id>skipCoberturaCheckWhenTestsExecutionScipped</id>
-            <activation>
-                <property>
-                    <name>maven.test.skip</name>
-                    <value>true</value>
-                </property>
-
-            </activation>
-            <properties>
-                <cobertura.skip>true</cobertura.skip>
-            </properties>
-        </profile>
     </profiles>
 
     <dependencies>
