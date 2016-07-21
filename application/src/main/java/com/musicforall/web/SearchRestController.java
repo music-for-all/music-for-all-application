@@ -54,8 +54,9 @@ public class SearchRestController {
         }
         final List<Track> tracks = trackService.getAllLike(trackSearch);
 
+        /* Remove the tracks which does not contain the specified tag. */
         for (final Track track : tracks) {
-            if (track.getTags().contains(trackSearch.getTag())) {
+            if (!track.getTags().contains(trackSearch.getTag())) {
                 tracks.remove(track);
             }
         }
