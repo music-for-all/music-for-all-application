@@ -15,16 +15,16 @@ public class TrackSearch {
     private String album;
 
     @Size(min = 2, max = 16)
-    private List<String> tag;
+    private List<String> tags;
 
     public TrackSearch() {
     }
 
-    public TrackSearch(String title, String artist, String album, List<String> tag) {
+    public TrackSearch(String title, String artist, String album, List<String> tags) {
         this.title = title;
         this.artist = artist;
         this.album = album;
-        this.tag = tag;
+        this.tags = tags;
     }
 
     public String getTitle() {
@@ -39,7 +39,7 @@ public class TrackSearch {
         return album;
     }
 
-    public List<String> getTag() {
-        return tag;
+    public List<String> getTags() {
+        return tags;
     }
 }

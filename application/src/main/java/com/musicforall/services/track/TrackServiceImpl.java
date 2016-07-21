@@ -71,9 +71,9 @@ public class TrackServiceImpl implements TrackService {
         if (trackSearch.getAlbum() != null) {
             detachedCriteria.add(Restrictions.ilike("album", QueryUtil.like(trackSearch.getAlbum())));
         }
-        if (trackSearch.getTag() != null) {
+        if (trackSearch.getTags() != null) {
             Disjunction disjunction = Restrictions.disjunction();
-            trackSearch.getTag().stream()
+            trackSearch.getTags().stream()
                     .map(QueryUtil::like)
                     .map(likeTag -> Restrictions.ilike("name", likeTag)).forEach(disjunction::add);
             detachedCriteria.createCriteria("tags").add(disjunction);
