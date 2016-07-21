@@ -1,6 +1,7 @@
 package com.musicforall.model;
 
 import javax.validation.constraints.Size;
+import java.util.List;
 
 public class TrackSearch {
 
@@ -14,12 +15,12 @@ public class TrackSearch {
     private String album;
 
     @Size(min = 2, max = 16)
-    private String tag;
+    private List<String> tag;
 
     public TrackSearch() {
     }
 
-    public TrackSearch(String title, String artist, String album, String tag) {
+    public TrackSearch(String title, String artist, String album, List<String> tag) {
         this.title = title;
         this.artist = artist;
         this.album = album;
@@ -38,7 +39,7 @@ public class TrackSearch {
         return album;
     }
 
-    public String getTag() {
+    public List<String> getTag() {
         return tag;
     }
 }

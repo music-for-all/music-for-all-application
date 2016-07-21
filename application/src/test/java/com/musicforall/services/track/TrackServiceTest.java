@@ -109,7 +109,7 @@ public class TrackServiceTest {
 
     @Test
     public void testGetAllLike() {
-        final Set<Tag> tags = new HashSet<Tag>(Arrays.asList(new Tag("tag")));
+        final Set<Tag> tags = new HashSet<Tag>(Arrays.asList(new Tag("tag"), new Tag("tag2")));
         final Track track1 = new Track("name", LOC_1);
         final Track track2 = new Track("NAME", "title", "artist", "album", LOC_1, tags);
         final Track track3 = new Track("123nAmE123", LOC_1);
@@ -119,7 +119,7 @@ public class TrackServiceTest {
         List<Track> tracks = trackService.getAllLike(trackSearch);
         assertEquals(3, tracks.size());
 
-        trackSearch = new TrackSearch("name", "artist", "album", "tag");
+        trackSearch = new TrackSearch("name", "artist", "album", Arrays.asList("tag"));
         tracks = trackService.getAllLike(trackSearch);
         assertEquals(1, tracks.size());
     }
