@@ -40,20 +40,4 @@ public class TrackRestController {
     public Track getTrack(@PathVariable("id") Integer id) {
         return trackService.get(id);
     }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public Collection<Track> getTracks() {
-        final Track track0 = new Track();
-        track0.setId(0);
-        track0.setName("My Track0");
-        final Track track1 = new Track();
-        track1.setId(1);
-        track1.setName("My Track1");
-        return new HashSet<Track>() {
-            {
-                add(track0);
-                add(track1);
-            }
-        };
-    }
 }
