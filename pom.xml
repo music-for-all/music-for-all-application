@@ -204,6 +204,7 @@
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>2.7</version>
                 <configuration>
+                    <skip>${skipTests}</skip>
                     <instrumentation>
                         <ignoreTrivial>true</ignoreTrivial>
                         <ignoreMethodAnnotations>
