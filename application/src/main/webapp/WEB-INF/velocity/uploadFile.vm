@@ -64,11 +64,31 @@
 
     function isEmptyInputs() {
         if ($('#inputArtist').val() == "" || $('#inputTitle').val() == "" || $('#file').val() == "") {
-            showMessage("Fill all fields", "warning");
             return true;
         } else {
             return false;
         }
+    }
+
+    function isCorrectSize() {
+        if ($('#inputArtist').val().length <= 30 && $('#inputArtist').val().length >= 2
+                && $('#inputTitle').val().length <= 30 && $('#inputTitle').val().length >= 2) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function verifyFields() {
+        if (isEmptyInputs()) {
+            showMessage("Fill all fields", "warning");
+            return false;
+        }
+        if (!isCorrectSize()) {
+            showMessage("Size of fields must be from 2 to 30", "warning");
+            return false;
+        }
+        return true;
     }
 
     function showMessage(message, type) {
@@ -79,10 +99,9 @@
     }
 
     function uploadJqueryForm() {
-        if (isEmptyInputs()) {
+        if (!verifyFields()) {
             return;
         }
-        $('#result').html('');
 
 
         var obj = new Object();
