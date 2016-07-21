@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * @author IliaNik on 17.07.2016.
  */
-public class AuditionTrackEvent {
+public class TrackListenedEvent {
 
     private int trackId;
 
@@ -13,7 +13,7 @@ public class AuditionTrackEvent {
 
     private Date date = new Date();
 
-    public AuditionTrackEvent(int trackId, Date date, int userId) {
+    public TrackListenedEvent(int trackId, Date date, int userId) {
         this.trackId = trackId;
         this.date = date;
         this.userId = userId;
