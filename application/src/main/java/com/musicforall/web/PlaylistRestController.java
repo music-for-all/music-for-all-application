@@ -42,10 +42,10 @@ public class PlaylistRestController {
         playlist.setName("My Playlist");
         final Set<Track> tracks = new HashSet<Track>() {
             {
-                final Track track1 = new Track("First Track", "First Location");
+                final Track track1 = new Track("First Track", "Com+Truise+-+Cyanide+Sisters.mp3");
                 track1.setId(1);
                 add(track1);
-                final Track track2 = new Track("Second Track", "Second Location");
+                final Track track2 = new Track("Second Track", "Best+Coast+-+The+Only+Place.mp3");
                 track2.setId(2);
                 add(track2);
             }

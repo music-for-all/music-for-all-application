@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <script src="/resources/js/playlist.js"></script>
     <script src="/resources/js/track.js"></script>
+    <script src="/resources/js/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <link href="/resources/css/mainpage.css" rel="stylesheet"/>
     <link href="/resources/css/font-awesome.min.css" rel="stylesheet"/>
@@ -45,26 +46,46 @@
 
         </div>
     </div>
+    <script type="text/javascript" src="/resources/js/player.js"></script>
     <script type="text/template" class="trackRowTemplate">
         <tbody>
         <% _.each(data, function(track){ %>
         <tr id="<%= track.id %>">
             <td>
-                <button type='button' class='btn btn-xs btn-success'>
+                <button type='button' class='btn btn-xs btn-warning pause-track-button' onclick="onPause('audio_<%= track.id %>')">
+                    <span class='glyphicon glyphicon-pause' aria-hidden='true'/>
+                </button>
+                <button type='button' class='btn btn-xs btn-success' onclick="onPlay('audio_<%= track.id %>')">
                     <span class='glyphicon glyphicon-play' aria-hidden='true'/>
                 </button>
-                <button type='button' class='btn btn-xs btn-danger delete-song-button'>
-                    <span class='glyphicon glyphicon-remove' aria-hidden='true'/>
+                <button type='button' class='btn btn-xs btn-danger delete-track-button' onclick="onStop('audio_<%= track.id %>')">
+                    <span class='glyphicon glyphicon-stop' aria-hidden='true'/>
                 </button>
             </td>
             <td>
                 <%= track.name %>
             </td>
+            <td>
+                   <audio id= 'audio_<%= track.id %>' controls>
+                       <source type="audio/mp3" src="/files/<%= track.location %>">
+                   </audio>
+            </td>
+            <td>
+                <button type='button' class='btn btn-xs btn-danger delete-song-button'>
+                    <span class='glyphicon glyphicon-remove' aria-hidden='true'/>
+                </button>
+            </td>
         </tr>
         <% }); %>
         </tbody>
     </script>
-    <script type="text/template" class="playlistRowTemplate">
+
+    <script>
+
+    </script>
+
+
+<script type="text/template" class="playlistRowTemplate">
         <li id="<%= data.id %>" title="<%= data.name %>">
             <a href='#' data-value="<%= data.name %>">
                 <%= data.name %>
