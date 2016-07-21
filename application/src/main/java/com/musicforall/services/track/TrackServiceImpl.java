@@ -52,9 +52,9 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
-    public List<Track> getAllByName(String nameTrack) {
+    public List<Track> getAllByName(String trackName) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class)
-                .add(Restrictions.like("name", "%" + nameTrack + "%").ignoreCase());
+                .add(Restrictions.like("name", "%" + trackName + "%").ignoreCase());
         return dao.getAllBy(detachedCriteria);
     }
 
@@ -75,10 +75,10 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
-    public List<Track> getTracksByTags(Collection<String> tagsName) {
+    public List<Track> getTracksByTags(Collection<String> tagNames) {
 
         final Disjunction disjunction = Restrictions.disjunction();
-        for (final String t : tagsName) {
+        for (final String t : tagNames) {
             disjunction.add(Restrictions.eq("tgs.name", t).ignoreCase());
         }
         DetachedCriteria subcriteria = DetachedCriteria.forClass(Track.class)

@@ -19,8 +19,11 @@ public class TrackSearch {
     public TrackSearch() {
     }
 
-    public TrackSearch(String title) {
+    public TrackSearch(String title, String artist, String album, String tag) {
         this.title = title;
+        this.artist = artist;
+        this.album = album;
+        this.tag = tag;
     }
 
     public String getTitle() {

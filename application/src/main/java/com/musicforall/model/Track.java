@@ -57,6 +57,15 @@ public class Track implements Serializable {
         this.location = location;
     }
 
+    public Track(String name, String title, String artist, String album, String location, Set<Tag> tags) {
+        this.name = name;
+        this.title = title;
+        this.artist = artist;
+        this.album = album;
+        this.location = location;
+        this.tags = tags;
+    }
+
     public String getTitle() {
         return title;
     }
