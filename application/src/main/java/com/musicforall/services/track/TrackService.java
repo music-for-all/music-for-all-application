@@ -26,8 +26,4 @@ public interface TrackService {
     List<Track> getAllByName(String name);
 
     List<Track> getAllLike(TrackSearch trackSearch);
-
-    List<Track> getTracksByTags(Collection<String> tagsName);
-
-    List<Track> findAll();
 }

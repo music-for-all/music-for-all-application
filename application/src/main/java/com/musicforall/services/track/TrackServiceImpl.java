@@ -82,28 +82,4 @@ public class TrackServiceImpl implements TrackService {
 
         return dao.getAllBy(detachedCriteria);
     }
-
-    @Override
-    public List<Track> getTracksByTags(Collection<String> tagNames) {
-
-        final Disjunction disjunction = Restrictions.disjunction();
-        for (final String t : tagNames) {
-            disjunction.add(Restrictions.eq("tgs.name", t).ignoreCase());
-        }
-        DetachedCriteria subcriteria = DetachedCriteria.forClass(Track.class)
-                .createAlias("tags", "tgs")
-                .add(disjunction)
-                .setProjection(Projections.property("id"));
-
-        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class)
-                .add(Subqueries.propertyIn("id", subcriteria));
-
-        return dao.getAllBy(detachedCriteria);
-    }
-
-
-    @Override
-    public List<Track> findAll() {
-        return dao.all(Track.class);
-    }
 }

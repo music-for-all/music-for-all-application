@@ -141,7 +141,7 @@ public class TrackServiceTest {
         for (Tag tag : tagsForTrack) {
             tagNames.add(tag.getName());
         }
-        Collection<Track> tracks1 = trackService.getTracksByTags(tagNames);
+        Collection<Track> tracks1 = trackService.getAllLike(new TrackSearch(null, null, null, tagNames));
         assertEquals(2, tracks1.size());
     }
 }
