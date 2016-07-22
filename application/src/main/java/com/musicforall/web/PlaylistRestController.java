@@ -1,13 +1,12 @@
 package com.musicforall.web;
 
 import com.musicforall.model.Playlist;
-import com.musicforall.model.User;
 import com.musicforall.services.playlist.PlaylistService;
+import com.musicforall.util.UserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -42,10 +41,6 @@ public class PlaylistRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     public Collection<Playlist> getPlaylists() {
-        return playlistService.getAllUserPlaylist(getUser().getId());
-    }
-
-    private User getUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return playlistService.getAllUserPlaylist(UserUtil.getCurrentUser().getId());
     }
 }
