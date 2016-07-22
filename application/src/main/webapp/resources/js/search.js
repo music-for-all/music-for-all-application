@@ -32,22 +32,23 @@ function search() {
     const MIN_QUERY = 2;
     const MAX_QUERY = 16;
 
-    if (title == "" || title.length < MIN_QUERY) {
+    if (title === "" || title.length < MIN_QUERY) {
         title = null;
     }
-    if (artist == "" || title.length < MIN_QUERY) {
+    if (artist === "" || title.length < MIN_QUERY) {
         artist = null;
     }
-    if (album == "" || title.length < MIN_QUERY) {
+    if (album === "" || title.length < MIN_QUERY) {
         album = null;
     }
-    if (tags == "" || title.length < MIN_QUERY) {
+    if (tags === "" || title.length < MIN_QUERY) {
         tags = null;
     }
 
     /* If all the fields are empty or too short, do not proceed with search. */
-    if (!title && !artist && !album && !tags)
+    if (!title && !artist && !album && !tags) {
         return;
+    }
     
     /* Truncate the query string to the maximum allowed size. */
     if (title && title.length > MAX_QUERY) {
@@ -108,7 +109,9 @@ function populateResultsTable(items) {
         var $row = $("#row-template").clone().removeAttr("id").show();
 
         var tagsArray = [];
-        $(item.tags).each(function(i, tag) { tagsArray.push(tag.name) });
+        $(item.tags).each(function(i, tag) {
+            tagsArray.push(tag.name);
+        });
 
         $row.find("td:eq(0) button:eq(0)").on("click", function() {playPreview(item.id)});
         $row.find("td:eq(0) button:eq(1)").on("click", function() {addToPlaylist(item.id)});
