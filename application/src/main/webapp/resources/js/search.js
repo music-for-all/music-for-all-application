@@ -3,7 +3,7 @@
 jQuery(document).ready(function () {
 
     /* Handle the search form (Ajax). */
-    $("#search-form").on("submit", function () {
+    $("#search-form").on("submit", function (e) {
 
         search();
         /* Prevent default */
@@ -23,38 +23,71 @@ jQuery(document).ready(function () {
  */
 function search() {
 
-    const MAX_QUERY = 16;
-    const MIN_QUERY = 2;
-    var query = $("#query").val();
+    var title = $("#title").val();
+    var artist = $("#artist").val();
+    var album = $("#album").val();
+    var tags = $("#tags").val();
+
     /* Do not proceed with queries which are empty or one-character long. */
-    if (query.length < MIN_QUERY) {
-        return;
-    } else if (query.length > MAX_QUERY) {
-        /* Truncate the query string to the maximum allowed size. */
-        query = query.substr(0, MAX_QUERY);
+    const MIN_QUERY = 2;
+    const MAX_QUERY = 16;
+
+    if (title == "" || title.length < MIN_QUERY) {
+        title = null;
+    }
+    if (artist == "" || title.length < MIN_QUERY) {
+        artist = null;
+    }
+    if (album == "" || title.length < MIN_QUERY) {
+        album = null;
+    }
+    if (tags == "" || title.length < MIN_QUERY) {
+        tags = null;
     }
 
-    var category = $("select[name=category] option:selected").val();
-    console.log("Search query: " + query);
-    console.log("Category: " + category);
+    /* If all the fields are empty or too short, do not proceed with search. */
+    if (!title && !artist && !album && !tags)
+        return;
+    
+    /* Truncate the query string to the maximum allowed size. */
+    if (title && title.length > MAX_QUERY) {
+        title = title.substr(0, MAX_QUERY);
+    }
+    if (artist && artist.length > MAX_QUERY) {
+        artist = artist.substr(0, MAX_QUERY);
+    }
+    if (album && album.length > MAX_QUERY) {
+        album = album.substr(0, MAX_QUERY);
+    }
+    if (tags && tags.length > MAX_QUERY) {
+        tags = tags.substr(0, MAX_QUERY);
+    }
+
+    /* If tags are provided, create an array of tags. */
+    tags = !tags ? null : tags.split(/[\s,;]+/);
+
+    var trackData = {
+        title: title,
+        artist: artist,
+        album: album,
+        tags: tags
+    };
+    console.log(trackData);
 
     /* Empty the previous search results, if any. */
     $("#results tr:gt(1)").remove();
 
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: "/api/search",
-        data: {
-            query: query,
-            category: category
-        },
+        contentType: "application/json",
+        data: JSON.stringify(trackData),
         dataType: "json"
 
     }).fail(function (xhr, status, errorThrown) {
-
-        $("#status-message").text("Service is currently unavailable. Please try again.");
-        console.log(status + ": " + xhr.status + " " + errorThrown);
-
+        var message = status + ": " + xhr.status + " " + errorThrown;
+        $("#status-message").text(message);
+        console.log(message);
 
     }).done(function (results) {
 
@@ -62,7 +95,7 @@ function search() {
         $("#status-message").text("Found: " + results.length);
         populateResultsTable(results);
     });
-}
+}   /* End of search() */
 
 /**
  * Inserts the search results into the results table.
@@ -73,11 +106,16 @@ function populateResultsTable(items) {
     $.each(items, function (i, item) {
         /* Create a new row from the template row, and populate it with the current item. */
         var $row = $("#row-template").clone().removeAttr("id").show();
+
+        var tagsArray = [];
+        $(item.tags).each(function(i, tag) { tagsArray.push(tag.name) });
+
         $row.find("td:eq(0) button:eq(0)").on("click", function() {playPreview(item.id)});
         $row.find("td:eq(0) button:eq(1)").on("click", function() {addToPlaylist(item.id)});
-        $row.find("td:eq(1)").text(item.name);
-        $row.find("td:eq(2)").text(item.id);
-        $row.find("td:eq(3)").text(item.location);
+        $row.find("td:eq(1)").text(item.artist);
+        $row.find("td:eq(2)").text(item.title);
+        $row.find("td:eq(3)").text(item.album);
+        $row.find("td:eq(4)").text(tagsArray.join(" "));
         $("#results").append($row);
     });
 }

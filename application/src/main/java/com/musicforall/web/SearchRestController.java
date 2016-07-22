@@ -1,5 +1,6 @@
 package com.musicforall.web;
 
+import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.model.TrackSearch;
 import com.musicforall.services.track.TrackService;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -39,17 +42,19 @@ public class SearchRestController {
     @PostConstruct
     private void addSampleRecords() {
         LOG.info("Post construct");
-        trackService.save(new Track("Track 1", "/track1.mp3"));
-        trackService.save(new Track("Track 2", "/track2.mp3"));
+        trackService.save(new Track("Track 1", "Track 1", "Artist 1", null, "/track1.mp3",
+                new HashSet<Tag>(Arrays.asList(new Tag("TagA")))));
+        trackService.save(new Track("Track 2", "Track 2", "Artist 2", "Album 2", "/track2.mp3", null));
     }
 
     /**
      * Searches tracks by the specified criteria.
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity search(@Valid @RequestBody TrackSearch trackSearch, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
+            LOG.info(bindingResult.getAllErrors().toString());
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         final List<Track> tracks = trackService.getAllLike(trackSearch);
