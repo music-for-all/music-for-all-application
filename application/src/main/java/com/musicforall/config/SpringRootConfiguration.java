@@ -11,7 +11,7 @@ import org.springframework.core.env.Environment;
  */
 @Configuration
 @ComponentScan({"com.musicforall.common",
-        "com.musicforall.services"})
+        "com.musicforall.services, com.musicforall.history"})
 @Import({HibernateConfiguration.class,
         HibernateConfigDev.class,
         FileApiSpringConfig.class,

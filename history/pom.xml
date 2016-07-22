@@ -10,11 +10,11 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>events-api</artifactId>
-    <version>${events-api.version}</version>
+    <artifactId>history</artifactId>
+    <version>${history.version}</version>
     <packaging>jar</packaging>
 
-    <name>events-api</name>
+    <name>history</name>
 
     <dependencies>
         <dependency>

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class WelcomeController {
 
+
     private static final Logger LOG = LoggerFactory.getLogger(WelcomeController.class);
 
     public WelcomeController() {
@@ -20,6 +21,10 @@ public class WelcomeController {
     @RequestMapping("/welcome")
     public String welcome(Model model, HttpServletRequest request) {
         LOG.debug("Requested /welcome");
+
+
+
+
 
         /* Check if there has been an authentication failure. */
         final Object exception = request.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
