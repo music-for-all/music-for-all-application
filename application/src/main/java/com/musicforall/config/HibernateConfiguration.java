@@ -2,7 +2,9 @@ package com.musicforall.config;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -24,7 +26,7 @@ public class HibernateConfiguration {
     public LocalSessionFactoryBean sessionFactory() {
         final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.musicforall.model");
+        sessionFactory.setPackagesToScan("com.musicforall.model", "com.musicforall.history.table");
         sessionFactory.setHibernateProperties(additionalProperties());
         return sessionFactory;
     }

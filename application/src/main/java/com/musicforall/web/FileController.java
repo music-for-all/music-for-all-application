@@ -50,9 +50,10 @@ public class FileController {
                 Files.copy(file, response.getOutputStream());
 
                 Date date = new Date();
-                int userId = 111;
-                int trackId = 222;
+                final int userId = 111;
+                final int trackId = 222;
                 this.publisher.publishEvent(new TrackListenedEvent(trackId, date, userId));
+
             } catch (IOException e) {
                 LOG.error("Streaming failed!", e);
             }
@@ -61,6 +62,8 @@ public class FileController {
 
     @RequestMapping(value = "/tryFiles", method = RequestMethod.GET)
     public String signUp() {
+
+
         return "tryFiles";
     }
 }
