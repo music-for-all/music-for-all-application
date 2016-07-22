@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Performs a redirect to the defaultFailureUrl.
+ */
 public class CustomAuthenticationFailureHandler
         extends SimpleUrlAuthenticationFailureHandler {
 

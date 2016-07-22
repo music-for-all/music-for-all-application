@@ -206,6 +206,7 @@
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>2.7</version>
                 <configuration>
+                    <skip>${skipTests}</skip>
                     <instrumentation>
                         <ignoreTrivial>true</ignoreTrivial>
                         <ignoreMethodAnnotations>
@@ -213,13 +214,19 @@
                                 javax.annotation.PostConstruct
                             </ignoreMethodAnnotation>
                         </ignoreMethodAnnotations>
+                        <excludes>
+                            <exclude>
+                                com/musicforall/services/DbPopulateService.class
+                            </exclude>
+                        </excludes>
                     </instrumentation>
                     <check>
                         <haltOnFailure>true</haltOnFailure>
                         <regexes>
                             <regex>
                                 <pattern>com.musicforall.files.manager.*</pattern>
-                                <branchRate>80</branchRate>
+                                <branchRate>40</branchRate>
+                                //because of https://sourceforge.net/p/cobertura/bugs/178/
                                 <lineRate>80</lineRate>
                             </regex>
                             <regex>

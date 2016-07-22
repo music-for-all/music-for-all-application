@@ -1,10 +1,10 @@
 package com.musicforall.config;
 
 import com.musicforall.files.FileApiSpringConfig;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
-import org.springframework.core.env.Environment;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by kgavrylchenko on 10.06.16.
@@ -19,12 +19,10 @@ import org.springframework.core.env.Environment;
 @PropertySource(value = "file:${user.home}/application.properties")
 public class SpringRootConfiguration {
 
-    @Autowired
-    private Environment env;
+    public static final int THREAD_POOL_SIZE = 10;
 
     @Bean
-    @Qualifier("files")
-    public String filesDirectory() {
-        return env.getRequiredProperty("files.directory");
+    public ExecutorService executorService() {
+        return Executors.newFixedThreadPool(THREAD_POOL_SIZE);
     }
 }

@@ -10,6 +10,9 @@ import org.springframework.web.servlet.view.velocity.VelocityConfigurer;
 import org.springframework.web.servlet.view.velocity.VelocityView;
 import org.springframework.web.servlet.view.velocity.VelocityViewResolver;
 
+/**
+ * The configuration of the dispatcher servlet context.
+ */
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.musicforall.web")
