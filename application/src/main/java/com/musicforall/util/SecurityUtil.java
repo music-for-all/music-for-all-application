@@ -6,12 +6,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 /**
  * Created by Andrey on 7/22/16.
  */
-public final class UserUtil {
+public final class SecurityUtil {
 
-    private UserUtil() {
+    private SecurityUtil() {
     }
 
-    public static User getCurrentUser() {
+    public static User currentUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

@@ -1,7 +1,7 @@
 package com.musicforall.web;
 
 import com.musicforall.services.user.UserService;
-import com.musicforall.util.UserUtil;
+import com.musicforall.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class IndexController {
 
     @RequestMapping("/profile")
     public String profile(Model model) {
-        model.addAttribute("username", UserUtil.getCurrentUser().getUsername());
+        model.addAttribute("username", SecurityUtil.currentUser().getUsername());
         return "profile";
     }
 }
