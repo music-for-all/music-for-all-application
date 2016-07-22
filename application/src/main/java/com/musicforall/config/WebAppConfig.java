@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.velocity.VelocityConfigurer;
-import org.springframework.web.servlet.view.velocity.VelocityView;
-import org.springframework.web.servlet.view.velocity.VelocityViewResolver;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 /**
  * The configuration of the dispatcher servlet context.
@@ -18,13 +18,16 @@ import org.springframework.web.servlet.view.velocity.VelocityViewResolver;
 @ComponentScan("com.musicforall.web")
 public class WebAppConfig extends WebMvcConfigurerAdapter {
     @Bean
-    public VelocityViewResolver viewResolver() {
-        final VelocityViewResolver resolver = new VelocityViewResolver();
+    public FreeMarkerViewResolver viewResolver() {
+        final FreeMarkerViewResolver resolver = new FreeMarkerViewResolver();
         resolver.setCache(true);
         resolver.setPrefix("");
-        resolver.setSuffix(".vm");
-        resolver.setViewClass(VelocityView.class);
+        resolver.setSuffix(".ftl");
+        resolver.setViewClass(FreeMarkerView.class);
         resolver.setContentType("text/html; charset=utf-8");
+        resolver.setExposeSpringMacroHelpers(true);
+        resolver.setExposeRequestAttributes(true);
+        resolver.setExposeSessionAttributes(true);
         return resolver;
     }
 
@@ -35,9 +38,9 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public VelocityConfigurer velocityConfigurer() {
-        final VelocityConfigurer conf = new VelocityConfigurer();
-        conf.setResourceLoaderPath("/WEB-INF/velocity/");
+    public FreeMarkerConfigurer velocityConfigurer() {
+        final FreeMarkerConfigurer conf = new FreeMarkerConfigurer();
+        conf.setTemplateLoaderPath("/WEB-INF/velocity/");
         return conf;
     }
 }
