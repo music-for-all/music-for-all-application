@@ -1,11 +1,10 @@
 package com.musicforall.web;
 
-import com.musicforall.model.User;
 import com.musicforall.services.user.UserService;
+import com.musicforall.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,9 +29,7 @@ public class IndexController {
 
     @RequestMapping("/profile")
     public String profile(Model model) {
-
-        final User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        model.addAttribute("username", user.getUsername());
+        model.addAttribute("username", SecurityUtil.currentUser().getUsername());
         return "profile";
     }
 }
