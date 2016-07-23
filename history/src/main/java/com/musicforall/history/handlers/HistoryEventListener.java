@@ -6,11 +6,12 @@ import com.musicforall.history.handlers.events.TrackListenedEvent;
 import com.musicforall.history.table.HistoryDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 
 /**
  * @author IliaNik on 17.07.2016.
  */
-
+@Component
 public class HistoryEventListener {
 
     @Autowired
