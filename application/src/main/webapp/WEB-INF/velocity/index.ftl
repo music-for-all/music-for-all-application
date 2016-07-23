@@ -1,10 +1,10 @@
-<#import "macros/macros.ftl" as macros>
+<#import "macros/macros.ftl" as m>
 <!DOCTYPE html>
 <html lang="en">
-<@macros.head>
+<@m.head>
 <title>Music For All</title>
-</@macros.head>
-<@macros.body>
+</@m.head>
+<@m.body>
 <h2>Music For All</h2>
 
 <h3>User list</h3>
@@ -16,6 +16,6 @@
 <p>
     <a href="profile" class="btn btn-primary">Profile</a>
 </p>
-    <@macros.logoutForm/>
-</@macros.body>
+    <@m.logoutForm/>
+</@m.body>
 </html>
