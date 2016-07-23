@@ -18,6 +18,10 @@ import java.util.Properties;
  * Created by Pukho on 04.07.2016.
  */
 
+/**
+ * Contains beans related to the enterprise information system.
+ * Development version.
+ */
 @Configuration
 @EnableTransactionManagement
 @Profile("dev")

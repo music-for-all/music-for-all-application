@@ -14,6 +14,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import java.util.Properties;
 
 
+/**
+ * Contains beans related to the enterprise information system.
+ * Production version.
+ */
 @Configuration
 @EnableTransactionManagement
 @Profile("mysql")

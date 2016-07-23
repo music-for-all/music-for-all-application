@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Puts the CSRF token as a ModelAttribute on every request on every controller.
+ */
 @ControllerAdvice
 public class CsrfControllerAdvice {
 
