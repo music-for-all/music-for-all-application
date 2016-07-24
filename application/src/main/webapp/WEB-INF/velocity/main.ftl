@@ -1,10 +1,10 @@
 <#import "macros/macros.ftl" as m>
 <#import "macros/popup_macros.ftl" as p>
+<#import "/spring.ftl" as spring />
 <!DOCTYPE html>
 <html lang="en">
 <@m.head>
 <title>Main</title>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
 <script src="/resources/js/playlist.js"></script>
 <script src="/resources/js/track.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
@@ -68,7 +68,7 @@
     </li>
 </script>
 <script type="text/javascript">
-    var contextPath = "#springUrl('')";
+    var contextPath = "<@spring.url "" />";
     var playlist = new Playlist(contextPath);
     var track = new Track(contextPath);
 

@@ -6,7 +6,7 @@
     <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
+    <#nested>
     <link rel="stylesheet"
           href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
     <link rel="stylesheet"
@@ -47,10 +47,10 @@
     </@form>
 </#macro>
 
-<#--#navigation([
+<#--<@navigation [
         {"isActive": false, "url": url, "title": "Title"},
         {"isActive": false, "url": url, "title": "Title"}]
-             )-->
+             />-->
 
 <#macro navigation items>
 <nav class="navbar navbar-default navbar-fixed-top">

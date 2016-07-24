@@ -26,8 +26,6 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         resolver.setViewClass(FreeMarkerView.class);
         resolver.setContentType("text/html; charset=utf-8");
         resolver.setExposeSpringMacroHelpers(true);
-        resolver.setExposeRequestAttributes(true);
-        resolver.setExposeSessionAttributes(true);
         return resolver;
     }
 
