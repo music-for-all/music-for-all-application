@@ -1,26 +1,26 @@
 package com.musicforall.services.track;
 
-        import com.musicforall.model.Tag;
-        import com.musicforall.model.Track;
-        import com.musicforall.services.tag.TagService;
-        import com.musicforall.util.ServicesTestConfig;
-        import org.junit.Test;
-        import org.junit.runner.RunWith;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.test.context.ContextConfiguration;
-        import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-        import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import com.musicforall.model.Tag;
+import com.musicforall.model.Track;
+import com.musicforall.services.tag.TagService;
+import com.musicforall.util.ServicesTestConfig;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-        import java.util.Arrays;
-        import java.util.HashSet;
-        import java.util.List;
-        import java.util.Set;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-        import static junit.framework.TestCase.assertEquals;
-        import static junit.framework.TestCase.assertFalse;
-        import static junit.framework.TestCase.assertNotNull;
-        import static org.junit.Assert.assertNull;
-        import static org.junit.Assert.assertTrue;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Pukho on 28.06.2016.
