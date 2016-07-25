@@ -1,8 +1,8 @@
 package com.musicforall.services.track;
 
+import com.musicforall.model.SearchCriteria;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
-import com.musicforall.model.TrackSearch;
 import com.musicforall.services.tag.TagService;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
@@ -115,12 +115,12 @@ public class TrackServiceTest {
         final Track track3 = new Track("123nAmE123", LOC_1);
         trackService.saveAll(Arrays.asList(track1, track2, track3));
 
-        TrackSearch trackSearch = new TrackSearch("name", null, null, null);
-        List<Track> tracks = trackService.getAllLike(trackSearch);
+        SearchCriteria searchCriteria = new SearchCriteria("name", null, null, null);
+        List<Track> tracks = trackService.getAllLike(searchCriteria);
         assertEquals(3, tracks.size());
 
-        trackSearch = new TrackSearch("name", "artist", "album", Arrays.asList("tag"));
-        tracks = trackService.getAllLike(trackSearch);
+        searchCriteria = new SearchCriteria("name", "artist", "album", Arrays.asList("tag"));
+        tracks = trackService.getAllLike(searchCriteria);
         assertEquals(1, tracks.size());
     }
 
@@ -141,7 +141,7 @@ public class TrackServiceTest {
         for (Tag tag : tagsForTrack) {
             tagNames.add(tag.getName());
         }
-        Collection<Track> tracks1 = trackService.getAllLike(new TrackSearch(null, null, null, tagNames));
+        Collection<Track> tracks1 = trackService.getAllLike(new SearchCriteria(null, null, null, tagNames));
         assertEquals(2, tracks1.size());
     }
 }
