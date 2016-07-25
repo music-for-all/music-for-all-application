@@ -5,7 +5,6 @@ package com.musicforall.model;
  */
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
