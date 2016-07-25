@@ -37,7 +37,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
 
-        UserDetails user = userDetailsService.loadUserByUsername(username);
+        final UserDetails user = userDetailsService.loadUserByUsername(username);
         if (user == null) {
             throw new BadCredentialsException("Username not found.");
         }
