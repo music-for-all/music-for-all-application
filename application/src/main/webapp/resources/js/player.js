@@ -8,10 +8,10 @@ function onPlay(id) {
     player.play();
 }
 
-document.addEventListener('play', function(e) {
-    var audios = document.getElementsByTagName('audio');
+document.addEventListener("play", function(e) {
+    var audios = document.getElementsByTagName("audio");
     for (var i = 0; i < audios.length; i++) {
-        if(audios[i] != e.target){
+        if(audios[i] !== e.target){
             audios[i].pause();
         }
     }
