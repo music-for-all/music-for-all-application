@@ -30,6 +30,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.music.for.all</groupId>
+            <artifactId>history</artifactId>
+            <version>${history.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.4.192</version>

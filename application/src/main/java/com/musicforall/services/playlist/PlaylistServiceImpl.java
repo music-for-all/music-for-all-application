@@ -70,6 +70,7 @@ public class PlaylistServiceImpl implements PlaylistService {
         final Playlist playlist = dao.get(Playlist.class, playlistId);
         playlist.addTracks(tracks);
         save(playlist);
+
     }
 
     public void setDao(Dao dao) {

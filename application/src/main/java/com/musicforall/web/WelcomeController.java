@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class WelcomeController {
 
+
     private static final Logger LOG = LoggerFactory.getLogger(WelcomeController.class);
 
     public WelcomeController() {
