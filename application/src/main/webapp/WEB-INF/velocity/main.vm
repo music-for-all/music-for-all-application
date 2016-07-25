@@ -20,8 +20,8 @@
 
     #popUpDelete("deletePlaylistModal")
 
-##    #navigation([{"isActive": true, "url": '/main', "title": "Main"},
-##        {"isActive": false, "url": '/search', "title": "Search"}])
+    #navigation([{"isActive": true, "url": '/main', "title": "Main"},
+        {"isActive": false, "url": '/search', "title": "Search"}])
 
     <div class="container">
         <div id="resultsd" class="well col-md-9 ">

@@ -27,11 +27,12 @@ public class Playlist implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-
     @ManyToMany
     @Cascade(CascadeType.SAVE_UPDATE)
+    @JoinTable(name = "playlists_tracks",
+            joinColumns = {@JoinColumn(name = "Playlist_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tracks_id")})
     private Set<Track> tracks;
-
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -47,7 +48,7 @@ public class Playlist implements Serializable {
     }
 
     public void addTracks(Set<Track> tracks) {
-        if (this.tracks != null) {
+        if (this.tracks == null) {
             this.tracks = new HashSet<>();
         }
         this.tracks.addAll(tracks);

@@ -4,6 +4,7 @@ package com.musicforall.model;
  * Created by ilianik on 11.06.2016.
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
 
@@ -35,6 +36,22 @@ public class Track implements Serializable {
 
     @Column(name = "location", nullable = false)
     private String location;
+
+    @JsonIgnore
+    @ManyToMany
+    @Cascade(CascadeType.SAVE_UPDATE)
+    @JoinTable(name = "playlists_tracks",
+            inverseJoinColumns = {@JoinColumn(name = "Playlist_id")},
+            joinColumns = {@JoinColumn(name = "tracks_id")})
+    private Set<Playlist> playlists;
+
+    public Set<Playlist> getPlaylists() {
+        return playlists;
+    }
+
+    public void setPlaylists(Set<Playlist> playlists) {
+        this.playlists = playlists;
+    }
 
     public Track() {
     }

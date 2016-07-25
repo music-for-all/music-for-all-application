@@ -1,15 +1,12 @@
 package com.musicforall.web;
 
-import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
+import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Evgeniy on 26.06.2016.
@@ -17,52 +14,27 @@ import java.util.Set;
 @RestController
 @RequestMapping("/tracks")
 public class TrackRestController {
+
     private static final Logger LOG = LoggerFactory.getLogger(MainController.class);
+
+    @Autowired
+    private TrackService trackService;
 
     @RequestMapping(method = RequestMethod.POST)
     public Track createTrack(@RequestParam("name") String name) {
         final Track track = new Track();
-        track.setId(name.hashCode());
         track.setName(name);
-        return track;
+        return trackService.save(track);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public HttpStatus deleteTrack(@PathVariable("id") Integer id) {
-        final Track track = new Track();
-        track.setId(id);
-        track.setName(id + " deleted");
+        trackService.delete(id);
         return HttpStatus.NO_CONTENT;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Track getTrack(@PathVariable("id") Integer id) {
-        final Track track = new Track();
-        track.setId(id);
-        track.setName("My Track");
-        final Set<Tag> tags = new HashSet<Tag>() {
-            {
-                add(new Tag("HipHop"));
-                add(new Tag("Rap"));
-            }
-        };
-        track.setTags(tags);
-        return track;
-    }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public Collection<Track> getTracks() {
-        final Track track0 = new Track();
-        track0.setId(0);
-        track0.setName("My Track0");
-        final Track track1 = new Track();
-        track1.setId(1);
-        track1.setName("My Track1");
-        return new HashSet<Track>() {
-            {
-                add(track0);
-                add(track1);
-            }
-        };
+        return trackService.get(id);
     }
 }
