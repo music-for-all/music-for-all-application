@@ -1,4 +1,4 @@
-package com.musicforall.config;
+package com.musicforall.config.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
