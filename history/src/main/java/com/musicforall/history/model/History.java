@@ -1,4 +1,4 @@
-package com.musicforall.history.table;
+package com.musicforall.history.model;
 
 
 import com.musicforall.history.handlers.events.EventType;
@@ -12,8 +12,8 @@ import java.util.Objects;
  */
 
 @Entity
-@Table(name = "usage_history")
-public class HistoryDB {
+@Table(name = "history")
+public class History {
 
     @Id
     @Column(name = "id")
@@ -32,14 +32,14 @@ public class HistoryDB {
     @Enumerated(EnumType.STRING)
     private EventType eventType;
 
-    public HistoryDB(int trackId, Date date, int userId, EventType eventType) {
+    public History(int trackId, Date date, int userId, EventType eventType) {
         this.trackId = trackId;
         this.date = date;
         this.userId = userId;
         this.eventType = eventType;
     }
 
-    public HistoryDB() {
+    public History() {
     }
 
     public int getId() {
@@ -95,7 +95,7 @@ public class HistoryDB {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final HistoryDB other = (HistoryDB) obj;
+        final History other = (History) obj;
         return Objects.equals(this.id, other.id)
                 && Objects.equals(this.trackId, other.trackId)
                 && Objects.equals(this.userId, other.userId)
