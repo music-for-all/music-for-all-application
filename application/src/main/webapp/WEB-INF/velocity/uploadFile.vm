@@ -18,7 +18,7 @@
     <div id="container" class="container">
         <div id="result" class="col-md-4 col-md-offset-4 " role="alert"></div>
         <div class="col-md-4 col-md-offset-4 text-center">
-            <button type="button" class="btn btn-success" onclick="uploadJqueryForm()">Upload
+            <button type="button" class="btn btn-success" onclick="addTrack()">Upload
             </button>
             <button type="button" onclick="copyForm()" class="btn btn-default">Add more
             </button>
@@ -87,7 +87,7 @@
         $('#result').show();
     }
 
-    function uploadJqueryForm() {
+    function addTrack() {
         if (!validateForm()) {
             return;
         }
@@ -107,14 +107,13 @@
             track.createJson(formData)
                     .then(function (data) {
                         showMessage(data, "success");
-                    })
-                    .then(null, function (xhr, status, error) {
+                    }, function (xhr, status, error) {
                         if (xhr.responseText.length < max_length_error) {
                             showMessage("("+obj.artist + " - " + obj.name + ")" + ": " + xhr.responseText, "danger");
                         } else {
                             showMessage("("+obj.artist + " - " + obj.name + ")" + ": " + error, "danger");
                         }
-                        return;
+                        return false;
                     });
         });
     }
