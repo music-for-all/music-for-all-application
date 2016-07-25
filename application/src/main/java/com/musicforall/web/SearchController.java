@@ -50,11 +50,9 @@ public class SearchController {
         final Tag t = new Tag();
         t.setName("music");
         tag.add(t);
-        ////todo: rewrite for using constructor with Artist
-        array.add(new Track(tag, search, search, location));
+        array.add(new Track(tag, search, location));
         for (int i = 0; i < listCategory.size(); i++) {
-            //todo: rewrite for using constructor with Artist
-            array.add(new Track(tag, listCategory.get(i), listCategory.get(i), location));
+            array.add(new Track(tag, listCategory.get(i), location));
         }
         return array;
     }

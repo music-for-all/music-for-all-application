@@ -46,10 +46,10 @@ public class PlaylistController {
         playlist.setName("My Playlist");
         final Set<Track> tracks = new HashSet<Track>() {
             {
-                final Track track1 = new Track("First Artist", "First Track", "First Location");
+                final Track track1 = new Track("First Track", "First Location");
                 track1.setId(1);
                 add(track1);
-                final Track track2 = new Track("Second Artist", "Second Track", "Second Location");
+                final Track track2 = new Track("Second Track", "Second Location");
                 track2.setId(2);
                 add(track2);
             }

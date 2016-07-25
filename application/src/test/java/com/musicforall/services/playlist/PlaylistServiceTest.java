@@ -102,8 +102,8 @@ public class PlaylistServiceTest {
         final Playlist playlist = playlistService.save(PLAYLIST_1);
         final Integer playlistId = playlist.getId();
 
-        final Track track1 = new Track("artist1", "track1", "location1");
-        final Track track2 = new Track("artist2", "track2", "location2");
+        final Track track1 = new Track("track1", "location1");
+        final Track track2 = new Track("track2", "location2");
         playlistService.addTracks(playlistId, new HashSet<>(Arrays.asList(track1, track2)));
 
         final Set<Track> tracksInPlaylist = playlistService.getAllTracksInPlaylist(playlistId);

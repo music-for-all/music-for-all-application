@@ -93,8 +93,7 @@
         }
         $("form[name=upForm]").each(function () {
             var obj = new Object();
-            obj.artist = $(this).find('input[name=artist]').val();
-            obj.name = $(this).find('input[name=name]').val();
+            obj.name = $(this).find('input[name=artist]').val() + " - " + $(this).find('input[name=name]').val();
             obj.location = "unknown";
             if ($(this).find('input[name=tags]').val() != "") {
                 obj.tags = $(this).find('input[name=tags]').val().split(",");
@@ -109,9 +108,9 @@
                         showMessage(data, "success");
                     }, function (xhr, status, error) {
                         if (xhr.responseText.length < max_length_error) {
-                            showMessage("("+obj.artist + " - " + obj.name + ")" + ": " + xhr.responseText, "danger");
+                            showMessage("(" + obj.artist + " - " + obj.name + ")" + ": " + xhr.responseText, "danger");
                         } else {
-                            showMessage("("+obj.artist + " - " + obj.name + ")" + ": " + error, "danger");
+                            showMessage("(" + obj.artist + " - " + obj.name + ")" + ": " + error, "danger");
                         }
                         return false;
                     });
