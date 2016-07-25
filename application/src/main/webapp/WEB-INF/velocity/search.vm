@@ -14,17 +14,8 @@
 #end
 #@body()
 
-    #@navigation([{"isActive": false, "url": '/search', "title": "Search"}],
-        {"isActive": true, "url": '/main', "title": "Main"})
-
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-    #end
+    #navigation([{"isActive": false, "url": '/search', "title": "Search"},
+        {"isActive": true, "url": '/main', "title": "Main"}])
 
     <div class="container">
         <form class="form-inline text-center " id="searchForm" method="post">
