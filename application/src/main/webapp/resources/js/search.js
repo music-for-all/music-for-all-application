@@ -3,7 +3,7 @@
 jQuery(document).ready(function () {
 
     /* Handle the search form (Ajax). */
-    $("#search-form").on("submit", function (e) {
+    $("#search-form").on("submit", function () {
 
         search();
         /* Prevent default */
@@ -28,29 +28,14 @@ function search() {
     var album = $("#album").val();
     var tags = $("#tags").val();
 
-    /* Do not proceed with queries which are empty or one-character long. */
-    const MIN_QUERY = 2;
-    const MAX_QUERY = 16;
-
-    if (title === "" || title.length < MIN_QUERY) {
-        title = null;
-    }
-    if (artist === "" || title.length < MIN_QUERY) {
-        artist = null;
-    }
-    if (album === "" || title.length < MIN_QUERY) {
-        album = null;
-    }
-    if (tags === "" || title.length < MIN_QUERY) {
-        tags = null;
-    }
-
-    /* If all the fields are empty or too short, do not proceed with search. */
+    /* If all the fields are empty, do not proceed with search. */
     if (!title && !artist && !album && !tags) {
         return;
     }
-    
+
     /* Truncate the query string to the maximum allowed size. */
+    const MAX_QUERY = 16;
+
     if (title && title.length > MAX_QUERY) {
         title = title.substr(0, MAX_QUERY);
     }
@@ -79,10 +64,9 @@ function search() {
     $("#results tr:gt(1)").remove();
 
     $.ajax({
-        type: "POST",
+        type: "GET",
         url: "/api/search",
-        contentType: "application/json",
-        data: JSON.stringify(trackData),
+        data: trackData,
         dataType: "json"
 
     }).fail(function (xhr, status, errorThrown) {

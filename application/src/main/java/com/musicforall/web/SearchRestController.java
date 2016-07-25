@@ -2,7 +2,7 @@ package com.musicforall.web;
 
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
-import com.musicforall.model.TrackSearch;
+import com.musicforall.model.SearchCriteria;
 import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
@@ -50,14 +47,16 @@ public class SearchRestController {
     /**
      * Searches tracks by the specified criteria.
      */
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity search(@Valid @RequestBody TrackSearch trackSearch, BindingResult bindingResult) {
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity search(@Valid SearchCriteria searchCriteria, BindingResult bindingResult) {
+
+        LOG.info(searchCriteria.toString());
 
         if (bindingResult.hasErrors()) {
             LOG.info(bindingResult.getAllErrors().toString());
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        final List<Track> tracks = trackService.getAllLike(trackSearch);
+        final List<Track> tracks = trackService.getAllLike(searchCriteria);
 
         return new ResponseEntity<List<Track>>(tracks, HttpStatus.OK);
     }
