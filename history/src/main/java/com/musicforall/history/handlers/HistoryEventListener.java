@@ -23,7 +23,7 @@ public class HistoryEventListener {
     }
 
     private History toHistoryEntity(TrackListenedEvent event) {
-        History history = new History();
+        final History history = new History();
         history.setEventType(EventType.TRACK_LISTENED);
         history.setTrackId(event.getTrackId());
         history.setUserId(event.getUserId());

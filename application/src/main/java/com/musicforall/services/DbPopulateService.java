@@ -31,9 +31,12 @@ public class DbPopulateService {
     private static final Map<String, String> LINKS = new HashMap<>();
 
     static {
-        LINKS.put("Jerry-Lee-Lewis-part-1", "http://opensourcemusic.com/files/2010/04/01-Selvin-On-The-City-Jerry-Lee-Lewis-part-1.mp3");
-        LINKS.put("Tom-Waits-part-1", "http://opensourcemusic.com/files/2012/10/01-Tom-Waits-on-Selvin-On-The-City-part-1.mp3");
-        LINKS.put("Jerry-Lee-Lewis-part-4", "http://opensourcemusic.com/files/2010/04/04-Selvin-On-The-City-Jerry-Lee-Lewis-part-4.mp3");
+        LINKS.put("Jerry-Lee-Lewis-part-1", "http://opensourcemusic.com/files" +
+                "/2010/04/01-Selvin-On-The-City-Jerry-Lee-Lewis-part-1.mp3");
+        LINKS.put("Tom-Waits-part-1", "http://opensourcemusic.com/files" +
+                "/2012/10/01-Tom-Waits-on-Selvin-On-The-City-part-1.mp3");
+        LINKS.put("Jerry-Lee-Lewis-part-4", "http://opensourcemusic.com/files" +
+                "/2010/04/04-Selvin-On-The-City-Jerry-Lee-Lewis-part-4.mp3");
     }
 
     @Autowired
