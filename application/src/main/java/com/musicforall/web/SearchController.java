@@ -1,8 +1,8 @@
 package com.musicforall.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
+import com.musicforall.model.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

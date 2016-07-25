@@ -63,20 +63,3 @@
         #end
     #end
 #end
-
-#macro(popUpConfirm $id $title $acceptId)
-    #@popUp($id)
-        #popupHead($title)
-
-        #@popupBody()
-        <p>Are you sure?</p>
-        #end
-
-        #@popupFooter()
-        <button type="button" class="btn btn-success" data-dismiss="modal">No</button>
-        <button type="button" class="btn btn-danger" id=$acceptId data-dismiss="modal">
-            Yes
-        </button>
-        #end
-    #end
-#end

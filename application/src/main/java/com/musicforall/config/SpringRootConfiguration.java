@@ -26,5 +26,4 @@ public class SpringRootConfiguration {
     public String filesDirectory() {
         return env.getRequiredProperty("files.directory");
     }
-
 }

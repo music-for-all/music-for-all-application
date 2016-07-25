@@ -114,6 +114,4 @@ public class Track implements Serializable {
         return ReflectionToStringBuilder.toString(this,
                 ToStringStyle.SHORT_PREFIX_STYLE);
     }
-
-
 }
