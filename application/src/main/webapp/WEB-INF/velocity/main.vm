@@ -1,5 +1,5 @@
-<#import "macros/macros.ftl" as m>
-<#import "macros/popup_macros.ftl" as p>
+<#import "macros/macros.vm" as m>
+<#import "macros/popup_macros.vm" as p>
 <#import "/spring.ftl" as spring />
 <!DOCTYPE html>
 <html lang="en">

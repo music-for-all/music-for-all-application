@@ -35,8 +35,8 @@
 </body>
 </#macro>
 
-<#macro form action method id enctype>
-<form id="${id}" action="<@spring.url "${action}" />" method="${method}" <#if ${method}=="post"||${method}=="POST"> enctype=${enctype}</#if>>
+<#macro form action method id enctype="">
+<form id="${id}" action="<@spring.url "${action}" />" method="${method}" <#if method=="post"||method=="POST"> enctype=${enctype}</#if>>
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <#nested>
 </form>

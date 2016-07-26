@@ -4,11 +4,8 @@ package com.musicforall.model;
  * Created by ilianik on 11.06.2016.
  */
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
-import org.hibernate.annotations.Cascade;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
@@ -129,7 +126,12 @@ public class Track implements Serializable {
 
     @Override
     public String toString() {
-        return ReflectionToStringBuilder.toString(this,
-                ToStringStyle.SHORT_PREFIX_STYLE);
+        return "Track{" +
+                "id=" + id +
+                ", tags=" + tags +
+                ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                ", playlists=" + playlists +
+                '}';
     }
 }
