@@ -17,7 +17,7 @@ import java.util.Objects;
 public class Tag implements Serializable {
 
     @Id
-    @Size(min = 2, max = 30)
+    @Size(min = 2, max = 16)
     @Column(name = "name", unique = true)
     private String name;
 

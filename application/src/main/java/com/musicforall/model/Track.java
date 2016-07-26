@@ -26,6 +26,9 @@ public class Track implements Serializable {
 
     @ManyToMany
     @Cascade(CascadeType.SAVE_UPDATE)
+    @JoinTable(name = "track_tag",
+            joinColumns = {@JoinColumn(name = "tracks_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_name")})
     private Set<Tag> tags;
 
     @Size(min = 2, max = 30)
@@ -48,7 +51,7 @@ public class Track implements Serializable {
     @ManyToMany
     @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "playlists_tracks",
-            inverseJoinColumns = {@JoinColumn(name = "Playlist_id")},
+            inverseJoinColumns = {@JoinColumn(name = "playlist_id")},
             joinColumns = {@JoinColumn(name = "tracks_id")})
     private Set<Playlist> playlists;
 
