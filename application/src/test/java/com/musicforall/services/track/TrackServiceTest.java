@@ -110,17 +110,11 @@ public class TrackServiceTest {
     @Test
     public void testGetAllLike() {
         final Set<Tag> tags = new HashSet<Tag>(Arrays.asList(new Tag("tag"), new Tag("tag2")));
-        final Track track1 = new Track("name", LOC_1);
-        final Track track2 = new Track("NAME", "title", "artist", "album", LOC_1, tags);
-        final Track track3 = new Track("123nAmE123", LOC_1);
-        trackService.saveAll(Arrays.asList(track1, track2, track3));
 
-        SearchCriteria searchCriteria = new SearchCriteria("name", null, null, null);
+        trackService.save(new Track("NAME", "title", "artist", "album", LOC_1, tags));
+
+        SearchCriteria searchCriteria = new SearchCriteria("title", "artist", "album", Arrays.asList("tag"));
         List<Track> tracks = trackService.getAllLike(searchCriteria);
-        assertEquals(3, tracks.size());
-
-        searchCriteria = new SearchCriteria("name", "artist", "album", Arrays.asList("tag"));
-        tracks = trackService.getAllLike(searchCriteria);
         assertEquals(1, tracks.size());
     }
 
@@ -131,11 +125,9 @@ public class TrackServiceTest {
         final Track track1 = new Track("search_track", LOC_1, tagsForTrack);
         final Track track2 = new Track("search_track2", LOC_1, tagsForTrack);
 
-      //  tagsForTrack.add(new Tag("nanana"));
         final Set<Tag> tagsForTrack2 = new HashSet<Tag>(Arrays.asList(new Tag("hahah"),
                 new Tag("lol")));
         trackService.saveAll(Arrays.asList(track1, track2));
-       // Collection<Track> tracks = trackService.getTracksByTag("pop");
 
         List<String> tagNames = new ArrayList<String>();
         for (Tag tag : tagsForTrack) {
