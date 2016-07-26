@@ -11,7 +11,7 @@ function Track(contextPath) {
         return $.when(
             $.ajax({
                 url: "/files",
-                type: 'POST',
+                type: "POST",
                 data: formData,
                 cache: false,
                 processData: false,
