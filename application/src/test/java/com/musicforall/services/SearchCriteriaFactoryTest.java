@@ -16,10 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -70,9 +67,46 @@ public class SearchCriteriaFactoryTest {
                 new SearchCriteria("title1", "artist1", "album", null)));
         assertEquals(1, tracks.size());
 
-        System.err.printf("%s\n", dao.get(Track.class, 2));
-        tracks = dao.getAllBy(SearchCriteriaFactory.buildTrackSearchCriteria(
-                new SearchCriteria("title", "artist2", "album2", Arrays.asList("tag2"))));
+
+        // TODO Remove this statement after work with the method is finished
+        dao.get(Track.class, 2);
+
+//        tracks = dao.getAllBy(SearchCriteriaFactory.buildTrackSearchCriteria(
+//                new SearchCriteria("title", "artist2", "album2", Arrays.asList("tag2"))));
+
+        /* Convert tags collection into a comma-separated values. */
+        StringBuilder tagsString = new StringBuilder();
+
+        for (Iterator<Tag> tagIterator = tags.iterator(); tagIterator.hasNext();) {
+
+            tagsString.append(String.format("'%s'", tagIterator.next().getName()));
+            if (tagIterator.hasNext()) {
+                tagsString.append(',');
+            }
+        }
+        System.err.printf("%s\n", tagsString);
+
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("title", "title2");
+        parameters.put("artist", "artist2");
+        parameters.put("album", "album2");
+        parameters.put("tags", tagsString.toString());
+        parameters.put("tagCount", String.valueOf(tags.size()));
+
+        tracks = dao.getAllBy(
+                "select track from Track track " +
+                        "join track.tags tag " +
+                        "where tag.name in (:tags) " +
+                        "and track.id in (" +
+                            "select trackTmp.id " +
+                            "from Track trackTmp " +
+                            "join trackTmp.tags tagTmp " +
+                            "group by trackTmp " +
+                            "having count(tagTmp)=:tagCount) " +
+                        "group by track " +
+                        "having count(tag)=:tagCount",
+                parameters);
+
         assertEquals(1, tracks.size());
 
         tracks = dao.getAllBy(SearchCriteriaFactory.buildTrackSearchCriteria(
