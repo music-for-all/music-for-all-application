@@ -1,7 +1,5 @@
 package com.musicforall.history.handlers.events;
 
-import java.util.Date;
-
 /**
  * @author IliaNik on 17.07.2016.
  */
@@ -11,11 +9,9 @@ public class TrackListenedEvent {
 
     private int userId;
 
-    private Date date = new Date();
 
-    public TrackListenedEvent(int trackId, Date date, int userId) {
+    public TrackListenedEvent(int trackId, int userId) {
         this.trackId = trackId;
-        this.date = date;
         this.userId = userId;
     }
 
@@ -33,14 +29,6 @@ public class TrackListenedEvent {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
 }

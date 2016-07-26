@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 /**
  * @author IliaNik on 17.07.2016.
  */
@@ -27,7 +29,7 @@ public class HistoryEventListener {
         history.setEventType(EventType.TRACK_LISTENED);
         history.setTrackId(event.getTrackId());
         history.setUserId(event.getUserId());
-        history.setDate(event.getDate());
+        history.setDate(new Date());
         return history;
     }
 }
