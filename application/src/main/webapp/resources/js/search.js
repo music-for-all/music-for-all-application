@@ -49,9 +49,11 @@ function search() {
         tags = tags.substr(0, MAX_QUERY);
     }
 
-    /* If tags are provided, create an array of tags. */
-    tags = !tags ? null : tags.split(/[\s,;]+/);
-    tags = tags.join(",");
+    /* If tags are provided, make them a string with comma-separated values. */
+    if (tags) {
+        tags = tags.split(/[\s,;]+/).join(",");
+    }
+
     var trackData = {
         title: title,
         artist: artist,
