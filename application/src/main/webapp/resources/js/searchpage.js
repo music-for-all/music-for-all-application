@@ -21,12 +21,12 @@ function ajaxSearch(searchQuery, selectedCategory) {
             search: searchQuery,
             category: JSON.stringify(selectedCategory)
         }),
-        success: function (response) {
+        success(response) {
             $.each(response, function () {
                 addRow(this.id, this.name, this.location, this.id);//Only for demonstration
             });
         },
-        error: function () {
+        error() {
             alert("Error while request..");
         }
     });
@@ -41,8 +41,8 @@ function search() {
     $("input:checkbox[name=category]:checked").each(function () {
         selectedCategory.push($(this).val());
     });
-    console.log("Query for searching: " + searchQuery);
-    console.log("Genres for searching: " + selectedCategory);
+    Console.log("Query for searching: " + searchQuery);
+    Console.log("Genres for searching: " + selectedCategory);
     if (searchQuery !== "") {
         ajaxSearch(searchQuery, selectedCategory);
     }
