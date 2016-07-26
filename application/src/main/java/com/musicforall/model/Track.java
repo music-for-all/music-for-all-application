@@ -5,10 +5,12 @@ package com.musicforall.model;
  */
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -127,11 +129,10 @@ public class Track implements Serializable {
     @Override
     public String toString() {
         return "Track{" +
-                "id=" + id +
-                ", tags=" + tags +
+                "id='" + id + '\'' +
+                "tags='" + tags + '\'' +
                 ", name='" + name + '\'' +
                 ", location='" + location + '\'' +
-                ", playlists=" + playlists +
                 '}';
     }
 }
