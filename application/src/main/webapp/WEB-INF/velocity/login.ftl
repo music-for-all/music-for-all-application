@@ -1,4 +1,4 @@
-<#import "macros/macros.vm" as m>
+<#import "macros/macros.ftl" as m>
 <!DOCTYPE html>
 <html lang="en">
 <@m.head>

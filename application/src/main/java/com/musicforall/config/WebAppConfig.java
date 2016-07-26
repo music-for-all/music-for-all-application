@@ -23,7 +23,6 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         resolver.setCache(true);
         resolver.setPrefix("");
         resolver.setSuffix(".ftl");
-        resolver.setSuffix(".vm"); //to rename after integration
         resolver.setViewClass(FreeMarkerView.class);
         resolver.setContentType("text/html; charset=utf-8");
         resolver.setExposeSpringMacroHelpers(true);
