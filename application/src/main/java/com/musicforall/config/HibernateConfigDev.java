@@ -1,10 +1,10 @@
-package com.musicforall.util;
+package com.musicforall.config;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -15,15 +15,26 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
- * Created by Pukho on 19.06.2016.
+ * Created by Pukho on 04.07.2016.
+ */
+
+/**
+ * Contains beans related to the enterprise information system.
+ * Development version.
  */
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({"com.musicforall.model",
-        "com.musicforall.common.dao",
-        "com.musicforall.util",
-        "com.musicforall.services"})
-public class JpaServicesTestConfig {
+@Profile("dev")
+public class HibernateConfigDev {
+
+    @Bean
+    public LocalSessionFactoryBean sessionFactory() {
+        final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setPackagesToScan("com.musicforall.model", "com.musicforall.history.table");
+        sessionFactory.setHibernateProperties(additionalProperties());
+        return sessionFactory;
+    }
 
     @Bean
     public DataSource dataSource() {
@@ -34,12 +45,12 @@ public class JpaServicesTestConfig {
     }
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory() {
-        final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[]{"com.musicforall", "com.musicforall.common"});
-        sessionFactory.setHibernateProperties(additionalProperties());
-        return sessionFactory;
+    @Autowired
+    public HibernateTransactionManager transactionManager(SessionFactory s) {
+        final HibernateTransactionManager txManager = new HibernateTransactionManager();
+        txManager.setSessionFactory(s);
+        txManager.setDataSource(dataSource());
+        return txManager;
     }
 
     private Properties additionalProperties() {
@@ -49,14 +60,5 @@ public class JpaServicesTestConfig {
         properties.setProperty("hibernate.format_sql", Boolean.TRUE.toString());
         properties.setProperty("hibernate.show_sql", Boolean.TRUE.toString());
         return properties;
-    }
-
-    @Bean
-    @Autowired
-    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-        final HibernateTransactionManager tm = new HibernateTransactionManager();
-        tm.setDataSource(dataSource());
-        tm.setSessionFactory(sessionFactory);
-        return tm;
     }
 }

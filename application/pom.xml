@@ -28,13 +28,18 @@
             <artifactId>file-api</artifactId>
             <version>${fileapi.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.music.for.all</groupId>
+            <artifactId>history</artifactId>
+            <version>${history.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.4.192</version>
-            <scope>test</scope>
         </dependency>
-
 
         <dependency>
             <groupId>org.codehaus.janino</groupId>
@@ -58,6 +63,14 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.4.0.M0</version>
+                <configuration>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>spring.profiles.active</name>
+                            <value>${spring.profile}</value>
+                        </systemProperty>
+                    </systemProperties>
+                </configuration>
             </plugin>
         </plugins>
     </build>

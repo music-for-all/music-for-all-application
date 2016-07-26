@@ -7,6 +7,8 @@ package com.musicforall.model;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.hibernate.annotations.Cascade;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
@@ -35,6 +37,22 @@ public class Track implements Serializable {
 
     @Column(name = "location", nullable = false)
     private String location;
+
+    @JsonIgnore
+    @ManyToMany
+    @Cascade(CascadeType.SAVE_UPDATE)
+    @JoinTable(name = "playlists_tracks",
+            inverseJoinColumns = {@JoinColumn(name = "Playlist_id")},
+            joinColumns = {@JoinColumn(name = "tracks_id")})
+    private Set<Playlist> playlists;
+
+    public Set<Playlist> getPlaylists() {
+        return playlists;
+    }
+
+    public void setPlaylists(Set<Playlist> playlists) {
+        this.playlists = playlists;
+    }
 
     public Track() {
     }

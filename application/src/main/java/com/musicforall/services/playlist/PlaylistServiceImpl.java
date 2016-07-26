@@ -3,13 +3,11 @@ package com.musicforall.services.playlist;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
-import com.musicforall.services.user.UserService;
+import com.musicforall.model.User;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +21,6 @@ import java.util.Set;
 @Service("playlistService")
 @Transactional
 public class PlaylistServiceImpl implements PlaylistService {
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private Dao dao;
@@ -47,10 +42,8 @@ public class PlaylistServiceImpl implements PlaylistService {
     public Playlist save(String playlistName) {
         final Playlist playlist = new Playlist();
 
-        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        final UserDetails userDetails = (UserDetails) auth.getPrincipal();
-
-        playlist.setUser(userService.getByName(userDetails.getUsername()));
+        final User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        playlist.setUser(user);
         playlist.setName(playlistName);
         return save(playlist);
     }
@@ -77,10 +70,7 @@ public class PlaylistServiceImpl implements PlaylistService {
         final Playlist playlist = dao.get(Playlist.class, playlistId);
         playlist.addTracks(tracks);
         save(playlist);
-    }
 
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 
     public void setDao(Dao dao) {

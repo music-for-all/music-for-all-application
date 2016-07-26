@@ -34,8 +34,4 @@ function Track(contextPath) {
     self.get = function (id) {
         return $.when($.get(baseUrl + "/" + id));
     };
-
-    self.all = function () {
-        return $.when($.get(baseUrl));
-    };
 }
