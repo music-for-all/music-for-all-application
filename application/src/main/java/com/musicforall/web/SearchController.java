@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class SearchController {
 
     private static final Logger LOG = LoggerFactory.getLogger(SearchController.class);
+    public static final String SEARCH = "search";
 
     public SearchController() {
         LOG.debug("Search controller");
@@ -18,13 +19,13 @@ public class SearchController {
     @RequestMapping("/search")
     public String welcome(Model model) {
         LOG.debug("Requested /search");
-        return "search";
+        return SEARCH;
     }
 
     @RequestMapping(value = "/addSong", method = RequestMethod.POST)
     public String dummyAddSong(@RequestParam("songId") Integer id) {
         LOG.debug("Requested /addSong");
 
-        return "search";
+        return SEARCH;
     }
 }

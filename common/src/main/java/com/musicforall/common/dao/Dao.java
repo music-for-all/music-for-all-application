@@ -26,6 +26,7 @@ import java.util.Map.Entry;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class Dao {
     private static final Logger LOG = LoggerFactory.getLogger(Dao.class);
+    public static final String FOUND_ENTITY = "Found entity - {}";
 
     private final int batchSize = 20;
 
@@ -116,7 +117,7 @@ public class Dao {
         final Query query = currentSession().createQuery(hql);
         query.setProperties(parameters);
         final T entity = (T) query.uniqueResult();
-        LOG.info("Found entity - {}", entity);
+        LOG.info(FOUND_ENTITY, entity);
         return entity;
     }
 
@@ -141,7 +142,7 @@ public class Dao {
         final Query query = currentSession().createQuery(hql);
         query.setProperties(parameters);
         final List<T> entities = (List<T>) query.list();
-        LOG.info("Found entities - {}", entities);
+        LOG.info(FOUND_ENTITY, entities);
         return entities;
     }
 
@@ -157,7 +158,7 @@ public class Dao {
         LOG.info("going to find entity by criteria - {}", criteria);
         final Criteria executableCriteria = criteria.getExecutableCriteria(currentSession());
         final T entity = (T) executableCriteria.uniqueResult();
-        LOG.info("Found entity - {}", entity);
+        LOG.info(FOUND_ENTITY, entity);
         return entity;
     }
 
@@ -175,7 +176,7 @@ public class Dao {
         LOG.info("going to find entities by criteria - {}", criteria);
         final Criteria executableCriteria = criteria.getExecutableCriteria(currentSession());
         final List<T> entities = executableCriteria.list();
-        LOG.info("Found entities - {}", entities);
+        LOG.info(FOUND_ENTITY, entities);
         return entities;
     }
 

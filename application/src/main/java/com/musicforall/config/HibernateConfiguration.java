@@ -23,6 +23,11 @@ import java.util.Properties;
 @Profile("mysql")
 public class HibernateConfiguration {
 
+    public static final String HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
+    public static final String HIBERNATE_DIALECT = "hibernate.dialect";
+    public static final String HIBERNATE_FORMAT_SQL = "hibernate.format_sql";
+    public static final String HIBERNATE_SHOW_SQL = "hibernate.show_sql";
+
     @Autowired
     private Environment env;
 
@@ -56,10 +61,10 @@ public class HibernateConfiguration {
 
     private Properties additionalProperties() {
         final Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", env.getRequiredProperty("hibernate.hbm2ddl.auto"));
-        properties.setProperty("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
-        properties.setProperty("hibernate.format_sql", env.getRequiredProperty("hibernate.format_sql"));
-        properties.setProperty("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
+        properties.setProperty(HIBERNATE_HBM2DDL_AUTO, env.getRequiredProperty(HIBERNATE_HBM2DDL_AUTO));
+        properties.setProperty(HIBERNATE_DIALECT, env.getRequiredProperty(HIBERNATE_DIALECT));
+        properties.setProperty(HIBERNATE_FORMAT_SQL, env.getRequiredProperty(HIBERNATE_FORMAT_SQL));
+        properties.setProperty(HIBERNATE_SHOW_SQL, env.getRequiredProperty(HIBERNATE_SHOW_SQL));
         return properties;
     }
 }
