@@ -35,12 +35,14 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throws AuthenticationException {
 
         final String username = authentication.getName();
-        final String password = (String) authentication.getCredentials();
-
         final UserDetails user = userDetailsService.loadUserByUsername(username);
+
         if (user == null) {
             throw new BadCredentialsException("Username not found.");
         }
+
+        final String password = (String) authentication.getCredentials();
+
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new BadCredentialsException("Wrong password.");
         }

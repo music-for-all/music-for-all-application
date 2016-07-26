@@ -28,6 +28,7 @@ public class Dao {
     private static final Logger LOG = LoggerFactory.getLogger(Dao.class);
 
     private final int batchSize = 20;
+    public String uncheckedWarning = "unchecked";
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -140,7 +141,7 @@ public class Dao {
         LOG.info("going to find entities by hql - {}, with parameters - {}", hql, parameters);
         final Query query = currentSession().createQuery(hql);
         query.setProperties(parameters);
-        List<T> entities = (List<T>) query.list();
+        final List<T> entities = (List<T>) query.list();
         LOG.info("Found entities - {}", entities);
         return entities;
     }
