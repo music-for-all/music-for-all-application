@@ -22,6 +22,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         final FreeMarkerViewResolver resolver = new FreeMarkerViewResolver();
         resolver.setCache(true);
         resolver.setPrefix("");
+        resolver.setSuffix(".ftl");
         resolver.setSuffix(".vm"); //to rename after integration
         resolver.setViewClass(FreeMarkerView.class);
         resolver.setContentType("text/html; charset=utf-8");
