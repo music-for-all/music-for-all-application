@@ -1,21 +1,18 @@
-#parse("macros/macros.vm")
+<#import "macros/macros.vm" as m>
 <!DOCTYPE html>
 <html lang="en">
-#@head()
-    <title>Search</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<@m.head>
+<title>Search</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="/resources/js/searchpage.js"></script>
+<link href="/resources/css/searchpage.css" rel="stylesheet">
+<link href="/resources/css/font-awesome.min.css" rel="stylesheet">
+</@m.head>
+<@m.body>
 
-    <script src="resources/js/search.js"></script>
-
-    <link href="/resources/css/searchpage.css" rel="stylesheet">
-    <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
-    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic"
-          rel="stylesheet">
-#end
-#@body()
-
-    #navigation([{"isActive": false, "url": '/main', "title": "Main"},
-                {"isActive": true, "url": '/search', "title": "Search"}])
+    <@m.navigation [
+    {"isActive": false, "url": '/main', "title": "Main"},
+    {"isActive": true, "url": '/search', "title": "Search"}]/>
 
     <div class="container">
         <form id="search-form" class="form-inline text-center ">
@@ -65,5 +62,5 @@
         </div>
         <a id="scroll-to-top" href="#top" title="Scroll to top">Top</a>
     </div>
-#end
+</@m.body>
 </html>
