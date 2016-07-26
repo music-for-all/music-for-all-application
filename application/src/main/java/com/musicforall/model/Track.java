@@ -169,9 +169,12 @@ public class Track implements Serializable {
     @Override
     public String toString() {
         return "Track{" +
-                "id='" + id + '\'' +
-                "tags='" + tags + '\'' +
+                "id=" + id +
+                ", tags=" + tags +
                 ", name='" + name + '\'' +
+                ", title='" + title + '\'' +
+                ", artist='" + artist + '\'' +
+                ", album='" + album + '\'' +
                 ", location='" + location + '\'' +
                 '}';
     }
