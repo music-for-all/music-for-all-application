@@ -8,25 +8,39 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.List;
+
 public final class SearchCriteriaFactory {
 
     private SearchCriteriaFactory() {
     }
 
+    /**
+     * Creates a detached criteria based on the data provided in a SearchCriteria object.
+     * @param searchCriteria an instance of the SearchCriteria class
+     * @return the detached criteria
+     */
     public static DetachedCriteria buildTrackSearchCriteria(SearchCriteria searchCriteria) {
+
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class);
-        if (searchCriteria.getTitle() != null) {
-            detachedCriteria.add(Restrictions.ilike("name", QueryUtil.like(searchCriteria.getTitle())));
+
+        String title = searchCriteria.getTitle();
+        String artist = searchCriteria.getArtist();
+        String album = searchCriteria.getAlbum();
+        List<String> tags = searchCriteria.getTags();
+
+        if (title != null && !title.isEmpty()) {
+            detachedCriteria.add(Restrictions.ilike("title", QueryUtil.like(title)));
         }
-        if (searchCriteria.getArtist() != null) {
-            detachedCriteria.add(Restrictions.ilike("artist", QueryUtil.like(searchCriteria.getArtist())));
+        if (artist != null && !artist.isEmpty()) {
+            detachedCriteria.add(Restrictions.ilike("artist", QueryUtil.like(artist)));
         }
-        if (searchCriteria.getAlbum() != null) {
-            detachedCriteria.add(Restrictions.ilike("album", QueryUtil.like(searchCriteria.getAlbum())));
+        if (album != null && !album.isEmpty()) {
+            detachedCriteria.add(Restrictions.ilike("album", QueryUtil.like(album)));
         }
-        if (searchCriteria.getTags() != null) {
+        if (tags != null && !tags.isEmpty()) {
             final Disjunction disjunction = Restrictions.disjunction();
-            searchCriteria.getTags().stream()
+            tags.stream()
                     .map(QueryUtil::like)
                     .map(likeTag -> Restrictions.ilike("name", likeTag)).forEach(disjunction::add);
             detachedCriteria.createCriteria("tags").add(disjunction);
