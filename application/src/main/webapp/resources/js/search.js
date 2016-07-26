@@ -51,7 +51,7 @@ function search() {
 
     /* If tags are provided, create an array of tags. */
     tags = !tags ? null : tags.split(/[\s,;]+/);
-
+    tags = tags.join(",");
     var trackData = {
         title: title,
         artist: artist,
