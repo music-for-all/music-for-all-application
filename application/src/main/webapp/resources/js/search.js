@@ -28,6 +28,22 @@ function search() {
     var album = $("#album").val();
     var tags = $("#tags").val();
 
+    /* If a field is empty or too short, ignore it. */
+    const MIN_QUERY = 2;
+
+    if (title.length < MIN_QUERY) {
+        title = null;
+    }
+    if (artist.length < MIN_QUERY) {
+        artist = null;
+    }
+    if (album.length < MIN_QUERY) {
+        album = null;
+    }
+    if (tags.length < MIN_QUERY) {
+        tags = null;
+    }
+
     /* If all the fields are empty, do not proceed with search. */
     if (!title && !artist && !album && !tags) {
         return;
