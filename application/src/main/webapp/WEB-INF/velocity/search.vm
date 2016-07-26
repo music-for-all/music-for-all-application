@@ -1,4 +1,4 @@
-<#import "macros/macros.ftl" as m>
+<#import "macros/macros.vm" as m>
 <!DOCTYPE html>
 <html lang="en">
 <@m.head>
@@ -62,5 +62,5 @@
         </div>
         <a id="scroll-to-top" href="#top" title="Scroll to top">Top</a>
     </div>
-#end
+</@m.body>
 </html>
