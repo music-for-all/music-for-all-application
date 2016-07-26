@@ -28,7 +28,6 @@ public class Dao {
     private static final Logger LOG = LoggerFactory.getLogger(Dao.class);
 
     private final int batchSize = 20;
-    public String uncheckedWarning = "unchecked";
 
     @Autowired
     private SessionFactory sessionFactory;
