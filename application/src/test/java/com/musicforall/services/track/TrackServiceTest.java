@@ -51,7 +51,7 @@ public class TrackServiceTest {
     @Test
     public void testSaveTrackWithTags() {
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag(ROCK), new Tag("alternative")));
-        final Track track = new Track(tags, "Maybe", "path2");
+        final Track track = new Track("Maybe", "path2", tags);
 
         trackService.save(track);
         assertNotNull(trackService.get(track.getId()));
