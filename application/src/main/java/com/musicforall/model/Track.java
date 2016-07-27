@@ -46,6 +46,7 @@ public class Track implements Serializable {
     @Size(min = 2, max = 30)
     private String album;
 
+    @Size(min = 2, max = 128)
     @Column(name = "location", nullable = false)
     private String location;
 
@@ -54,7 +55,7 @@ public class Track implements Serializable {
     @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "playlists_tracks",
             inverseJoinColumns = {@JoinColumn(name = "playlist_id")},
-            joinColumns = {@JoinColumn(name = "tracks_id")})
+            joinColumns = {@JoinColumn(name = "track_id")})
     private Set<Playlist> playlists;
 
     public Set<Playlist> getPlaylists() {
