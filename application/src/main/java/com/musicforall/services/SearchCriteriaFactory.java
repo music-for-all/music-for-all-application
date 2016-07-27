@@ -3,10 +3,7 @@ package com.musicforall.services;
 import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.SearchCriteria;
 import com.musicforall.model.Track;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
 
 import java.util.List;
 
@@ -22,6 +19,9 @@ public final class SearchCriteriaFactory {
      */
     public static DetachedCriteria buildTrackSearchCriteria(SearchCriteria searchCriteria) {
 
+        if (searchCriteria == null) {
+            return null;
+        }
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class);
 
         String title = searchCriteria.getTitle();
@@ -39,12 +39,19 @@ public final class SearchCriteriaFactory {
             detachedCriteria.add(Restrictions.ilike("album", QueryUtil.like(album)));
         }
         if (tags != null && !tags.isEmpty()) {
+
             final Disjunction disjunction = Restrictions.disjunction();
-            tags.stream()
-                    .map(QueryUtil::like)
-                    .map(likeTag -> Restrictions.ilike("name", likeTag)).forEach(disjunction::add);
-            detachedCriteria.createCriteria("tags").add(disjunction);
-            detachedCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+            for (String tagName: tags) {
+                disjunction.add(Restrictions.eq("tag.name", tagName).ignoreCase());
+            }
+            final DetachedCriteria subcriteria = DetachedCriteria.forClass(Track.class)
+                    .createAlias("tags", "tag")
+                    .add(disjunction)
+                    .setProjection(Projections.property("id"));
+
+            detachedCriteria
+                    .add(Subqueries.propertyIn("id", subcriteria));
         }
         return detachedCriteria;
     }
