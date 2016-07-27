@@ -1,7 +1,7 @@
 package com.musicforall.util;
 
 import com.musicforall.config.HibernateConfigDev;
-import com.musicforall.config.SecurityConfig;
+import com.musicforall.config.security.SecurityConfig;
 import com.musicforall.services.DbPopulateService;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
