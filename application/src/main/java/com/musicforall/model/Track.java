@@ -28,11 +28,23 @@ public class Track implements Serializable {
 
     @ManyToMany
     @Cascade(CascadeType.SAVE_UPDATE)
+    @JoinTable(name = "track_tag",
+            joinColumns = {@JoinColumn(name = "track_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_name")})
     private Set<Tag> tags;
 
     @Size(min = 2, max = 30)
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Size(min = 2, max = 30)
+    private String title;
+
+    @Size(min = 2, max = 30)
+    private String artist;
+
+    @Size(min = 2, max = 30)
+    private String album;
 
     @Column(name = "location", nullable = false)
     private String location;
@@ -41,7 +53,7 @@ public class Track implements Serializable {
     @ManyToMany
     @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "playlists_tracks",
-            inverseJoinColumns = {@JoinColumn(name = "Playlist_id")},
+            inverseJoinColumns = {@JoinColumn(name = "playlist_id")},
             joinColumns = {@JoinColumn(name = "tracks_id")})
     private Set<Playlist> playlists;
 
@@ -56,7 +68,7 @@ public class Track implements Serializable {
     public Track() {
     }
 
-    public Track(Set<Tag> tags, String name, String location) {
+    public Track(String name, String location, Set<Tag> tags) {
         this.tags = tags;
         this.name = name;
         this.location = location;
@@ -65,6 +77,15 @@ public class Track implements Serializable {
     public Track(String name, String location) {
         this.name = name;
         this.location = location;
+    }
+
+    public Track(String name, String title, String artist, String album, String location, Set<Tag> tags) {
+        this.name = name;
+        this.title = title;
+        this.artist = artist;
+        this.album = album;
+        this.location = location;
+        this.tags = tags;
     }
 
     public void addTags(Set<Tag> tags) {
@@ -80,6 +101,30 @@ public class Track implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public String getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
     }
 
     public String getLocation() {
@@ -129,9 +174,12 @@ public class Track implements Serializable {
     @Override
     public String toString() {
         return "Track{" +
-                "id='" + id + '\'' +
-                "tags='" + tags + '\'' +
+                "id=" + id +
+                ", tags=" + tags +
                 ", name='" + name + '\'' +
+                ", title='" + title + '\'' +
+                ", artist='" + artist + '\'' +
+                ", album='" + album + '\'' +
                 ", location='" + location + '\'' +
                 '}';
     }
