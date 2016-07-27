@@ -1,5 +1,6 @@
 package com.musicforall.services.track;
 
+import com.musicforall.model.SearchCriteria;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.services.tag.TagService;
@@ -12,10 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
@@ -63,8 +61,8 @@ public class TrackServiceTest {
         final Track expectedTrack = trackService.get(track.getId());
 
         assertNotNull(expectedTrack);
-        assertEquals(track.getName(), expectedTrack.getName());
-        assertEquals(track.getLocation(), expectedTrack.getLocation());
+        assertEquals(expectedTrack.getName(), track.getName());
+        assertEquals(expectedTrack.getLocation(), track.getLocation());
     }
 
     @Test
@@ -97,5 +95,28 @@ public class TrackServiceTest {
 
         assertTrue(allTags.containsAll(tagsForTrack));
         assertFalse(allTags.contains(tagService.get("soul_not_exist")));
+    }
+
+    @Test
+    public void testSearchByName() {
+        final Track track1 = new Track("sim", LOC_1);
+        final Track track2 = new Track("Sim2", LOC_1);
+        final Track track3 = new Track("asdfsimiliar", LOC_1);
+        final Track track4 = new Track("asdifferent", LOC_1);
+
+        trackService.saveAll(Arrays.asList(track1, track2, track3, track4));
+        Collection<Track> tracks = trackService.getAllByName("Sim");
+        assertEquals(3, tracks.size());
+    }
+
+    @Test
+    public void testGetAllLike() {
+        final Set<Tag> tags = new HashSet<Tag>(Arrays.asList(new Tag("tag"), new Tag("tag2")));
+
+        trackService.save(new Track("NAME", "title", "artist", "album", LOC_1, tags));
+
+        SearchCriteria searchCriteria = new SearchCriteria("title", "artist", "album", Arrays.asList("tag"));
+        List<Track> tracks = trackService.getAllLike(searchCriteria);
+        assertEquals(1, tracks.size());
     }
 }
