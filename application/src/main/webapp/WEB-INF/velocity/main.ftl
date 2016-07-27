@@ -10,6 +10,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <link href="/resources/css/mainpage.css" rel="stylesheet"/>
 <link href="/resources/css/font-awesome.min.css" rel="stylesheet"/>
+<script type="text/javascript" src="/resources/js/player.js"></script>
 </@m.head>
 
 <@m.body>
@@ -46,15 +47,25 @@
     <% _.each(data, function(track){ %>
     <tr id="<%= track.id %>">
         <td>
-            <button type='button' class='btn btn-xs btn-success'>
-                <span class='glyphicon glyphicon-play' aria-hidden='true'></span>
+            <button type='button' class='btn btn-xs btn-success' onclick="onPlay('audio_<%= track.id %>')">
+                <span class='glyphicon glyphicon-play' aria-hidden='true'/>
+            </button>
+            <button type='button' class='btn btn-xs btn-warning pause-track-button' onclick="onPause('audio_<%= track.id %>')">
+                <span class='glyphicon glyphicon-pause' aria-hidden='true'/>
             </button>
             <button type='button' class='btn btn-xs btn-danger delete-song-button'>
-                <span class='glyphicon glyphicon-remove' aria-hidden='true'></span>
+                <span class='glyphicon glyphicon-remove' aria-hidden='true'/>
             </button>
         </td>
         <td>
             <%= track.name %>
+        </td>
+        <td>
+        </td>
+        <td>
+            <audio id= 'audio_<%= track.id %>' controls>
+                <source type="audio/mp3" src="/files/<%= track.location %>">
+            </audio>
         </td>
     </tr>
     <% }); %>
@@ -68,7 +79,7 @@
     </li>
 </script>
 <script type="text/javascript">
-    var contextPath = "<@spring.url "" />";
+    var contextPath = "#springUrl('')";
     var playlist = new Playlist(contextPath);
     var track = new Track(contextPath);
 
@@ -82,13 +93,12 @@
     );
 
 
-    var playlists = $('#playlists');
-    playlists.on('click', 'a', function (e) {
+    $('#playlists').on('click', 'a', function (e) {
         e.preventDefault();
-        playlists.find("li").removeClass("active");
+        $("#playlists").find("li").removeClass("active");
         $(this).closest('li').addClass('active');
         clearTracks();
-        playlist.get(playlists.find('li.active').attr('id'))
+        playlist.get($('#playlists li.active').attr('id'))
                 .then(function (response) {
                     $("#results").find("thead").after(
                             trackTable(response.tracks)
@@ -97,7 +107,7 @@
     });
 
     $('#acceptRemovingPlaylistButton').on('click', function (e) {
-        var playlistToRemove = $("#playlists").find("li.active");
+        var playlistToRemove = $("#playlists").find("li.active")
         playlist.remove(playlistToRemove.attr('id'))
                 .then(function () {
                     playlistToRemove.remove();
@@ -141,6 +151,7 @@
         $("#playlists").append(
                 playlistTable(playlist)
         );
+    } );
     }
 
     $(document).ready(function () {

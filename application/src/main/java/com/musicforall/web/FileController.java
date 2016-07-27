@@ -47,10 +47,9 @@ public class FileController {
 
     @RequestMapping(value = "/files/{fileName:.+}", method = RequestMethod.GET)
     public void getFileHandler(HttpServletResponse response, @PathVariable("fileName") String name) {
-        final Optional<Path> filePath = Optional.of(manager.getFilePathByName(name));
+        final Optional<Path> filePath = Optional.ofNullable(manager.getFilePathByName(name));
         filePath.ifPresent(file -> {
             try {
-
                 this.publisher.publishEvent(new TrackListenedEvent(STUB_TRACK_ID, new Date(), currentUser().getId()));
                 Files.copy(file, response.getOutputStream());
 
