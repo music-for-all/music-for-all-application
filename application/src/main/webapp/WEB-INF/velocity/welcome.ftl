@@ -35,7 +35,7 @@
                         <#if RequestParameters.error??>
                             <div class="text-danger">Failed to login:
                                 <#if Session.SPRING_SECURITY_LAST_EXCEPTION??>
-                                ${Session.SPRING_SECURITY_LAST_EXCEPTION.message}
+                                    ${Session.SPRING_SECURITY_LAST_EXCEPTION.message}
                                 </#if>
                             </div>
                         <#elseif RequestParameters.logout??>
