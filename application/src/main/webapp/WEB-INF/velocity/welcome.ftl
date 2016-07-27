@@ -15,6 +15,18 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="#">Music for all</a>
         </div>
+
+        <form class="navbar-form navbar-left" id="searchForm" method="post">
+            <div class="input-group " placeholder="Search">
+                <input id="word" class="form-control" type="text" value="" placeholder="Search" name="q"/>
+
+                <div class="input-group-btn">
+                    <button id="searchButton" data-style="slide-left" class="btn btn-success " type="button">
+                        <i id="icon" class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
 </nav>
 
