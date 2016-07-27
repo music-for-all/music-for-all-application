@@ -10,8 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -20,11 +20,10 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
@@ -104,16 +103,26 @@ public class PlaylistServiceTest {
         final Playlist playlist = playlistService.save(PLAYLIST_1);
         final Integer playlistId = playlist.getId();
 
-        final Track track1 = new Track("track1", "location1");
-        final Track track2 = new Track("track2", "location2");
-        playlistService.addTracks(playlistId, new HashSet<>(Arrays.asList(track1, track2)));
+        trackService.saveAll(Arrays.asList(
+                new Track("track1", "location1"),
+                new Track("track2", "location2")));
+        System.err.println("trackService.saveAll");
+
+        final List<Track> tracksInDb = trackService.findAll();
+        System.err.println("trackService.findAll");
+
+        playlistService.addTracks(playlistId, new HashSet<>(tracksInDb));
+        System.err.println("playlistService.addTracks");
 
         final Set<Track> tracksInPlaylist = playlistService.getAllTracksInPlaylist(playlistId);
+        System.err.println("trackService.getAll");
 
         assertNotNull(tracksInPlaylist);
-        Assert.assertTrue(tracksInPlaylist.size() == 2);
-        assertTrue(tracksInPlaylist.contains(trackService.get(track1.getId())));
-        assertTrue(tracksInPlaylist.contains(trackService.get(track2.getId())));
+        Assert.assertEquals(tracksInDb.size(), tracksInPlaylist.size());
+
+        for (Track track : tracksInDb) {
+            assertTrue(tracksInPlaylist.contains(trackService.get(track.getId())));
+        }
     }
 
 }
