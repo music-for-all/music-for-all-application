@@ -26,4 +26,6 @@ public interface TrackService {
     List<Track> getAllByName(String name);
 
     List<Track> getAllLike(SearchCriteria searchCriteria);
+
+    List<Track> findAll();
 }
