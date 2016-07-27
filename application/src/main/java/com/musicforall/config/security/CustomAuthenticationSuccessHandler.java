@@ -1,6 +1,7 @@
-package com.musicforall.config;
+package com.musicforall.config.security;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
@@ -13,12 +14,25 @@ import java.io.IOException;
  * users should be sent to upon successful authentication.
  */
 public class CustomAuthenticationSuccessHandler
-        extends SimpleUrlAuthenticationSuccessHandler {
+        extends SavedRequestAwareAuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
         super.onAuthenticationSuccess(request, response, authentication);
+    }
+
+    @Override
+    protected void handle(HttpServletRequest request, HttpServletResponse response,
+                          Authentication authentication) throws IOException, ServletException {
+
+        String targetUrl = determineTargetUrl(request, response);
+
+        if (response.isCommitted()) {
+            return;
+        }
+        response.sendRedirect(targetUrl);
+        super.handle(request, response, authentication);
     }
 }
