@@ -79,7 +79,7 @@
     </li>
 </script>
 <script type="text/javascript">
-    var contextPath = "#springUrl('')";
+    var contextPath = "<@spring.url "" />";
     var playlist = new Playlist(contextPath);
     var track = new Track(contextPath);
 
@@ -151,7 +151,6 @@
         $("#playlists").append(
                 playlistTable(playlist)
         );
-    } );
     }
 
     $(document).ready(function () {
