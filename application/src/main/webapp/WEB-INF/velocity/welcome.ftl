@@ -95,7 +95,18 @@
                     <h1>Music for all</h1>
 
                     <h3>Sign in and manage your songs</h3>
-
+                    <div class="top-table well" id="tops">
+                        <table id="top" class="table table-hover table-striped table-condensed ">
+                            <thead>
+                            <tr>
+                                <th>Actions</th>
+                                <th>Artist</th>
+                                <th>Title</th>
+                                <th>Duration</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
