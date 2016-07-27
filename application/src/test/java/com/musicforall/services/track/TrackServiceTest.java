@@ -15,9 +15,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.util.*;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.*;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
