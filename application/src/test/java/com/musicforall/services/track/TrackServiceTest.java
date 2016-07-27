@@ -111,12 +111,18 @@ public class TrackServiceTest {
 
     @Test
     public void testGetAllLike() {
-        final Set<Tag> tags = new HashSet<Tag>(Arrays.asList(new Tag("tag"), new Tag("tag2")));
 
-        trackService.save(new Track("NAME", "title", "artist", "album", LOC_1, tags));
+        final Set<Tag> tags = new HashSet<Tag>(Arrays.asList(new Tag("tag1"), new Tag("tag2")));
 
-        SearchCriteria searchCriteria = new SearchCriteria("title", "artist", "album", Arrays.asList("tag"));
-        List<Track> tracks = trackService.getAllLike(searchCriteria);
+        List<Track> tracks = Arrays.asList(
+                new Track("track", "title1", "artist1", "album1", "/root/track1.mp3", null),
+                new Track("track", "title2", "artist2", "album2", "/root/track2.mp3", tags),
+                new Track("track", "title3", "artist3", "album3", "/root/track3.mp3", null)
+        );
+        trackService.saveAll(tracks);
+
+        SearchCriteria searchCriteria = new SearchCriteria("title", "artist", "album", Arrays.asList("tag1", "tag2"));
+        tracks = trackService.getAllLike(searchCriteria);
         assertEquals(1, tracks.size());
     }
 }

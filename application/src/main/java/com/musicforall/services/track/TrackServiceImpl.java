@@ -5,8 +5,7 @@ import com.musicforall.model.SearchCriteria;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.services.SearchCriteriaFactory;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,7 +62,8 @@ public class TrackServiceImpl implements TrackService {
     @Override
     public List<Track> getAllLike(SearchCriteria searchCriteria) {
 
-        final DetachedCriteria detachedCriteria = SearchCriteriaFactory.buildTrackSearchCriteria(searchCriteria);
+        final DetachedCriteria detachedCriteria =
+                SearchCriteriaFactory.buildTrackSearchCriteria(searchCriteria);
         return dao.getAllBy(detachedCriteria);
     }
 }
