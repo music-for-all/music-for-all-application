@@ -9,6 +9,15 @@
 </@m.head>
 
 <@m.body>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Music for all</a>
+        </div>
+    </div>
+</nav>
+
 <div class="intro-header">
     <div class="container">
         <div class="row">
