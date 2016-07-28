@@ -50,7 +50,11 @@
 
 <#assign pages = {"Main": '/main', "Search": '/search', "Add": '/uploadFile'}>
 
-<#macro navigation items>
+<#macro navigation activePage>
+    <#assign items = [{"url": '/main', "title": "Main"},
+    {"url": '/search', "title": "Search"},
+    {"url": '/uploadFile', "title": "Add track"}]>
+
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -60,7 +64,7 @@
         <div id="navbar" class="navbar-right navbar-collapse collapse ">
             <ul class="nav navbar-nav">
                 <#list items as item>
-                    <@navigationItem item/>
+                    <@navigationItem item activePage/>
                 </#list>
             </ul>
         </div>
@@ -68,11 +72,8 @@
 </nav>
 </#macro>
 
-<#macro navigationItem item>
-    <#assign isActive = true>
-    <#assign isActive = item.isActive>
-
-<li <#if isActive>class="active"</#if> >
+<#macro navigationItem item activePage>
+<li <#if item.url == activePage>class="active"</#if> >
     <a href="${item.url}">
         <i class="fa"></i> ${item.title}
     </a>

@@ -10,9 +10,7 @@
 </@m.head>
 <@m.body>
 
-    <@m.navigation [
-    {"isActive": false, "url": '/main', "title": "Main"},
-    {"isActive": true, "url": '/search', "title": "Search"}]/>
+    <@m.navigation '${m.pages.Search}'/>
 
 <div class="container">
     <form id="search-form" class="form-inline text-center ">
