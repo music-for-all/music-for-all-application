@@ -23,10 +23,10 @@ import java.util.Properties;
 @Profile("mysql")
 public class HibernateConfiguration {
 
-    public static final String HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
-    public static final String HIBERNATE_DIALECT = "hibernate.dialect";
-    public static final String HIBERNATE_FORMAT_SQL = "hibernate.format_sql";
-    public static final String HIBERNATE_SHOW_SQL = "hibernate.show_sql";
+    private static final String HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
+    private static final String HIBERNATE_DIALECT = "hibernate.dialect";
+    private static final String HIBERNATE_FORMAT_SQL = "hibernate.format_sql";
+    private static final String HIBERNATE_SHOW_SQL = "hibernate.show_sql";
 
     @Autowired
     private Environment env;

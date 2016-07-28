@@ -21,12 +21,12 @@ function ajaxSearch(searchQuery, selectedCategory) {
             search: searchQuery,
             category: JSON.stringify(selectedCategory)
         }),
-        success(response) {
+        success: function(response) {
             $.each(response, function () {
                 addRow(this.id, this.name, this.location, this.id);//Only for demonstration
             });
         },
-        error() {
+        error: function () {
             alert("Error while request..");
         }
     });
