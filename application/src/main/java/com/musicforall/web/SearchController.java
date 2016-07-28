@@ -4,28 +4,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class SearchController {
 
     private static final Logger LOG = LoggerFactory.getLogger(SearchController.class);
-    public static final String SEARCH = "search";
 
     public SearchController() {
         LOG.debug("Search controller");
     }
 
     @RequestMapping("/search")
-    public String welcome(Model model) {
+    public String search(Model model) {
         LOG.debug("Requested /search");
-        return SEARCH;
-    }
-
-    @RequestMapping(value = "/addSong", method = RequestMethod.POST)
-    public String dummyAddSong(@RequestParam("songId") Integer id) {
-        LOG.debug("Requested /addSong");
-
-        return SEARCH;
+        return "search";
     }
 }
