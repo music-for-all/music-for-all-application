@@ -20,6 +20,8 @@ import java.util.Objects;
 @Table(name = "users")
 public class User implements UserDetails, Serializable {
 
+    private static final long serialVersionUID = 1959293141381203004L;
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

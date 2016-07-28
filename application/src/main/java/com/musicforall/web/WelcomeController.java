@@ -13,6 +13,7 @@ public class WelcomeController {
 
 
     private static final Logger LOG = LoggerFactory.getLogger(WelcomeController.class);
+    public static final String SPRING_SECURITY_LAST_EXCEPTION = "SPRING_SECURITY_LAST_EXCEPTION";
 
     public WelcomeController() {
         LOG.debug("Welcome controller");
@@ -23,9 +24,9 @@ public class WelcomeController {
         LOG.debug("Requested /welcome");
 
         /* Check if there has been an authentication failure. */
-        final Object exception = request.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
+        final Object exception = request.getSession().getAttribute(SPRING_SECURITY_LAST_EXCEPTION);
         if (exception != null) {
-            model.addAttribute("SPRING_SECURITY_LAST_EXCEPTION", exception);
+            model.addAttribute(SPRING_SECURITY_LAST_EXCEPTION, exception);
         }
         model.addAttribute("request", request);
         return "welcome";

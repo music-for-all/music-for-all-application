@@ -21,6 +21,8 @@ import java.util.Set;
 @Table(name = "tracks")
 public class Track implements Serializable {
 
+    private static final long serialVersionUID = -6851477594231058789L;
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
