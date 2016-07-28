@@ -16,6 +16,8 @@ import java.util.Objects;
 @Table(name = "tags")
 public class Tag implements Serializable {
 
+    private static final long serialVersionUID = 5787383287840000175L;
+
     @Id
     @Size(min = 2, max = 30)
     @Column(name = "name", unique = true)
