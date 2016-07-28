@@ -12,7 +12,8 @@ import org.springframework.context.annotation.Import;
  * Created by Pukho on 19.06.2016.
  */
 @Configuration
-@ComponentScan(value = {"com.musicforall.services",
+@ComponentScan(
+        value = {"com.musicforall.services",
                 "com.musicforall.common"},
         excludeFilters =
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = {DbPopulateService.class}))

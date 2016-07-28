@@ -2,8 +2,8 @@ package com.musicforall.history.handlers;
 
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.handlers.events.TrackListenedEvent;
-import com.musicforall.history.service.HistoryService;
 import com.musicforall.history.model.History;
+import com.musicforall.history.service.HistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ public class HistoryEventListener {
     private HistoryService service;
 
     @EventListener
-    public void handleAuditionTrack(TrackListenedEvent event) {
+    public void handleTrackListened(TrackListenedEvent event) {
         service.record(toHistoryEntity(event));
     }
 
