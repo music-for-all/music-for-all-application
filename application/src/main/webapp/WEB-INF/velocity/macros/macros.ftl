@@ -51,9 +51,9 @@
 <#assign pages = {"Main": '/main', "Search": '/search', "Add": '/uploadFile'}>
 
 <#macro navigation activePage>
-    <#assign items = [{"url": '/main', "title": "Main"},
-    {"url": '/search', "title": "Search"},
-    {"url": '/uploadFile', "title": "Add track"}]>
+    <#assign items = [{"url": pages.Main, "title": "Main"},
+    {"url": pages.Search, "title": "Search"},
+    {"url": pages.Add, "title": "Add track"}]>
 
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -74,7 +74,7 @@
 
 <#macro navigationItem item activePage>
 <li <#if item.url == activePage>class="active"</#if> >
-    <a href="${item.url}">
+    <a href=<@spring.url '${item.url}'/>>
         <i class="fa"></i> ${item.title}
     </a>
 </li>
