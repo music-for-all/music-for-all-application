@@ -41,8 +41,8 @@ function search() {
     $("input:checkbox[name=category]:checked").each(function () {
         selectedCategory.push($(this).val());
     });
-    Console.log("Query for searching: " + searchQuery);
-    Console.log("Genres for searching: " + selectedCategory);
+    console.log("Query for searching: " + searchQuery);
+    console.log("Genres for searching: " + selectedCategory);
     if (searchQuery !== "") {
         ajaxSearch(searchQuery, selectedCategory);
     }
