@@ -3,7 +3,6 @@
 <html lang="en">
 <@m.head>
 <title>Welcome</title>
-<script src="resources/js/welcomepage.js"></script>
 <link href="/resources/css/welcomepage.css" rel="stylesheet">
 <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
 </@m.head>
@@ -63,7 +62,7 @@
                             <label for="remember-me">Remember me</label>
                             <input type="submit" class="btn btn-lg btn-primary btn-block" value="Log in"/>
                         </@m.form>
-                        <hr class="divider"></hr>
+                        <hr class="divider" />
                         <form>
                             <ul class="list-inline intro-social-buttons">
                                 <li>

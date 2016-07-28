@@ -5,12 +5,12 @@
 <html lang="en">
 <@m.head>
 <title>Main</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="/resources/js/playlist.js"></script>
 <script src="/resources/js/track.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-<link href="/resources/css/mainpage.css" rel="stylesheet"/>
+<script src="/resources/js/player.js"></script>
 <link href="/resources/css/font-awesome.min.css" rel="stylesheet"/>
-<script type="text/javascript" src="/resources/js/player.js"></script>
+<link href="/resources/css/mainpage.css" rel="stylesheet"/>
 </@m.head>
 
 <@m.body>
