@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * @author ENikolskiy on 6/24/2016.
  */
