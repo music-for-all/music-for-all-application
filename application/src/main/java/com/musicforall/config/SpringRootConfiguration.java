@@ -1,6 +1,7 @@
 package com.musicforall.config;
 
 import com.musicforall.files.FileApiSpringConfig;
+import com.musicforall.history.HistorySpringConfig;
 import org.springframework.context.annotation.*;
 
 import java.util.concurrent.ExecutorService;
@@ -11,10 +12,11 @@ import java.util.concurrent.Executors;
  */
 @Configuration
 @ComponentScan({"com.musicforall.common",
-        "com.musicforall.services, com.musicforall.history"})
+        "com.musicforall.services"})
 @Import({HibernateConfiguration.class,
         HibernateConfigDev.class,
         FileApiSpringConfig.class,
+        HistorySpringConfig.class,
         SecurityConfig.class})
 @PropertySource(value = "file:${user.home}/application.properties")
 public class SpringRootConfiguration {

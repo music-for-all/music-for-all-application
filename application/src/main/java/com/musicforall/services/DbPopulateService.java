@@ -28,17 +28,17 @@ import static org.apache.commons.io.FilenameUtils.getName;
 public class DbPopulateService {
     private static final Logger LOG = LoggerFactory.getLogger(DbPopulateService.class);
 
-    private static final List<String> LINKS = new ArrayList<>();
+    private static final Map<String, String> LINKS = new HashMap<>();
+
+    private static final String OPEN_SOURCE_MUSIC_HOST = "http://opensourcemusic.com/files";
 
     static {
-        LINKS.add("http://dl.last.fm/static/1468934504/131564291/" +
-                "16465bd6d0a968d21008d9f3618e657c5b8a71969f33040eeb66287b6eef1a5a/Best+Coast+-+The+Only+Place.mp3");
-        LINKS.add("http://dl.last.fm/static/1468934504/134306392/" +
-                "c15e941ca23aa69313dc1f2285af995ccfd00ef6c613e3fe2fadab64b7247e4f/Nils+Frahm+-+You.mp3");
-        LINKS.add("http://dl.last.fm/static/1468934504/122620941/" +
-                "9bbd58da2e510d432156315dad2b68ce56a992f13c81f600029b150e42fbad1f/Com+Truise+-+Cyanide+Sisters.mp3");
-        LINKS.add("http://dl.last.fm/static/1468935011/125708103/" +
-                "d6b7099525cb66b3891dc560786f11a18b34c84d13f30f8b3d3f428c8ca0598d/Starfucker+-+Bury+Us+Alive.mp3");
+        LINKS.put("Jerry-Lee-Lewis-part-1", OPEN_SOURCE_MUSIC_HOST +
+                "/2010/04/01-Selvin-On-The-City-Jerry-Lee-Lewis-part-1.mp3");
+        LINKS.put("Tom-Waits-part-1", OPEN_SOURCE_MUSIC_HOST +
+                "/2012/10/01-Tom-Waits-on-Selvin-On-The-City-part-1.mp3");
+        LINKS.put("Jerry-Lee-Lewis-part-4", OPEN_SOURCE_MUSIC_HOST +
+                "/2010/04/04-Selvin-On-The-City-Jerry-Lee-Lewis-part-4.mp3");
     }
 
     @Autowired
@@ -78,8 +78,8 @@ public class DbPopulateService {
 
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag("Dummy"), new Tag("Classic"), new Tag("2016")));
 
-        final Set<Track> tracks = LINKS.stream()
-                .map(link -> new Track(tags, trackName(link), getName(link)))
+        final Set<Track> tracks = LINKS.entrySet().stream()
+                .map(entry -> new Track(tags, entry.getKey(), getName(entry.getValue())))
                 .collect(toSet());
 
         final Playlist playlist = new Playlist("Hype", tracks, user);
@@ -87,7 +87,7 @@ public class DbPopulateService {
 
         LOG.info("playlist {} is saved", playlist);
 
-        final List<Callable<Path>> tasks = LINKS.stream().map(DbPopulateService::toURL)
+        final List<Callable<Path>> tasks = LINKS.values().stream().map(DbPopulateService::toURL)
                 .filter(u -> u != null)
                 .peek(u -> LOG.info("going to save file by url - {}", u))
                 .map(url -> (Callable<Path>) () -> fileManager.save(url))
