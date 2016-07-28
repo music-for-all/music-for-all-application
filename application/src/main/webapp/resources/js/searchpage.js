@@ -15,6 +15,35 @@ jQuery(document).ready(function () {
         window.scrollTo(0, 0);
         return false;
     });
+
+    $("#tags").select2({
+        ajax: {
+            url: "/api/search/tags",
+            delay: 250,
+            data: function (params) {
+                return {
+                    tagName: params.term
+                };
+            },
+            processResults: function (data, params) {
+                return {
+                    results: data.map(function (item) {
+                        return item.name;
+                    })
+                };
+            }
+        },
+        allowClear: true,
+        multiple: true,
+        placeholder: "Click here and start typing to search.",
+        escapeMarkup: function (markup) {
+            return markup;
+        },
+        minimumInputLength: 2,
+        templateResult: function (data) {
+            return data.text;
+        }
+    });
 });
 /* end $(document).ready() */
 
@@ -98,7 +127,8 @@ function search() {
         $("#status-message").text("Found: " + results.length);
         populateResultsTable(results);
     });
-}   /* End of search() */
+}
+/* End of search() */
 
 /**
  * Inserts the search results into the results table.
@@ -111,12 +141,16 @@ function populateResultsTable(items) {
         var $row = $("#row-template").clone().removeAttr("id").show();
 
         var tagsArray = [];
-        $(item.tags).each(function(i, tag) {
+        $(item.tags).each(function (i, tag) {
             tagsArray.push(tag.name);
         });
 
-        $row.find("td:eq(0) button:eq(0)").on("click", function() {playPreview(item.id)});
-        $row.find("td:eq(0) button:eq(1)").on("click", function() {addToPlaylist(item.id)});
+        $row.find("td:eq(0) button:eq(0)").on("click", function () {
+            playPreview(item.id)
+        });
+        $row.find("td:eq(0) button:eq(1)").on("click", function () {
+            addToPlaylist(item.id)
+        });
         $row.find("td:eq(1)").text(item.artist);
         $row.find("td:eq(2)").text(item.title);
         $row.find("td:eq(3)").text(item.album);

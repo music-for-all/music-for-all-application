@@ -100,8 +100,4 @@ public class DbPopulateService {
             LOG.info("finished database population");
         }
     }
-
-    private String trackName(final String link) {
-        return getName(link).replace("+", " ").trim().split(" - ")[1];
-    }
 }

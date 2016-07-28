@@ -1,8 +1,8 @@
 package com.musicforall.services.track;
 
-import com.musicforall.model.SearchCriteria;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
+import com.musicforall.model.TrackSearchCriteria;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,7 +25,7 @@ public interface TrackService {
 
     List<Track> getAllByName(String name);
 
-    List<Track> getAllLike(SearchCriteria searchCriteria);
+    List<Track> getAllLike(TrackSearchCriteria searchCriteria);
 
     List<Track> findAll();
 }

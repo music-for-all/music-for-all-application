@@ -2,6 +2,7 @@ package com.musicforall.services.tag;
 
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Tag;
+import com.musicforall.services.SearchCriteriaFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,12 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<Tag> getAllTags() {
         return dao.all(Tag.class);
+    }
+
+    @Override
+    public List<Tag> getTagsLike(String tagName) {
+        final DetachedCriteria criteria = SearchCriteriaFactory.createCriteriaFrom(tagName);
+        return dao.getAllBy(criteria);
     }
 
     @Override

@@ -18,4 +18,6 @@ public interface TagService {
     Tag get(String name);
 
     List<Tag> getAllTags();
+
+    List<Tag> getTagsLike(String tagName);
 }

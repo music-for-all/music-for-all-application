@@ -1,9 +1,9 @@
 package com.musicforall.services.track;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.model.SearchCriteria;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
+import com.musicforall.model.TrackSearchCriteria;
 import com.musicforall.services.SearchCriteriaFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -61,10 +61,10 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
-    public List<Track> getAllLike(SearchCriteria searchCriteria) {
+    public List<Track> getAllLike(TrackSearchCriteria searchCriteria) {
 
         final DetachedCriteria detachedCriteria =
-                SearchCriteriaFactory.buildTrackSearchCriteria(searchCriteria);
+                SearchCriteriaFactory.createCriteriaFrom(searchCriteria);
         return dao.getAllBy(detachedCriteria);
     }
 

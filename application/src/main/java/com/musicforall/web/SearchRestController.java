@@ -1,8 +1,9 @@
 package com.musicforall.web;
 
-import com.musicforall.model.SearchCriteria;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
+import com.musicforall.model.TrackSearchCriteria;
+import com.musicforall.services.tag.TagService;
 import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.PostConstruct;
 import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -29,29 +27,17 @@ import java.util.List;
 @RequestMapping("/api/search")
 public class SearchRestController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SearchRestController.class);
     @Autowired
     private TrackService trackService;
-
-    private static final Logger LOG = LoggerFactory.getLogger(SearchRestController.class);
-
-    public SearchRestController() {
-        LOG.debug("Search RestController");
-    }
-
-    @PostConstruct
-    private void addSampleRecords() {
-        LOG.info("Post construct");
-        trackService.save(new Track("Track 1", "Track 1", "Artist 1", null, "/track1.mp3",
-                new HashSet<Tag>(Arrays.asList(new Tag("TagA")))));
-        trackService.save(new Track("Track 2", "Track 2", "Artist 2", "Album 2", "/track2.mp3", null));
-    }
+    @Autowired
+    private TagService tagService;
 
     /**
      * Searches tracks by the specified criteria.
      */
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity search(@Valid SearchCriteria searchCriteria, BindingResult bindingResult) {
-
+    public ResponseEntity search(@Valid TrackSearchCriteria searchCriteria, BindingResult bindingResult) {
         LOG.info(searchCriteria.toString());
 
         if (bindingResult.hasErrors()) {
@@ -60,6 +46,16 @@ public class SearchRestController {
         }
         final List<Track> tracks = trackService.getAllLike(searchCriteria);
 
-        return new ResponseEntity<List<Track>>(tracks, HttpStatus.OK);
+        return new ResponseEntity<>(tracks, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/tags", method = RequestMethod.GET)
+    public ResponseEntity getTags(final String tagName) {
+        if (tagName == null || tagName.trim().isEmpty()) {
+            LOG.error("tag name must not be empty");
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        final List<Tag> tags = tagService.getTagsLike(tagName);
+        return new ResponseEntity<>(tags, HttpStatus.OK);
     }
 }

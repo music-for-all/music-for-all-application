@@ -3,7 +3,7 @@ package com.musicforall.model;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-public class SearchCriteria {
+public class TrackSearchCriteria {
 
     @Size(max = 16)
     private String title;
@@ -16,10 +16,10 @@ public class SearchCriteria {
 
     private List<String> tags;
 
-    public SearchCriteria() {
+    public TrackSearchCriteria() {
     }
 
-    public SearchCriteria(String title, String artist, String album, List<String> tags) {
+    public TrackSearchCriteria(String title, String artist, String album, List<String> tags) {
         this.title = title;
         this.artist = artist;
         this.album = album;
@@ -30,12 +30,24 @@ public class SearchCriteria {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getArtist() {
         return artist;
     }
 
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
     public String getAlbum() {
         return album;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
     }
 
     public List<String> getTags() {
@@ -44,18 +56,6 @@ public class SearchCriteria {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-
-    public void setAlbum(String album) {
-        this.album = album;
     }
 
     @Override

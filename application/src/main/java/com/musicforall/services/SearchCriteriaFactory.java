@@ -1,11 +1,13 @@
 package com.musicforall.services;
 
 import com.musicforall.common.query.QueryUtil;
-import com.musicforall.model.SearchCriteria;
+import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
+import com.musicforall.model.TrackSearchCriteria;
 import org.hibernate.criterion.*;
 
 import java.util.List;
+import java.util.Objects;
 
 public final class SearchCriteriaFactory {
 
@@ -17,7 +19,7 @@ public final class SearchCriteriaFactory {
      * @param searchCriteria an instance of the SearchCriteria class
      * @return the detached criteria
      */
-    public static DetachedCriteria buildTrackSearchCriteria(SearchCriteria searchCriteria) {
+    public static DetachedCriteria createCriteriaFrom(TrackSearchCriteria searchCriteria) {
 
         if (searchCriteria == null) {
             return null;
@@ -53,6 +55,13 @@ public final class SearchCriteriaFactory {
             detachedCriteria
                     .add(Subqueries.propertyIn("id", subcriteria));
         }
+        return detachedCriteria;
+    }
+
+    public static DetachedCriteria createCriteriaFrom(final String tagName) {
+        Objects.requireNonNull(tagName, "tag name must not be null.");
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Tag.class);
+        detachedCriteria.add(Restrictions.ilike("name", QueryUtil.like(tagName)));
         return detachedCriteria;
     }
 }
