@@ -64,9 +64,9 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.4.0.M0</version>
                 <configuration>
-                   <!-- <httpConnector>
+                    <httpConnector>
                         <port>9999</port>
-                    </httpConnector>-->
+                    </httpConnector>
                     <systemProperties>
                         <systemProperty>
                             <name>spring.profiles.active</name>
