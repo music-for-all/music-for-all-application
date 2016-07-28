@@ -63,7 +63,7 @@
                             <label for="remember-me">Remember me</label>
                             <input type="submit" class="btn btn-lg btn-primary btn-block" value="Log in"/>
                         </@m.form>
-                        <hr class="divider"></hr>
+                        <hr class="divider" />
                         <form>
                             <ul class="list-inline intro-social-buttons">
                                 <li>
