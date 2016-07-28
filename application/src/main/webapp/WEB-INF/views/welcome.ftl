@@ -3,7 +3,6 @@
 <html lang="en">
 <@m.head>
 <title>Welcome</title>
-<script src="resources/js/welcomepage.js"></script>
 <link href="/resources/css/welcomepage.css" rel="stylesheet">
 <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
 </@m.head>
