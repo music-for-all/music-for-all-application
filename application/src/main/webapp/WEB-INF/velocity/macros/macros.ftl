@@ -48,10 +48,7 @@
     </@form>
 </#macro>
 
-<#--<@navigation [
-        {"isActive": false, "url": url, "title": "Title"},
-        {"isActive": false, "url": url, "title": "Title"}]
-             />-->
+<#assign pages = {"Main": '/main', "Search": '/search', "Add": '/uploadFile'}>
 
 <#macro navigation items>
 <nav class="navbar navbar-default navbar-fixed-top">
