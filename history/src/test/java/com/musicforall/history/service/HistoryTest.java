@@ -10,13 +10,14 @@ import org.hibernate.criterion.Property;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
@@ -28,7 +29,7 @@ import static org.junit.Assert.assertTrue;
  * @author IliaNik on 29.07.2016.
  */
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
@@ -50,6 +51,10 @@ public class HistoryTest {
     @Spy
     @Autowired
     private HistoryEventListener historyEventListener;
+
+    public HistoryTest() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     public void whenUsingTheSpyAnnotation_thenObjectIsSpied() {
