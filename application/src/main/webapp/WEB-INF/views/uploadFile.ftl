@@ -10,11 +10,9 @@
     </@m.head>
 
     <@m.body>
-    <@m.navigation [
-        {"isActive": false, "url": "#springUrl('/main')", "title": "Main"},
-        {"isActive": false, "url": "#springUrl('/search')", "title": "Search"},
-        {"isActive": true, "url": "#springUrl('/uploadFile')", "title": "Add track"}
-        ] />
+
+    <@m.navigation  m.pages.Add/>
+
     <div id="container" class="container">
         <div id="result" class="col-md-4 col-md-offset-4 " role="alert"></div>
         <div class="col-md-4 col-md-offset-4 text-center">
