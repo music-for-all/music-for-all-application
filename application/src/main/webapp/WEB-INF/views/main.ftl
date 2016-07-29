@@ -17,8 +17,7 @@
     <@p.popUpAdd "addPlaylistModal"/>
     <@p.popUpDelete "deletePlaylistModal"/>
 
-    <@m.navigation [{"isActive": true, "url": '/main', "title": "Main"},
-    {"isActive": false, "url": '/search', "title": "Search"}]/>
+    <@m.navigation m.pages.Main/>
 
 <div class="container">
     <div id="resultsd" class="well col-md-9 ">

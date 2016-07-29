@@ -51,12 +51,13 @@
     </@form>
 </#macro>
 
-<#--<@navigation [
-        {"isActive": false, "url": url, "title": "Title"},
-        {"isActive": false, "url": url, "title": "Title"}]
-             />-->
+<#assign pages = {"Main": {"url": '/main', "title": "Main"},
+"Search": {"url": '/search', "title": "Search"},
+"Add": {"url": '/uploadFile', "title": "Add track"}}>
 
-<#macro navigation items>
+<#macro navigation activePage>
+    <#assign items = [pages.Main, pages.Search, pages.Add]>
+
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -66,7 +67,7 @@
         <div id="navbar" class="navbar-right navbar-collapse collapse ">
             <ul class="nav navbar-nav">
                 <#list items as item>
-                    <@navigationItem item/>
+                    <@navigationItem item activePage/>
                 </#list>
             </ul>
         </div>
@@ -74,12 +75,9 @@
 </nav>
 </#macro>
 
-<#macro navigationItem item>
-    <#assign isActive = true>
-    <#assign isActive = item.isActive>
-
-<li <#if isActive>class="active"</#if> >
-    <a href="${item.url}">
+<#macro navigationItem item activePage>
+<li <#if item.url == activePage.url>class="active"</#if> >
+    <a href=<@spring.url '${item.url}'/>>
         <i class="fa"></i> ${item.title}
     </a>
 </li>
