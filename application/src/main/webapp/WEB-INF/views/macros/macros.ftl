@@ -53,11 +53,11 @@
 
 <#assign pages = {"Main": {"url": '/main', "title": "Main"},
 "Search": {"url": '/search', "title": "Search"},
-"Add": {"url": '/uploadFile', "title": "Add track"}}>
+"Add": {"url": '/uploadFile', "title": "Add track"},
+"WithoutActivePage": {"url": ''}}>
 
-<#macro navigation activePage>
+<#macro navigation activePage=pages.WithoutActivePage>
     <#assign items = [pages.Main, pages.Search, pages.Add]>
-
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
