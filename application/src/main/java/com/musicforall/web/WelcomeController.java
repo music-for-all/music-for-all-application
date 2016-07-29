@@ -19,7 +19,7 @@ public class WelcomeController {
         LOG.debug("Welcome controller");
     }
 
-    @RequestMapping("/welcome")
+    @RequestMapping(value = {"/", "welcome"})
     public String welcome(Model model, HttpServletRequest request) {
         LOG.debug("Requested /welcome");
 
