@@ -38,7 +38,7 @@ jQuery(document).ready(function () {
         placeholder: "Tags",
         minimumInputLength: 2,
         templateResult: function (data) {
-            return data;
+            return data.text;
         },
         tags: true,
         tokenSeparators: [' ']
