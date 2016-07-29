@@ -33,6 +33,10 @@
         </table>
     </div>
 
+    <a class="btn btn-success" href=<@spring.url '${m.pages.Add.url}'/>>
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    </a>
+
     <div class="well  col-md-2 col-md-offset-1  ">
         <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">Create playlist</button>
         <ul id="playlists" class="nav nav-pills nav-stacked"></ul>

@@ -57,7 +57,7 @@
 "WithoutActivePage": {"url": ''}}>
 
 <#macro navigation activePage=pages.WithoutActivePage>
-    <#assign items = [pages.Main, pages.Search, pages.Add]>
+    <#assign items = [pages.Main, pages.Search]>
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
