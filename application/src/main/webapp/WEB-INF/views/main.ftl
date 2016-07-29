@@ -35,8 +35,6 @@
 
     <div class="well  col-md-2 col-md-offset-1  ">
         <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">Create playlist</button>
-        <button id="removePlaylistButton" class="btn  btn-danger btn-block" type="button">Remove selected</button>
-
         <ul id="playlists" class="nav nav-pills nav-stacked"></ul>
 
     </div>
@@ -49,7 +47,8 @@
             <button type='button' class='btn btn-xs btn-success' onclick="onPlay('audio_<%= track.id %>')">
                 <span class='glyphicon glyphicon-play' aria-hidden='true'/>
             </button>
-            <button type='button' class='btn btn-xs btn-warning pause-track-button' onclick="onPause('audio_<%= track.id %>')">
+            <button type='button' class='btn btn-xs btn-warning pause-track-button'
+                    onclick="onPause('audio_<%= track.id %>')">
                 <span class='glyphicon glyphicon-pause' aria-hidden='true'/>
             </button>
             <button type='button' class='btn btn-xs btn-danger delete-song-button'>
@@ -62,7 +61,7 @@
         <td>
         </td>
         <td>
-            <audio id= 'audio_<%= track.id %>' controls>
+            <audio id='audio_<%= track.id %>' controls>
                 <source type="audio/mp3" src="/files/<%= track.location %>">
             </audio>
         </td>
@@ -72,9 +71,16 @@
 </script>
 <script type="text/template" class="playlistRowTemplate">
     <li id="<%= data.id %>" title="<%= data.name %>">
-        <a href='#' data-value="<%= data.name %>">
-            <%= data.name %>
-        </a>
+        <div class="input-group">
+            <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
+                <%= data.name %>
+            </a>
+            <div class="input-group-btn">
+                <button type="button" id="removePlaylistButton" class="btn btn-danger" onclick="deletePlaylist(this)">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
     </li>
 </script>
 <script type="text/javascript">
@@ -90,7 +96,6 @@
     var playlistTable = _.template(
             $("script.playlistRowTemplate").html()
     );
-
 
     $('#playlists').on('click', 'a', function (e) {
         e.preventDefault();
@@ -122,10 +127,6 @@
                 });
     });
 
-    $('#removePlaylistButton').on('click', function (e) {
-        $('#deletePlaylistModal').modal('show');
-    });
-
     $('#createPlaylistButton').on('click', function (e) {
         $('#addPlaylistModal').modal('show');
     });
@@ -137,6 +138,12 @@
             row.remove();
         });
     });
+
+    function deletePlaylist(e) {
+        $("#playlists").find("li").removeClass("active");
+        $(e).closest('li').addClass('active');
+        $('#deletePlaylistModal').modal('show');
+    }
 
     function clearTracks() {
         $("#results").find("tr:not(:first)").remove();
