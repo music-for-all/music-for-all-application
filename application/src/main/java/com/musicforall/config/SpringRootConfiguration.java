@@ -1,5 +1,6 @@
 package com.musicforall.config;
 
+import com.musicforall.config.security.SecurityConfig;
 import com.musicforall.files.FileApiSpringConfig;
 import com.musicforall.history.HistorySpringConfig;
 import org.springframework.context.annotation.*;

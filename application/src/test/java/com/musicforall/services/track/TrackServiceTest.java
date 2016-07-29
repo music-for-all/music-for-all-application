@@ -1,5 +1,6 @@
 package com.musicforall.services.track;
 
+import com.musicforall.model.SearchCriteria;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.services.tag.TagService;
@@ -12,14 +13,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.*;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -51,7 +47,7 @@ public class TrackServiceTest {
     @Test
     public void testSaveTrackWithTags() {
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag(ROCK), new Tag("alternative")));
-        final Track track = new Track(tags, "Maybe", "path2");
+        final Track track = new Track("Maybe", "path2", tags);
 
         trackService.save(track);
         assertNotNull(trackService.get(track.getId()));
@@ -63,8 +59,8 @@ public class TrackServiceTest {
         final Track expectedTrack = trackService.get(track.getId());
 
         assertNotNull(expectedTrack);
-        assertEquals(track.getName(), expectedTrack.getName());
-        assertEquals(track.getLocation(), expectedTrack.getLocation());
+        assertEquals(expectedTrack.getName(), track.getName());
+        assertEquals(expectedTrack.getLocation(), track.getLocation());
     }
 
     @Test
@@ -97,5 +93,34 @@ public class TrackServiceTest {
 
         assertTrue(allTags.containsAll(tagsForTrack));
         assertFalse(allTags.contains(tagService.get("soul_not_exist")));
+    }
+
+    @Test
+    public void testSearchByName() {
+        final Track track1 = new Track("sim", LOC_1);
+        final Track track2 = new Track("Sim2", LOC_1);
+        final Track track3 = new Track("asdfsimiliar", LOC_1);
+        final Track track4 = new Track("asdifferent", LOC_1);
+
+        trackService.saveAll(Arrays.asList(track1, track2, track3, track4));
+        Collection<Track> tracks = trackService.getAllByName("Sim");
+        assertEquals(3, tracks.size());
+    }
+
+    @Test
+    public void testGetAllLike() {
+
+        final Set<Tag> tags = new HashSet<Tag>(Arrays.asList(new Tag("tag1"), new Tag("tag2")));
+
+        List<Track> tracks = Arrays.asList(
+                new Track("track", "title1", "artist1", "album1", "/root/track1.mp3", null),
+                new Track("track", "title2", "artist2", "album2", "/root/track2.mp3", tags),
+                new Track("track", "title3", "artist3", "album3", "/root/track3.mp3", null)
+        );
+        trackService.saveAll(tracks);
+
+        SearchCriteria searchCriteria = new SearchCriteria("title", "artist", "album", Arrays.asList("tag1", "tag2"));
+        tracks = trackService.getAllLike(searchCriteria);
+        assertEquals(1, tracks.size());
     }
 }

@@ -4,7 +4,6 @@ package com.musicforall.model;
  * Created by ilianik on 11.06.2016.
  */
 
-
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -18,6 +17,9 @@ import java.util.Set;
 @Entity
 @Table(name = "playlists")
 public class Playlist implements Serializable {
+
+    private static final long serialVersionUID = 3556491830874885637L;
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +32,8 @@ public class Playlist implements Serializable {
     @ManyToMany
     @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "playlists_tracks",
-            joinColumns = {@JoinColumn(name = "Playlist_id")},
-            inverseJoinColumns = {@JoinColumn(name = "tracks_id")})
+            joinColumns = {@JoinColumn(name = "playlist_id")},
+            inverseJoinColumns = {@JoinColumn(name = "track_id")})
     private Set<Track> tracks;
 
     @ManyToOne

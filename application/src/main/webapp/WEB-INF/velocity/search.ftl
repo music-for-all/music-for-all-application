@@ -15,42 +15,54 @@
     {"isActive": true, "url": '/search', "title": "Search"}]/>
 
 <div class="container">
-    <form class="form-inline text-center " id="searchForm" method="post">
-        <div class="input-group " placeholder="Search">
-            <input id="word" class="form-control" type="text" value="" placeholder="Search" name="q"
-                   autofocus="autofocus"/>
-
+    <form id="search-form" class="form-inline text-center ">
+        <div class="input-group">
+            <input id="title" class="form-control" type="text" value="" placeholder="Title"
+                   name="title" autofocus="autofocus" />
+            <input id="artist" class="form-control" type="text" value="" placeholder="Artist"
+                   name="artist" />
+            <input id="album" class="form-control" type="text" value="" placeholder="Album"
+                   name="album" />
+            <input id="tags" class="form-control" type="text" value="" placeholder="Tags"
+                   name="tags" />
             <div class="input-group-btn">
-                <button id="searchButton" data-style="slide-left" class="btn btn-success " type="button"
-                        onclick="search()"><i id="icon" class="fa fa-search"></i>Search
-                </button>
+                <input id="searchButton" data-style="slide-left" class="btn btn-success "
+                       type="submit" value="Search" />
             </div>
         </div>
-
-        <label class="checkbox-inline">
-            <input type="checkbox" name="category" value="Artists"> Artists
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" name="category" value="Titles"> Titles
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" name="category" value="Tags"> Tags
-        </label>
-
     </form>
+
+    <span id="status-message" class="well"></span>
     <div id="resultsd" class="well ">
         <table id="results" class="table table-hover table-striped table-condensed ">
             <thead>
             <tr>
-
-                <th>Actions</th>
+                <th></th>
                 <th>Artist</th>
                 <th>Title</th>
-                <th>Duration</th>
+                <th>Album</th>
+                <th>Tags</th>
             </tr>
             </thead>
+
+            <tr id="row-template" style="display: none">
+                <td>
+                    <button type="button" class="btn btn-xs btn-success">
+                        <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-xs btn-success">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </button>
+                </td>
+                <td>Artist</td>
+                <td>Title</td>
+                <td>Album</td>
+                <td>Tags</td>
+            </tr>
+
         </table>
     </div>
+    <a id="scroll-to-top" href="#top" title="Scroll to top">Top</a>
 </div>
 </@m.body>
 </html>

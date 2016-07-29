@@ -1,10 +1,14 @@
 package com.musicforall.web;
 
 import com.musicforall.files.manager.FileManager;
+import com.musicforall.model.Track;
+import com.musicforall.services.track.TrackService;
 import com.musicforall.history.handlers.events.TrackListenedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,14 +38,29 @@ public class FileController {
     @Autowired
     private FileManager manager;
 
+    @Autowired
+    private TrackService trackService;
+
     @RequestMapping(value = "/files", method = RequestMethod.POST)
     @ResponseBody
-    public String uploadFileHandler(@RequestParam("file") MultipartFile file) {
-        if (!file.isEmpty()) {
-            final Optional<Path> saved = Optional.of(manager.save(file));
-            return saved.isPresent() ? "success" : "error";
+    public ResponseEntity<String> uploadFileHandler(
+            @RequestPart("track") Track trackJson,
+            @RequestPart("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return new ResponseEntity<String>("File is empty", HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        return "File is empty";
+        final String filename = file.getOriginalFilename();
+        if (manager.getFilePathByName(filename) != null) {
+            return new ResponseEntity<String>("File exist", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        final Path saved = manager.save(file);
+        if (saved != null) {
+            trackJson.setLocation(filename);
+            trackService.save(trackJson);
+            return new ResponseEntity<String>("Song successfully saved", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @RequestMapping(value = "/files/{fileName:.+}", method = RequestMethod.GET)
@@ -58,8 +77,9 @@ public class FileController {
         });
     }
 
-    @RequestMapping(value = "/tryFiles", method = RequestMethod.GET)
+    @RequestMapping(value = "/uploadFile", method = RequestMethod.GET)
     public String signUp() {
-        return "tryFiles";
+        return "uploadFile";
     }
+
 }

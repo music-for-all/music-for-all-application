@@ -1,4 +1,4 @@
-package com.musicforall.config;
+package com.musicforall.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -34,13 +34,15 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication)
             throws AuthenticationException {
 
-        String username = authentication.getName();
-        String password = (String) authentication.getCredentials();
+        final String username = authentication.getName();
+        final UserDetails user = userDetailsService.loadUserByUsername(username);
 
-        UserDetails user = userDetailsService.loadUserByUsername(username);
         if (user == null) {
             throw new BadCredentialsException("Username not found.");
         }
+
+        final String password = (String) authentication.getCredentials();
+
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new BadCredentialsException("Wrong password.");
         }
