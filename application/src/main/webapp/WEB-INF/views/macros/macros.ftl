@@ -51,12 +51,12 @@
     </@form>
 </#macro>
 
-<#assign pages = {"Main": '/main', "Search": '/search', "Add": '/uploadFile'}>
+<#assign pages = {"Main": {"url": '/main', "title": "Main"},
+"Search": {"url": '/search', "title": "Search"},
+"Add": {"url": '/uploadFile', "title": "Add track"}}>
 
 <#macro navigation activePage>
-    <#assign items = [{"url": pages.Main, "title": "Main"},
-    {"url": pages.Search, "title": "Search"},
-    {"url": pages.Add, "title": "Add track"}]>
+    <#assign items = [pages.Main, pages.Search, pages.Add]>
 
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -76,7 +76,7 @@
 </#macro>
 
 <#macro navigationItem item activePage>
-<li <#if item.url == activePage>class="active"</#if> >
+<li <#if item.url == activePage.url>class="active"</#if> >
     <a href=<@spring.url '${item.url}'/>>
         <i class="fa"></i> ${item.title}
     </a>

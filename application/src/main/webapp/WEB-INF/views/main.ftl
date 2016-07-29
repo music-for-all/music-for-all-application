@@ -17,7 +17,7 @@
     <@p.popUpAdd "addPlaylistModal"/>
     <@p.popUpDelete "deletePlaylistModal"/>
 
-    <@m.navigation '${m.pages.Main}'/>
+    <@m.navigation m.pages.Main/>
 
 <div class="container">
     <div id="resultsd" class="well col-md-9 ">

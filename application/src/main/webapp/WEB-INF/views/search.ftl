@@ -10,7 +10,7 @@
 </@m.head>
 <@m.body>
 
-    <@m.navigation '${m.pages.Search}'/>
+    <@m.navigation m.pages.Search/>
 
 <div class="container">
     <form id="search-form" class="form-inline text-center ">

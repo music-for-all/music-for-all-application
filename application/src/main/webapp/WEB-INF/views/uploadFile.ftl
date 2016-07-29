@@ -11,7 +11,7 @@
 
     <@m.body>
 
-    <@m.navigation  '${m.pages.Add}'/>
+    <@m.navigation  m.pages.Add/>
 
     <div id="container" class="container">
         <div id="result" class="col-md-4 col-md-offset-4 " role="alert"></div>
