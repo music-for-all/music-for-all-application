@@ -28,21 +28,20 @@ jQuery(document).ready(function () {
             processResults: function (data, params) {
                 return {
                     results: data.map(function (item) {
-                        return item.name;
+                        return {id: item.name, text: item.name};
                     })
                 };
             }
         },
         allowClear: true,
         multiple: true,
-        placeholder: "Click here and start typing to search.",
-        escapeMarkup: function (markup) {
-            return markup;
-        },
+        placeholder: "Tags",
         minimumInputLength: 2,
         templateResult: function (data) {
-            return data.text;
-        }
+            return data;
+        },
+        tags: true,
+        tokenSeparators: [' ']
     });
 });
 /* end $(document).ready() */
@@ -69,9 +68,6 @@ function search() {
     if (album.length < MIN_QUERY) {
         album = null;
     }
-    if (tags.length < MIN_QUERY) {
-        tags = null;
-    }
 
     /* If all the fields are empty, do not proceed with search. */
     if (!title && !artist && !album && !tags) {
@@ -90,13 +86,10 @@ function search() {
     if (album && album.length > MAX_QUERY) {
         album = album.substr(0, MAX_QUERY);
     }
-    if (tags && tags.length > MAX_QUERY) {
-        tags = tags.substr(0, MAX_QUERY);
-    }
 
     /* If tags are provided, make them a string with comma-separated values. */
     if (tags) {
-        tags = tags.split(/[\s,;]+/).join(",");
+        tags = tags.join(",");
     }
 
     var trackData = {
@@ -122,7 +115,6 @@ function search() {
         console.log(message);
 
     }).done(function (results) {
-
         console.log(results);
         $("#status-message").text("Found: " + results.length);
         populateResultsTable(results);

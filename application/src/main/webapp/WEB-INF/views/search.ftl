@@ -25,8 +25,6 @@
                    name="artist"/>
             <input id="album" class="form-control" type="text" value="" placeholder="Album"
                    name="album"/>
-        <#--<input id="tags" class="form-control" type="text" value="" placeholder="Tags"-->
-        <#--name="tags" />-->
             <select class="form-control" id="tags"></select>
 
             <div class="input-group-btn">
