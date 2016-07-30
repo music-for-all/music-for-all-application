@@ -36,9 +36,9 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public FreeMarkerConfigurer velocityConfigurer() {
+    public FreeMarkerConfigurer freeMarkerConfigurer() {
         final FreeMarkerConfigurer conf = new FreeMarkerConfigurer();
-        conf.setTemplateLoaderPath("/WEB-INF/velocity/");
+        conf.setTemplateLoaderPath("/WEB-INF/views/");
         return conf;
     }
 }

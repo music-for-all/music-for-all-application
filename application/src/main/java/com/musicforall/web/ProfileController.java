@@ -10,21 +10,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class IndexController {
+public class ProfileController {
 
     @Autowired
     private UserService userService;
 
-    private static final Logger LOG = LoggerFactory.getLogger(IndexController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ProfileController.class);
 
-    public IndexController() {
+    public ProfileController() {
         LOG.info("");
-    }
-
-    @RequestMapping(value = {"/", "index"})
-    public String index(Model model) {
-        model.addAttribute("userList", userService.findAll());
-        return "index";
     }
 
     @RequestMapping("/profile")
