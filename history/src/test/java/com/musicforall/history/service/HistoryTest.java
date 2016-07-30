@@ -21,9 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import java.util.List;
-
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author IliaNik on 29.07.2016.
@@ -66,8 +64,8 @@ public class HistoryTest {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(History.class)
                 .add(Property.forName("userId").eq(USER_ID))
                 .add(Property.forName("trackId").eq(TRACK_ID));
-        final List<History> history = historyService.getBy(detachedCriteria);
-        assertTrue(!history.isEmpty());
+        final History history = historyService.getBy(detachedCriteria);
+        assertNotNull(history);
 
     }
 

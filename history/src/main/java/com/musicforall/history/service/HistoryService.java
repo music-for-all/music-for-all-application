@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 /**
  * Created by kgavrylchenko on 25.07.16.
  */
@@ -23,7 +21,7 @@ public class HistoryService {
         dao.save(history);
     }
 
-    public List<History> getBy(final DetachedCriteria criteria) {
-        return dao.getAllBy(criteria);
+    public History getBy(final DetachedCriteria criteria) {
+        return dao.getBy(criteria);
     }
 }
