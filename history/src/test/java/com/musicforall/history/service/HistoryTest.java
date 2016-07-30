@@ -7,6 +7,7 @@ import com.musicforall.history.model.History;
 import com.musicforall.history.util.ServicesTestConfig;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -52,17 +53,16 @@ public class HistoryTest {
     @Autowired
     private HistoryEventListener historyEventListener;
 
-    public HistoryTest() {
+    @Before
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
     public void whenUsingTheSpyAnnotation_thenObjectIsSpied() {
-
         trackListenedEvent = new TrackListenedEvent(TRACK_ID, USER_ID);
 
         publisher.publishEvent(trackListenedEvent);
-
         Mockito.verify(historyEventListener).handleTrackListened(trackListenedEvent);
 
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(History.class)

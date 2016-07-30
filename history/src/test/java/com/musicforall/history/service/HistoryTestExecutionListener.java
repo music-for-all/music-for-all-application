@@ -10,7 +10,7 @@ import org.springframework.test.context.support.AbstractTestExecutionListener;
 public class HistoryTestExecutionListener extends AbstractTestExecutionListener {
     @Override
     public void beforeTestClass(TestContext testContext) throws Exception {
-        super.afterTestClass(testContext);
+        super.beforeTestClass(testContext);
         final HistoryBootstrap historyBootstrap =
                 testContext.getApplicationContext().getBean(HistoryBootstrap.class);
         historyBootstrap.fillDatabase();
@@ -18,7 +18,7 @@ public class HistoryTestExecutionListener extends AbstractTestExecutionListener 
 
     @Override
     public void afterTestClass(TestContext testContext) throws Exception {
-        super.beforeTestClass(testContext);
+        super.afterTestClass(testContext);
         final HistoryBootstrap historyBootstrap =
                 testContext.getApplicationContext().getBean(HistoryBootstrap.class);
         historyBootstrap.clean();
