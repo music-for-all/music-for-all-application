@@ -1,3 +1,5 @@
+"use strict";
+
 function onPause(id) {
     var player = document.getElementById(id);
     player.pause();
