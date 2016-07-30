@@ -5,29 +5,29 @@ package com.musicforall.history.handlers.events;
  */
 public class TrackListenedEvent {
 
-    private int trackId;
+    private Integer trackId;
 
-    private int userId;
+    private Integer userId;
 
 
-    public TrackListenedEvent(int trackId, int userId) {
+    public TrackListenedEvent(Integer trackId, Integer userId) {
         this.trackId = trackId;
         this.userId = userId;
     }
 
-    public int getTrackId() {
+    public Integer getTrackId() {
         return trackId;
     }
 
-    public void setTrackId(int trackId) {
+    public void setTrackId(Integer trackId) {
         this.trackId = trackId;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

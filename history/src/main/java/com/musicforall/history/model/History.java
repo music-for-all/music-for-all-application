@@ -18,13 +18,13 @@ public class History {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "track_id")
-    private int trackId;
+    private Integer trackId;
 
     @Column(name = "user_id", nullable = false)
-    private int userId;
+    private Integer userId;
 
     @Column(name = "date", nullable = false)
     private Date date;
@@ -32,7 +32,7 @@ public class History {
     @Enumerated(EnumType.STRING)
     private EventType eventType;
 
-    public History(int trackId, Date date, int userId, EventType eventType) {
+    public History(Integer trackId, Date date, Integer userId, EventType eventType) {
         this.trackId = trackId;
         this.date = date;
         this.userId = userId;
@@ -42,23 +42,23 @@ public class History {
     public History() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getTrackId() {
+    public Integer getTrackId() {
         return trackId;
     }
 
-    public void setTrackId(int trackId) {
+    public void setTrackId(Integer trackId) {
         this.trackId = trackId;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
