@@ -1,6 +1,5 @@
 package com.musicforall.history.service;
 
-import com.musicforall.common.dao.Dao;
 import com.musicforall.history.handlers.HistoryEventListener;
 import com.musicforall.history.handlers.events.TrackListenedEvent;
 import com.musicforall.history.model.History;
@@ -45,9 +44,7 @@ public class HistoryTest {
     private ApplicationEventPublisher publisher;
 
     @Autowired
-    private Dao dao;
-
-    private TrackListenedEvent trackListenedEvent;
+    private HistoryService historyService;
 
     @Spy
     @Autowired
@@ -60,15 +57,16 @@ public class HistoryTest {
 
     @Test
     public void whenUsingTheSpyAnnotation_thenObjectIsSpied() {
-        trackListenedEvent = new TrackListenedEvent(TRACK_ID, USER_ID);
+        final TrackListenedEvent event = new TrackListenedEvent(TRACK_ID, USER_ID);
 
-        publisher.publishEvent(trackListenedEvent);
-        Mockito.verify(historyEventListener).handleTrackListened(trackListenedEvent);
+//        publisher.publishEvent(event);
+        historyEventListener.handleTrackListened(event);
+        Mockito.verify(historyEventListener).handleTrackListened(event);
 
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(History.class)
-                .add(Property.forName("user_id").eq(USER_ID))
-                .add(Property.forName("track_id").eq(TRACK_ID));
-        final List<History> history = dao.getAllBy(detachedCriteria);
+                .add(Property.forName("userId").eq(USER_ID))
+                .add(Property.forName("trackId").eq(TRACK_ID));
+        final List<History> history = historyService.getBy(detachedCriteria);
         assertTrue(!history.isEmpty());
 
     }
