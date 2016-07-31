@@ -51,17 +51,17 @@
     </@form>
 </#macro>
 
-<#assign pages = {"Main": {"url": '/main', "title": "Main"},
-"Search": {"url": '/search', "title": "Search"},
-"Add": {"url": '/uploadFile', "title": "Add track"},
-"Profile": {"url": '/profile', "title": "Profile"},
-"Contacts": {"url": '/contactManager', "title": "Contacts"},
+<#assign pages = {"Main": {"url": '/main', "title": "Main", "icon": "fa-th-list"},
+"Search": {"url": '/search', "title": "Search", "icon": "fa-search"},
+"Add": {"url": '/uploadFile', "title": "Add track", "icon": "fa-plus"},
+"Profile": {"url": '/profile', "title": "", "icon": "fa-cog"},
+"Contacts": {"url": '/contactManager', "title": "", "icon": "fa-users"},
 "WithoutActivePage": {"url": ''}}>
 
 <#macro navigation activePage=pages.WithoutActivePage>
-    <#assign items = [pages.Contacts, pages.Profile, pages.Main, pages.Search]>
+    <#assign items = [pages.Contacts, pages.Main, pages.Search, pages.Profile]>
 <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
+    <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">Music for all</a>
         </div>
@@ -80,7 +80,7 @@
 <#macro navigationItem item activePage>
 <li <#if item.url == activePage.url>class="active"</#if> >
     <a href=<@spring.url '${item.url}'/>>
-        <i class="fa"></i> ${item.title}
+        <i class="fa ${item.icon}"></i> ${item.title}
     </a>
 </li>
 </#macro>
