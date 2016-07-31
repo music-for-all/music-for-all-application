@@ -47,7 +47,7 @@
 
 <#macro logoutForm>
     <@form '/logout',"post", "logout-form", "application/x-www-form-urlencoded">
-    <input type="submit" value="Log out" class="btn btn-default"/>
+    <button type="submit" class="btn btn-default"><i class="fa fa-sign-out" aria-hidden="true"></i></button>
     </@form>
 </#macro>
 
