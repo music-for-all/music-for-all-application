@@ -55,10 +55,11 @@
 "Search": {"url": '/search', "title": "Search"},
 "Add": {"url": '/uploadFile', "title": "Add track"},
 "Profile": {"url": '/profile', "title": "Profile"},
+"Contacts": {"url": '/contactManager', "title": "Contacts"},
 "WithoutActivePage": {"url": ''}}>
 
 <#macro navigation activePage=pages.WithoutActivePage>
-    <#assign items = [pages.Profile, pages.Main, pages.Search]>
+    <#assign items = [pages.Contacts, pages.Profile, pages.Main, pages.Search]>
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
