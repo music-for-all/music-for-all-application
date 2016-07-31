@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Pukho on 16.06.2016.
@@ -68,6 +69,32 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return dao.all(User.class);
+    }
+
+    @Override
+    public void follow(Integer userId, Integer following_userId) {
+        final User user = dao.get(User.class, userId);
+        final User user2 = dao.get(User.class, following_userId);
+        user.follow(user2);
+        dao.save(user);
+    }
+
+    @Override
+    public void unfollow(Integer userId, Integer following_userId) {
+        final User user = dao.get(User.class, userId);
+        final User user2 = dao.get(User.class, following_userId);
+        user.unfollow(user2);
+        dao.save(user);
+    }
+
+    @Override
+    public Set<User> getFollowers(Integer userId) {
+        return dao.get(User.class, userId).getFollowers();
+    }
+
+    @Override
+    public Set<User> getFollowing(Integer userId) {
+        return dao.get(User.class, userId).getFollowing();
     }
 
     @Override

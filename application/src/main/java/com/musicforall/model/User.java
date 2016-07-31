@@ -4,17 +4,23 @@ package com.musicforall.model;
  * Created by ilianik on 11.06.2016.
  */
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -39,6 +45,20 @@ public class User implements UserDetails, Serializable {
     @Email
     @Column(nullable = false, unique = true)
     private String email;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Cascade(CascadeType.SAVE_UPDATE)
+    @JoinTable(name = "user_following",
+            joinColumns = {@JoinColumn(name = "following_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
+    private Set<User> followers = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Cascade(CascadeType.SAVE_UPDATE)
+    @JoinTable(name = "user_following",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "following_id")})
+    private Set<User> following = new HashSet<>();
 
     public User() {
     }
@@ -86,6 +106,17 @@ public class User implements UserDetails, Serializable {
         return AuthorityUtils.createAuthorityList("ROLE_USER");
     }
 
+    public void follow(User following_user) {
+        if (following == null) {
+            following = new HashSet<>();
+        }
+        following.add(following_user);
+    }
+
+    public void unfollow(User following_user) {
+        following.remove(following_user);
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -106,6 +137,21 @@ public class User implements UserDetails, Serializable {
         this.email = email;
     }
 
+    public Set<User> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(Set<User> following) {
+        this.following = following;
+    }
+
+    public Set<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Set<User> followers) {
+        this.followers = followers;
+    }
 
     @Override
     public int hashCode() {
