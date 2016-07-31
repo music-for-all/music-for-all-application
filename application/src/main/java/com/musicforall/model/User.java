@@ -4,6 +4,7 @@ package com.musicforall.model;
  * Created by ilianik on 11.06.2016.
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.Email;
@@ -46,6 +47,7 @@ public class User implements UserDetails, Serializable {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "user_following",
@@ -53,6 +55,7 @@ public class User implements UserDetails, Serializable {
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private Set<User> followers = new HashSet<>();
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "user_following",
