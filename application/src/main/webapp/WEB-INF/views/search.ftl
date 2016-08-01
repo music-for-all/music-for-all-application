@@ -66,5 +66,35 @@
     </div>
     <a id="scroll-to-top" href="#top" title="Scroll to top">Top</a>
 </div>
+<script type="text/javascript">
+    var contextPath = "<@spring.url "" />";
+    $("#tags").select2({
+        ajax: {
+            url: contextPath + "/tags",
+            delay: 250,
+            data: function (params) {
+                return {
+                    tagName: params.term
+                };
+            },
+            processResults: function (data, params) {
+                return {
+                    results: data.map(function (item) {
+                        return {id: item.name, text: item.name};
+                    })
+                };
+            }
+        },
+        allowClear: true,
+        multiple: true,
+        placeholder: "Tags",
+        minimumInputLength: 2,
+        templateResult: function (data) {
+            return data.text;
+        },
+        tags: true,
+        tokenSeparators: [' ']
+    });
+</script>
 </@m.body>
 </html>

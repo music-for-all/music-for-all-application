@@ -5,13 +5,14 @@ import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.Tag;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Pukho on 22.06.2016.
@@ -47,9 +48,10 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<Tag> getAllLike(String tagName) {
-        final DetachedCriteria criteria = DetachedCriteria.forClass(Tag.class);
-        criteria.add(Restrictions.ilike("name", QueryUtil.like(tagName)));
-        return dao.getAllBy(criteria);
+        final String hql = "from Tag where lower(name) like :name";
+        final Map<String, String> properties = new HashMap<>();
+        properties.put("name", QueryUtil.like(tagName.toLowerCase()));
+        return dao.getAllBy(hql, properties);
     }
 
     @Override
