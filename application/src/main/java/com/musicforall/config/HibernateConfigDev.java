@@ -59,6 +59,10 @@ public class HibernateConfigDev {
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         properties.setProperty("hibernate.format_sql", Boolean.TRUE.toString());
         properties.setProperty("hibernate.show_sql", Boolean.TRUE.toString());
+        /* Enable Hibernate's automatic session context management. */
+        properties.setProperty("hibernate.current_session_context_class", "thread");
+        /* Disable the second-level cache  */
+        properties.setProperty("hibernate.cache.provider_class", "org.hibernate.cache.internal.NoCacheProvider");
         return properties;
     }
 }
