@@ -7,6 +7,9 @@ import org.hibernate.criterion.*;
 
 import java.util.List;
 
+/**
+ * Contains convenience methods to work with search criteria.
+ */
 public final class SearchCriteriaFactory {
 
     private SearchCriteriaFactory() {
