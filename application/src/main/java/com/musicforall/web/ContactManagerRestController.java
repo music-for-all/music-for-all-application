@@ -25,6 +25,10 @@ public class ContactManagerRestController {
     @Autowired
     private UserService userService;
 
+    public ContactManagerRestController() {
+        LOG.debug("Contact manager RestController");
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public ResponseEntity follow(@PathVariable("id") Integer user_id) {
         userService.follow(SecurityUtil.currentUser().getId(), user_id);
@@ -49,7 +53,7 @@ public class ContactManagerRestController {
 
     @RequestMapping(value = "/search={username}", method = RequestMethod.GET)
     public Collection<User> search(@PathVariable("username") String username) {
-        HashSet<User> users = new HashSet<>();
+        final HashSet<User> users = new HashSet<>();
         users.add(userService.getByUsername(username));
         return users;
     }

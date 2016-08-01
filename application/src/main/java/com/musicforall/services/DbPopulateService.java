@@ -32,6 +32,10 @@ public class DbPopulateService {
 
     private static final String OPEN_SOURCE_MUSIC_HOST = "http://opensourcemusic.com/files";
 
+    private static final String USER_IS_SAVED = "user {} is saved";
+
+    private static final String USER_IS_FOLLOW = "user {} is follow {}";
+
     static {
         LINKS.put("Jerry-Lee-Lewis-part-1", OPEN_SOURCE_MUSIC_HOST +
                 "/2010/04/01-Selvin-On-The-City-Jerry-Lee-Lewis-part-1.mp3");
@@ -73,27 +77,25 @@ public class DbPopulateService {
 
         final User user = new User("dev", "password", "dev@musicforall.com");
         userService.save(user);
-        LOG.info("user {} is saved", user);
+        LOG.info(USER_IS_SAVED, user);
 
-        final User user2 = new User("user2", "password", "user1@musicforall.com");
+        final User user2 = new User("user2", "password2", "user1@musicforall.com");
         userService.save(user2);
-        LOG.info("user {} is saved", user2);
+        LOG.info(USER_IS_SAVED, user2);
 
         userService.follow(user.getId(), user2.getId());
-        LOG.info("user {} is follow", user, user2);
+        LOG.info(USER_IS_FOLLOW, user, user2);
         userService.follow(user2.getId(), user.getId());
-        LOG.info("user {} is follow", user2, user);
+        LOG.info(USER_IS_FOLLOW, user2, user);
 
-        final User user3 = new User("user3", "password", "user2@musicforall.com");
+        final User user3 = new User("user3", "password3", "user2@musicforall.com");
         userService.save(user3);
-        LOG.info("user {} is saved", user3);
+        LOG.info(USER_IS_SAVED, user3);
 
         userService.follow(user.getId(), user3.getId());
-        LOG.info("user {} is follow", user, user3);
+        LOG.info(USER_IS_FOLLOW, user, user3);
         userService.follow(user3.getId(), user2.getId());
-        LOG.info("user {} is follow", user3, user2);
-
-        LOG.info("user {} is saved", user);
+        LOG.info(USER_IS_FOLLOW, user3, user2);
 
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag("Dummy"), new Tag("Classic"), new Tag("2016")));
 

@@ -27,5 +27,5 @@ function User(contextPath) {
 
     self.search = function (username) {
         return $.when($.get(baseUrl + "/search=" + username));
-    }
+    };
 }
