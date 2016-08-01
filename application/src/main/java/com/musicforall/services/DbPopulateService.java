@@ -73,6 +73,25 @@ public class DbPopulateService {
 
         final User user = new User("dev", "password", "dev@musicforall.com");
         userService.save(user);
+        LOG.info("user {} is saved", user);
+
+        final User user2 = new User("user2", "password", "user1@musicforall.com");
+        userService.save(user2);
+        LOG.info("user {} is saved", user2);
+
+        userService.follow(user.getId(), user2.getId());
+        LOG.info("user {} is follow", user, user2);
+        userService.follow(user2.getId(), user.getId());
+        LOG.info("user {} is follow", user2, user);
+
+        final User user3 = new User("user3", "password", "user2@musicforall.com");
+        userService.save(user3);
+        LOG.info("user {} is saved", user3);
+
+        userService.follow(user.getId(), user3.getId());
+        LOG.info("user {} is follow", user, user3);
+        userService.follow(user3.getId(), user2.getId());
+        LOG.info("user {} is follow", user3, user2);
 
         LOG.info("user {} is saved", user);
 
