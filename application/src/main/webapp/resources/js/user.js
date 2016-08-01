@@ -24,4 +24,8 @@ function User(contextPath) {
     self.getFollowing = function () {
         return $.when($.get(baseUrl + "/following"));
     };
+
+    self.search = function (username) {
+        return $.when($.get(baseUrl + "/search=" + username));
+    }
 }

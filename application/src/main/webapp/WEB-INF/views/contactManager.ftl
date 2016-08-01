@@ -1,7 +1,7 @@
 <#import "macros/macros.ftl" as m>
 <#import "/spring.ftl" as spring />
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <@m.head>
 <title>Contacts</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
@@ -25,15 +25,15 @@
             </div>
         </div>
         <div class="col-md-offset-1 col-md-6">
-            <div class="input-group ">
-                <input id="word" class="form-control" type="text" value="" placeholder="Search" name="q"/>
-
-                <div class="input-group-btn">
-                    <button id="searchButton" data-style="slide-left" class="btn btn-success " type="button">
-                        <i id="icon" class="fa fa-search"></i>
-                    </button>
+            <form id="search-form" class="form-inline text-center ">
+                <div class="input-group">
+                    <input id="name" class="form-control" type="text" value=""/>
+                    <div class="input-group-btn">
+                        <input id="searchButton" data-style="slide-left" class="btn btn-success "
+                               type="submit" value="Search"/>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
         <div class="col-md-offset-1 col-md-6">
         <span id="message" class="alert alert-block">
@@ -132,14 +132,28 @@
         });
     }
 
+    function search() {
+        var username = $("#name").val();
+        clearContacts();
+        user.search(username).then(function (users) {
+            $("#results").find("thead").after(
+                    userFollowersRow(users)
+            );
+        })
+    }
+
     function clearContacts() {
-        $("#results tr:gt(0)").remove();
+        $("#results tr").remove();
+        $("#message").text("");
     }
 
     jQuery(document).ready(function () {
         getFollowing();
+        $("#search-form").on("submit", function () {
+            search();
+            return false;
+        });
     });
-
 </script>
 </@m.body>
 </html>

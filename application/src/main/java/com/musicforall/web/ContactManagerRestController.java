@@ -8,12 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Created by Andrey on 7/31/16.
@@ -47,5 +45,12 @@ public class ContactManagerRestController {
     @RequestMapping(value = "/following", method = RequestMethod.GET)
     public Collection<User> getFollowings() {
         return userService.getFollowing(SecurityUtil.currentUser().getId());
+    }
+
+    @RequestMapping(value = "/search={username}", method = RequestMethod.GET)
+    public Collection<User> search(@PathVariable("username") String username) {
+        HashSet<User> users = new HashSet<>();
+        users.add(userService.getByUsername(username));
+        return users;
     }
 }
