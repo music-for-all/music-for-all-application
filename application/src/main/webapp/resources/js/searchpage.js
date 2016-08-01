@@ -18,7 +18,7 @@ jQuery(document).ready(function () {
 
     $("#tags").select2({
         ajax: {
-            url: "/api/search/tags",
+            url: "/tags",
             delay: 250,
             data: function (params) {
                 return {
@@ -44,7 +44,6 @@ jQuery(document).ready(function () {
         tokenSeparators: [' ']
     });
 });
-/* end $(document).ready() */
 
 /**
  * Performs an Ajax-based search; populates the results table with found tracks.

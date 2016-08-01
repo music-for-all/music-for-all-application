@@ -19,5 +19,5 @@ public interface TagService {
 
     List<Tag> getAllTags();
 
-    List<Tag> getTagsLike(String tagName);
+    List<Tag> getAllLike(String tagName);
 }

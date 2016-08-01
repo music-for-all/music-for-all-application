@@ -1,9 +1,7 @@
 package com.musicforall.web;
 
-import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.model.TrackSearchCriteria;
-import com.musicforall.services.tag.TagService;
 import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +28,6 @@ public class SearchRestController {
     private static final Logger LOG = LoggerFactory.getLogger(SearchRestController.class);
     @Autowired
     private TrackService trackService;
-    @Autowired
-    private TagService tagService;
 
     /**
      * Searches tracks by the specified criteria.
@@ -47,15 +43,5 @@ public class SearchRestController {
         final List<Track> tracks = trackService.getAllLike(searchCriteria);
 
         return new ResponseEntity<>(tracks, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/tags", method = RequestMethod.GET)
-    public ResponseEntity getTags(final String tagName) {
-        if (tagName == null || tagName.trim().isEmpty()) {
-            LOG.error("tag name must not be empty");
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        final List<Tag> tags = tagService.getTagsLike(tagName);
-        return new ResponseEntity<>(tags, HttpStatus.OK);
     }
 }

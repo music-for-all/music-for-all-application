@@ -1,10 +1,11 @@
 package com.musicforall.services.tag;
 
 import com.musicforall.common.dao.Dao;
+import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.Tag;
-import com.musicforall.services.SearchCriteriaFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,8 +46,9 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<Tag> getTagsLike(String tagName) {
-        final DetachedCriteria criteria = SearchCriteriaFactory.createCriteriaFrom(tagName);
+    public List<Tag> getAllLike(String tagName) {
+        final DetachedCriteria criteria = DetachedCriteria.forClass(Tag.class);
+        criteria.add(Restrictions.ilike("name", QueryUtil.like(tagName)));
         return dao.getAllBy(criteria);
     }
 

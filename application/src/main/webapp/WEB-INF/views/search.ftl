@@ -1,13 +1,14 @@
 <#import "macros/macros.ftl" as m>
+<#import "/spring.ftl" as spring />
 <!DOCTYPE html>
 <html lang="en">
 <@m.head>
 <title>Search</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
-<script src="/resources/js/searchpage.js"></script>
-<link href="/resources/css/searchpage.css" rel="stylesheet">
-<link href="/resources/css/font-awesome.min.css" rel="stylesheet">
+<script src="<@spring.url "/resources/js/searchpage.js"/>"></script>
+<link href="<@spring.url "/resources/css/searchpage.css" />" rel="stylesheet">
+<link href="<@spring.url "/resources/css/font-awesome.min.css"/>" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
 </@m.head>
 <@m.body>

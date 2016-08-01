@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/tracks")
 public class TrackRestController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MainController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TrackRestController.class);
 
     @Autowired
     private TrackService trackService;
