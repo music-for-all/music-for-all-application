@@ -73,6 +73,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void follow(Integer userId, Integer following_userId) {
+        if (userId.equals(following_userId)) {
+            LOG.info(String.format("Users can not follow themselves", userId, following_userId));
+            return;
+        }
         final User user = dao.get(User.class, userId);
         final User user2 = dao.get(User.class, following_userId);
         user.follow(user2);
