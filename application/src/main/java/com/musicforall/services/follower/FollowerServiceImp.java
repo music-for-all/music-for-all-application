@@ -56,7 +56,7 @@ public class FollowerServiceImp implements FollowerService {
     }
 
     @Override
-    public Set<User> getFollower(Integer userId) {
+    public Set<User> getFollowers(Integer userId) {
         final Set<User> users = new HashSet<>();
         final Set<Followers> followersId = getFollowerId(userId);
         for (Followers followers : followersId) {
@@ -73,5 +73,13 @@ public class FollowerServiceImp implements FollowerService {
             users.add(dao.get(User.class, followers.getFollowing_id()));
         }
         return users;
+    }
+
+    @Override
+    public User getByUsername(String username) {
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
+                .add(Property.forName("username").eq(username));
+
+        return dao.getBy(detachedCriteria);
     }
 }

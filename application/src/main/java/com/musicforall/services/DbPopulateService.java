@@ -1,10 +1,8 @@
 package com.musicforall.services;
 
 import com.musicforall.files.manager.FileManager;
-import com.musicforall.model.Playlist;
-import com.musicforall.model.Tag;
-import com.musicforall.model.Track;
-import com.musicforall.model.User;
+import com.musicforall.model.*;
+import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.user.UserService;
 import org.slf4j.Logger;
@@ -55,6 +53,9 @@ public class DbPopulateService {
     private PlaylistService playlistService;
 
     @Autowired
+    private FollowerService followerService;
+
+    @Autowired
     private FileManager fileManager;
 
     private static URL toURL(String url) {
@@ -83,18 +84,18 @@ public class DbPopulateService {
         userService.save(user2);
         LOG.info(USER_IS_SAVED, user2);
 
-        userService.follow(user.getId(), user2.getId());
+        followerService.follow(user.getId(), user2.getId());
         LOG.info(USER_IS_FOLLOW, user, user2);
-        userService.follow(user2.getId(), user.getId());
+        followerService.follow(user2.getId(), user.getId());
         LOG.info(USER_IS_FOLLOW, user2, user);
 
         final User user3 = new User("user3", "password3", "user2@musicforall.com");
         userService.save(user3);
         LOG.info(USER_IS_SAVED, user3);
 
-        userService.follow(user.getId(), user3.getId());
+        followerService.follow(user.getId(), user3.getId());
         LOG.info(USER_IS_FOLLOW, user, user3);
-        userService.follow(user3.getId(), user2.getId());
+        followerService.follow(user3.getId(), user2.getId());
         LOG.info(USER_IS_FOLLOW, user3, user2);
 
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag("Dummy"), new Tag("Classic"), new Tag("2016")));

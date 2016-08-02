@@ -1,7 +1,7 @@
 package com.musicforall.web;
 
 import com.musicforall.model.User;
-import com.musicforall.services.user.UserService;
+import com.musicforall.services.follower.FollowerService;
 import com.musicforall.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,7 @@ public class ContactManagerRestController {
     private static final Logger LOG = LoggerFactory.getLogger(ContactManagerRestController.class);
 
     @Autowired
-    private UserService userService;
+    private FollowerService followerService;
 
     public ContactManagerRestController() {
         LOG.debug("Contact manager RestController");
@@ -31,30 +31,30 @@ public class ContactManagerRestController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public ResponseEntity follow(@PathVariable("id") Integer user_id) {
-        userService.follow(SecurityUtil.currentUser().getId(), user_id);
+        followerService.follow(SecurityUtil.currentUser().getId(), user_id);
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity unfollow(@PathVariable("id") Integer user_id) {
-        userService.unfollow(SecurityUtil.currentUser().getId(), user_id);
+        followerService.unfollow(SecurityUtil.currentUser().getId(), user_id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/followers", method = RequestMethod.GET)
     public Collection<User> getFollowers() {
-        return userService.getFollowers(SecurityUtil.currentUser().getId());
+        return followerService.getFollowers(SecurityUtil.currentUser().getId());
     }
 
     @RequestMapping(value = "/following", method = RequestMethod.GET)
     public Collection<User> getFollowings() {
-        return userService.getFollowing(SecurityUtil.currentUser().getId());
+        return followerService.getFollowing(SecurityUtil.currentUser().getId());
     }
 
     @RequestMapping(value = "/search={username}", method = RequestMethod.GET)
     public Collection<User> search(@PathVariable("username") String username) {
         final HashSet<User> users = new HashSet<>();
-        users.add(userService.getByUsername(username));
+        users.add(followerService.getByUsername(username));
         return users;
     }
 }

@@ -100,21 +100,4 @@ public class UserServiceTest {
         assertEquals(user.getUsername(), USER_1);
         assertNotNull(userService.loadUserByUsername(USER_NOT_EXIST));
     }
-
-    @Test
-    public void testFollowUsers() {
-        final User user = new User("John", "password", "test@example.com");
-        final User user_followers = new User("Mike", "password", "mail@example.com");
-        userService.save(user);
-        userService.save(user_followers);
-        userService.follow(user_followers.getId(), user.getId());
-        assertEquals(1, userService.getFollowing(user_followers.getId()).size());
-
-        assertEquals(1, userService.getFollowers(user.getId()).size());
-
-        userService.unfollow(user_followers.getId(), user.getId());
-        assertEquals(0, userService.getFollowers(user.getId()).size());
-
-        assertEquals(0, userService.getFollowing(user_followers.getId()).size());
-    }
 }

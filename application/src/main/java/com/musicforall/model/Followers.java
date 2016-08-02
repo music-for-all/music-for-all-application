@@ -8,7 +8,7 @@ import java.util.Objects;
  * Created by andrey on 8/2/16.
  */
 @Entity
-@Table(name = "followers2")
+@Table(name = "followers")
 public class Followers implements Serializable {
 
     private static final long serialVersionUID = 1936826830874885637L;
@@ -17,6 +17,7 @@ public class Followers implements Serializable {
     @Column(name = "follower_id", nullable = false)
     private Integer follower_id;
 
+    @Id
     @Column(name = "following_id", nullable = false)
     private Integer following_id;
 

@@ -18,7 +18,9 @@ public interface FollowerService {
 
     Set<Followers> getFollowingId(Integer userId);
 
-    Set<User> getFollower(Integer userId);
+    Set<User> getFollowers(Integer userId);
 
     Set<User> getFollowing(Integer userId);
+
+    User getByUsername(String username);
 }

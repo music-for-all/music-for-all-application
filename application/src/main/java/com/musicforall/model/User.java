@@ -4,7 +4,6 @@ package com.musicforall.model;
  * Created by ilianik on 11.06.2016.
  */
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -42,9 +41,6 @@ public class User implements UserDetails, Serializable {
     @Email
     @Column(nullable = false, unique = true)
     private String email;
-
-    @JsonIgnore
-    private FollowManager followManager = new FollowManager();
 
     public User() {
     }
@@ -110,10 +106,6 @@ public class User implements UserDetails, Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public FollowManager getFollowManager() {
-        return followManager;
     }
 
     @Override

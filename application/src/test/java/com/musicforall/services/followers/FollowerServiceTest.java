@@ -87,10 +87,10 @@ public class FollowerServiceTest {
         userService.save(user_followers);
 
         followerService.follow(user_followers.getId(), user.getId());
-        assertEquals(1, followerService.getFollower(user.getId()).size());
+        assertEquals(1, followerService.getFollowers(user.getId()).size());
 
         followerService.unfollow(user_followers.getId(), user.getId());
-        assertEquals(0, followerService.getFollower(user.getId()).size());
+        assertEquals(0, followerService.getFollowers(user.getId()).size());
     }
 
     @Test
