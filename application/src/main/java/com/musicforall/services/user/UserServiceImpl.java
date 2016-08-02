@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
         }
         final User user = dao.get(User.class, userId);
         final User user2 = dao.get(User.class, following_userId);
-        user.follow(user2);
+        user.getFollowManager().follow(user2);
         dao.save(user);
     }
 
@@ -87,18 +87,18 @@ public class UserServiceImpl implements UserService {
     public void unfollow(Integer userId, Integer following_userId) {
         final User user = dao.get(User.class, userId);
         final User user2 = dao.get(User.class, following_userId);
-        user.unfollow(user2);
+        user.getFollowManager().unfollow(user2);
         dao.save(user);
     }
 
     @Override
     public Set<User> getFollowers(Integer userId) {
-        return dao.get(User.class, userId).getFollowers();
+        return dao.get(User.class, userId).getFollowManager().getFollowers();
     }
 
     @Override
     public Set<User> getFollowing(Integer userId) {
-        return dao.get(User.class, userId).getFollowing();
+        return dao.get(User.class, userId).getFollowManager().getFollowing();
     }
 
     @Override
