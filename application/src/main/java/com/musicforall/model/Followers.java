@@ -29,19 +29,19 @@ public class Followers implements Serializable {
         this.following_id = following_id;
     }
 
-    public Integer getFollowing_id() {
+    public Integer getFollowingId() {
         return following_id;
     }
 
-    public void setFollowing_id(Integer following_id) {
+    public void setFollowingId(Integer following_id) {
         this.following_id = following_id;
     }
 
-    public Integer getFollower_id() {
+    public Integer getFollowerId() {
         return follower_id;
     }
 
-    public void setFollower_id(Integer follower_id) {
+    public void setFollowerId(Integer follower_id) {
         this.follower_id = follower_id;
     }
 

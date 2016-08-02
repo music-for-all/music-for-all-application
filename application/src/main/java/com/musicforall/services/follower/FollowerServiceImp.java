@@ -60,7 +60,7 @@ public class FollowerServiceImp implements FollowerService {
         final Set<User> users = new HashSet<>();
         final Set<Followers> followersId = getFollowerId(userId);
         for (Followers followers : followersId) {
-            users.add(dao.get(User.class, followers.getFollower_id()));
+            users.add(dao.get(User.class, followers.getFollowerId()));
         }
         return users;
     }
@@ -70,7 +70,7 @@ public class FollowerServiceImp implements FollowerService {
         final Set<User> users = new HashSet<>();
         final Set<Followers> followersId = getFollowingId(userId);
         for (Followers followers : followersId) {
-            users.add(dao.get(User.class, followers.getFollowing_id()));
+            users.add(dao.get(User.class, followers.getFollowingId()));
         }
         return users;
     }
