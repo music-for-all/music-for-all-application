@@ -1,6 +1,10 @@
 package com.musicforall.history.util;
 
 import com.musicforall.history.HibernateConfigDev;
+import com.musicforall.history.handlers.HistoryEventListener;
+import com.musicforall.history.service.HistoryService;
+import org.mockito.Mockito;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

@@ -1,6 +1,7 @@
 package com.musicforall.history.service;
 
 import com.musicforall.history.handlers.HistoryEventListener;
+import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.handlers.events.TrackListenedEvent;
 import com.musicforall.history.model.History;
 import com.musicforall.history.util.ServicesTestConfig;
@@ -9,17 +10,16 @@ import org.hibernate.criterion.Property;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+
+import java.util.Date;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -31,7 +31,7 @@ import static org.junit.Assert.assertNotNull;
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
-        HistoryTestExecutionListener.class})
+})
 @ActiveProfiles("dev")
 public class HistoryTest {
 
@@ -39,12 +39,8 @@ public class HistoryTest {
     static final Integer TRACK_ID = 2222;
 
     @Autowired
-    private ApplicationEventPublisher publisher;
-
-    @Autowired
     private HistoryService historyService;
 
-    @Spy
     @Autowired
     private HistoryEventListener historyEventListener;
 
@@ -57,16 +53,12 @@ public class HistoryTest {
     public void whenUsingTheSpyAnnotation_thenObjectIsSpied() {
         final TrackListenedEvent event = new TrackListenedEvent(TRACK_ID, USER_ID);
 
-//        publisher.publishEvent(event);
         historyEventListener.handleTrackListened(event);
-        Mockito.verify(historyEventListener).handleTrackListened(event);
 
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(History.class)
                 .add(Property.forName("userId").eq(USER_ID))
                 .add(Property.forName("trackId").eq(TRACK_ID));
         final History history = historyService.getBy(detachedCriteria);
         assertNotNull(history);
-
     }
-
 }
