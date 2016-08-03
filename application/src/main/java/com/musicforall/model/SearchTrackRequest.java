@@ -3,7 +3,7 @@ package com.musicforall.model;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-public class TrackSearchCriteria {
+public class SearchTrackRequest {
 
     @Size(max = 16)
     private String title;
@@ -16,10 +16,10 @@ public class TrackSearchCriteria {
 
     private List<String> tags;
 
-    public TrackSearchCriteria() {
+    public SearchTrackRequest() {
     }
 
-    public TrackSearchCriteria(String title, String artist, String album, List<String> tags) {
+    public SearchTrackRequest(String title, String artist, String album, List<String> tags) {
         this.title = title;
         this.artist = artist;
         this.album = album;
@@ -60,7 +60,7 @@ public class TrackSearchCriteria {
 
     @Override
     public String toString() {
-        return "TrackSearchCriteria{" +
+        return "SearchTrackRequest{" +
                 "title='" + title + '\'' +
                 ", artist='" + artist + '\'' +
                 ", album='" + album + '\'' +

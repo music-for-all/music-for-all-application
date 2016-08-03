@@ -1,8 +1,8 @@
 package com.musicforall.services;
 
 import com.musicforall.common.query.QueryUtil;
+import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Track;
-import com.musicforall.model.TrackSearchCriteria;
 import org.hibernate.criterion.*;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public final class SearchCriteriaFactory {
      * @param searchCriteria an instance of the SearchCriteria class
      * @return the detached criteria
      */
-    public static DetachedCriteria createSearchTrackRequest(TrackSearchCriteria searchCriteria) {
+    public static DetachedCriteria createTrackSearchCriteria(SearchTrackRequest searchCriteria) {
 
         if (searchCriteria == null) {
             return null;

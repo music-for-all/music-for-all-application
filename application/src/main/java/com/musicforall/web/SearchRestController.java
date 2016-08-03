@@ -1,7 +1,7 @@
 package com.musicforall.web;
 
+import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Track;
-import com.musicforall.model.TrackSearchCriteria;
 import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public class SearchRestController {
      * Searches tracks by the specified criteria.
      */
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity search(@Valid TrackSearchCriteria searchCriteria, BindingResult bindingResult) {
+    public ResponseEntity search(@Valid SearchTrackRequest searchCriteria, BindingResult bindingResult) {
         LOG.info(searchCriteria.toString());
 
         if (bindingResult.hasErrors()) {

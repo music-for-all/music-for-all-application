@@ -1,9 +1,9 @@
 package com.musicforall.services;
 
 import com.musicforall.common.dao.Dao;
+import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
-import com.musicforall.model.TrackSearchCriteria;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
@@ -49,28 +49,28 @@ public class SearchCriteriaFactoryTest {
         );
         trackService.saveAll(tracks);
 
-        tracks = dao.getAllBy(SearchCriteriaFactory.createSearchTrackRequest(
-                new TrackSearchCriteria("title", null, null, null)));
+        tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(
+                new SearchTrackRequest("title", null, null, null)));
         assertEquals(3, tracks.size());
 
-        tracks = dao.getAllBy(SearchCriteriaFactory.createSearchTrackRequest(
-                new TrackSearchCriteria("title2", "", null, null)));
+        tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(
+                new SearchTrackRequest("title2", "", null, null)));
         assertEquals(1, tracks.size());
 
-        tracks = dao.getAllBy(SearchCriteriaFactory.createSearchTrackRequest(
-                new TrackSearchCriteria("title3", "artist", null, null)));
+        tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(
+                new SearchTrackRequest("title3", "artist", null, null)));
         assertEquals(1, tracks.size());
 
-        tracks = dao.getAllBy(SearchCriteriaFactory.createSearchTrackRequest(
-                new TrackSearchCriteria("title3", "artist3", "", null)));
+        tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(
+                new SearchTrackRequest("title3", "artist3", "", null)));
         assertEquals(1, tracks.size());
 
-        tracks = dao.getAllBy(SearchCriteriaFactory.createSearchTrackRequest(
-                new TrackSearchCriteria("title1", "artist1", "album", null)));
+        tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(
+                new SearchTrackRequest("title1", "artist1", "album", null)));
         assertEquals(1, tracks.size());
 
-        tracks = dao.getAllBy(SearchCriteriaFactory.createSearchTrackRequest(
-                new TrackSearchCriteria("No_title", "artist", "album", Arrays.asList("tag1"))));
+        tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(
+                new SearchTrackRequest("No_title", "artist", "album", Arrays.asList("tag1"))));
         assertEquals(0, tracks.size());
     }
 }
