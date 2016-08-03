@@ -60,7 +60,7 @@ public class TrackSearchCriteria {
 
     @Override
     public String toString() {
-        return "SearchCriteria{" +
+        return "TrackSearchCriteria{" +
                 "title='" + title + '\'' +
                 ", artist='" + artist + '\'' +
                 ", album='" + album + '\'' +

@@ -1,4 +1,4 @@
-package com.musicforall.web;
+package com.musicforall.web.advice;
 
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.ControllerAdvice;

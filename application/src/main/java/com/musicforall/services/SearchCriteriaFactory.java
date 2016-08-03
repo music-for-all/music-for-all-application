@@ -18,7 +18,7 @@ public final class SearchCriteriaFactory {
      * @param searchCriteria an instance of the SearchCriteria class
      * @return the detached criteria
      */
-    public static DetachedCriteria createDetachedCriteriaFrom(TrackSearchCriteria searchCriteria) {
+    public static DetachedCriteria createSearchTrackRequest(TrackSearchCriteria searchCriteria) {
 
         if (searchCriteria == null) {
             return null;

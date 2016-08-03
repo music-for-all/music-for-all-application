@@ -64,7 +64,7 @@ public class TrackServiceImpl implements TrackService {
     public List<Track> getAllLike(TrackSearchCriteria searchCriteria) {
 
         final DetachedCriteria detachedCriteria =
-                SearchCriteriaFactory.createDetachedCriteriaFrom(searchCriteria);
+                SearchCriteriaFactory.createSearchTrackRequest(searchCriteria);
         return dao.getAllBy(detachedCriteria);
     }
 
