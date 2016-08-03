@@ -20,6 +20,8 @@ import java.util.List;
 @Transactional
 public class FollowerServiceImp implements FollowerService {
 
+    private static final String ID = "id";
+
     @Autowired
     private Dao dao;
 
@@ -70,7 +72,7 @@ public class FollowerServiceImp implements FollowerService {
         }
         final Disjunction disjunction = Restrictions.disjunction();
         for (final Integer follower : followersId) {
-            disjunction.add(Restrictions.eq("id", follower));
+            disjunction.add(Restrictions.eq(ID, follower));
         }
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
                 .add(disjunction);
@@ -86,7 +88,7 @@ public class FollowerServiceImp implements FollowerService {
         }
         final Disjunction disjunction = Restrictions.disjunction();
         for (final Integer follower : followingId) {
-            disjunction.add(Restrictions.eq("id", follower));
+            disjunction.add(Restrictions.eq(ID, follower));
         }
         detachedCriteria.add(disjunction);
         return dao.getAllBy(detachedCriteria);

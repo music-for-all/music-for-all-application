@@ -70,16 +70,22 @@ public class FollowersServiceTest {
 
     @Test
     public void testGetFollower() {
-        final User user = new User("Johnny", PASSWORD, "tests@example.com");
-        final User user_followers = new User("Spock", PASSWORD, "mail2@example.com");
-        userService.save(user);
-        userService.save(user_followers);
+        final User user1 = new User("Johnny", PASSWORD, "tests@example.com");
+        final User user2 = new User("Abc", PASSWORD, "abc@example.com");
+        final User user3 = new User("Spock", PASSWORD, "mail2@example.com");
+        userService.save(user1);
+        userService.save(user2);
+        userService.save(user3);
 
-        followerService.follow(user_followers.getId(), user.getId());
-        assertEquals(1, followerService.getFollowers(user.getId()).size());
+        followerService.follow(user3.getId(), user1.getId());
+        followerService.follow(user2.getId(), user1.getId());
+        assertEquals(2, followerService.getFollowers(user1.getId()).size());
 
-        followerService.unfollow(user_followers.getId(), user.getId());
-        assertEquals(0, followerService.getFollowers(user.getId()).size());
+        followerService.unfollow(user3.getId(), user1.getId());
+        assertEquals(1, followerService.getFollowers(user1.getId()).size());
+
+        followerService.unfollow(user2.getId(), user1.getId());
+        assertEquals(0, followerService.getFollowers(user1.getId()).size());
     }
 
     @Test
