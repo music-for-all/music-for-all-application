@@ -1,8 +1,5 @@
 package com.musicforall.model;
 
-/**
- * Created by ilianik on 11.06.2016.
- */
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -19,6 +16,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Created by ilianik on 11.06.2016.
+ */
 @Entity
 @Table(name = "tracks")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -118,7 +118,7 @@ public class Track implements Serializable {
         return id;
     }
 
-    public void setId(Integer id) {
+    private void setId(Integer id) {
         this.id = id;
     }
 

@@ -30,6 +30,7 @@ public class History {
     private Date date;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "event_type")
     private EventType eventType;
 
     public History(int trackId, Date date, int userId, EventType eventType) {
@@ -46,7 +47,7 @@ public class History {
         return id;
     }
 
-    public void setId(int id) {
+    private void setId(int id) {
         this.id = id;
     }
 
