@@ -34,14 +34,14 @@
         </table>
     </section>
 
-    <a class="btn btn-success" href=<@spring.url '${m.pages.Add.url}'/>>
+    <a class="btn btn-success" href="<@spring.url '${m.pages.Add.url}' />" title="Upload">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
     </a>
 
     <section id="playlists-section" class="well  col-md-2 col-md-offset-1  ">
-        <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">Create playlist</button>
-        <ul id="playlists" class="nav nav-pills nav-stacked"></ul>
+        <button autofocus id="createPlaylistButton" class="btn  btn-success btn-block " type="button">Create playlist</button>
 
+        <ul id="playlists" class="nav nav-pills nav-stacked"></ul>
     </section>
 </div>
 <script type="text/template" class="trackRowTemplate">
@@ -121,13 +121,9 @@
                 });
     });
 
-    $("#acceptRemovingPlaylistButton").on("click", function (e) {
-        var playlistToRemove = $("#playlists").find("li.active")
-        playlist.remove(playlistToRemove.attr("id"))
-                .then(function () {
-                    playlistToRemove.remove();
-                    clearTracks();
-                });
+    $("#createPlaylistButton").on("click", function (e) {
+
+        $("#addPlaylistModal").modal("show");
     });
 
     $("#acceptCreatingPlaylistButton").on("click", function (e) {
@@ -136,10 +132,6 @@
                     addPlaylist(playlist);
                     $("#addPlaylistModal").modal("hide");
                 });
-    });
-
-    $("#createPlaylistButton").on("click", function (e) {
-        $("#addPlaylistModal").modal("show");
     });
 
     $("#tracks").on("click", ".delete-song-button", function (e) {
@@ -155,6 +147,15 @@
         $(e).closest("li").addClass("active");
         $("#deletePlaylistModal").modal("show");
     }
+
+    $("#acceptRemovingPlaylistButton").on("click", function (e) {
+        var playlistToRemove = $("#playlists").find("li.active")
+        playlist.remove(playlistToRemove.attr("id"))
+                .then(function () {
+                    playlistToRemove.remove();
+                    clearTracks();
+                });
+    });
 
     function clearTracks() {
         $("#tracks tr:gt(0)").remove();
@@ -183,6 +184,27 @@
                     /* For testing purpose, select the first playlist (named 'Hype'). */
                     $("#1 a").trigger("click");
                 });
+
+        /* Set focus on the name input field when the modal window has been shown. */
+        $("#addPlaylistModal").on("shown.bs.modal", function () {
+
+            $("#inputNamePlaylist").focus();
+        });
+
+        /* Event handler for the 'Return' key. */
+        $("#inputNamePlaylist").on("keydown", function(e) {
+
+            if (e.keyCode == 0xD) {
+                $("#acceptCreatingPlaylistButton").trigger("click");
+            }
+        });
+
+        /* Set focus on the name input field when the modal window has been shown. */
+        $("#deletePlaylistModal").on("shown.bs.modal", function () {
+
+            $("#acceptRemovingPlaylistButton").focus();
+        });
+
     });
 </script>
 </@m.body>
