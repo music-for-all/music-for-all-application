@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <@m.head>
-<title>Welcome</title>
+<title><@spring.message "welcomepage.PageTitle"/></title>
 <link href="/resources/css/welcomepage.css" rel="stylesheet">
 <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
 </@m.head>
@@ -13,12 +13,13 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">Music for all</a>
+            <a class="navbar-brand" href="#"><@spring.message "welcomepage.NameProject"/></a>
         </div>
 
         <form class="navbar-form navbar-left" id="searchForm" method="post">
             <div class="input-group " placeholder="Search">
-                <input id="word" class="form-control" type="text" value="" placeholder="Search" name="q"/>
+                <input id="word" class="form-control" type="text" value=""
+                       placeholder="<@spring.message "welcomepage.Search"/>" name="q"/>
 
                 <div class="input-group-btn">
                     <button id="searchButton" data-style="slide-left" class="btn btn-success " type="button">
@@ -35,7 +36,7 @@
                         <#if RequestParameters.error??>
                             <div class="text-danger"><@spring.message "welcomepage.LoginError"/>:
                                 <#if Session.SPRING_SECURITY_LAST_EXCEPTION??>
-                                    ${Session.SPRING_SECURITY_LAST_EXCEPTION.message}
+                                ${Session.SPRING_SECURITY_LAST_EXCEPTION.message}
                                 </#if>
                             </div>
                         <#elseif RequestParameters.logout??>
@@ -44,7 +45,8 @@
                     </div>
                 </li>
                 <li>
-                    <a href="#"><span class="glyphicon glyphicon-user"></span><@spring.message "welcomepage.SighUp"/></a>
+                    <a href="#"><span class="glyphicon glyphicon-user"></span> <@spring.message "welcomepage.SighUp"/>
+                    </a>
                 </li>
                 <li>
                     <a href="#" id="popover"><span class="glyphicon glyphicon-log-in"></span>
@@ -64,7 +66,7 @@
                             <label for="remember-me"><@spring.message "welcomepage.RememberMe"/></label>
                             <input type="submit" class="btn btn-lg btn-primary btn-block" value="Log in"/>
                         </@m.form>
-                        <hr class="divider" />
+                        <hr class="divider"/>
                         <form>
                             <ul class="list-inline intro-social-buttons">
                                 <li>
@@ -93,7 +95,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="intro-message">
-                    <h1>Music for all</h1>
+                    <h1><@spring.message "welcomepage.NameProject"/></h1>
                     <h3><@spring.message "welcomepage.Intro"/></h3>
                     <div class="top-table well" id="tops">
                         <table id="top" class="table table-hover table-striped table-condensed ">
