@@ -162,6 +162,7 @@ public class TrackServiceTest {
         Integer id = track.getId();
         assertTrue(trackService.like(id));
         int numLikes = trackService.getLikeCount(id);
+        assertEquals(1, numLikes);
         assertFalse(trackService.like(track.getId() + 1000));
     }
 

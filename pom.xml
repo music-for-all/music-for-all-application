@@ -248,7 +248,7 @@
                             </regex>
                             <regex>
                                 <pattern>com.musicforall.services.*</pattern>
-                                <branchRate>80</branchRate>
+                                <branchRate>75</branchRate>
                                 <lineRate>80</lineRate>
                             </regex>
                         </regexes>
