@@ -1,6 +1,7 @@
 package com.musicforall.history.handlers;
 
 import com.musicforall.history.handlers.events.EventType;
+import com.musicforall.history.handlers.events.TrackLikedEvent;
 import com.musicforall.history.handlers.events.TrackListenedEvent;
 import com.musicforall.history.service.HistoryService;
 import com.musicforall.history.model.History;
@@ -18,8 +19,23 @@ public class HistoryEventListener {
     private HistoryService service;
 
     @EventListener
-    public void handleAuditionTrack(TrackListenedEvent event) {
+    public void handleTrackListened(TrackListenedEvent event) {
         service.record(toHistoryEntity(event));
+    }
+
+    @EventListener
+    public void handleTrackLiked(TrackLikedEvent event) {
+        System.err.printf("Track liked: %d\n", event.getTrackId());
+        service.record(toHistoryEntity(event));
+    }
+
+    private History toHistoryEntity(TrackLikedEvent event) {
+        final History history = new History();
+        history.setEventType(EventType.TRACK_LIKED);
+        history.setTrackId(event.getTrackId());
+        history.setUserId(event.getUserId());
+        history.setDate(event.getDate());
+        return history;
     }
 
     private History toHistoryEntity(TrackListenedEvent event) {
