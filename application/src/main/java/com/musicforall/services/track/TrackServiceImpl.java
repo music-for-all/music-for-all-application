@@ -76,13 +76,14 @@ public class TrackServiceImpl implements TrackService {
 
     @Override
     public boolean like(Integer id) {
-        Like like = new Like();
 
         final Track track = get(id);
-        if (track == null)
+        if (track == null) {
             return false;
+        }
 
         final User user = userService.get(SecurityUtil.currentUser().getId());
+        Like like = new Like();
 
         like.setUser(user);
         like.setTrack(track);

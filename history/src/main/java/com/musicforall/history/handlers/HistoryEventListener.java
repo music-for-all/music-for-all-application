@@ -25,7 +25,6 @@ public class HistoryEventListener {
 
     @EventListener
     public void handleTrackLiked(TrackLikedEvent event) {
-        System.err.printf("Track liked: %d\n", event.getTrackId());
         service.record(toHistoryEntity(event));
     }
 

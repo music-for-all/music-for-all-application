@@ -59,7 +59,7 @@ public class TrackRestController {
     @RequestMapping(value = "/like/{id}", method = RequestMethod.GET)
     public ResponseEntity<Integer> getLikeCount(@PathVariable("id") Integer id) {
 
-        int numLikes = trackService.getLikeCount(id);
+        final int numLikes = trackService.getLikeCount(id);
         return new ResponseEntity<>(numLikes, HttpStatus.OK);
     }
 }
