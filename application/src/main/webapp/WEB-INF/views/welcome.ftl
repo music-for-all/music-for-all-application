@@ -1,4 +1,5 @@
 <#import "macros/macros.ftl" as m>
+<#import "macros/spring.ftl" as spring/>
 <!DOCTYPE html>
 <html lang="en">
 <@m.head>
@@ -32,34 +33,35 @@
                 <li>
                     <div class="navbar-text">
                         <#if RequestParameters.error??>
-                            <div class="text-danger">Failed to login:
+                            <div class="text-danger"><@spring.message "welcomepage.LoginError"/>:
                                 <#if Session.SPRING_SECURITY_LAST_EXCEPTION??>
                                     ${Session.SPRING_SECURITY_LAST_EXCEPTION.message}
                                 </#if>
                             </div>
                         <#elseif RequestParameters.logout??>
-                            <div class="text-success">You have been logged out</div>
+                            <div class="text-success"><@spring.message "welcomepage.LogoutMessage"/></div>
                         </#if>
                     </div>
                 </li>
                 <li>
-                    <a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+                    <a href="#"><span class="glyphicon glyphicon-user"></span><@spring.message "welcomepage.SighUp"/></a>
                 </li>
                 <li>
-                    <a href="#" id="popover"><span class="glyphicon glyphicon-log-in"></span> Log In</a>
+                    <a href="#" id="popover"><span class="glyphicon glyphicon-log-in"></span>
+                        <@spring.message "welcomepage.Login"/></a>
 
                     <div class="hide" id="popover-content">
                         <@m.form "/welcome", "POST", "login">
-                            <label for="inputUsername" class="sr-only">Username</label>
+                            <label for="inputUsername" class="sr-only"><@spring.message "welcomepage.Username"/></label>
                             <input type="text" id="inputUsername" name="username" class="form-control"
                                    placeholder="Username"
                                    required autofocus/>
-                            <label for="inputPassword" class="sr-only">Password</label>
+                            <label for="inputPassword" class="sr-only"><@spring.message "welcomepage.Password"/></label>
                             <input type="password" id="inputPassword" name="password" class="form-control"
                                    placeholder="Password"
                                    required/>
                             <input type="checkbox" name="_spring_security_remember_me" id="remember-me"/>
-                            <label for="remember-me">Remember me</label>
+                            <label for="remember-me"><@spring.message "welcomepage.RememberMe"/></label>
                             <input type="submit" class="btn btn-lg btn-primary btn-block" value="Log in"/>
                         </@m.form>
                         <hr class="divider" />
@@ -92,16 +94,15 @@
             <div class="col-md-12">
                 <div class="intro-message">
                     <h1>Music for all</h1>
-
-                    <h3>Sign in and manage your songs</h3>
+                    <h3><@spring.message "welcomepage.Intro"/></h3>
                     <div class="top-table well" id="tops">
                         <table id="top" class="table table-hover table-striped table-condensed ">
                             <thead>
                             <tr>
-                                <th>Actions</th>
-                                <th>Artist</th>
-                                <th>Title</th>
-                                <th>Duration</th>
+                                <th><@spring.message "welcomepage.Actions"/></th>
+                                <th><@spring.message "welcomepage.Artist"/></th>
+                                <th><@spring.message "welcomepage.Title"/></th>
+                                <th><@spring.message "welcomepage.Duration"/></th>
                             </tr>
                             </thead>
                         </table>
