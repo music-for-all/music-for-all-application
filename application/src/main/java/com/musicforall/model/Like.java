@@ -71,7 +71,7 @@ public class Like implements Serializable {
         return date;
     }
 
-    private void setDate(Date date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

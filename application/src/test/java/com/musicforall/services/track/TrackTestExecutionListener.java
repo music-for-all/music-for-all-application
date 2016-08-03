@@ -1,6 +1,5 @@
 package com.musicforall.services.track;
 
-import com.musicforall.services.playlist.PlaylistBootstrap;
 import com.musicforall.services.user.UserBootstrap;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;

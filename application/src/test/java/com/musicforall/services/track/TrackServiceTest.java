@@ -147,7 +147,8 @@ public class TrackServiceTest {
 
     @Test
     public void testFindAll() {
-        Track track = new Track("track3", "/track3.mp3");
+
+        trackService.save(new Track("track3", "/track3.mp3"));
         List<Track> tracks = trackService.findAll();
         assertNotNull(tracks);
         assertTrue(tracks.size() >= 1);
