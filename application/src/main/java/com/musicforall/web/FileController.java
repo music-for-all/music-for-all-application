@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Date;
 import java.util.Optional;
 
 import static com.musicforall.util.SecurityUtil.currentUser;
@@ -69,7 +68,7 @@ public class FileController {
         final Optional<Path> filePath = Optional.ofNullable(manager.getFilePathByName(name));
         filePath.ifPresent(file -> {
             try {
-                this.publisher.publishEvent(new TrackListenedEvent(STUB_TRACK_ID, new Date(), currentUser().getId()));
+                this.publisher.publishEvent(new TrackListenedEvent(STUB_TRACK_ID, currentUser().getId()));
                 Files.copy(file, response.getOutputStream());
 
             } catch (IOException e) {
