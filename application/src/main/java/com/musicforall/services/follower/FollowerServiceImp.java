@@ -50,7 +50,7 @@ public class FollowerServiceImp implements FollowerService {
         detachedCriteria.add(Restrictions.sqlRestriction(" following_id LIKE '%" + userId + "%' "));
         final List<Followers> followers = dao.getAllBy(detachedCriteria);
         final List<Integer> followersId = new ArrayList<>();
-        for (Followers followers1 : followers) {
+        for (final Followers followers1 : followers) {
             followersId.add(followers1.getFollowerId());
         }
         return followersId;
@@ -64,16 +64,16 @@ public class FollowerServiceImp implements FollowerService {
 
     @Override
     public List<User> getFollowers(Integer userId) {
-        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class);
         final List<Integer> followersId = getFollowersId(userId);
         if (followersId.isEmpty()) {
             return new ArrayList<>();
         }
         final Disjunction disjunction = Restrictions.disjunction();
-        for (Integer follower : followersId) {
+        for (final Integer follower : followersId) {
             disjunction.add(Restrictions.eq("id", follower));
         }
-        detachedCriteria.add(disjunction);
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
+                .add(disjunction);
         return dao.getAllBy(detachedCriteria);
     }
 
@@ -85,7 +85,7 @@ public class FollowerServiceImp implements FollowerService {
             return new ArrayList<>();
         }
         final Disjunction disjunction = Restrictions.disjunction();
-        for (Integer follower : followingId) {
+        for (final Integer follower : followingId) {
             disjunction.add(Restrictions.eq("id", follower));
         }
         detachedCriteria.add(disjunction);
