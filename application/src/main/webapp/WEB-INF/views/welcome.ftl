@@ -104,6 +104,11 @@
                                 <th>Duration</th>
                             </tr>
                             </thead>
+
+                            <audio controls>
+                                <source type="audio/mp3" src="/files/01-Tom-Waits-on-Selvin-On-The-City-part-1.mp3">
+                            </audio>
+
                         </table>
                     </div>
                 </div>
