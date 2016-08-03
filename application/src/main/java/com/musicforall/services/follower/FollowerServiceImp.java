@@ -81,7 +81,6 @@ public class FollowerServiceImp implements FollowerService {
 
     @Override
     public List<User> getFollowing(Integer userId) {
-        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class);
         final List<Integer> followingId = getFollowingId(userId);
         if (followingId.isEmpty()) {
             return new ArrayList<>();
@@ -90,7 +89,8 @@ public class FollowerServiceImp implements FollowerService {
         for (final Integer follower : followingId) {
             disjunction.add(Restrictions.eq(ID, follower));
         }
-        detachedCriteria.add(disjunction);
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
+                .add(disjunction);
         return dao.getAllBy(detachedCriteria);
     }
 }
