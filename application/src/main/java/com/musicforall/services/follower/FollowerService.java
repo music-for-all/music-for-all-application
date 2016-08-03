@@ -1,9 +1,8 @@
 package com.musicforall.services.follower;
 
-import com.musicforall.model.Followers;
 import com.musicforall.model.User;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by andrey on 8/2/16.
@@ -14,13 +13,11 @@ public interface FollowerService {
 
     void unfollow(Integer userId, Integer following_userId);
 
-    Set<Followers> getFollowerId(Integer userId);
+    List<Integer> getFollowersId(Integer userId);
 
-    Set<Followers> getFollowingId(Integer userId);
+    List<Integer> getFollowingId(Integer userId);
 
-    Set<User> getFollowers(Integer userId);
+    List<User> getFollowers(Integer userId);
 
-    Set<User> getFollowing(Integer userId);
-
-    User getByUsername(String username);
+    List<User> getFollowing(Integer userId);
 }

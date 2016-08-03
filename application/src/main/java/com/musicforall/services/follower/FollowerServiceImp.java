@@ -4,14 +4,14 @@ import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Followers;
 import com.musicforall.model.User;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by andrey on 8/2/16.
@@ -25,61 +25,70 @@ public class FollowerServiceImp implements FollowerService {
 
     @Override
     public void follow(Integer userId, Integer following_userId) {
-        dao.save(new Followers(userId, following_userId));
+        if (userId.equals(following_userId)) {
+            return;
+        }
+        Followers followers = dao.get(Followers.class, userId);
+        if (followers == null) {
+            followers = new Followers(userId);
+        }
+        followers.follow(following_userId);
+        dao.save(followers);
     }
 
     @Override
     public void unfollow(Integer userId, Integer following_userId) {
+        final Followers followers = dao.get(Followers.class, userId);
+        followers.unfollow(following_userId);
+        dao.save(followers);
+    }
+
+    @Override
+    public List<Integer> getFollowersId(Integer userId) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Followers.class)
-                .add(Property.forName("following_id").eq(following_userId))
-                .add(Property.forName("follower_id").eq(userId));
+                .createAlias("followingId", "integer");
+        detachedCriteria.add(Restrictions.sqlRestriction(" following_id LIKE '%" + userId + "%' "));
         final List<Followers> followers = dao.getAllBy(detachedCriteria);
-        if (!followers.isEmpty()) {
-            dao.delete(followers.get(0));
+        final List<Integer> followersId = new ArrayList<>();
+        for (Followers followers1 : followers) {
+            followersId.add(followers1.getFollowerId());
         }
+        return followersId;
     }
 
     @Override
-    public Set<Followers> getFollowingId(Integer userId) {
-        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Followers.class)
-                .add(Property.forName("follower_id").eq(userId));
-        final List<Followers> followers = dao.getAllBy(detachedCriteria);
-        return new HashSet<>(followers);
+    public List<Integer> getFollowingId(Integer userId) {
+        final Followers followers = dao.get(Followers.class, userId);
+        return followers.getFollowingId();
     }
 
     @Override
-    public Set<Followers> getFollowerId(Integer userId) {
-        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Followers.class)
-                .add(Property.forName("following_id").eq(userId));
-        final List<Followers> followers = dao.getAllBy(detachedCriteria);
-        return new HashSet<>(followers);
-    }
-
-    @Override
-    public Set<User> getFollowers(Integer userId) {
-        final Set<User> users = new HashSet<>();
-        final Set<Followers> followersId = getFollowerId(userId);
-        for (Followers followers : followersId) {
-            users.add(dao.get(User.class, followers.getFollowerId()));
+    public List<User> getFollowers(Integer userId) {
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class);
+        final List<Integer> followersId = getFollowersId(userId);
+        if (followersId.isEmpty()) {
+            return new ArrayList<>();
         }
-        return users;
-    }
-
-    @Override
-    public Set<User> getFollowing(Integer userId) {
-        final Set<User> users = new HashSet<>();
-        final Set<Followers> followersId = getFollowingId(userId);
-        for (Followers followers : followersId) {
-            users.add(dao.get(User.class, followers.getFollowingId()));
+        final Disjunction disjunction = Restrictions.disjunction();
+        for (Integer follower : followersId) {
+            disjunction.add(Restrictions.eq("id", follower));
         }
-        return users;
+        detachedCriteria.add(disjunction);
+        return dao.getAllBy(detachedCriteria);
     }
 
     @Override
-    public User getByUsername(String username) {
-        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
-                .add(Property.forName("username").eq(username));
-
-        return dao.getBy(detachedCriteria);
+    public List<User> getFollowing(Integer userId) {
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class);
+        final List<Integer> followingId = getFollowingId(userId);
+        if (followingId.isEmpty()) {
+            return new ArrayList<>();
+        }
+        final Disjunction disjunction = Restrictions.disjunction();
+        for (Integer follower : followingId) {
+            disjunction.add(Restrictions.eq("id", follower));
+        }
+        detachedCriteria.add(disjunction);
+        return dao.getAllBy(detachedCriteria);
     }
 }

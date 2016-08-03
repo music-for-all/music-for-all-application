@@ -21,7 +21,9 @@ import static junit.framework.TestCase.assertNotNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
 @ActiveProfiles("dev")
-public class FollowerServiceTest {
+public class FollowersServiceTest {
+
+    private static final String PASSWORD = "password";
 
     @Autowired
     private UserService userService;
@@ -31,58 +33,45 @@ public class FollowerServiceTest {
 
     @Test
     public void testFollow() {
-        final User user1 = new User("Mike", "123456789", "mike@example.com");
-        final User user2 = new User("John2", "password2", "john2@example.com");
+        final User user1 = new User("Mike", PASSWORD, "mike@example.com");
+        final User user2 = new User("John2", PASSWORD, "john2@example.com");
         userService.save(user1);
         userService.save(user2);
         followerService.follow(user1.getId(), user2.getId());
 
-        assertNotNull(followerService.getFollowingId(user1.getId()));
+        assertNotNull(followerService.getFollowing(user1.getId()));
     }
 
     @Test
     public void testUnfollow() {
-        final User user = new User("John1", "password3", "test@example.com");
-        final User user_followers = new User("Spocks", "passwor", "mail1@example.com");
+        final User user = new User("John1", PASSWORD, "test@example.com");
+        final User user_followers = new User("Spocks", PASSWORD, "mail1@example.com");
         userService.save(user);
         userService.save(user_followers);
         followerService.follow(user_followers.getId(), user.getId());
         followerService.unfollow(user_followers.getId(), user.getId());
-        assertEquals(0, followerService.getFollowerId(user.getId()).size());
+
+        assertEquals(0, followerService.getFollowing(user_followers.getId()).size());
     }
 
     @Test
-    public void testGetIdFollower() {
-        final User user = new User("Johnny", "password", "tests@example.com");
-        final User user_followers = new User("Spock", "password", "mail2@example.com");
+    public void testGetFollowerId() {
+        final User user = new User("Anna", PASSWORD, "anna@example.com");
+        final User user_followers = new User("James", PASSWORD, "james@example.com");
         userService.save(user);
         userService.save(user_followers);
 
         followerService.follow(user_followers.getId(), user.getId());
-        assertEquals(1, followerService.getFollowerId(user.getId()).size());
+        assertEquals(1, followerService.getFollowersId(user.getId()).size());
 
         followerService.unfollow(user_followers.getId(), user.getId());
-        assertEquals(0, followerService.getFollowerId(user.getId()).size());
-    }
-
-    @Test
-    public void testGetIdFollowing() {
-        final User user = new User("John_Wick", "password", "johnW@example.com");
-        final User user_followers = new User("Spock_Father", "password", "spockF@example.com");
-        userService.save(user);
-        userService.save(user_followers);
-
-        followerService.follow(user_followers.getId(), user.getId());
-        assertEquals(1, followerService.getFollowingId(user_followers.getId()).size());
-
-        followerService.unfollow(user_followers.getId(), user.getId());
-        assertEquals(0, followerService.getFollowingId(user_followers.getId()).size());
+        assertEquals(0, followerService.getFollowersId(user.getId()).size());
     }
 
     @Test
     public void testGetFollower() {
-        final User user = new User("Anna", "password", "anna@example.com");
-        final User user_followers = new User("James", "password", "james@example.com");
+        final User user = new User("Johnny", PASSWORD, "tests@example.com");
+        final User user_followers = new User("Spock", PASSWORD, "mail2@example.com");
         userService.save(user);
         userService.save(user_followers);
 
@@ -94,16 +83,35 @@ public class FollowerServiceTest {
     }
 
     @Test
-    public void testGetFollowing() {
-        final User user = new User("Tasha", "password", "tasha@example.com");
-        final User user_followers = new User("Abrams", "password", "abrams@example.com");
+    public void testGetFollowingId() {
+        final User user = new User("Tasha", PASSWORD, "tasha@example.com");
+        final User user_followers = new User("Abrams", PASSWORD, "abrams@example.com");
         userService.save(user);
         userService.save(user_followers);
-
         followerService.follow(user_followers.getId(), user.getId());
-        assertEquals(1, followerService.getFollowing(user_followers.getId()).size());
+        assertEquals(1, followerService.getFollowingId(user_followers.getId()).size());
 
         followerService.unfollow(user_followers.getId(), user.getId());
+        assertEquals(0, followerService.getFollowingId(user_followers.getId()).size());
+    }
+
+    @Test
+    public void testGetFollowing() {
+        final User user1 = new User("Tash", PASSWORD, "tash@example.com");
+        final User user2 = new User("Jam", PASSWORD, "jam@example.com");
+        final User user_followers = new User("Abr", PASSWORD, "abr@example.com");
+        userService.save(user1);
+        userService.save(user2);
+        userService.save(user_followers);
+
+        followerService.follow(user_followers.getId(), user1.getId());
+        followerService.follow(user_followers.getId(), user2.getId());
+        assertEquals(2, followerService.getFollowing(user_followers.getId()).size());
+
+        followerService.unfollow(user_followers.getId(), user1.getId());
+        assertEquals(1, followerService.getFollowing(user_followers.getId()).size());
+
+        followerService.unfollow(user_followers.getId(), user2.getId());
         assertEquals(0, followerService.getFollowing(user_followers.getId()).size());
     }
 }
