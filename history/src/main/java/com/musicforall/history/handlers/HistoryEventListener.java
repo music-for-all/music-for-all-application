@@ -35,7 +35,7 @@ public class HistoryEventListener {
         history.setEventType(EventType.TRACK_LIKED);
         history.setTrackId(event.getTrackId());
         history.setUserId(event.getUserId());
-        history.setDate(event.getDate());
+        history.setDate(new Date());
         return history;
     }
 

@@ -1,16 +1,16 @@
 package com.musicforall.web;
 
 import com.musicforall.files.manager.FileManager;
+import com.musicforall.history.handlers.events.TrackListenedEvent;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
 import com.musicforall.services.track.TrackService;
-import com.musicforall.history.handlers.events.TrackListenedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -75,7 +75,7 @@ public class FileController {
                 User user = currentUser();
                 /* Set userId to 0 if no user is authenticated. */
                 int userId = user != null ? user.getId() : 0;
-                publisher.publishEvent(new TrackListenedEvent(STUB_TRACK_ID, new Date(), userId));
+                publisher.publishEvent(new TrackListenedEvent(STUB_TRACK_ID, userId));
 
                 Files.copy(filePath.get(), response.getOutputStream());
             } catch (IOException e) {
