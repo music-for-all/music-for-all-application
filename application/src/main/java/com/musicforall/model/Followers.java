@@ -2,7 +2,7 @@ package com.musicforall.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by andrey on 8/2/16.
@@ -15,39 +15,40 @@ public class Followers implements Serializable {
 
     @Id
     @Column(name = "follower_id", nullable = false)
-    private Integer follower_id;
+    private Integer followerId;
 
-    @Id
-    @Column(name = "following_id", nullable = false)
-    private Integer following_id;
+    @ElementCollection
+    @CollectionTable(name = "user_followers", joinColumns = @JoinColumn(name = "followers_id"))
+    @Column(name = "following_id")
+    private final List<Integer> followingId = new ArrayList<>();
 
     public Followers() {
+
     }
 
-    public Followers(Integer follower_id, Integer following_id) {
-        this.follower_id = follower_id;
-        this.following_id = following_id;
+    public Followers(Integer followerId) {
+        this.followerId = followerId;
     }
 
-    public Integer getFollowingId() {
-        return following_id;
+    public void follow(Integer followingId) {
+        this.followingId.add(followingId);
     }
 
-    public void setFollowingId(Integer following_id) {
-        this.following_id = following_id;
+    public void unfollow(Integer followingId) {
+        this.followingId.remove(followingId);
+    }
+
+    public List<Integer> getFollowingId() {
+        return followingId;
     }
 
     public Integer getFollowerId() {
-        return follower_id;
-    }
-
-    public void setFollowerId(Integer follower_id) {
-        this.follower_id = follower_id;
+        return followerId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(follower_id, following_id);
+        return Objects.hash(followerId, followingId);
     }
 
     @Override
@@ -59,14 +60,14 @@ public class Followers implements Serializable {
             return false;
         }
         final Followers other = (Followers) obj;
-        return Objects.equals(this.follower_id, other.follower_id)
-                && Objects.equals(this.following_id, other.following_id);
+        return Objects.equals(this.followerId, other.followerId)
+                && Objects.equals(this.followingId, other.followingId);
     }
 
     @Override
     public String toString() {
         return "Followers{" +
-                "follower_id=" + follower_id +
-                ", following_id=" + following_id + '}';
+                "follower_id=" + followerId +
+                ", following_id=" + followingId + '}';
     }
 }
