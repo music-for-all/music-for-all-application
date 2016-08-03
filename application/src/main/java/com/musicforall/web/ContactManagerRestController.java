@@ -2,6 +2,7 @@ package com.musicforall.web;
 
 import com.musicforall.model.User;
 import com.musicforall.services.follower.FollowerService;
+import com.musicforall.services.user.UserService;
 import com.musicforall.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,9 @@ public class ContactManagerRestController {
 
     @Autowired
     private FollowerService followerService;
+
+    @Autowired
+    private UserService userService;
 
     public ContactManagerRestController() {
         LOG.debug("Contact manager RestController");
@@ -54,7 +58,7 @@ public class ContactManagerRestController {
     @RequestMapping(value = "/search={username}", method = RequestMethod.GET)
     public Collection<User> search(@PathVariable("username") String username) {
         final HashSet<User> users = new HashSet<>();
-        users.add(followerService.getByUsername(username));
+        users.add(userService.getByUsername(username));
         return users;
     }
 }
