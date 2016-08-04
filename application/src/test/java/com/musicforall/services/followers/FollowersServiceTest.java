@@ -37,9 +37,11 @@ public class FollowersServiceTest {
         final User user2 = new User("John2", PASSWORD, "john2@example.com");
         userService.save(user1);
         userService.save(user2);
-        followerService.follow(user1.getId(), user2.getId());
+        followerService.follow(user1.getId(), user1.getId());
+        assertEquals(0, followerService.getFollowingId(user1.getId()).size());
 
-        assertNotNull(followerService.getFollowing(user1.getId()));
+        followerService.follow(user1.getId(), user2.getId());
+        assertNotNull(followerService.getFollowingId(user1.getId()));
     }
 
     @Test
@@ -51,7 +53,7 @@ public class FollowersServiceTest {
         followerService.follow(user_followers.getId(), user.getId());
         followerService.unfollow(user_followers.getId(), user.getId());
 
-        assertEquals(0, followerService.getFollowing(user_followers.getId()).size());
+        assertEquals(0, followerService.getFollowingId(user_followers.getId()).size());
     }
 
     @Test
@@ -69,26 +71,6 @@ public class FollowersServiceTest {
     }
 
     @Test
-    public void testGetFollower() {
-        final User user1 = new User("Johnny", PASSWORD, "tests@example.com");
-        final User user2 = new User("Abc", PASSWORD, "abc@example.com");
-        final User user3 = new User("Spock", PASSWORD, "mail2@example.com");
-        userService.save(user1);
-        userService.save(user2);
-        userService.save(user3);
-
-        followerService.follow(user3.getId(), user1.getId());
-        followerService.follow(user2.getId(), user1.getId());
-        assertEquals(2, followerService.getFollowers(user1.getId()).size());
-
-        followerService.unfollow(user3.getId(), user1.getId());
-        assertEquals(1, followerService.getFollowers(user1.getId()).size());
-
-        followerService.unfollow(user2.getId(), user1.getId());
-        assertEquals(0, followerService.getFollowers(user1.getId()).size());
-    }
-
-    @Test
     public void testGetFollowingId() {
         final User user = new User("Tasha", PASSWORD, "tasha@example.com");
         final User user_followers = new User("Abrams", PASSWORD, "abrams@example.com");
@@ -99,25 +81,5 @@ public class FollowersServiceTest {
 
         followerService.unfollow(user_followers.getId(), user.getId());
         assertEquals(0, followerService.getFollowingId(user_followers.getId()).size());
-    }
-
-    @Test
-    public void testGetFollowing() {
-        final User user1 = new User("Tash", PASSWORD, "tash@example.com");
-        final User user2 = new User("Jam", PASSWORD, "jam@example.com");
-        final User user_followers = new User("Abr", PASSWORD, "abr@example.com");
-        userService.save(user1);
-        userService.save(user2);
-        userService.save(user_followers);
-
-        followerService.follow(user_followers.getId(), user1.getId());
-        followerService.follow(user_followers.getId(), user2.getId());
-        assertEquals(2, followerService.getFollowing(user_followers.getId()).size());
-
-        followerService.unfollow(user_followers.getId(), user1.getId());
-        assertEquals(1, followerService.getFollowing(user_followers.getId()).size());
-
-        followerService.unfollow(user_followers.getId(), user2.getId());
-        assertEquals(0, followerService.getFollowing(user_followers.getId()).size());
     }
 }

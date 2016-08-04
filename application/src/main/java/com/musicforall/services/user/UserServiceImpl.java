@@ -3,7 +3,9 @@ package com.musicforall.services.user;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.User;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,6 +71,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return dao.all(User.class);
+    }
+
+    @Override
+    public List<User> getUsersById(List<Integer> usersId) {
+        if (usersId.isEmpty()) {
+            return new ArrayList<>();
+        }
+        final Disjunction disjunction = Restrictions.disjunction();
+        for (final Integer follower : usersId) {
+            disjunction.add(Restrictions.eq("id", follower));
+        }
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
+                .add(disjunction);
+        return dao.getAllBy(detachedCriteria);
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.musicforall.services.follower;
 
-import com.musicforall.model.User;
-
 import java.util.List;
 
 /**
@@ -16,8 +14,4 @@ public interface FollowerService {
     List<Integer> getFollowersId(Integer userId);
 
     List<Integer> getFollowingId(Integer userId);
-
-    List<User> getFollowers(Integer userId);
-
-    List<User> getFollowing(Integer userId);
 }
