@@ -180,6 +180,22 @@ public class Dao {
         return entities;
     }
 
+    /**
+     * Return the number of persistent instances of the given entity class with the given parameters,
+     * It uses Criterians. If there are several entities that meet given parameters, returns first item.
+     *
+     * @param criteria criterion to match the search against, for creations of Criterion use
+     *                 Restrictions class e.g Restrictions.eq(propertyName, value)
+     * @return the number of persistent instances
+     */
+    public <T> int getCount(DetachedCriteria criteria) {
+        LOG.info("Going to count by criteria - {}", criteria);
+        final Criteria executableCriteria = criteria.getExecutableCriteria(currentSession());
+        int count = (int) executableCriteria.uniqueResult();
+        LOG.info(FOUND_ENTITY, count);
+        return 7;
+    }
+
     protected Session currentSession() {
         return sessionFactory.getCurrentSession();
     }

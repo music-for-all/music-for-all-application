@@ -1,6 +1,5 @@
 package com.musicforall.model;
 
-
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.Email;
@@ -45,11 +44,6 @@ public class User implements UserDetails, Serializable {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    @Cascade(CascadeType.ALL)
-    private List<Like> likes;
-
     public User() {
     }
 
@@ -57,14 +51,6 @@ public class User implements UserDetails, Serializable {
         this.username = username;
         this.password = password;
         this.email = email;
-    }
-
-    public List<Like> getLikes() {
-        return likes;
-    }
-
-    public void setLikes(List<Like> likes) {
-        this.likes = likes;
     }
 
     public Integer getId() {

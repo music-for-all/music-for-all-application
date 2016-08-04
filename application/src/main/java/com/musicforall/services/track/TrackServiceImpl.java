@@ -87,7 +87,6 @@ public class TrackServiceImpl implements TrackService {
 
         like.setUser(user);
         like.setTrack(track);
-        user.getLikes().add(like);
         track.getLikes().add(like);
 
         like = dao.save(like);
@@ -98,6 +97,6 @@ public class TrackServiceImpl implements TrackService {
     public int getLikeCount(Integer id) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Like.class);
         detachedCriteria.add(Restrictions.eq("track.id", id));
-        return dao.getAllBy(detachedCriteria).size();
+        return dao.getCount(detachedCriteria);
     }
 }

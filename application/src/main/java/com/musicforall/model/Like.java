@@ -26,7 +26,7 @@ public class Like implements Serializable {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "track_id", nullable = true)
+    @JoinColumn(name = "track_id", nullable = false)
     @Cascade(CascadeType.ALL)
     private Track track;
 
