@@ -2,7 +2,7 @@ package com.musicforall.services.follower;
 
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Followers;
-import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,10 +42,10 @@ public class FollowerServiceImp implements FollowerService {
 
     @Override
     public List<Integer> getFollowersId(Integer userId) {
-        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Followers.class)
+        final Criteria executableCriteria = dao.getSessionFactory().getCurrentSession().createCriteria(Followers.class)
                 .createAlias("followingId", "integer");
-        detachedCriteria.add(Restrictions.sqlRestriction(" following_id LIKE '%" + userId + "%' "));
-        final List<Followers> followers = dao.getAllBy(detachedCriteria);
+        executableCriteria.add(Restrictions.sqlRestriction(" following_id LIKE '%" + userId + "%' "));
+        final List<Followers> followers = executableCriteria.list();
         return followers.stream()
                 .map(Followers::getFollowerId).collect(Collectors.toList());
     }
