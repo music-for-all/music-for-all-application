@@ -1,13 +1,19 @@
 "use strict";
+
 /**
+ * The Track object encapsulates operations with the Track RESTful service.
+ * @param contextPath the context path of the application
  * @author ENikolskiy on 6/26/2016.
  */
-
 function Track(contextPath) {
 
     var self = this;
     var baseUrl = contextPath + "/tracks";
 
+    /**
+     * Posts the upload track data via Ajax.
+     * @param formData the data to be posted
+     */
     self.createJson = function (formData) {
         return $.when(
             $.ajax({
@@ -20,6 +26,10 @@ function Track(contextPath) {
             }));
     };
 
+    /**
+     * Sends a request to delete a track with the specified id.
+     * @param id the id of the track
+     */
     self.remove = function (id) {
         return $.when(
             $.ajax({
@@ -28,10 +38,18 @@ function Track(contextPath) {
             }));
     };
 
+    /**
+     * Creates a track with the specified name.
+     * @param name of the track
+     */
     self.create = function (name) {
         return $.when($.post(baseUrl, {"name": name}));
     };
 
+    /**
+     * Retrieves a track with the specified id.
+     * @param id the id of the track
+     */
     self.get = function (id) {
         return $.when($.get(baseUrl + "/" + id));
     };

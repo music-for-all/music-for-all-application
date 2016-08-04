@@ -1,9 +1,8 @@
 package com.musicforall.model;
 
-/**
- * Created by ilianik on 11.06.2016.
- */
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -14,6 +13,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Created by ilianik on 11.06.2016.
+ */
 @Entity
 @Table(name = "playlists")
 public class Playlist implements Serializable {
@@ -36,6 +38,7 @@ public class Playlist implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "track_id")})
     private Set<Track> tracks;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -60,7 +63,7 @@ public class Playlist implements Serializable {
         return id;
     }
 
-    public void setId(Integer id) {
+    private void setId(Integer id) {
         this.id = id;
     }
 

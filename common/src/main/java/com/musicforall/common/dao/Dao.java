@@ -44,7 +44,7 @@ public class Dao {
     @SuppressWarnings("unchecked")
     public <T> T get(Class<T> entityClass, Serializable id) {
         final T entity = currentSession().get(entityClass, id);
-        LOG.info("retrieved entity - {}", entity);
+        LOG.info("Retrieved entity - {}", entity);
         return entity;
     }
 
@@ -58,7 +58,7 @@ public class Dao {
     @SuppressWarnings("unchecked")
     public <T> List<T> all(Class<T> entityClass) {
         final List<T> entities = currentSession().createCriteria(entityClass).list();
-        LOG.info("retrieved entites - {}", entities);
+        LOG.info("Retrieved entites - {}", entities);
         return entities;
     }
 
@@ -69,7 +69,7 @@ public class Dao {
      * @return saved entity
      */
     public <T> T save(T entity) {
-        LOG.info("going to save entity - {}", entity);
+        LOG.info("Going to save entity - {}", entity);
         currentSession().saveOrUpdate(entity);
         return entity;
     }
@@ -80,7 +80,7 @@ public class Dao {
      * @param entities - list entities to save
      */
     public <T> Collection<T> saveAll(Collection<T> entities) {
-        LOG.info("going to save entities - {}", entities);
+        LOG.info("Going to save entities - {}", entities);
         final Session session = currentSession();
         final List<T> entitiesList = new ArrayList<>(entities);
         for (int i = 0; i < entities.size(); i++) {
@@ -100,7 +100,7 @@ public class Dao {
      */
 
     public <T> void delete(T entity) {
-        LOG.info("going to delete entity - {}", entity);
+        LOG.info("Going to delete entity - {}", entity);
         currentSession().delete(entity);
     }
 
@@ -113,7 +113,7 @@ public class Dao {
      * @return a persistent instance or null
      */
     public <T> T getBy(String hql, Map<String, String> parameters) {
-        LOG.info("going to find entity by hql - {}, with parameters - {}", hql, parameters);
+        LOG.info("Going to find entity by hql - {}, with parameters - {}", hql, parameters);
         final Query query = currentSession().createQuery(hql);
         query.setProperties(parameters);
         final T entity = (T) query.uniqueResult();
@@ -138,7 +138,7 @@ public class Dao {
      */
     @SuppressWarnings("unchecked")
     public <T> List<T> getAllBy(String hql, Map<String, String> parameters) {
-        LOG.info("going to find entities by hql - {}, with parameters - {}", hql, parameters);
+        LOG.info("Going to find entities by hql - {}, with parameters - {}", hql, parameters);
         final Query query = currentSession().createQuery(hql);
         query.setProperties(parameters);
         final List<T> entities = (List<T>) query.list();
@@ -155,7 +155,7 @@ public class Dao {
      * @return a persistent instance or null
      */
     public <T> T getBy(DetachedCriteria criteria) {
-        LOG.info("going to find entity by criteria - {}", criteria);
+        LOG.info("Going to find entity by criteria - {}", criteria);
         final Criteria executableCriteria = criteria.getExecutableCriteria(currentSession());
         final T entity = (T) executableCriteria.uniqueResult();
         LOG.info(FOUND_ENTITY, entity);
@@ -173,7 +173,7 @@ public class Dao {
      */
     @SuppressWarnings("unchecked")
     public <T> List<T> getAllBy(DetachedCriteria criteria) {
-        LOG.info("going to find entities by criteria - {}", criteria);
+        LOG.info("Going to find entities by criteria - {}", criteria);
         final Criteria executableCriteria = criteria.getExecutableCriteria(currentSession());
         final List<T> entities = executableCriteria.list();
         LOG.info(FOUND_ENTITY, entities);

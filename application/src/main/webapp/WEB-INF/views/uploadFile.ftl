@@ -25,7 +25,7 @@
         </div>
 
         <div name="uploadFormContainer" class="col-md-4 col-md-offset-4 well  ">
-            <form method="POST" name="upForm" role="form" data-toggle="validator" action="javascript:void(null);"
+            <form method="POST" name="uploadForm" role="form" data-toggle="validator" action="javascript:void(null);"
                   onsubmit="">
                 <input type="text" name="artist" class="form-control" placeholder="Artist" data-minlength="2"
                        maxlength="30" required/>
@@ -49,7 +49,7 @@
     var track = new Track();
 
     function validateForm() {
-        var validator = $('form[name="upForm"]:last').data("bs.validator");
+        var validator = $("form[name="uploadForm"]:last").data("bs.validator");
         validator.validate();
         if (!validator.hasErrors()) {
             return true;
@@ -60,47 +60,47 @@
     }
 
     function clearForms() {
-        $('div[name=uploadFormContainer]').not(':first').remove();
-        $('div[name="uploadFormContainer"]').find("input").val("").end()
-        $("input[name=tags]").tagsinput('removeAll');
-        $('#result').hide();
+        $("div[name=uploadFormContainer]").not(":first").remove();
+        $("div[name="uploadFormContainer"]").find("input").val("").end()
+        $("input[name=tags]").tagsinput("removeAll");
+        $("#result").hide();
     }
 
     function copyForm() {
         if (!validateForm()) {
             return;
         }
-        $('div[name="uploadFormContainer"]:last').clone()
+        $("div[name="uploadFormContainer"]:last").clone()
                 .find("input:text").val("").end()
                 .find(".bootstrap-tagsinput:last").remove().end()
-                .appendTo('#container');
+                .appendTo("#container");
         $("input[name=tags]:last").tagsinput();
-        $('form[name="upForm"]:last').validator();
+        $("form[name="uploadForm"]:last").validator();
     }
 
     function showMessage(message, type) {
         $("#result").removeClass();
-        $('#result').addClass("alert alert-dismissible collapse alert-" + type);
-        $('#result').html(message);
-        $('#result').show();
+        $("#result").addClass("alert alert-dismissible collapse alert-" + type);
+        $("#result").html(message);
+        $("#result").show();
     }
 
     function addTrack() {
         if (!validateForm()) {
             return;
         }
-        $("form[name=upForm]").each(function () {
+        $("form[name=uploadForm]").each(function () {
             var obj = new Object();
-            obj.name = $(this).find('input[name=artist]').val() + " - " + $(this).find('input[name=name]').val();
+            obj.name = $(this).find("input[name=artist]").val() + " - " + $(this).find("input[name=name]").val();
             obj.location = "unknown";
-            if ($(this).find('input[name=tags]').val() != "") {
-                obj.tags = $(this).find('input[name=tags]').val().split(",");
+            if ($(this).find("input[name=tags]").val() != "") {
+                obj.tags = $(this).find("input[name=tags]").val().split(",");
             }
             var formData = new FormData();
             formData.append("track", new Blob([JSON.stringify(obj)], {
                 type: "application/json"
             }));
-            formData.append("file", $(this).find('input[name=file]')[0].files[0]);
+            formData.append("file", $(this).find("input[name=file]")[0].files[0]);
             track.createJson(formData)
                     .then(function (data) {
                         showMessage(data, "success");

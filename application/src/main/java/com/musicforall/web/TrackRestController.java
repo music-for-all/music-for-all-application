@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -28,13 +29,37 @@ public class TrackRestController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public HttpStatus deleteTrack(@PathVariable("id") Integer id) {
+    public ResponseEntity deleteTrack(@PathVariable("id") Integer id) {
         trackService.delete(id);
-        return HttpStatus.NO_CONTENT;
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Track getTrack(@PathVariable("id") Integer id) {
         return trackService.get(id);
+    }
+
+    /**
+     * Stores the like in the database and triggers a history event.
+     * @param id the id of the track to like
+     * @return HTTP status code; the number of likes of the track
+     */
+    @RequestMapping(value = "/like/{id}", method = RequestMethod.POST)
+    public ResponseEntity like(@PathVariable Integer id) {
+
+        trackService.like(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Retrieves the number of likes for the track with the given id.
+     * @param id the id of the track
+     * @return the number of liks
+     */
+    @RequestMapping(value = "/like/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Integer> getLikeCount(@PathVariable("id") Integer id) {
+
+        final int numLikes = trackService.getLikeCount(id);
+        return new ResponseEntity<>(numLikes, HttpStatus.OK);
     }
 }

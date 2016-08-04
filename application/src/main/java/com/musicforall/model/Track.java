@@ -1,10 +1,8 @@
 package com.musicforall.model;
 
-/**
- * Created by ilianik on 11.06.2016.
- */
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
 
@@ -14,11 +12,16 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Created by ilianik on 11.06.2016.
+ */
 @Entity
 @Table(name = "tracks")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Track implements Serializable {
 
     private static final long serialVersionUID = -6851477594231058789L;
@@ -52,6 +55,11 @@ public class Track implements Serializable {
     @Column(name = "location", nullable = false)
     private String location;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "track_id")
+    @Cascade(CascadeType.ALL)
+    private List<Like> likes;
+
     @JsonIgnore
     @ManyToMany
     @Cascade(CascadeType.SAVE_UPDATE)
@@ -59,14 +67,6 @@ public class Track implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "playlist_id")},
             joinColumns = {@JoinColumn(name = "track_id")})
     private Set<Playlist> playlists;
-
-    public Set<Playlist> getPlaylists() {
-        return playlists;
-    }
-
-    public void setPlaylists(Set<Playlist> playlists) {
-        this.playlists = playlists;
-    }
 
     public Track() {
     }
@@ -91,6 +91,22 @@ public class Track implements Serializable {
         this.tags = tags;
     }
 
+    public List<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
+    }
+
+    public Set<Playlist> getPlaylists() {
+        return playlists;
+    }
+
+    public void setPlaylists(Set<Playlist> playlists) {
+        this.playlists = playlists;
+    }
+
     public void addTags(Set<Tag> tags) {
         if (this.tags == null) {
             this.tags = new HashSet<>();
@@ -102,7 +118,7 @@ public class Track implements Serializable {
         return id;
     }
 
-    public void setId(Integer id) {
+    private void setId(Integer id) {
         this.id = id;
     }
 

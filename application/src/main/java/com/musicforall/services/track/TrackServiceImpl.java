@@ -1,19 +1,17 @@
 package com.musicforall.services.track;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.model.SearchCriteria;
-import com.musicforall.model.Tag;
-import com.musicforall.model.Track;
+import com.musicforall.model.*;
 import com.musicforall.services.SearchCriteriaFactory;
+import com.musicforall.services.user.UserService;
+import com.musicforall.util.SecurityUtil;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Pukho on 15.06.2016.
@@ -24,6 +22,9 @@ public class TrackServiceImpl implements TrackService {
 
     @Autowired
     private Dao dao;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public Track save(Track track) {
@@ -71,5 +72,32 @@ public class TrackServiceImpl implements TrackService {
     @Override
     public List<Track> findAll() {
         return dao.all(Track.class);
+    }
+
+    @Override
+    public boolean like(Integer id) {
+
+        final Track track = get(id);
+        if (track == null) {
+            return false;
+        }
+
+        final User user = userService.get(SecurityUtil.currentUser().getId());
+        Like like = new Like();
+
+        like.setUser(user);
+        like.setTrack(track);
+        user.getLikes().add(like);
+        track.getLikes().add(like);
+
+        like = dao.save(like);
+        return like != null;
+    }
+
+    @Override
+    public int getLikeCount(Integer id) {
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Like.class);
+        detachedCriteria.add(Restrictions.eq("track.id", id));
+        return dao.getAllBy(detachedCriteria).size();
     }
 }
