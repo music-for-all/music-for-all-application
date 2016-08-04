@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
         }
         final Disjunction disjunction = Restrictions.disjunction();
         for (final Integer follower : usersId) {
-            disjunction.add(Restrictions.eq("id", follower));
+            disjunction.add(Property.forName("id").eq(follower));
         }
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
                 .add(disjunction);
