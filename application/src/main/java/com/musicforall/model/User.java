@@ -10,6 +10,8 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -105,7 +107,6 @@ public class User implements UserDetails, Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
 
     @Override
     public int hashCode() {
