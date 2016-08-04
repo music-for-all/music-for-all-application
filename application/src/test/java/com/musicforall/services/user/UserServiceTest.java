@@ -110,13 +110,13 @@ public class UserServiceTest {
         final List<Integer> users = new ArrayList<>();
         userService.save(user1);
         users.add(user1.getId());
-        assertEquals(1, userService.getUsersById(users).size());
+        assertEquals(users.size(), userService.getUsersById(users).size());
         userService.save(user2);
         users.add(user2.getId());
-        assertEquals(2, userService.getUsersById(users).size());
+        assertEquals(users.size(), userService.getUsersById(users).size());
         userService.save(user3);
         users.add(user3.getId());
-        assertEquals(3, userService.getUsersById(users).size());
+        assertEquals(users.size(), userService.getUsersById(users).size());
         userService.delete(user3.getId());
         assertEquals(2, userService.getUsersById(users).size());
     }
