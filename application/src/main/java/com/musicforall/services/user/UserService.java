@@ -48,4 +48,6 @@ public interface UserService extends UserDetailsService {
      * @return a collection of users
      */
     List<User> findAll();
+
+    List<User> getUsersById(List<Integer> usersId);
 }

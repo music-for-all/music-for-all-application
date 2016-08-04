@@ -124,7 +124,6 @@ public class User implements UserDetails, Serializable {
         this.email = email;
     }
 
-
     @Override
     public int hashCode() {
         return Objects.hash(id, username, password, email);
