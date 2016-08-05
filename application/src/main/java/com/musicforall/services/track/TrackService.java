@@ -68,16 +68,9 @@ public interface TrackService {
     List<Track> findAll();
 
     /**
-     * Saves information about the like.
-     * @param id the id of a track to like
-     * @return <code>true</code> if liked successfully, or <code>false</code> otherwise
-     */
-    boolean like(Integer id);
-
-    /**
      * Retrieves the number of likes of a track with the given id.
      * @param id the id of the track
      * @return the number of likes
      */
-    int getLikeCount(Integer id);
+    long getLikeCount(Integer id);
 }
