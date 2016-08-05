@@ -13,7 +13,7 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#"><@spring.message "welcomepage.NameProject"/></a>
+            <a class="navbar-brand" href="#"><@spring.message "projectName"/></a>
         </div>
 
         <form class="navbar-form navbar-left" id="searchForm" method="post">
@@ -95,7 +95,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="intro-message">
-                    <h1><@spring.message "welcomepage.NameProject"/></h1>
+                    <h1><@spring.message "projectName"/></h1>
                     <h3><@spring.message "welcomepage.Intro"/></h3>
                     <div class="top-table well" id="tops">
                         <table id="top" class="table table-hover table-striped table-condensed ">

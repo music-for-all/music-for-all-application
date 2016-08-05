@@ -39,7 +39,8 @@
 </#macro>
 
 <#macro form action method id enctype="">
-<form id="${id}" action="<@spring.url "${action}" />" method="${method}" <#if method=="post"||method=="POST"> enctype="${enctype}"</#if>>
+<form id="${id}" action="<@spring.url "${action}" />" method="${method}" <#if method=="post"||method=="POST">
+      enctype="${enctype}"</#if>>
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <#nested>
 </form>
@@ -51,10 +52,23 @@
     </@form>
 </#macro>
 
-<#assign pages = {"Main": {"url": '/main', "title": "Main"},
-"Search": {"url": '/search', "title": "Search"},
-"Add": {"url": '/uploadFile', "title": "Add track"},
-"Profile": {"url": '/profile', "title": "Profile"},
+<#assign searchCaption>
+    <@spring.message "macros.Search"/>
+</#assign>
+<#assign mainCaption>
+    <@spring.message "macros.Main"/>
+</#assign>
+<#assign addCaption>
+    <@spring.message "macros.Add"/>
+</#assign>
+<#assign profileCaption>
+    <@spring.message "macros.Profile"/>
+</#assign>
+
+<#assign pages = {"Main": {"url": '/main', "title": "${mainCaption}"},
+"Search": {"url": '/search', "title": "${searchCaption}"},
+"Add": {"url": '/uploadFile', "title": "${addCaption}"},
+"Profile": {"url": '/profile', "title": "${profileCaption}"},
 "WithoutActivePage": {"url": ''}}>
 
 <#macro navigation activePage=pages.WithoutActivePage>
@@ -62,7 +76,7 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">Music for all</a>
+            <a class="navbar-brand" href="#"><@spring.message "projectName"/></a>
         </div>
 
         <div id="navbar" class="navbar-right navbar-collapse collapse ">
@@ -77,7 +91,7 @@
 </#macro>
 
 <#macro navigationItem item activePage>
-<li <#if item.url == activePage.url>class="active"</#if> >
+<li <#if item.url == activePage.url>class="active"</#if>>
     <a href=<@spring.url '${item.url}'/>>
         <i class="fa"></i> ${item.title}
     </a>
@@ -86,6 +100,6 @@
 
 <#macro footer>
 <footer class="container-fluid">
-    <p>Music for all ©</p>
+    <p><@spring.message "projectName"/> ©</p>
 </footer>
 </#macro>
