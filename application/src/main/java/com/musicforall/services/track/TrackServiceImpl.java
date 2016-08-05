@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by Pukho on 15.06.2016.
@@ -71,5 +72,17 @@ public class TrackServiceImpl implements TrackService {
     @Override
     public List<Track> findAll() {
         return dao.all(Track.class);
+    }
+
+    @Override
+    public List<Track> getTheMostPopular() {
+        String hql = "select history.trackId" +
+                " from History history" +
+                " where history.eventType='TRACK_LISTENED'" +
+                " group by history.trackId" +
+                " order by count(history.trackId) desc";
+
+        return dao.getAllBy(hql, null).
+                stream().limit(10).map(f -> (Integer)f).map(this::get).collect(Collectors.toList());
     }
 }

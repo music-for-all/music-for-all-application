@@ -28,4 +28,6 @@ public interface TrackService {
     List<Track> getAllLike(SearchCriteria searchCriteria);
 
     List<Track> findAll();
+
+    List<Track> getTheMostPopular();
 }

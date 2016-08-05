@@ -1,12 +1,18 @@
 package com.musicforall.web;
 
+import com.musicforall.model.Track;
+import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 
 @Controller
 public class WelcomeController {
@@ -14,6 +20,9 @@ public class WelcomeController {
 
     private static final Logger LOG = LoggerFactory.getLogger(WelcomeController.class);
     public static final String SPRING_SECURITY_LAST_EXCEPTION = "SPRING_SECURITY_LAST_EXCEPTION";
+
+    @Autowired
+    private TrackService trackService;
 
     public WelcomeController() {
         LOG.debug("Welcome controller");
@@ -30,5 +39,11 @@ public class WelcomeController {
         }
         model.addAttribute("request", request);
         return "welcome";
+    }
+
+    @RequestMapping(value = "welcome/getByPopularity",  method = RequestMethod.GET)
+    @ResponseBody
+    public Collection<Track> getByPopularity(){
+        return trackService.getTheMostPopular();
     }
 }
