@@ -154,18 +154,4 @@ public class TrackServiceTest {
         assertNotNull(tracks);
         assertTrue(tracks.size() >= 1);
     }
-
-    @Test
-    @WithUserDetails("user")
-    public void testGetLikeCount() {
-        Track track = new Track("track1", "/track1.mp3");
-        assertNotNull(trackService.save(track));
-        Integer id = track.getId();
-
-        long numLikes = trackService.getLikeCount(id);
-        assertEquals(0, numLikes);
-
-        numLikes = trackService.getLikeCount(id + 1000);
-        assertEquals(0, numLikes);
-    }
 }

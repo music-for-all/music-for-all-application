@@ -76,13 +76,4 @@ public class TrackServiceImpl implements TrackService {
     public List<Track> findAll() {
         return dao.all(Track.class);
     }
-
-    @Override
-    public long getLikeCount(Integer trackId) {
-
-        long count = dao.getBy(String.format("select count(*) from History history " +
-                "where history.trackId=%s",
-                trackId), null);
-        return count;
-    }
 }

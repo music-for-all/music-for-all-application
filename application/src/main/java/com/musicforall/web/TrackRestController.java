@@ -1,6 +1,7 @@
 package com.musicforall.web;
 
 import com.musicforall.history.handlers.events.TrackLikedEvent;
+import com.musicforall.history.service.HistoryService;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
 import com.musicforall.services.track.TrackService;
@@ -25,6 +26,9 @@ public class TrackRestController {
 
     @Autowired
     private ApplicationEventPublisher publisher;
+
+    @Autowired
+    private HistoryService historyService;
 
     @Autowired
     private TrackService trackService;
@@ -72,7 +76,7 @@ public class TrackRestController {
     @RequestMapping(value = "/like/{id}", method = RequestMethod.GET)
     public ResponseEntity<Long> getLikeCount(@PathVariable("id") Integer id) {
 
-        final long numLikes = trackService.getLikeCount(id);
+        final long numLikes = historyService.getLikeCount(id);
 
         return new ResponseEntity<>(numLikes, HttpStatus.OK);
     }

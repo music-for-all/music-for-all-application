@@ -66,11 +66,4 @@ public interface TrackService {
      * @return the list of tracks
      */
     List<Track> findAll();
-
-    /**
-     * Retrieves the number of likes of a track with the given id.
-     * @param id the id of the track
-     * @return the number of likes
-     */
-    long getLikeCount(Integer id);
 }
