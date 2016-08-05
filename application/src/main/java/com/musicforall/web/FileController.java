@@ -47,6 +47,7 @@ public class FileController {
     public ResponseEntity<String> uploadFileHandler(
             @RequestPart("track") Track trackJson,
             @RequestPart("file") MultipartFile file) {
+
         if (file.isEmpty()) {
             return new ResponseEntity<String>("File is empty", HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -87,7 +88,7 @@ public class FileController {
     }
 
     @RequestMapping(value = "/uploadFile", method = RequestMethod.GET)
-    public String signUp() {
+    public String uploadFile() {
         return "uploadFile";
     }
 
