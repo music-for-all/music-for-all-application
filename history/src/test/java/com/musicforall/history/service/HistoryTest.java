@@ -1,7 +1,6 @@
 package com.musicforall.history.service;
 
 import com.musicforall.history.handlers.HistoryEventListener;
-import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.handlers.events.TrackListenedEvent;
 import com.musicforall.history.model.History;
 import com.musicforall.history.util.ServicesTestConfig;
@@ -19,8 +18,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import java.util.Date;
-
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -35,8 +32,8 @@ import static org.junit.Assert.assertNotNull;
 @ActiveProfiles("dev")
 public class HistoryTest {
 
-    static final Integer USER_ID = 1111;
-    static final Integer TRACK_ID = 2222;
+    private static final Integer USER_ID = 1111;
+    private static final Integer TRACK_ID = 2222;
 
     @Autowired
     private HistoryService historyService;
