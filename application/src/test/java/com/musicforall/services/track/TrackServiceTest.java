@@ -1,6 +1,8 @@
 package com.musicforall.services.track;
 
-import com.musicforall.model.*;
+import com.musicforall.model.SearchCriteria;
+import com.musicforall.model.Tag;
+import com.musicforall.model.Track;
 import com.musicforall.services.tag.TagService;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
@@ -17,10 +19,9 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import java.util.*;
 
-import static junit.framework.TestCase.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by Pukho on 28.06.2016.
@@ -156,30 +157,13 @@ public class TrackServiceTest {
 
     @Test
     @WithUserDetails("user")
-    public void testLike() {
-
-        Track track = new Track("track2", "/track2.mp3");
-        assertNotNull(trackService.save(track));
-        Integer id = track.getId();
-        assertTrue(trackService.like(id));
-        int numLikes = trackService.getLikeCount(id);
-        assertEquals(1, numLikes);
-        assertFalse(trackService.like(track.getId() + 1000));
-    }
-
-    @Test
-    @WithUserDetails("user")
     public void testGetLikeCount() {
         Track track = new Track("track1", "/track1.mp3");
         assertNotNull(trackService.save(track));
         Integer id = track.getId();
 
-        int numLikes = trackService.getLikeCount(id);
+        long numLikes = trackService.getLikeCount(id);
         assertEquals(0, numLikes);
-
-        assertTrue(trackService.like(id));
-        numLikes = trackService.getLikeCount(id);
-        assertEquals(1, numLikes);
 
         numLikes = trackService.getLikeCount(id + 1000);
         assertEquals(0, numLikes);
