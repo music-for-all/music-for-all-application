@@ -20,4 +20,6 @@ public interface UserService extends UserDetailsService {
     User getByUsername(String username);
 
     List<User> findAll();
+
+    List<User> getUsersById(List<Integer> usersId);
 }
