@@ -1,17 +1,20 @@
 package com.musicforall.services.track;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.model.*;
+import com.musicforall.model.SearchCriteria;
+import com.musicforall.model.Tag;
+import com.musicforall.model.Track;
 import com.musicforall.services.SearchCriteriaFactory;
 import com.musicforall.services.user.UserService;
-import com.musicforall.util.SecurityUtil;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Pukho on 15.06.2016.
@@ -75,28 +78,11 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
-    public boolean like(Integer id) {
+    public long getLikeCount(Integer trackId) {
 
-        final Track track = get(id);
-        if (track == null) {
-            return false;
-        }
-
-        final User user = userService.get(SecurityUtil.currentUser().getId());
-        Like like = new Like();
-
-        like.setUser(user);
-        like.setTrack(track);
-        track.getLikes().add(like);
-
-        like = dao.save(like);
-        return like != null;
-    }
-
-    @Override
-    public int getLikeCount(Integer id) {
-        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Like.class);
-        detachedCriteria.add(Restrictions.eq("track.id", id));
-        return dao.getCount(detachedCriteria);
+        long count = dao.getBy(String.format("select count(*) from History history " +
+                "where history.trackId=%s",
+                trackId), null);
+        return count;
     }
 }
