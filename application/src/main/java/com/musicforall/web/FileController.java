@@ -2,6 +2,7 @@ package com.musicforall.web;
 
 import com.musicforall.files.manager.FileManager;
 import com.musicforall.model.Track;
+import com.musicforall.model.User;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.history.handlers.events.TrackListenedEvent;
 import org.slf4j.Logger;
@@ -67,15 +68,23 @@ public class FileController {
     @RequestMapping(value = "/files/{fileName:.+}", method = RequestMethod.GET)
     public void getFileHandler(HttpServletResponse response, @PathVariable("fileName") String name) {
         final Optional<Path> filePath = Optional.ofNullable(manager.getFilePathByName(name));
-        filePath.ifPresent(file -> {
-            try {
-                this.publisher.publishEvent(new TrackListenedEvent(STUB_TRACK_ID, new Date(), currentUser().getId()));
-                Files.copy(file, response.getOutputStream());
+        LOG.info(String.format("Streaming file: %s\n", name));
 
+        if (filePath.isPresent()) {
+
+            try {
+                final User user = currentUser();
+                /* Set userId to 0 if no user is authenticated. */
+                final int userId = user == null ? 0 : user.getId();
+                publisher.publishEvent(new TrackListenedEvent(STUB_TRACK_ID, new Date(), userId));
+
+                Files.copy(filePath.get(), response.getOutputStream());
             } catch (IOException e) {
                 LOG.error("Streaming failed!", e);
             }
-        });
+        } else {
+            LOG.error("File not found");
+        }
     }
 
     @RequestMapping(value = "/uploadFile", method = RequestMethod.GET)
