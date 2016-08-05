@@ -1,20 +1,15 @@
 package com.musicforall.model;
 
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 /**
