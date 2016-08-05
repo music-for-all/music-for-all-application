@@ -3,6 +3,7 @@
 <html lang="en">
 <@m.head>
 <title>Welcome</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <link href="/resources/css/welcomepage.css" rel="stylesheet">
 <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
 </@m.head>
@@ -94,6 +95,7 @@
                     <h1>Music for all</h1>
 
                     <h3>Sign in and manage your songs</h3>
+                    <div class="container">
                     <div class="top-table well" id="tops">
                         <table id="top" class="table table-hover table-striped table-condensed ">
                             <thead>
@@ -106,11 +108,60 @@
                             </thead>
                         </table>
                     </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/template" class="trackRowTemplate">
+    <tbody>
+    <% _.each(data, function(track){ %>
+    <tr id="<%= track.id %>">
+        <td>
+            <button type='button' class='btn btn-xs btn-success' onclick="onPlay('audio_<%= track.id %>')">
+                <span class='glyphicon glyphicon-play' aria-hidden='true'/>
+            </button>
+            <button type='button' class='btn btn-xs btn-warning pause-track-button'
+                    onclick="onPause('audio_<%= track.id %>')">
+                <span class='glyphicon glyphicon-pause' aria-hidden='true'/>
+            </button>
+            <button type='button' class='btn btn-xs btn-danger delete-song-button'>
+                <span class='glyphicon glyphicon-remove' aria-hidden='true'/>
+            </button>
+        </td>
+        <td>
+            <%= track.name %>
+        </td>
+        <td>
+        </td>
+        <td>
+            <audio id='audio_<%= track.id %>' controls>
+                <source type="audio/mp3" src="/files/<%= track.location %>">
+            </audio>
+        </td>
+    </tr>
+    <% }); %>
+    </tbody>
+</script>
+
+<script type="text/javascript">
+    _.templateSettings.variable = "data";
+    var trackTable = _.template(
+            $("script.trackRowTemplate").html()
+    );
+
+    $.ajax({
+        url: "/welcome/getByPopularity",
+        type: 'GET',
+        success: function(data) {
+            $("#top").find("thead").after(
+                    trackTable(data))
+        }
+    });
+
+</script>
 <script type="text/javascript">
     $('#popover').popover({
         html: true,
