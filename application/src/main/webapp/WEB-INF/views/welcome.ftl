@@ -53,7 +53,7 @@
                             <label for="inputUsername" class="sr-only">Username</label>
                             <input type="text" id="inputUsername" name="username" class="form-control"
                                    placeholder="Username"
-                                   required autofocus/>
+                                   required />
                             <label for="inputPassword" class="sr-only">Password</label>
                             <input type="password" id="inputPassword" name="password" class="form-control"
                                    placeholder="Password"
@@ -117,12 +117,25 @@
     </div>
 </div>
 <script type="text/javascript">
-    $('#popover').popover({
-        html: true,
-        content: function () {
-            return $("#popover-content").html();
-        },
-        placement: "bottom"
+    $(document).ready(function() {
+
+        $('#popover').popover({
+            html: true,
+            content: function () {
+                return $("#popover-content").html();
+            },
+            placement: "bottom"
+        });
+
+        $("#popover").on("click", function() {return false;});
+
+        $("#popover").focus();
+
+        /* Set focus on the name input field when the pop-up window has been shown. */
+        $("#popover").on("shown.bs.popover", function () {
+
+            $("#inputUsername").focus();
+        });
     });
 </script>
 </@m.body>
