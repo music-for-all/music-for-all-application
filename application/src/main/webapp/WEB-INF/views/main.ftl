@@ -59,7 +59,7 @@
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </button>
             <button class="btn btn-xs btn-primary like-button">Like</button>
-            <span class="glyphicon num-likes" aria-hidden="false"><%= track.likes.length %></span>
+            <span class="glyphicon num-likes" aria-hidden="true"></span>
         </td>
         <td>
             <%= track.name %>
@@ -118,6 +118,9 @@
                     $("#tracks").find("thead").after(
                             trackRow(response.tracks)
                     );
+                    response.tracks.forEach(function(track) {
+                        updateLikeCount(track.id);
+                    });
                 });
     });
 
@@ -204,7 +207,6 @@
 
             $("#acceptRemovingPlaylistButton").focus();
         });
-
     });
 </script>
 </@m.body>
