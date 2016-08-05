@@ -112,7 +112,7 @@ public class Dao {
      * @param parameters pairs of key/value parameters which will be added to "where" part of the query
      * @return a persistent instance or null
      */
-    public <T> T getBy(String hql, Map<Object, Object> parameters) {
+    public <T> T getBy(String hql, Map<String, Object> parameters) {
         LOG.info("Going to find entity by hql - {}, with parameters - {}", hql, parameters);
         final Query query = currentSession().createQuery(hql);
         query.setProperties(parameters);
