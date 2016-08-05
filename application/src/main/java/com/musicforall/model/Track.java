@@ -3,16 +3,13 @@ package com.musicforall.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -55,11 +52,6 @@ public class Track implements Serializable {
     @Column(name = "location", nullable = false)
     private String location;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "track_id")
-    @Cascade(CascadeType.ALL)
-    private List<Like> likes;
-
     @JsonIgnore
     @ManyToMany
     @Cascade(CascadeType.SAVE_UPDATE)
@@ -89,14 +81,6 @@ public class Track implements Serializable {
         this.album = album;
         this.location = location;
         this.tags = tags;
-    }
-
-    public List<Like> getLikes() {
-        return likes;
-    }
-
-    public void setLikes(List<Like> likes) {
-        this.likes = likes;
     }
 
     public Set<Playlist> getPlaylists() {
