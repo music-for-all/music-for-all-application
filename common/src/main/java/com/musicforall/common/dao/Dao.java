@@ -112,7 +112,7 @@ public class Dao {
      * @param parameters pairs of key/value parameters which will be added to "where" part of the query
      * @return a persistent instance or null
      */
-    public <T> T getBy(String hql, Map<String, String> parameters) {
+    public <T> T getBy(String hql, Map<String, ?> parameters) {
         LOG.info("Going to find entity by hql - {}, with parameters - {}", hql, parameters);
         final Query query = currentSession().createQuery(hql);
         query.setProperties(parameters);
@@ -137,7 +137,7 @@ public class Dao {
      * @return list of persistent instances or null
      */
     @SuppressWarnings("unchecked")
-    public <T> List<T> getAllBy(String hql, Map<String, String> parameters) {
+    public <T> List<T> getAllBy(String hql, Map<String, ?> parameters) {
         LOG.info("Going to find entities by hql - {}, with parameters - {}", hql, parameters);
         final Query query = currentSession().createQuery(hql);
         query.setProperties(parameters);
