@@ -36,11 +36,11 @@ public class HistoryService {
      */
     public long getLikeCount(Integer trackId) {
 
-        Map<Object, Object> parameters = new HashMap<>();
+        final Map<String, Object> parameters = new HashMap<>();
         parameters.put("trackId", trackId);
         parameters.put("eventType", EventType.TRACK_LIKED);
 
-        long count = dao.getBy("select count(*) from History history " +
+        final long count = dao.getBy("select count(*) from History history " +
                         "where history.trackId=:trackId and history.eventType=:eventType",
                 parameters);
         return count;

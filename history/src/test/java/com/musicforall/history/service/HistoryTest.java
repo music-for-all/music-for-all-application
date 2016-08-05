@@ -6,7 +6,6 @@ import com.musicforall.history.handlers.events.TrackLikedEvent;
 import com.musicforall.history.handlers.events.TrackListenedEvent;
 import com.musicforall.history.model.History;
 import com.musicforall.history.util.ServicesTestConfig;
-import junit.framework.TestCase;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.junit.Before;
