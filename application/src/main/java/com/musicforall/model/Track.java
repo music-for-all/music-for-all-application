@@ -2,7 +2,6 @@ package com.musicforall.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -18,7 +17,6 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "tracks")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Track implements Serializable {
 
     private static final long serialVersionUID = -6851477594231058789L;
@@ -35,6 +33,7 @@ public class Track implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "tag_name")})
     private Set<Tag> tags;
 
+    @Deprecated
     @Size(min = 2, max = 30)
     @Column(name = "name", nullable = false)
     private String name;
@@ -138,10 +137,12 @@ public class Track implements Serializable {
         this.location = location;
     }
 
+    @Deprecated
     public String getName() {
         return name;
     }
 
+    @Deprecated
     public void setName(String name) {
         this.name = name;
     }
