@@ -76,7 +76,7 @@ public class FileController {
                 final User user = currentUser();
                 /* Set userId to 0 if no user is authenticated. */
                 final int userId = user == null ? 0 : user.getId();
-                publisher.publishEvent(new TrackListenedEvent(STUB_TRACK_ID, new Date(), userId));
+              //  publisher.publishEvent(new TrackListenedEvent(STUB_TRACK_ID, new Date(), userId));
 
                 Files.copy(filePath.get(), response.getOutputStream());
             } catch (IOException e) {

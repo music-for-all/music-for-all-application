@@ -1,22 +1,11 @@
 package com.musicforall.history.service;
 
-import com.musicforall.common.dao.Dao;
 import com.musicforall.history.model.History;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Created by kgavrylchenko on 25.07.16.
+ * Created by Pukho on 05.08.2016.
  */
-@Service
-@Transactional
-public class HistoryService {
+public interface HistoryService {
 
-    @Autowired
-    private Dao dao;
-
-    public void record(History history) {
-        dao.save(history);
-    }
+    void record(History history);
 }
