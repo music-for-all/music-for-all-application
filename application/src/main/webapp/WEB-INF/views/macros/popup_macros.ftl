@@ -34,18 +34,6 @@
 <#assign addPlaylistCaption>
     <@spring.message "popupmacro.AddingPlaylist"/>
 </#assign>
-<#assign nameCaption>
-    <@spring.message "popupmacro.NameCaption"/>
-</#assign>
-<#assign namePlaceholder>
-    <@spring.message "popupmacro.NamePlaceholder"/>
-</#assign>
-<#assign actionClose>
-    <@spring.message "popupmacro.ActionClose"/>
-</#assign>
-<#assign actionAdd>
-    <@spring.message "popupmacro.ActionAdd"/>
-</#assign>
 
 <#macro popUpAdd id>
     <@popUp id>
@@ -53,40 +41,36 @@
 
         <@popupBody>
         <div class="form-group">
-            <label for="inputNamePlaylist" class="col-sm-2 control-label">${nameCaption}:</label>
-            <input type="text" class="form-control" id="inputNamePlaylist" placeholder="${namePlaceholder}">
+            <label for="inputNamePlaylist" class="col-sm-2 control-label"> <@spring.message "popupmacro.NameCaption"/>:</label>
+            <input type="text" class="form-control" id="inputNamePlaylist" placeholder="
+            <@spring.message "popupmacro.NamePlaceholder"/>">
         </div>
         </@popupBody>
 
         <@popupFooter>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">${actionClose}</button>
-        <button id="acceptCreatingPlaylistButton" type="button" class="btn btn-success">${actionAdd}</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"> <@spring.message "popupmacro.ActionClose"/></button>
+        <button id="acceptCreatingPlaylistButton" type="button" class="btn btn-success">
+            <@spring.message "popupmacro.ActionAdd"/></button>
         </@popupFooter>
     </@popUp>
 </#macro>
 
-<#assign deleteHeader>
-    <@spring.message "popupmacro.DeleteHeader"/>
-</#assign>
-<#assign actionNo>
-    <@spring.message "popupmacro.ActionNo"/>
-</#assign>
-<#assign actionYes>
-    <@spring.message "popupmacro.ActionYes"/>
+<#assign deleteInfo>
+    <@spring.message "popupmacro.Deleting"/>
 </#assign>
 
 <#macro popUpDelete id>
     <@popUp id>
-        <@popupHead "Deleting playlist"/>
+        <@popupHead "${deleteInfo}"/>
 
         <@popupBody>
-        <p>${deleteHeader}</p>
+        <p><@spring.message "popupmacro.DeleteHeader"/></p>
         </@popupBody>
 
         <@popupFooter>
-        <button type="button" class="btn btn-success" data-dismiss="modal">${actionNo}</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal"><@spring.message "popupmacro.ActionNo"/></button>
         <button type="button" id="acceptRemovingPlaylistButton" class="btn btn-danger" data-dismiss="modal">
-        ${actionYes}
+            <@spring.message "popupmacro.ActionYes"/>
         </button>
         </@popupFooter>
     </@popUp>
