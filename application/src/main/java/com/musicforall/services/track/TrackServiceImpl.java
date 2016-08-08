@@ -73,16 +73,4 @@ public class TrackServiceImpl implements TrackService {
     public List<Track> findAll() {
         return dao.all(Track.class);
     }
-
-    @Override
-    public List<Track> getTheMostPopular() {
-        String hql = "select history.trackId" +
-                " from History history" +
-                " where history.eventType='TRACK_LISTENED'" +
-                " group by history.trackId" +
-                " order by count(history.trackId) desc";
-
-        return dao.getAllBy(hql, null).
-                stream().limit(10).map(f -> (Integer)f).map(this::get).collect(Collectors.toList());
-    }
 }

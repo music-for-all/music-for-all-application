@@ -29,5 +29,4 @@ public interface TrackService {
 
     List<Track> findAll();
 
-    List<Track> getTheMostPopular();
 }

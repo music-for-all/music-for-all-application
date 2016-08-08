@@ -1,5 +1,6 @@
 package com.musicforall.web;
 
+import com.musicforall.history.service.HistoryService;
 import com.musicforall.model.Track;
 import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Controller
 public class WelcomeController {
@@ -23,6 +25,9 @@ public class WelcomeController {
 
     @Autowired
     private TrackService trackService;
+
+    @Autowired
+    private HistoryService historyService;
 
     public WelcomeController() {
         LOG.debug("Welcome controller");
@@ -44,6 +49,8 @@ public class WelcomeController {
     @RequestMapping(value = "welcome/getByPopularity",  method = RequestMethod.GET)
     @ResponseBody
     public Collection<Track> getByPopularity(){
-        return trackService.getTheMostPopular();
+        return historyService.getTheMostPopularTrack()
+                .stream().limit(10)
+                .map(trackId -> trackService.get(trackId)).collect(Collectors.toList());
     }
 }
