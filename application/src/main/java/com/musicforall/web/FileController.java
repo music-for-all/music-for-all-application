@@ -1,16 +1,16 @@
 package com.musicforall.web;
 
 import com.musicforall.files.manager.FileManager;
+import com.musicforall.history.handlers.events.TrackListenedEvent;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
 import com.musicforall.services.track.TrackService;
-import com.musicforall.history.handlers.events.TrackListenedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Date;
 import java.util.Optional;
 
 import static com.musicforall.util.SecurityUtil.currentUser;
@@ -48,6 +47,7 @@ public class FileController {
     public ResponseEntity<String> uploadFileHandler(
             @RequestPart("track") Track trackJson,
             @RequestPart("file") MultipartFile file) {
+
         if (file.isEmpty()) {
             return new ResponseEntity<String>("File is empty", HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -74,9 +74,9 @@ public class FileController {
 
             try {
                 final User user = currentUser();
-                /* Set userId to 0 if no user is authenticated. */
-                final int userId = user == null ? 0 : user.getId();
-                publisher.publishEvent(new TrackListenedEvent(STUB_TRACK_ID, new Date(), userId));
+                if (user != null) {
+                    publisher.publishEvent(new TrackListenedEvent(STUB_TRACK_ID, user.getId()));
+                }
 
                 Files.copy(filePath.get(), response.getOutputStream());
             } catch (IOException e) {
@@ -88,7 +88,7 @@ public class FileController {
     }
 
     @RequestMapping(value = "/uploadFile", method = RequestMethod.GET)
-    public String signUp() {
+    public String uploadFile() {
         return "uploadFile";
     }
 

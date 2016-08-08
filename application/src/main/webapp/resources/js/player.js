@@ -1,20 +1,26 @@
 "use strict";
 
-function onPause(id) {
-    var player = document.getElementById(id);
-    player.pause();
-}
+jQuery(document).ready(function () {
 
-function onPlay(id) {
-    var player = document.getElementById(id);
-    player.play();
-}
+    /* Make the play button to invoke play on the corresponding player. */
+    $("#tracks").on("click", ".play-track-button", function () {
 
-document.addEventListener("play", function(e) {
-    var audios = document.getElementsByTagName("audio");
-    for (var i = 0; i < audios.length; i++) {
-        if(audios[i] !== e.target){
-            audios[i].pause();
-        }
-    }
-}, true);
+        $(this).closest("tr").find("td audio")[0].play();
+    });
+
+    /* Make the pause button to invoke pause on the corresponding player. */
+    $("#tracks").on("click", ".pause-track-button", function () {
+
+        $(this).closest("tr").find("td audio")[0].pause();
+    });
+
+    /* When a track is chosen to play, pause all the other tracks. */
+    document.addEventListener("play", function(e) {
+
+        $("audio").each(function(i, player) {
+            if (player !== e.target) {
+                player.pause();
+            }
+        });
+    }, true);
+});

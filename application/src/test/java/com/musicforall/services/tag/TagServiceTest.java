@@ -32,14 +32,6 @@ public class TagServiceTest {
     private TagService tagService;
 
     @Test
-    public void testSaveTagIsTagExist() {
-        tagService.save(TAG_FOR_SAVE);
-
-        assertTrue(tagService.isTagExist(TAG_FOR_SAVE));
-        assertFalse(tagService.isTagExist("tag_is_not_exist"));
-    }
-
-    @Test
     public void testSaveAllTagsGetAllTags() {
         final Tag tag1 = new Tag("tag_for_save1");
         final Tag tag2 = new Tag("tag_for_save2");
@@ -54,7 +46,7 @@ public class TagServiceTest {
         final Tag tag = tagService.save(tag_for_test_get);
         final Tag expectedTag = tagService.get(tag_for_test_get);
 
-        assertEquals(tag, expectedTag);
+        assertEquals(expectedTag, tag);
     }
 
     @Test

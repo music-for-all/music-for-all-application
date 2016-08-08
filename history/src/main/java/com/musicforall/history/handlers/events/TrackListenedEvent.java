@@ -1,46 +1,34 @@
 package com.musicforall.history.handlers.events;
 
-import java.util.Date;
-
 /**
  * @author IliaNik on 17.07.2016.
  */
 public class TrackListenedEvent {
 
-    private int trackId;
+    private Integer trackId;
 
-    private int userId;
+    private Integer userId;
 
-    private Date date = new Date();
 
-    public TrackListenedEvent(int trackId, Date date, int userId) {
+    public TrackListenedEvent(Integer trackId, Integer userId) {
         this.trackId = trackId;
-        this.date = date;
         this.userId = userId;
     }
 
-    public int getTrackId() {
+    public Integer getTrackId() {
         return trackId;
     }
 
-    public void setTrackId(int trackId) {
+    public void setTrackId(Integer trackId) {
         this.trackId = trackId;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
 }
