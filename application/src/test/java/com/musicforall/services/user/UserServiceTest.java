@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
@@ -81,7 +82,7 @@ public class UserServiceTest {
         final Integer userId = userService.getIdByUsername(USER);
         final User user = userService.get(userId);
 
-        assertEquals(user.getUsername(), USER);
+        assertEquals(USER, user.getUsername());
         assertNotNull(userService.get(userId));
         assertNull(userService.getByUsername(USER_NOT_EXIST));
     }
@@ -97,7 +98,26 @@ public class UserServiceTest {
     @Test(expected = UsernameNotFoundException.class)
     public void testLoadUserByUsername() {
         final UserDetails user = userService.loadUserByUsername(USER_1);
-        assertEquals(user.getUsername(), USER_1);
+        assertEquals(USER_1, user.getUsername());
         assertNotNull(userService.loadUserByUsername(USER_NOT_EXIST));
+    }
+
+    @Test
+    public void testGetUsersById() {
+        final User user1 = new User("Johnny", "password", "tests@example.com");
+        final User user2 = new User("Abc", "password", "abc@example.com");
+        final User user3 = new User("Spock", "123455", "mail2@example.com");
+        final List<Integer> users = new ArrayList<>();
+        userService.save(user1);
+        users.add(user1.getId());
+        assertEquals(users.size(), userService.getUsersById(users).size());
+        userService.save(user2);
+        users.add(user2.getId());
+        assertEquals(users.size(), userService.getUsersById(users).size());
+        userService.save(user3);
+        users.add(user3.getId());
+        assertEquals(users.size(), userService.getUsersById(users).size());
+        userService.delete(user3.getId());
+        assertEquals(2, userService.getUsersById(users).size());
     }
 }

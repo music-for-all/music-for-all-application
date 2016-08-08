@@ -1,15 +1,16 @@
 package com.musicforall.web;
 
 import com.musicforall.files.manager.FileManager;
-import com.musicforall.model.Track;
-import com.musicforall.services.track.TrackService;
 import com.musicforall.history.handlers.events.TrackListenedEvent;
+import com.musicforall.model.Track;
+import com.musicforall.model.User;
+import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Date;
 import java.util.Optional;
 
 import static com.musicforall.util.SecurityUtil.currentUser;
@@ -47,6 +47,7 @@ public class FileController {
     public ResponseEntity<String> uploadFileHandler(
             @RequestPart("track") Track trackJson,
             @RequestPart("file") MultipartFile file) {
+
         if (file.isEmpty()) {
             return new ResponseEntity<String>("File is empty", HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -67,19 +68,27 @@ public class FileController {
     @RequestMapping(value = "/files/{fileName:.+}", method = RequestMethod.GET)
     public void getFileHandler(HttpServletResponse response, @PathVariable("fileName") String name) {
         final Optional<Path> filePath = Optional.ofNullable(manager.getFilePathByName(name));
-        filePath.ifPresent(file -> {
-            try {
-                this.publisher.publishEvent(new TrackListenedEvent(STUB_TRACK_ID, new Date(), currentUser().getId()));
-                Files.copy(file, response.getOutputStream());
+        LOG.info(String.format("Streaming file: %s\n", name));
 
+        if (filePath.isPresent()) {
+
+            try {
+                final User user = currentUser();
+                if (user != null) {
+                    publisher.publishEvent(new TrackListenedEvent(STUB_TRACK_ID, user.getId()));
+                }
+
+                Files.copy(filePath.get(), response.getOutputStream());
             } catch (IOException e) {
                 LOG.error("Streaming failed!", e);
             }
-        });
+        } else {
+            LOG.error("File not found");
+        }
     }
 
     @RequestMapping(value = "/uploadFile", method = RequestMethod.GET)
-    public String signUp() {
+    public String uploadFile() {
         return "uploadFile";
     }
 

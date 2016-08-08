@@ -1,9 +1,5 @@
 package com.musicforall.model;
 
-/**
- * Created by ilianik on 11.06.2016.
- */
-
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -16,6 +12,9 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
 
+/**
+ * Created by ilianik on 11.06.2016.
+ */
 @Entity
 @Table(name = "users")
 public class User implements UserDetails, Serializable {
@@ -53,7 +52,7 @@ public class User implements UserDetails, Serializable {
         return id;
     }
 
-    public void setId(Integer id) {
+    private void setId(Integer id) {
         this.id = id;
     }
 
@@ -105,7 +104,6 @@ public class User implements UserDetails, Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
 
     @Override
     public int hashCode() {

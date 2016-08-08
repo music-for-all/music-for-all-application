@@ -1,22 +1,20 @@
 package com.musicforall.model;
 
-/**
- * Created by ilianik on 11.06.2016.
- */
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Created by ilianik on 11.06.2016.
+ */
 @Entity
 @Table(name = "tracks")
 public class Track implements Serializable {
@@ -35,6 +33,7 @@ public class Track implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "tag_name")})
     private Set<Tag> tags;
 
+    @Deprecated
     @Size(min = 2, max = 30)
     @Column(name = "name", nullable = false)
     private String name;
@@ -60,14 +59,6 @@ public class Track implements Serializable {
             joinColumns = {@JoinColumn(name = "track_id")})
     private Set<Playlist> playlists;
 
-    public Set<Playlist> getPlaylists() {
-        return playlists;
-    }
-
-    public void setPlaylists(Set<Playlist> playlists) {
-        this.playlists = playlists;
-    }
-
     public Track() {
     }
 
@@ -91,6 +82,14 @@ public class Track implements Serializable {
         this.tags = tags;
     }
 
+    public Set<Playlist> getPlaylists() {
+        return playlists;
+    }
+
+    public void setPlaylists(Set<Playlist> playlists) {
+        this.playlists = playlists;
+    }
+
     public void addTags(Set<Tag> tags) {
         if (this.tags == null) {
             this.tags = new HashSet<>();
@@ -102,7 +101,7 @@ public class Track implements Serializable {
         return id;
     }
 
-    public void setId(Integer id) {
+    private void setId(Integer id) {
         this.id = id;
     }
 
@@ -138,10 +137,12 @@ public class Track implements Serializable {
         this.location = location;
     }
 
+    @Deprecated
     public String getName() {
         return name;
     }
 
+    @Deprecated
     public void setName(String name) {
         this.name = name;
     }

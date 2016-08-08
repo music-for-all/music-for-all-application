@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <@m.head>
-<title>Search</title>
+<title><@spring.message "searchpage.Title"/></title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
 <script src="<@spring.url "/resources/js/searchpage.js"/>"></script>
@@ -19,17 +19,16 @@
 <div class="container">
     <form id="search-form" class="form-inline text-center ">
         <div class="input-group">
-            <input id="title" class="form-control" type="text" value="" placeholder="Title"
-                   name="title" autofocus="autofocus"/>
-            <input id="artist" class="form-control" type="text" value="" placeholder="Artist"
-                   name="artist"/>
-            <input id="album" class="form-control" type="text" value="" placeholder="Album"
-                   name="album"/>
+            <input id="title" class="form-control" type="text" value="" placeholder="<@spring.message "placeholder.Title"/>"
+                   name="title" autofocus="autofocus" />
+            <input id="artist" class="form-control" type="text" value="" placeholder="<@spring.message "placeholder.Artist"/>"
+                   name="artist" />
+            <input id="album" class="form-control" type="text" value="" placeholder="<@spring.message "placeholder.Album"/>"
+                   name="album" />
             <select class="form-control" id="tags"></select>
-
             <div class="input-group-btn">
                 <input id="searchButton" data-style="slide-left" class="btn btn-success "
-                       type="submit" value="Search"/>
+                       type="submit" value="<@spring.message "searchpage.SubmitButton"/>" />
             </div>
         </div>
     </form>
@@ -41,10 +40,10 @@
             <thead>
             <tr>
                 <th></th>
-                <th>Artist</th>
-                <th>Title</th>
-                <th>Album</th>
-                <th>Tags</th>
+                <th><@spring.message "songTable.Artist"/></th>
+                <th><@spring.message "songTable.Title"/></th>
+                <th><@spring.message "songTable.Album"/></th>
+                <th><@spring.message "songTable.Tags"/></th>
             </tr>
             </thead>
 
@@ -57,15 +56,15 @@
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     </button>
                 </td>
-                <td>Artist</td>
-                <td>Title</td>
-                <td>Album</td>
-                <td>Tags</td>
+                <td><@spring.message "songTable.Artist"/></td>
+                <td><@spring.message "songTable.Title"/></td>
+                <td><@spring.message "songTable.Album"/></td>
+                <td><@spring.message "songTable.Tags"/></td>
             </tr>
 
         </table>
     </div>
-    <a id="scroll-to-top" href="#top" title="Scroll to top">Top</a>
+    <a id="scroll-to-top" href="#top" title="Scroll to top"><@spring.message "searchpage.ScrollToTop"/></a>
 </div>
 <script type="text/javascript">
     var contextPath = "<@spring.url "" />";

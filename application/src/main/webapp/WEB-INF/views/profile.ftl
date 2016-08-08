@@ -1,19 +1,22 @@
 <#import "macros/macros.ftl" as m>
+<#import "/spring.ftl" as spring />
 <!DOCTYPE html>
 <html lang="en">
 <@m.head>
-<title>Profile - Music For All</title>
+<title><@spring.message "profilepage.Title"/></title>
+<link href="/resources/css/profilepage.css" rel="stylesheet"/>
 </@m.head>
 <@m.body>
-<h2>Profile</h2>
 
-<h3>User Information</h3>
+    <@m.navigation m.pages.Profile/>
 
-<p>
-    <a href="main" class="btn btn-default">Main Page</a>
-</p>
+<div id="container" class="container">
+    <div class="well col-md-4 col-md-offset-4 text-center">
+        <h3><@spring.message "profilepage.UserInfo"/></h3>
 
-<h3>Hello, ${username}</h3>
-    <@m.logoutForm/>
+        <h3><@spring.message "profilpage.Hello"/>, ${username}</h3>
+        <@m.logoutForm/>
+    </div>
+</div>
 </@m.body>
 </html>

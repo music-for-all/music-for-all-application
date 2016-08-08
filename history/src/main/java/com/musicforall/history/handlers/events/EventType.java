@@ -5,5 +5,5 @@ package com.musicforall.history.handlers.events;
  */
 public enum EventType {
     TRACK_LISTENED, TRACK_ADDED, TRACK_DELETED,
-    PLAYLIST_ADDED, PLAYLIST_DELETED
+    PLAYLIST_ADDED, PLAYLIST_DELETED, TRACK_LIKED
 }

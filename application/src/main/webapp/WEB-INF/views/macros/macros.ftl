@@ -39,7 +39,8 @@
 </#macro>
 
 <#macro form action method id enctype="">
-<form id="${id}" action="<@spring.url "${action}" />" method="${method}" <#if method=="post"||method=="POST"> enctype="${enctype}"</#if>>
+<form id="${id}" action="<@spring.url "${action}" />" method="${method}" <#if method=="post"||method=="POST">
+      enctype="${enctype}"</#if>>
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <#nested>
 </form>
@@ -47,21 +48,36 @@
 
 <#macro logoutForm>
     <@form '/logout',"post", "logout-form", "application/x-www-form-urlencoded">
-    <input type="submit" value="Log out" class="btn btn-default"/>
+    <button type="submit" class="btn btn-default"><i class="fa fa-sign-out" aria-hidden="true"></i></button>
     </@form>
 </#macro>
 
-<#assign pages = {"Main": {"url": '/main', "title": "Main"},
-"Search": {"url": '/search', "title": "Search"},
-"Add": {"url": '/uploadFile', "title": "Add track"}}>
+<#assign searchCaption>
+    <@spring.message "macros.Search"/>
+</#assign>
+<#assign mainCaption>
+    <@spring.message "macros.Main"/>
+</#assign>
+<#assign addCaption>
+    <@spring.message "macros.Add"/>
+</#assign>
+<#assign profileCaption>
+    <@spring.message "macros.Profile"/>
+</#assign>
 
-<#macro navigation activePage>
-    <#assign items = [pages.Main, pages.Search, pages.Add]>
+<#assign pages = {"Main": {"url": '/main', "title": "${mainCaption}", "icon": "fa-th-list"},
+"Search": {"url": '/search', "title": "${searchCaption}", "icon": "fa-search"},
+"Add": {"url": '/uploadFile', "title": "${addCaption}", "icon": "fa-plus"},
+"Profile": {"url": '/profile', "title": "", "icon": "fa-cog"},
+"Contacts": {"url": '/contactManager', "title": "", "icon": "fa-users"},
+"WithoutActivePage": {"url": ''}}>
 
+<#macro navigation activePage=pages.WithoutActivePage>
+    <#assign items = [pages.Contacts, pages.Main, pages.Search, pages.Profile]>
 <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
+    <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">Music for all</a>
+            <a class="navbar-brand" href="#"><@spring.message "projectName"/></a>
         </div>
 
         <div id="navbar" class="navbar-right navbar-collapse collapse ">
@@ -69,6 +85,15 @@
                 <#list items as item>
                     <@navigationItem item activePage/>
                 </#list>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"><i class="fa fa-globe" aria-hidden="true"></i><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="?lang=en">English</a></li>
+                        <li><a href="?lang=ru">Русский</a></li>
+                        <li><a href="?lang=ua">Українська</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -76,15 +101,15 @@
 </#macro>
 
 <#macro navigationItem item activePage>
-<li <#if item.url == activePage.url>class="active"</#if> >
+<li <#if item.url == activePage.url>class="active"</#if>>
     <a href=<@spring.url '${item.url}'/>>
-        <i class="fa"></i> ${item.title}
+        <i class="fa ${item.icon}"></i> ${item.title}
     </a>
 </li>
 </#macro>
 
 <#macro footer>
 <footer class="container-fluid">
-    <p>Music for all ©</p>
+    <p><@spring.message "projectName"/> ©</p>
 </footer>
 </#macro>

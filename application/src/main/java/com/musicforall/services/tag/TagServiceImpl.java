@@ -30,11 +30,6 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public boolean isTagExist(String name) {
-        return this.get(name) != null;
-    }
-
-    @Override
     public Tag get(String name) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Tag.class)
                 .add(Property.forName("name").eq(name));

@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         final int REMEMBER_ME_SECONDS = 86400;  // 24h
         http
                 .authorizeRequests()
-                .antMatchers("/", "/index", "/welcome*").permitAll()
+                .antMatchers("/", "/welcome*", "/files/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/welcome").permitAll()
