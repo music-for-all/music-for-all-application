@@ -91,6 +91,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="?lang=en">English</a></li>
                         <li><a href="?lang=ru">Русский</a></li>
+                        <li><a href="?lang=ua">Українська</a></li>
                     </ul>
                 </li>
             </ul>

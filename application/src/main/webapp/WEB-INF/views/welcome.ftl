@@ -45,7 +45,7 @@
                     </div>
                 </li>
                 <li>
-                    <a href="#"><span class="glyphicon glyphicon-user"></span> <@spring.message "welcomepage.SighUp"/>
+                    <a href="#"><span class="glyphicon glyphicon-user"></span> <@spring.message "welcomepage.SignUp"/>
                     </a>
                 </li>
                 <li>
@@ -91,6 +91,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="?lang=en">English</a></li>
                         <li><a href="?lang=ru">Русский</a></li>
+                        <li><a href="?lang=ua">Українська</a></li>
                     </ul>
                 </li>
             </ul>
