@@ -1,7 +1,7 @@
 package com.musicforall.services.track;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.model.SearchCriteria;
+import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.services.SearchCriteriaFactory;
@@ -65,10 +65,10 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
-    public List<Track> getAllLike(SearchCriteria searchCriteria) {
+    public List<Track> getAllLike(SearchTrackRequest searchCriteria) {
 
         final DetachedCriteria detachedCriteria =
-                SearchCriteriaFactory.buildTrackSearchCriteria(searchCriteria);
+                SearchCriteriaFactory.createTrackSearchCriteria(searchCriteria);
         return dao.getAllBy(detachedCriteria);
     }
 

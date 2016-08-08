@@ -1,7 +1,7 @@
 package com.musicforall.services;
 
 import com.musicforall.common.query.QueryUtil;
-import com.musicforall.model.SearchCriteria;
+import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Track;
 import org.hibernate.criterion.*;
 
@@ -17,10 +17,11 @@ public final class SearchCriteriaFactory {
 
     /**
      * Creates a detached criteria based on the data provided in a SearchCriteria object.
+     *
      * @param searchCriteria an instance of the SearchCriteria class
      * @return the detached criteria
      */
-    public static DetachedCriteria buildTrackSearchCriteria(SearchCriteria searchCriteria) {
+    public static DetachedCriteria createTrackSearchCriteria(SearchTrackRequest searchCriteria) {
 
         if (searchCriteria == null) {
             return null;
@@ -45,7 +46,7 @@ public final class SearchCriteriaFactory {
 
             final Disjunction disjunction = Restrictions.disjunction();
 
-            for (String tagName: tags) {
+            for (String tagName : tags) {
                 disjunction.add(Restrictions.eq("tag.name", tagName).ignoreCase());
             }
             final DetachedCriteria subcriteria = DetachedCriteria.forClass(Track.class)

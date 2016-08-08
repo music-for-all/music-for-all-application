@@ -2,55 +2,62 @@
 <#import "/spring.ftl" as spring />
 <!DOCTYPE html>
 <html lang="en">
-    <@m.head>
-        <title><@spring.message "uploadFile.Title"/></title>
-        <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
-        <link href="/resources/css/filespage.css" rel="stylesheet">
-        <script src="resources/js/track.js"></script>
-    </@m.head>
+<@m.head>
+<title><@spring.message "uploadFile.Title"/></title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
+<script src="<@spring.url "/resources/js/track.js"/>"></script>
+<script src="<@spring.url "/resources/js/select2config.js"/>"></script>
+<link href="<@spring.url "/resources/css/filespage.css" />" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
+</@m.head>
 
-    <@m.body>
+<@m.body>
 
     <@m.navigation/>
 
-    <div id="container" class="container">
-        <div id="result" class="col-md-4 col-md-offset-4 " role="alert"></div>
-        <div class="col-md-4 col-md-offset-4 text-center">
-            <button type="button" class="btn btn-success" onclick="addTrack()"><@spring.message "uploadFile.Upload"/>
-            </button>
-            <button type="button" onclick="copyForm()" class="btn btn-default"><@spring.message "uploadFile.AddMore"/>
-            </button>
-            <button type="button" onclick="clearForms()" class="btn btn-default"><@spring.message "uploadFile.Clear"/>
-            </button>
-        </div>
-
-        <div name="uploadFormContainer" class="col-md-4 col-md-offset-4 well  ">
-            <form method="POST" name="uploadForm" role="form" data-toggle="validator" action="javascript:void(null);"
-                  onsubmit="">
-                <input type="text" name="artist" class="form-control" placeholder="<@spring.message "placeholder.Artist"/>" data-minlength="2"
-                       maxlength="30" required/>
-                <input type="text" name="name" class="form-control" placeholder="<@spring.message "placeholder.Title"/>" data-minlength="2"
-                       maxlength="30" required/>
-
-                <div class="form-group">
-                    <h4 class="control-label text-center"><@spring.message "uploadFile.TagsCaption"/></h4>
-                    <input type="text" name="tags" class="form-control"
-                           data-role="tagsinput" placeholder="<@spring.message "placeholder.Tags"/>"/>
-                </div>
-                <input type="file" name="file" required>
-            </form>
-        </div>
+<div id="container" class="container">
+    <div id="result" class="col-md-4 col-md-offset-4 " role="alert"></div>
+    <div class="col-md-4 col-md-offset-4 text-center">
+        <button type="button" class="btn btn-success" onclick="addTrack()"><@spring.message "uploadFile.Upload"/>
+        </button>
+        <button type="button" onclick="copyForm()" class="btn btn-default"><@spring.message "uploadFile.AddMore"/>
+        </button>
+        <button type="button" onclick="clearForms()" class="btn btn-default"><@spring.message "uploadFile.Clear"/>
+        </button>
     </div>
-    </@m.body>
-    <@m.footer />
+
+    <div name="uploadFormContainer" class="col-md-4 col-md-offset-4 well  ">
+        <form method="POST" name="uploadForm" role="form" data-toggle="validator" action="javascript:void(null);"
+              onsubmit="">
+            <input type="text" name="artist" class="form-control" placeholder="<@spring.message "placeholder.Artist"/>"
+                   data-minlength="2"
+                   maxlength="30" required/>
+            <input type="text" name="name" class="form-control" placeholder="<@spring.message "placeholder.Title"/>"
+                   data-minlength="2"
+                   maxlength="30" required/>
+
+            <div class="form-group">
+                <h4 class="control-label text-center"><@spring.message "uploadFile.TagsCaption"/></h4>
+                <select class="form-control" id="tags"></select>
+            </div>
+            <input type="file" name="file" required>
+        </form>
+    </div>
+</div>
+</@m.body>
+<@m.footer />
 
 <script type="text/javascript">
     const max_length_error = 200;
     var track = new Track();
+    var contextPath = "<@spring.url "" />";
+    var placeholder = "<@spring.message "placeholder.Tags"/>";
+
+    $("#tags").select2(tagSearchConfig(contextPath, placeholder));
 
     function validateForm() {
-        var validator = $("form[name="uploadForm"]:last").data("bs.validator");
+        var validator = $("form[name=uploadForm]:last").data("bs.validator");
         validator.validate();
         if (!validator.hasErrors()) {
             return true;
@@ -62,8 +69,8 @@
 
     function clearForms() {
         $("div[name=uploadFormContainer]").not(":first").remove();
-        $("div[name="uploadFormContainer"]").find("input").val("").end()
-        $("input[name=tags]").tagsinput("removeAll");
+        $("div[name=uploadFormContainer]").find("input").val("").end();
+        $("#tags").empty();
         $("#result").hide();
     }
 
@@ -71,12 +78,12 @@
         if (!validateForm()) {
             return;
         }
-        $("div[name="uploadFormContainer"]:last").clone()
+        $("div[name=uploadFormContainer]:last").clone()
                 .find("input:text").val("").end()
                 .find(".bootstrap-tagsinput:last").remove().end()
                 .appendTo("#container");
         $("input[name=tags]:last").tagsinput();
-        $("form[name="uploadForm"]:last").validator();
+        $("form[name=uploadForm]:last").validator();
     }
 
     function showMessage(message, type) {
@@ -91,12 +98,11 @@
             return;
         }
         $("form[name=uploadForm]").each(function () {
-            var obj = new Object();
+            var obj = {};
             obj.name = $(this).find("input[name=artist]").val() + " - " + $(this).find("input[name=name]").val();
             obj.location = "unknown";
-            if ($(this).find("input[name=tags]").val() != "") {
-                obj.tags = $(this).find("input[name=tags]").val().split(",");
-            }
+            obj.tags = $(this).find("#tags").val();
+
             var formData = new FormData();
             formData.append("track", new Blob([JSON.stringify(obj)], {
                 type: "application/json"

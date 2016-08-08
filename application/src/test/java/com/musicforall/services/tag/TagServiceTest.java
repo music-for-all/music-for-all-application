@@ -53,4 +53,14 @@ public class TagServiceTest {
     public void getTagIsNotExist() {
         assertNull(tagService.get("this_tag_isnt_exist"));
     }
+
+    @Test
+    public void testGetTagsLike() {
+        final Tag tag1 = new Tag("rock");
+        final Tag tag2 = new Tag("indirock");
+        final Tag tag3 = new Tag("hard-rock");
+        final Tag tag4 = new Tag("jazz");
+        tagService.saveAll(Arrays.asList(tag1, tag2, tag3, tag4));
+        assertEquals(3, tagService.getAllLike("rock").size());
+    }
 }
