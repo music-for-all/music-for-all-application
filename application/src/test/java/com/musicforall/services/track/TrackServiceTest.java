@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -142,7 +141,7 @@ public class TrackServiceTest {
         assertNotNull(tracks);
         assertEquals(1, tracks.size());
 
-        tracks = trackService.getAllLike(new SearchCriteria());
+        tracks = trackService.getAllLike(new SearchTrackRequest());
         assertTrue(tracks.size() >= 3);
     }
 
