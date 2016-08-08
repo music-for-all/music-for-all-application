@@ -45,7 +45,7 @@
                     </div>
                 </li>
                 <li>
-                    <a href="#"><span class="glyphicon glyphicon-user"></span> <@spring.message "welcomepage.SighUp"/>
+                    <a href="#"><span class="glyphicon glyphicon-user"></span> <@spring.message "welcomepage.SignUp"/>
                     </a>
                 </li>
                 <li>
@@ -57,7 +57,7 @@
                             <label for="inputUsername" class="sr-only"><@spring.message "welcomepage.Username"/></label>
                             <input type="text" id="inputUsername" name="username" class="form-control"
                                    placeholder="Username"
-                                   required autofocus/>
+                                   required />
                             <label for="inputPassword" class="sr-only"><@spring.message "welcomepage.Password"/></label>
                             <input type="password" id="inputPassword" name="password" class="form-control"
                                    placeholder="Password"
@@ -91,6 +91,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="?lang=en">English</a></li>
                         <li><a href="?lang=ru">Русский</a></li>
+                        <li><a href="?lang=ua">Українська</a></li>
                     </ul>
                 </li>
             </ul>
@@ -128,12 +129,25 @@
     </div>
 </div>
 <script type="text/javascript">
-    $('#popover').popover({
-        html: true,
-        content: function () {
-            return $("#popover-content").html();
-        },
-        placement: "bottom"
+    $(document).ready(function() {
+
+        $('#popover').popover({
+            html: true,
+            content: function () {
+                return $("#popover-content").html();
+            },
+            placement: "bottom"
+        });
+
+        $("#popover").on("click", function() {return false;});
+
+        $("#popover").focus();
+
+        /* Set focus on the name input field when the pop-up window has been shown. */
+        $("#popover").on("shown.bs.popover", function () {
+
+            $("#inputUsername").focus();
+        });
     });
 </script>
 </@m.body>

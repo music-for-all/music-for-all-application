@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -29,9 +30,9 @@ public class PlaylistRestController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public HttpStatus deletePlaylist(@PathVariable("id") Integer id) {
+    public ResponseEntity deletePlaylist(@PathVariable("id") Integer id) {
         playlistService.delete(id);
-        return HttpStatus.NO_CONTENT;
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

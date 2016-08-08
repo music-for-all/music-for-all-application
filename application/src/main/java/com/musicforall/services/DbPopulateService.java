@@ -22,6 +22,9 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.io.FilenameUtils.getName;
 
+/**
+ * Populates the database with sample tracks, playlists, and users when the application starts up.
+ */
 @Component
 public class DbPopulateService {
     private static final Logger LOG = LoggerFactory.getLogger(DbPopulateService.class);
