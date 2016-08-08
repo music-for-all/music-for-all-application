@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <@m.head>
-<title>Main</title>
+<title><@spring.message "mainpage.Title"/></title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="/resources/js/playlist.js"></script>
 <script src="/resources/js/track.js"></script>
@@ -24,10 +24,10 @@
         <table id="results" class="table table-hover table-striped table-condensed ">
             <thead>
             <tr>
-                <th>Actions</th>
-                <th>Artist</th>
-                <th>Title</th>
-                <th>Duration</th>
+                <th><@spring.message "welcomepage.Actions"/></th>
+                <th><@spring.message "welcomepage.Artist"/></th>
+                <th><@spring.message "welcomepage.Title"/></th>
+                <th><@spring.message "welcomepage.Duration"/></th>
             </tr>
             </thead>
         </table>
@@ -38,7 +38,8 @@
     </a>
 
     <div class="well  col-md-2 col-md-offset-1  ">
-        <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">Create playlist</button>
+        <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">
+            <@spring.message "mainpage.CreatePlaylist"/></button>
         <ul id="playlists" class="nav nav-pills nav-stacked"></ul>
 
     </div>
