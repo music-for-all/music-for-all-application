@@ -1,9 +1,9 @@
 <#import "macros/macros.ftl" as m>
-<#import "/spring.ftl" as spring />
+<#import "macros/spring.ftl" as spring/>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <@m.head>
-<title>Contacts</title>
+<title><@spring.message "contactpage.Title"/></title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <link href="/resources/css/contactManager.css" rel="stylesheet"/>
 <script src="/resources/js/user.js"></script>
@@ -17,10 +17,10 @@
         <div class="col-md-2">
             <div id="selector" class="btn-group-vertical" data-toggle="buttons">
                 <label class="btn btn-default active" onclick="getFollowing()">
-                    <input type="radio">Following
+                    <input type="radio"><@spring.message "contactpage.Following"/>
                 </label>
                 <label class="btn btn-default" onclick="getFollowers()">
-                    <input type="radio">Followers
+                    <input type="radio"><@spring.message "contactpage.Followers"/>
                 </label>
             </div>
         </div>
@@ -30,7 +30,7 @@
                     <input id="name" class="form-control" type="text" value=""/>
                     <div class="input-group-btn">
                         <input id="searchButton" data-style="slide-left" class="btn btn-success "
-                               type="submit" value="Search"/>
+                               type="submit" value="<@spring.message "contactpage.SubmitSearch"/>"/>
                     </div>
                 </div>
             </form>

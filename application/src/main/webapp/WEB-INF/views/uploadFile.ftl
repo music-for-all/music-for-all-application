@@ -1,8 +1,9 @@
 <#import "macros/macros.ftl" as m>
+<#import "/spring.ftl" as spring />
 <!DOCTYPE html>
 <html lang="en">
     <@m.head>
-        <title>Add song</title>
+        <title><@spring.message "uploadFile.Title"/></title>
         <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
         <link href="/resources/css/filespage.css" rel="stylesheet">
@@ -16,26 +17,26 @@
     <div id="container" class="container">
         <div id="result" class="col-md-4 col-md-offset-4 " role="alert"></div>
         <div class="col-md-4 col-md-offset-4 text-center">
-            <button type="button" class="btn btn-success" onclick="addTrack()">Upload
+            <button type="button" class="btn btn-success" onclick="addTrack()"><@spring.message "uploadFile.Upload"/>
             </button>
-            <button type="button" onclick="copyForm()" class="btn btn-default">Add more
+            <button type="button" onclick="copyForm()" class="btn btn-default"><@spring.message "uploadFile.AddMore"/>
             </button>
-            <button type="button" onclick="clearForms()" class="btn btn-default">Clear forms
+            <button type="button" onclick="clearForms()" class="btn btn-default"><@spring.message "uploadFile.Clear"/>
             </button>
         </div>
 
         <div name="uploadFormContainer" class="col-md-4 col-md-offset-4 well  ">
             <form method="POST" name="uploadForm" role="form" data-toggle="validator" action="javascript:void(null);"
                   onsubmit="">
-                <input type="text" name="artist" class="form-control" placeholder="Artist" data-minlength="2"
+                <input type="text" name="artist" class="form-control" placeholder="<@spring.message "placeholder.Artist"/>" data-minlength="2"
                        maxlength="30" required/>
-                <input type="text" name="name" class="form-control" placeholder="Title" data-minlength="2"
+                <input type="text" name="name" class="form-control" placeholder="<@spring.message "placeholder.Title"/>" data-minlength="2"
                        maxlength="30" required/>
 
                 <div class="form-group">
-                    <h4 class="control-label text-center">Tags (optional)</h4>
+                    <h4 class="control-label text-center"><@spring.message "uploadFile.TagsCaption"/></h4>
                     <input type="text" name="tags" class="form-control"
-                           data-role="tagsinput" placeholder="New tag"/>
+                           data-role="tagsinput" placeholder="<@spring.message "placeholder.Tags"/>"/>
                 </div>
                 <input type="file" name="file" required>
             </form>
@@ -54,7 +55,7 @@
         if (!validator.hasErrors()) {
             return true;
         } else {
-            showMessage("Size of fields must be from 2 to 30", "warning");
+            showMessage("<@spring.message "uploadFile.ValidatorError"/>", "warning");
             return false;
         }
     }
