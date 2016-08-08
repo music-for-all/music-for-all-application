@@ -42,8 +42,6 @@ public class SearchCriteriaFactoryTest {
     public void testBuildTrackSearchCriteria() {
         final Set<Tag> tags = new HashSet<Tag>(Arrays.asList(new Tag("tag1"), new Tag("tag2")));
 
-        dao.all(Track.class).forEach((track -> dao.delete(track)));
-
         List<Track> tracks = Arrays.asList(
                 new Track("track", "title1", "artist1", "album1", "/root/track1.mp3", null),
                 new Track("track", "title2", "artist2", "album2", "/root/track2.mp3", tags),
