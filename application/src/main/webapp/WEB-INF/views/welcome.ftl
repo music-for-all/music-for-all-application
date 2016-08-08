@@ -3,6 +3,7 @@
 <html lang="en">
 <@m.head>
 <title>Welcome</title>
+<script src="/resources/js/player.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <link href="/resources/css/welcomepage.css" rel="stylesheet">
 <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
@@ -93,24 +94,18 @@
             <div class="col-md-12">
                 <div class="intro-message">
                     <h1>Music for all</h1>
-
                     <h3>Sign in and manage your songs</h3>
                     <div class="container">
                     <div class="top-table well" id="tops">
                         <table id="top" class="table table-hover table-striped table-condensed ">
                             <thead>
                             <tr>
-                                <th>Actions</th>
-                                <th>Artist</th>
-                                <th>Title</th>
-                                <th>Duration</th>
+                                <td>Actions</td>
+                                <td>Artist</td>
+                                <td>Title</td>
+                                <td>Duration</td>
                             </tr>
                             </thead>
-
-                            <audio controls>
-                                <source type="audio/mp3" src="/files/01-Tom-Waits-on-Selvin-On-The-City-part-1.mp3">
-                            </audio>
-
                         </table>
                     </div>
                     </div>
