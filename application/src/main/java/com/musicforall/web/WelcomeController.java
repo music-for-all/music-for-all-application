@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @Controller
 public class WelcomeController {
 
-
     private static final Logger LOG = LoggerFactory.getLogger(WelcomeController.class);
     public static final String SPRING_SECURITY_LAST_EXCEPTION = "SPRING_SECURITY_LAST_EXCEPTION";
 
@@ -28,10 +27,6 @@ public class WelcomeController {
 
     @Autowired
     private HistoryService historyService;
-
-    public WelcomeController() {
-        LOG.debug("Welcome controller");
-    }
 
     @RequestMapping(value = {"/", "welcome"})
     public String welcome(Model model, HttpServletRequest request) {

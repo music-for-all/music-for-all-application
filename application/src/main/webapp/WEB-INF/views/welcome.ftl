@@ -3,13 +3,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <@m.head>
-<<<<<<< HEAD
-<title>Welcome</title>
+<title><@spring.message "welcomepage.PageTitle"/></title>
 <script src="/resources/js/player.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-=======
-<title><@spring.message "welcomepage.PageTitle"/></title>
->>>>>>> master
+
 <link href="/resources/css/welcomepage.css" rel="stylesheet">
 <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
 </@m.head>
@@ -113,7 +110,6 @@
                     <div class="container">
                     <h1><@spring.message "projectName"/></h1>
                     <h3><@spring.message "welcomepage.Intro"/></h3>
->>>>>>> master
                     <div class="top-table well" id="tops">
                         <table id="top" class="table table-hover table-striped table-condensed ">
                             <thead>
