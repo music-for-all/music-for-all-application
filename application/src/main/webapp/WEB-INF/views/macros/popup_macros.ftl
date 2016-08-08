@@ -42,8 +42,7 @@
         <@popupBody>
         <div class="form-group">
             <label for="inputNamePlaylist" class="col-sm-2 control-label"> <@spring.message "popupmacro.NameCaption"/>:</label>
-            <input type="text" class="form-control" id="inputNamePlaylist" placeholder="
-            <@spring.message "popupmacro.NamePlaceholder"/>">
+            <input type="text" class="form-control" id="inputNamePlaylist" placeholder="<@spring.message "popupmacro.NamePlaceholder"/>">
         </div>
         </@popupBody>
 
