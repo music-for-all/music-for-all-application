@@ -2,12 +2,12 @@ package com.musicforall.services;
 
 import com.musicforall.files.manager.FileManager;
 import com.musicforall.history.handlers.events.EventType;
-import com.musicforall.history.handlers.events.TrackListenedEvent;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.HistoryService;
-import com.musicforall.model.*;
-import com.musicforall.services.follower.FollowerService;
-import com.musicforall.model.*;
+import com.musicforall.model.Playlist;
+import com.musicforall.model.Tag;
+import com.musicforall.model.Track;
+import com.musicforall.model.User;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.track.TrackService;
@@ -15,11 +15,9 @@ import com.musicforall.services.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
