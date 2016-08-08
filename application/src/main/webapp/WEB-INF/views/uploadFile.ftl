@@ -28,15 +28,15 @@
         <div name="uploadFormContainer" class="col-md-4 col-md-offset-4 well  ">
             <form method="POST" name="upForm" role="form" data-toggle="validator" action="javascript:void(null);"
                   onsubmit="">
-                <input type="text" name="artist" class="form-control" placeholder="<@spring.message "uploadFile.Artist"/>" data-minlength="2"
+                <input type="text" name="artist" class="form-control" placeholder="<@spring.message "placeholder.Artist"/>" data-minlength="2"
                        maxlength="30" required/>
-                <input type="text" name="name" class="form-control" placeholder="<@spring.message "uploadFile.SongTitle"/>" data-minlength="2"
+                <input type="text" name="name" class="form-control" placeholder="<@spring.message "placeholder.Title"/>" data-minlength="2"
                        maxlength="30" required/>
 
                 <div class="form-group">
                     <h4 class="control-label text-center"><@spring.message "uploadFile.TagsCaption"/></h4>
                     <input type="text" name="tags" class="form-control"
-                           data-role="tagsinput" placeholder="<@spring.message "uploadFile.TagsPlaceholder"/>"/>
+                           data-role="tagsinput" placeholder="<@spring.message "placeholder.Tags"/>"/>
                 </div>
                 <input type="file" name="file" required>
             </form>

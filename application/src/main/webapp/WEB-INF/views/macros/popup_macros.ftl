@@ -1,3 +1,5 @@
+<#import "/spring.ftl" as spring />
+
 <#macro popUp id>
 <div id="${id}" class="modal fade">
     <div class="modal-dialog" role="document">
@@ -29,36 +31,62 @@
 </div>
 </#macro>
 
+<#assign addPlaylistCaption>
+    <@spring.message "popupmacro.AddingPlaylist"/>
+</#assign>
+<#assign nameCaption>
+    <@spring.message "popupmacro.NameCaption"/>
+</#assign>
+<#assign namePlaceholder>
+    <@spring.message "popupmacro.NamePlaceholder"/>
+</#assign>
+<#assign actionClose>
+    <@spring.message "popupmacro.ActionClose"/>
+</#assign>
+<#assign actionAdd>
+    <@spring.message "popupmacro.ActionAdd"/>
+</#assign>
+
 <#macro popUpAdd id>
     <@popUp id>
-        <@popupHead "Adding playlist"/>
+        <@popupHead "${addPlaylistCaption}"/>
 
         <@popupBody>
         <div class="form-group">
-            <label for="inputNamePlaylist" class="col-sm-2 control-label">Name:</label>
-            <input type="text" class="form-control" id="inputNamePlaylist" placeholder="Name">
+            <label for="inputNamePlaylist" class="col-sm-2 control-label">${nameCaption}:</label>
+            <input type="text" class="form-control" id="inputNamePlaylist" placeholder="${namePlaceholder}">
         </div>
         </@popupBody>
 
         <@popupFooter>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="acceptCreatingPlaylistButton" type="button" class="btn btn-success">Add</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">${actionClose}</button>
+        <button id="acceptCreatingPlaylistButton" type="button" class="btn btn-success">${actionAdd}</button>
         </@popupFooter>
     </@popUp>
 </#macro>
+
+<#assign deleteHeader>
+    <@spring.message "popupmacro.DeleteHeader"/>
+</#assign>
+<#assign actionNo>
+    <@spring.message "popupmacro.ActionNo"/>
+</#assign>
+<#assign actionYes>
+    <@spring.message "popupmacro.ActionYes"/>
+</#assign>
 
 <#macro popUpDelete id>
     <@popUp id>
         <@popupHead "Deleting playlist"/>
 
         <@popupBody>
-        <p>Are you sure?</p>
+        <p>${deleteHeader}</p>
         </@popupBody>
 
         <@popupFooter>
-        <button type="button" class="btn btn-success" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal">${actionNo}</button>
         <button type="button" id="acceptRemovingPlaylistButton" class="btn btn-danger" data-dismiss="modal">
-            Yes
+        ${actionYes}
         </button>
         </@popupFooter>
     </@popUp>
