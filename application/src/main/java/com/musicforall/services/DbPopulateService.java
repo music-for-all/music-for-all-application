@@ -7,6 +7,8 @@ import com.musicforall.history.model.History;
 import com.musicforall.history.service.HistoryService;
 import com.musicforall.model.*;
 import com.musicforall.services.follower.FollowerService;
+import com.musicforall.model.*;
+import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
