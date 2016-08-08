@@ -1,16 +1,23 @@
 package com.musicforall.services;
 
 import com.musicforall.files.manager.FileManager;
+import com.musicforall.history.handlers.events.EventType;
+import com.musicforall.history.handlers.events.TrackListenedEvent;
+import com.musicforall.history.model.History;
+import com.musicforall.history.service.HistoryService;
 import com.musicforall.model.*;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
+import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -50,6 +57,8 @@ public class DbPopulateService {
     private UserService userService;
 
     @Autowired
+    private TrackService trackService;
+    @Autowired
     private PlaylistService playlistService;
 
     @Autowired
@@ -58,6 +67,10 @@ public class DbPopulateService {
     @Autowired
     private FileManager fileManager;
 
+    @Autowired
+    private HistoryService historyService;
+
+
     private static URL toURL(String url) {
         try {
             return new URL(url);
@@ -65,6 +78,17 @@ public class DbPopulateService {
             LOG.error("URL is malformed {}", url, e);
         }
         return null;
+    }
+
+    private void fillListenedTracks(Set<Track> tracks, Integer userId){
+        for (Track t:
+             tracks) {
+            final Random rnd = new Random();
+            for(int i=0; i<rnd.nextInt(7); i++){
+                History h = new History(t.getId(), new Date(), userId, EventType.TRACK_LISTENED);
+                historyService.record(h);
+            }
+        }
     }
 
     @PostConstruct
@@ -105,7 +129,9 @@ public class DbPopulateService {
                 .collect(toSet());
 
         final Playlist playlist = new Playlist("Hype", tracks, user);
+
         playlistService.save(playlist);
+        fillListenedTracks(tracks, user.getId());
 
         LOG.info("playlist {} is saved", playlist);
 
