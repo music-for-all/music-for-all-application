@@ -90,7 +90,7 @@
                        aria-expanded="false"><i class="fa fa-globe" aria-hidden="true"></i><span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="?lang=en">English</a></li>
-                        <li><a href="?lang=ru">Russian</a></li>
+                        <li><a href="?lang=ru">Русский</a></li>
                     </ul>
                 </li>
             </ul>
