@@ -1,6 +1,6 @@
 "use strict";
 
-function tagSearchConfig(contextPath) {
+function tagSearchConfig(contextPath, placeholder) {
     return {
         ajax: {
             url: contextPath + "/tags",
@@ -20,7 +20,7 @@ function tagSearchConfig(contextPath) {
         },
         allowClear: true,
         multiple: true,
-        placeholder: "Tags",
+        placeholder: placeholder,
         minimumInputLength: 2,
         templateResult: function (data) {
             return data.text;

@@ -25,7 +25,7 @@
                    name="artist" />
             <input id="album" class="form-control" type="text" value="" placeholder="<@spring.message "placeholder.Album"/>"
                    name="album" />
-            <select class="form-control" id="tags"></select>
+            <select class="form-control" id="tags" placeholder="<@spring.message "placeholder.Album"/>"></select>
             <div class="input-group-btn">
                 <input id="searchButton" data-style="slide-left" class="btn btn-success "
                        type="submit" value="<@spring.message "searchpage.SubmitButton"/>" />
@@ -68,7 +68,8 @@
 </div>
 <script type="text/javascript">
     var contextPath = "<@spring.url "" />";
-    $("#tags").select2(tagSearchConfig(contextPath));
+    var placeholder = "<@spring.message "placeholder.Tags"/>";
+    $("#tags").select2(tagSearchConfig(contextPath, placeholder));
 </script>
 </@m.body>
 </html>

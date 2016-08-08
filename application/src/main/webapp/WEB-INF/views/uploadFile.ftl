@@ -16,32 +16,33 @@
 
     <@m.navigation/>
 
-    <div id="container" class="container">
-        <div id="result" class="col-md-4 col-md-offset-4 " role="alert"></div>
-        <div class="col-md-4 col-md-offset-4 text-center">
-            <button type="button" class="btn btn-success" onclick="addTrack()"><@spring.message "uploadFile.Upload"/>
-            </button>
-            <button type="button" onclick="copyForm()" class="btn btn-default"><@spring.message "uploadFile.AddMore"/>
-            </button>
-            <button type="button" onclick="clearForms()" class="btn btn-default"><@spring.message "uploadFile.Clear"/>
-            </button>
-        </div>
+<div id="container" class="container">
+    <div id="result" class="col-md-4 col-md-offset-4 " role="alert"></div>
+    <div class="col-md-4 col-md-offset-4 text-center">
+        <button type="button" class="btn btn-success" onclick="addTrack()"><@spring.message "uploadFile.Upload"/>
+        </button>
+        <button type="button" onclick="copyForm()" class="btn btn-default"><@spring.message "uploadFile.AddMore"/>
+        </button>
+        <button type="button" onclick="clearForms()" class="btn btn-default"><@spring.message "uploadFile.Clear"/>
+        </button>
+    </div>
 
-        <div name="uploadFormContainer" class="col-md-4 col-md-offset-4 well  ">
-            <form method="POST" name="uploadForm" role="form" data-toggle="validator" action="javascript:void(null);"
-                  onsubmit="">
-                <input type="text" name="artist" class="form-control" placeholder="<@spring.message "placeholder.Artist"/>" data-minlength="2"
-                       maxlength="30" required/>
-                <input type="text" name="name" class="form-control" placeholder="<@spring.message "placeholder.Title"/>" data-minlength="2"
-                       maxlength="30" required/>
+    <div name="uploadFormContainer" class="col-md-4 col-md-offset-4 well  ">
+        <form method="POST" name="uploadForm" role="form" data-toggle="validator" action="javascript:void(null);"
+              onsubmit="">
+            <input type="text" name="artist" class="form-control" placeholder="<@spring.message "placeholder.Artist"/>"
+                   data-minlength="2"
+                   maxlength="30" required/>
+            <input type="text" name="name" class="form-control" placeholder="<@spring.message "placeholder.Title"/>"
+                   data-minlength="2"
+                   maxlength="30" required/>
 
-                <div class="form-group">
-                    <h4 class="control-label text-center"><@spring.message "uploadFile.TagsCaption"/></h4>
-                    <select class="form-control" id="tags"></select>
-                </div>
-                <input type="file" name="file" required>
-            </form>
-        </div>
+            <div class="form-group">
+                <h4 class="control-label text-center"><@spring.message "uploadFile.TagsCaption"/></h4>
+                <select class="form-control" id="tags"></select>
+            </div>
+            <input type="file" name="file" required>
+        </form>
     </div>
 </div>
 </@m.body>
@@ -51,10 +52,12 @@
     const max_length_error = 200;
     var track = new Track();
     var contextPath = "<@spring.url "" />";
-    $("#tags").select2(tagSearchConfig(contextPath));
+    var placeholder = "<@spring.message "placeholder.Tags"/>";
+
+    $("#tags").select2(tagSearchConfig(contextPath, placeholder));
 
     function validateForm() {
-        var validator = $("form[name="uploadForm"]:last").data("bs.validator");
+        var validator = $("form[name=uploadForm]:last").data("bs.validator");
         validator.validate();
         if (!validator.hasErrors()) {
             return true;
@@ -66,8 +69,8 @@
 
     function clearForms() {
         $("div[name=uploadFormContainer]").not(":first").remove();
-        $("div[name="uploadFormContainer"]").find("input").val("").end()
-        $("input[name=tags]").tagsinput("removeAll");
+        $("div[name=uploadFormContainer]").find("input").val("").end();
+        $("#tags").empty();
         $("#result").hide();
     }
 
@@ -75,12 +78,12 @@
         if (!validateForm()) {
             return;
         }
-        $("div[name="uploadFormContainer"]:last").clone()
+        $("div[name=uploadFormContainer]:last").clone()
                 .find("input:text").val("").end()
                 .find(".bootstrap-tagsinput:last").remove().end()
                 .appendTo("#container");
         $("input[name=tags]:last").tagsinput();
-        $("form[name="uploadForm"]:last").validator();
+        $("form[name=uploadForm]:last").validator();
     }
 
     function showMessage(message, type) {
@@ -95,7 +98,7 @@
             return;
         }
         $("form[name=uploadForm]").each(function () {
-            var obj = new Object();
+            var obj = {};
             obj.name = $(this).find("input[name=artist]").val() + " - " + $(this).find("input[name=name]").val();
             obj.location = "unknown";
             obj.tags = $(this).find("#tags").val();
