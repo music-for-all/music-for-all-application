@@ -38,9 +38,12 @@ public class HistoryServiceImpl implements HistoryService {
                 " where event_type='TRACK_LISTENED'" +
                 " group by track_id" +
                 " order by count(track_id) desc" +
-                " limit " + Integer.toString(limitCount);
+                " limit :limit_count";
 
-        return dao.getBySql(sql, null);
+        final Map<String, String> properties = new HashMap<>();
+        properties.put("limit_count", Integer.toString(limitCount));
+
+        return dao.getBySql(sql, properties);
     }
 
     @Override
