@@ -12,6 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,8 +22,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
+import java.util.List;
+import java.util.Objects;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author IliaNik on 29.07.2016.
@@ -37,6 +43,7 @@ public class HistoryTest {
 
     private static final Integer USER_ID = 1111;
     private static final Integer TRACK_ID = 2222;
+    private static final Integer TRACK2_ID = 2223;
 
     @Autowired
     private HistoryService historyService;
@@ -74,5 +81,21 @@ public class HistoryTest {
         /* Try to get the like count for non-existing track. */
         numLikes = historyService.getLikeCount(TRACK_ID + 1234);
         assertEquals(0, numLikes);
+    }
+
+    @Test
+    public void testGetTheMostPopularTrackId(){
+        final TrackListenedEvent event = new TrackListenedEvent(TRACK_ID, USER_ID);
+
+        final TrackListenedEvent event2 = new TrackListenedEvent(TRACK2_ID, USER_ID);
+        historyEventListener.handleTrackListened(event2);
+
+        historyEventListener.handleTrackListened(event);
+        historyEventListener.handleTrackListened(event);
+
+        assertTrue(Objects.equals(historyService.getTheMostPopularTrack(10).get(0), TRACK_ID));
+        assertEquals(historyService.getTheMostPopularTrack(20).size(), 2);
+
+        assertEquals(historyService.getTheMostPopularTrack(1).size(), 1); //test limit
     }
 }
