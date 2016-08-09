@@ -129,6 +129,15 @@ public class Dao {
         query.executeUpdate();
     }
 
+    public <T> List<T> getBySql(String sql, Map<String, String> parameters){
+        LOG.info("Going to find entities by sql - {}, with parameters - {}", sql, parameters);
+        final Query query = currentSession().createSQLQuery(sql);
+        query.setProperties(parameters);
+        final List<T> entities = (List<T>) query.list();
+        LOG.info(FOUND_ENTITY, entities);
+        return entities;
+    }
+
     /**
      * Return the persistent instances of the given entity class which meet given parameters,
      *

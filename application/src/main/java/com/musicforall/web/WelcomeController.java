@@ -44,8 +44,8 @@ public class WelcomeController {
     @RequestMapping(value = "welcome/getByPopularity",  method = RequestMethod.GET)
     @ResponseBody
     public Collection<Track> getByPopularity(){
-        return historyService.getTheMostPopularTrack()
-                .stream().limit(10)
+        return historyService.getTheMostPopularTrack(10)
+                .stream()
                 .map(trackId -> trackService.get(trackId)).collect(Collectors.toList());
     }
 }

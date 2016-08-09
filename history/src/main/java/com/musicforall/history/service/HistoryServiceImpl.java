@@ -3,10 +3,14 @@ package com.musicforall.history.service;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.*;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Convert;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,17 +29,25 @@ public class HistoryServiceImpl implements HistoryService {
     public void record(History history) {
         dao.save(history);
     }
+    
+    @Override
+    public List<Integer> getTheMostPopularTrack(Integer limitCount) {
+
+        String sql = "select track_id" +
+                " from history " +
+                " where event_type='TRACK_LISTENED'" +
+                " group by track_id" +
+                " order by count(track_id) desc" +
+                " limit " + Integer.toString(limitCount);
+
+        return dao.getBySql(sql, null);
+    }
 
     @Override
-    public List<Integer> getTheMostPopularTrack() {
-        String hql = "select history.trackId" +
-                " from History history" +
-                " where history.eventType='TRACK_LISTENED'" +
-                " group by history.trackId" +
-                " order by count(history.trackId) desc";
-
-        return dao.getAllBy(hql, null);
+    public History getBy(DetachedCriteria detachedCriteria) {
+        return dao.getBy(detachedCriteria);
     }
+
 
     @Override
     public long getLikeCount(Integer trackId) {
