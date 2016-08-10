@@ -1,6 +1,6 @@
 package com.musicforall.services.track;
 
-import com.musicforall.model.SearchCriteria;
+import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 
@@ -59,7 +59,7 @@ public interface TrackService {
      * @param searchCriteria the search criteria
      * @return the list of retrieved tracks
      */
-    List<Track> getAllLike(SearchCriteria searchCriteria);
+    List<Track> getAllLike(SearchTrackRequest searchCriteria);
 
     /**
      * Retrieves all Track records from the database.

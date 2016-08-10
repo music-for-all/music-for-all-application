@@ -36,4 +36,6 @@ public interface TagService {
      * @return a collection of type Tag
      */
     List<Tag> getAllTags();
+
+    List<Tag> getAllLike(String tagName);
 }

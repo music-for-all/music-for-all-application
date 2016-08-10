@@ -16,7 +16,6 @@ jQuery(document).ready(function () {
         return false;
     });
 });
-/* end $(document).ready() */
 
 /**
  * Performs an Ajax-based search; populates the results table with found tracks.
@@ -40,9 +39,6 @@ function search() {
     if (album.length < MIN_QUERY) {
         album = null;
     }
-    if (tags.length < MIN_QUERY) {
-        tags = null;
-    }
 
     /* If all the fields are empty, do not proceed with search. */
     if (!title && !artist && !album && !tags) {
@@ -61,13 +57,10 @@ function search() {
     if (album && album.length > MAX_QUERY) {
         album = album.substr(0, MAX_QUERY);
     }
-    if (tags && tags.length > MAX_QUERY) {
-        tags = tags.substr(0, MAX_QUERY);
-    }
 
     /* If tags are provided, make them a string with comma-separated values. */
     if (tags) {
-        tags = tags.split(/[\s,;]+/).join(",");
+        tags = tags.join(",");
     }
 
     var trackData = {
@@ -93,12 +86,12 @@ function search() {
         console.log(message);
 
     }).done(function (results) {
-
         console.log(results);
         $("#status-message").text("Found: " + results.length);
         populateResultsTable(results);
     });
-}   /* End of search() */
+}
+/* End of search() */
 
 /**
  * Inserts the search results into the results table.
@@ -111,12 +104,16 @@ function populateResultsTable(items) {
         var $row = $("#row-template").clone().removeAttr("id").show();
 
         var tagsArray = [];
-        $(item.tags).each(function(i, tag) {
+        $(item.tags).each(function (i, tag) {
             tagsArray.push(tag.name);
         });
 
-        $row.find("td:eq(0) button:eq(0)").on("click", function() {playPreview(item.id)});
-        $row.find("td:eq(0) button:eq(1)").on("click", function() {addToPlaylist(item.id)});
+        $row.find("td:eq(0) button:eq(0)").on("click", function () {
+            playPreview(item.id)
+        });
+        $row.find("td:eq(0) button:eq(1)").on("click", function () {
+            addToPlaylist(item.id)
+        });
         $row.find("td:eq(1)").text(item.artist);
         $row.find("td:eq(2)").text(item.title);
         $row.find("td:eq(3)").text(item.album);

@@ -1,6 +1,6 @@
 package com.musicforall.services.track;
 
-import com.musicforall.model.SearchCriteria;
+import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.services.tag.TagService;
@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -137,12 +136,12 @@ public class TrackServiceTest {
         );
         trackService.saveAll(tracks);
 
-        SearchCriteria searchCriteria = new SearchCriteria("title", "artist", "album", Arrays.asList("tag1", "tag2"));
+        SearchTrackRequest searchCriteria = new SearchTrackRequest("title", "artist", "album", Arrays.asList("tag1", "tag2"));
         tracks = trackService.getAllLike(searchCriteria);
         assertNotNull(tracks);
         assertEquals(1, tracks.size());
 
-        tracks = trackService.getAllLike(new SearchCriteria());
+        tracks = trackService.getAllLike(new SearchTrackRequest());
         assertTrue(tracks.size() >= 3);
     }
 

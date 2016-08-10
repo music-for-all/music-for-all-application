@@ -1,7 +1,7 @@
 package com.musicforall.common.dao;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
@@ -114,15 +114,15 @@ public class Dao {
      */
     public <T> T getBy(String hql, Map<String, Object> parameters) {
         LOG.info("Going to find entity by hql - {}, with parameters - {}", hql, parameters);
-        final Query query = currentSession().createQuery(hql);
+        final Query<T> query = currentSession().createQuery(hql);
         query.setProperties(parameters);
-        final T entity = (T) query.uniqueResult();
+        final T entity = query.uniqueResult();
         LOG.info(FOUND_ENTITY, entity);
         return entity;
     }
 
     public void update(String sql, Map<String, List<Serializable>> parametrs) {
-        final Query query = currentSession().createSQLQuery(sql);
+        final Query query = currentSession().createQuery(sql);
         for (final Entry<String, List<Serializable>> s : parametrs.entrySet()) {
             query.setParameterList(s.getKey(), s.getValue());
         }
@@ -148,9 +148,9 @@ public class Dao {
     @SuppressWarnings("unchecked")
     public <T> List<T> getAllBy(String hql, Map<String, String> parameters) {
         LOG.info("Going to find entities by hql - {}, with parameters - {}", hql, parameters);
-        final Query query = currentSession().createQuery(hql);
+        final Query<T> query = currentSession().createQuery(hql);
         query.setProperties(parameters);
-        final List<T> entities = (List<T>) query.list();
+        final List<T> entities = query.list();
         LOG.info(FOUND_ENTITY, entities);
         return entities;
     }

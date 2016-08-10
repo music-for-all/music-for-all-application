@@ -5,9 +5,12 @@
 <@m.head>
 <title><@spring.message "searchpage.Title"/></title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="/resources/js/searchpage.js"></script>
-<link href="/resources/css/searchpage.css" rel="stylesheet">
-<link href="/resources/css/font-awesome.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
+<script src="<@spring.url "/resources/js/searchpage.js"/>"></script>
+<script src="<@spring.url "/resources/js/select2config.js"/>"></script>
+<link href="<@spring.url "/resources/css/searchpage.css" />" rel="stylesheet">
+<link href="<@spring.url "/resources/css/font-awesome.min.css"/>" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
 </@m.head>
 <@m.body>
 
@@ -22,8 +25,7 @@
                    name="artist" />
             <input id="album" class="form-control" type="text" value="" placeholder="<@spring.message "placeholder.Album"/>"
                    name="album" />
-            <input id="tags" class="form-control" type="text" value="" placeholder="<@spring.message "placeholder.Tags"/>"
-                   name="tags" />
+            <select class="form-control" id="tags" placeholder="<@spring.message "placeholder.Album"/>"></select>
             <div class="input-group-btn">
                 <input id="searchButton" data-style="slide-left" class="btn btn-success "
                        type="submit" value="<@spring.message "searchpage.SubmitButton"/>" />
@@ -32,6 +34,7 @@
     </form>
 
     <span id="status-message" class="well"></span>
+
     <div id="resultsd" class="well ">
         <table id="results" class="table table-hover table-striped table-condensed ">
             <thead>
@@ -63,5 +66,10 @@
     </div>
     <a id="scroll-to-top" href="#top" title="Scroll to top"><@spring.message "searchpage.ScrollToTop"/></a>
 </div>
+<script type="text/javascript">
+    var contextPath = "<@spring.url "" />";
+    var placeholder = "<@spring.message "placeholder.Tags"/>";
+    $("#tags").select2(tagSearchConfig(contextPath, placeholder));
+</script>
 </@m.body>
 </html>

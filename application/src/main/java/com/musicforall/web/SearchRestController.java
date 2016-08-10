@@ -1,7 +1,6 @@
 package com.musicforall.web;
 
-import com.musicforall.model.SearchCriteria;
-import com.musicforall.model.Tag;
+import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Track;
 import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
@@ -15,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.PostConstruct;
 import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -29,29 +25,15 @@ import java.util.List;
 @RequestMapping("/api/search")
 public class SearchRestController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SearchRestController.class);
     @Autowired
     private TrackService trackService;
-
-    private static final Logger LOG = LoggerFactory.getLogger(SearchRestController.class);
-
-    public SearchRestController() {
-        LOG.debug("Search RestController");
-    }
-
-    @PostConstruct
-    private void addSampleRecords() {
-        LOG.info("Post construct");
-        trackService.save(new Track("Track 1", "Track 1", "Artist 1", null, "/track1.mp3",
-                new HashSet<Tag>(Arrays.asList(new Tag("TagA")))));
-        trackService.save(new Track("Track 2", "Track 2", "Artist 2", "Album 2", "/track2.mp3", null));
-    }
 
     /**
      * Searches tracks by the specified criteria.
      */
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity search(@Valid SearchCriteria searchCriteria, BindingResult bindingResult) {
-
+    public ResponseEntity search(@Valid SearchTrackRequest searchCriteria, BindingResult bindingResult) {
         LOG.info(searchCriteria.toString());
 
         if (bindingResult.hasErrors()) {
@@ -60,6 +42,6 @@ public class SearchRestController {
         }
         final List<Track> tracks = trackService.getAllLike(searchCriteria);
 
-        return new ResponseEntity<List<Track>>(tracks, HttpStatus.OK);
+        return new ResponseEntity<>(tracks, HttpStatus.OK);
     }
 }
