@@ -60,8 +60,6 @@ public class DbPopulateService {
     private UserService userService;
 
     @Autowired
-    private TrackService trackService;
-    @Autowired
     private PlaylistService playlistService;
 
     @Autowired
@@ -87,7 +85,9 @@ public class DbPopulateService {
         for (Track t:
              tracks) {
             final Random rnd = new Random();
-            for(int i=0; i<rnd.nextInt(7); i++){
+            int listened = rnd.nextInt(7);
+
+            for(int i=0; i<listened; i++){
                 History h = new History(t.getId(), new Date(), userId, EventType.TRACK_LISTENED);
                 historyService.record(h);
             }

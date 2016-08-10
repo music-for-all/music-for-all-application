@@ -31,17 +31,18 @@ public class HistoryServiceImpl implements HistoryService {
     }
     
     @Override
-    public List<Integer> getTheMostPopularTrack(Integer limitCount) {
+    public List<Integer> getTheMostPopularTracks(Integer limitCount) {
 
         String sql = "select track_id" +
                 " from history " +
-                " where event_type='TRACK_LISTENED'" +
+                " where event_type=:eventType"+
                 " group by track_id" +
                 " order by count(track_id) desc" +
-                " limit :limit_count";
+                " limit :limitCount";
 
         final Map<String, String> properties = new HashMap<>();
-        properties.put("limit_count", Integer.toString(limitCount));
+        properties.put("limitCount", Integer.toString(limitCount));
+        properties.put("eventType", EventType.TRACK_LISTENED.toString());
 
         return dao.getBySql(sql, properties);
     }
