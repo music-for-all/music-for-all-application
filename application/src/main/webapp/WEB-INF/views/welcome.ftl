@@ -172,7 +172,7 @@
     );
 
     $.ajax({
-        url: "/welcome/getByPopularity",
+        url: "/tracks/getMostPopular",
         type: 'GET',
         success: function(data) {
             $("#top").find("thead").after(

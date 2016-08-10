@@ -13,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import static com.musicforall.util.SecurityUtil.currentUser;
 
 /**
@@ -79,5 +82,13 @@ public class TrackRestController {
         final long numLikes = historyService.getLikeCount(id);
 
         return new ResponseEntity<>(numLikes, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/getMostPopular",  method = RequestMethod.GET)
+    public Collection<Track> getByPopularity(){
+        return historyService.getTheMostPopularTracks(10)
+                .stream()
+                .map(trackId -> trackService.get(trackId)).collect(Collectors.toList());
     }
 }
