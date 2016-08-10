@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
                 /* Allow access to the static resources (e.g., css, js files). */
-                .ignoring().antMatchers("/resources/**", "/welcome/*");
+                .ignoring().antMatchers("/resources/**");
     }
 
     @Bean

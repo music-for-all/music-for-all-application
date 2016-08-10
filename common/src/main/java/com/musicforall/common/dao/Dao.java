@@ -129,7 +129,7 @@ public class Dao {
         query.executeUpdate();
     }
 
-    public <T> List<T> getBySql(String sql, Map<String, String> parameters){
+    public <T> List<T> getBySql(String sql, Map<String, String> parameters) {
         LOG.info("Going to find entities by sql - {}, with parameters - {}", sql, parameters);
         final Query query = currentSession().createSQLQuery(sql);
         query.setProperties(parameters);

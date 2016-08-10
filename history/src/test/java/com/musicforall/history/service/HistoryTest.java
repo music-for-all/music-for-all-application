@@ -12,8 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,7 +20,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import java.util.List;
 import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
@@ -93,8 +90,8 @@ public class HistoryTest {
         historyEventListener.handleTrackListened(event);
         historyEventListener.handleTrackListened(event);
 
-        assertTrue(Objects.equals(historyService.getTheMostPopularTracks(10).get(0), TRACK_ID));
-        assertEquals(historyService.getTheMostPopularTracks(20).size(), 2);
+        assertTrue(Objects.equals(historyService.getTheMostPopularTracks(15).get(0), TRACK_ID));
+        assertEquals(historyService.getTheMostPopularTracks(25).size(), 2);
 
         assertEquals(historyService.getTheMostPopularTracks(1).size(), 1); //test limit
     }

@@ -6,7 +6,6 @@
 <title><@spring.message "welcomepage.PageTitle"/></title>
 <script src="/resources/js/player.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-
 <link href="/resources/css/welcomepage.css" rel="stylesheet">
 <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
 </@m.head>
