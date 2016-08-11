@@ -6,6 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.encrypt.Encryptors;
@@ -73,10 +76,19 @@ public class SocialConfig implements SocialConfigurer {
     @Override
     public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator
                                                                           connectionFactoryLocator) {
+        populate();
         JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource,
                 connectionFactoryLocator, Encryptors.noOpText());
         repository.setConnectionSignUp(connectionSignUp);
         return repository;
+    }
+
+    public void populate() {
+        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+        populator.addScript(new ClassPathResource("JdbcUsersConnectionRepository.sql",
+                JdbcUsersConnectionRepository.class));
+
+        DatabasePopulatorUtils.execute(populator, dataSource);
     }
 
     @Bean
