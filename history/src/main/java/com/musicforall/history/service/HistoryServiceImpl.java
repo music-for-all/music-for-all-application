@@ -3,11 +3,13 @@ package com.musicforall.history.service;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
+import org.hibernate.Query;
 import org.hibernate.criterion.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,18 +32,19 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public List<Integer> getTheMostPopularTracks() {
 
-        final String limitCount = "10";
-        final String sql = "select track_id from history" +
-                " where event_type=:trackListened" +
-                " group by track_id" +
-                " order by count(track_id) desc" +
-                " limit :limitCount";
+        final String hql = "select history.trackId" +
+                " from History history" +
+                " where history.eventType=:trackListened" +
+                " group by history.trackId" +
+                " order by count(history.trackId) desc";
 
-        final Map<String, String> properties = new HashMap<>();
-        properties.put("limitCount", limitCount);
-        properties.put("trackListened", String.valueOf(EventType.TRACK_LISTENED));
+        final Map<String, Object> parameters = new HashMap<>();
+        parameters.put("trackListened", EventType.TRACK_LISTENED);
 
-        return dao.getBySql(sql, properties);
+        Query query = dao.getQuery(hql);
+        query.setProperties(parameters);
+        query.setMaxResults(10);
+        return query.list();
     }
 
     @Override

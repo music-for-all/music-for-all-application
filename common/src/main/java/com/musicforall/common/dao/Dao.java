@@ -121,21 +121,16 @@ public class Dao {
         return entity;
     }
 
+    public Query getQuery(String hql){
+        return currentSession().createQuery(hql);
+    }
+
     public void update(String sql, Map<String, List<Serializable>> parametrs) {
         final Query query = currentSession().createQuery(sql);
         for (final Entry<String, List<Serializable>> s : parametrs.entrySet()) {
             query.setParameterList(s.getKey(), s.getValue());
         }
         query.executeUpdate();
-    }
-
-    public <T> List<T> getBySql(String sql, Map<String, String> parameters) {
-        LOG.info("Going to find entities by sql - {}, with parameters - {}", sql, parameters);
-        final Query query = currentSession().createSQLQuery(sql);
-        query.setProperties(parameters);
-        final List<T> entities = query.list();
-        LOG.info(FOUND_ENTITY, entities);
-        return entities;
     }
 
     /**
