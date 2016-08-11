@@ -38,6 +38,10 @@ public class FileManager {
      */
     private String workingDirectory;
 
+    public static String createChunkName(int counter) {
+        return String.format("%04d", counter);
+    }
+
     /**
      * Builds the absolute path to the upload directory;
      * Creates the directory if it does not exist.
@@ -88,7 +92,7 @@ public class FileManager {
         try (BufferedInputStream bis = new BufferedInputStream(stream)) {
             int tmp;
             while ((tmp = bis.read(buffer)) > 0) {
-                File file = new File(path.toFile(), String.format("%04d", partCounter++));
+                File file = new File(path.toFile(), createChunkName(partCounter++));
                 try (FileOutputStream out = new FileOutputStream(file)) {
                     out.write(buffer, 0, tmp);
                 }

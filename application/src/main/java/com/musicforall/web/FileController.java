@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -64,10 +65,13 @@ public class FileController {
         }
     }
 
-    @RequestMapping(value = "/files/{fileName:.+}", method = RequestMethod.GET)
-    public void getFileHandler(HttpServletResponse response, @PathVariable("fileName") String name) {
-        final Optional<Path> filePath = Optional.ofNullable(manager.getFilePathByName(name));
-        LOG.info(String.format("Streaming file: %s\n", name));
+    @RequestMapping(value = "/files/{id}/{partIndex}", method = RequestMethod.GET)
+    public void getFileHandler(HttpServletResponse response, @PathVariable("id") Integer id,
+                               @PathVariable("partIndex") Integer partIndex) {
+        final Track track = trackService.get(id);
+        final Optional<Path> filePath = Optional.ofNullable(manager.getFilePathByName(track.getLocation() +
+                File.separator + FileManager.createChunkName(partIndex)));
+        LOG.info(String.format("Streaming file: %s\n", track.getLocation()));
 
         if (filePath.isPresent()) {
 
