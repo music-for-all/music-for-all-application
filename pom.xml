@@ -34,6 +34,12 @@
         <powermock.version>1.6.5</powermock.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <spring-security.version>4.0.3.RELEASE</spring-security.version>
+        <spring-social-version>1.1.4.RELEASE</spring-social-version>
+        <spring-social-twitter.version>1.1.2.RELEASE</spring-social-twitter.version>
+        <spring-social-google.version>1.0.0.RELEASE</spring-social-google.version>
+        <spring-social-facebook.version>2.0.3.RELEASE</spring-social-facebook.version>
+
     </properties>
 
 
@@ -187,6 +193,49 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.4.192</version>
+        </dependency>
+
+        <!-- Spring social-->
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-core</artifactId>
+            <version>${spring-social-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-web</artifactId>
+            <version>${spring-social-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-config</artifactId>
+            <version>${spring-social-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-security</artifactId>
+            <version>${spring-social-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-twitter</artifactId>
+            <version>${spring-social-twitter.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-google</artifactId>
+            <version>${spring-social-google.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-facebook</artifactId>
+            <version>${spring-social-facebook.version}</version>
         </dependency>
     </dependencies>
 
