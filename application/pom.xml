@@ -29,16 +29,17 @@
             <version>${fileapi.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.music.for.all</groupId>
+            <artifactId>history</artifactId>
+            <version>${history.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.codehaus.janino</groupId>
             <artifactId>janino</artifactId>
             <version>2.7.8</version>
-        </dependency>
-        <dependency>
-            <groupId>com.music.for.all</groupId>
-            <artifactId>history</artifactId>
-            <version>1.1.0</version>
         </dependency>
     </dependencies>
 
