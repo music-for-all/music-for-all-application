@@ -110,20 +110,15 @@
                     <h1><@spring.message "projectName"/></h1>
                     <h3><@spring.message "welcomepage.Intro"/></h3>
                     <div class="top-table well" id="tops">
-                        <table id="top" class="table table-hover table-striped table-condensed ">
+                        <table id="tracks" class="table table-hover table-striped table-condensed ">
                             <thead>
                             <tr>
-                                <th><@spring.message "welcomepage.Actions"/></th>
-                                <th><@spring.message "welcomepage.Artist"/></th>
-                                <th><@spring.message "welcomepage.Title"/></th>
-                                <th><@spring.message "welcomepage.Duration"/></th>
+                                <td><@spring.message "welcomepage.Actions"/></td>
+                                <td><@spring.message "welcomepage.Artist"/></td>
+                                <td><@spring.message "welcomepage.Title"/></td>
+                                <td><@spring.message "welcomepage.Duration"/></td>
                             </tr>
                             </thead>
-
-                            <audio controls>
-                                <source type="audio/mp3" src="/files/01-Tom-Waits-on-Selvin-On-The-City-part-1.mp3">
-                            </audio>
-
                         </table>
                     </div>
                     </div>
@@ -170,15 +165,12 @@
             $("script.trackRowTemplate").html()
     );
 
-    $.ajax({
-        url: "/tracks/getMostPopular",
-        type: 'GET',
-        success: function(data) {
-            $("#top").find("thead").after(
-                    trackTable(data))
-        }
-    });
-
+    $.when($.get("/tracks/getMostPopular"))
+            .then(function (response) {
+                $("#tracks").find("thead").after(
+                        trackTable(response)
+                );
+            });
 </script>
 <script type="text/javascript">
     $(document).ready(function() {
