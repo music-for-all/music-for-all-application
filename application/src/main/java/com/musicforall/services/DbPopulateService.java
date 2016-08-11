@@ -43,6 +43,8 @@ public class DbPopulateService {
 
     private static final String USER_IS_FOLLOW = "user {} is follow {}";
 
+    private static final Integer MAX_LISTENED = 10;
+
     static {
         LINKS.put("Jerry-Lee-Lewis-part-1", OPEN_SOURCE_MUSIC_HOST +
                 "/2010/04/01-Selvin-On-The-City-Jerry-Lee-Lewis-part-1.mp3");
@@ -84,7 +86,7 @@ public class DbPopulateService {
         for (Track t:
              tracks) {
             final Random rnd = new Random();
-            int listened = rnd.nextInt();
+            int listened = rnd.nextInt(MAX_LISTENED);
 
             for (int i = 0; i < listened; i++) {
                 History h = new History(t.getId(), new Date(), userId, EventType.TRACK_LISTENED);
