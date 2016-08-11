@@ -41,6 +41,7 @@ public class HistoryTest {
     private static final Integer USER_ID = 1111;
     private static final Integer TRACK_ID = 2222;
     private static final Integer TRACK2_ID = 2223;
+    private static final Integer TOP_TRACK_ID = 2225;
 
     @Autowired
     private HistoryService historyService;
@@ -82,7 +83,7 @@ public class HistoryTest {
 
     @Test
     public void testGetTheMostPopularTrackId(){
-        final TrackListenedEvent event = new TrackListenedEvent(TRACK_ID, USER_ID);
+        final TrackListenedEvent event = new TrackListenedEvent(TOP_TRACK_ID, USER_ID);
 
         final TrackListenedEvent event2 = new TrackListenedEvent(TRACK2_ID, USER_ID);
         historyEventListener.handleTrackListened(event2);
@@ -90,7 +91,7 @@ public class HistoryTest {
         historyEventListener.handleTrackListened(event);
         historyEventListener.handleTrackListened(event);
 
-        assertTrue(Objects.equals(historyService.getTheMostPopularTracks(15).get(0), TRACK_ID));
+        assertTrue(Objects.equals(historyService.getTheMostPopularTracks(15).get(0), TOP_TRACK_ID));
         assertEquals(historyService.getTheMostPopularTracks(25).size(), 2);
 
         assertEquals(historyService.getTheMostPopularTracks(1).size(), 1); //test limit
