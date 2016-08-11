@@ -66,20 +66,25 @@
                             <label for="remember-me"><@spring.message "welcomepage.RememberMe"/></label>
                             <input type="submit" class="btn btn-lg btn-primary btn-block" value="Log in"/>
                         </@m.form>
-                        <hr class="divider"/>
-                        <form>
+                        <div class="divider">
+                            <span>or</span>
+                        </div>
+                        <form class="social">
                             <ul class="list-inline intro-social-buttons">
                                 <li>
-                                    <a href="#" class="btn btn-default "><i class="fa fa-google fa-fw"></i>
-                                        <span class="network-name">Google</span></a>
+                                    <a href="/auth/google" class="google">
+                                        <span class="fa fa-google fa-fw"></span>
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="#" class="btn btn-default "><i class="fa fa-twitter fa-fw"></i>
-                                        <span class="network-name">Twitter</span></a>
+                                    <a href="/auth/twitter" class="twitter">
+                                        <span class="fa fa-twitter fa-fw"></span>
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="#" class="btn btn-default "><i class="fa fa-facebook fa-fw"></i>
-                                        <span class="network-name">Facebook</span></a>
+                                    <a href="/auth/facebook" class="facebook">
+                                        <span class="fa fa-facebook fa-fw"></span>
+                                    </a>
                                 </li>
                             </ul>
                         </form>
