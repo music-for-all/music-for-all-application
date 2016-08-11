@@ -28,7 +28,7 @@ import javax.inject.Inject;
 import javax.sql.DataSource;
 
 /**
- * Created by andrey on 8/11/16.
+ * Created by Andrey on 8/11/16.
  */
 @Configuration
 @EnableSocial
@@ -61,7 +61,6 @@ public class SocialConfig implements SocialConfigurer {
         return new UserIdSource() {
             @Override
             public String getUserId() {
-                System.out.println("S_________getUserId");
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                 if (authentication == null) {
                     throw new IllegalStateException("Unable to get a ConnectionRepository: no user signed in");
@@ -74,7 +73,8 @@ public class SocialConfig implements SocialConfigurer {
     @Override
     public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator
                                                                           connectionFactoryLocator) {
-        JdbcUsersConnectionRepository repository = new  JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, Encryptors.noOpText());
+        JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource,
+                connectionFactoryLocator, Encryptors.noOpText());
         repository.setConnectionSignUp(connectionSignUp);
         return repository;
     }
@@ -86,7 +86,8 @@ public class SocialConfig implements SocialConfigurer {
     }
 
     @Bean
-    public ReconnectFilter apiExceptionHandler(UsersConnectionRepository usersConnectionRepository, UserIdSource userIdSource) {
+    public ReconnectFilter apiExceptionHandler(UsersConnectionRepository usersConnectionRepository,
+                                               UserIdSource userIdSource) {
         return new ReconnectFilter(usersConnectionRepository, userIdSource);
     }
 

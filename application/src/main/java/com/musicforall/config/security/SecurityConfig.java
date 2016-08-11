@@ -1,5 +1,6 @@
 package com.musicforall.config.security;
 
+import com.musicforall.services.social.SimpleSocialUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.social.security.SocialUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -39,6 +41,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMeParameter("_spring_security_remember_me")
                 .and()
                 .logout().permitAll();
+//                .and()
+//                .apply(new SpringSocialConfigurer()
+//                        .postLoginUrl("/main")
+//                        .defaultFailureUrl("/")
+//                        .alwaysUsePostLoginUrl(true));
+    }
+
+    @Bean
+    public SocialUserDetailsService socialUsersDetailService() {
+        return new SimpleSocialUserDetailService(userDetailsService());
     }
 
     @Override
