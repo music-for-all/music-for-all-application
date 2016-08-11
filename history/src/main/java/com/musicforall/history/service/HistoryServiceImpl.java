@@ -3,13 +3,11 @@ package com.musicforall.history.service;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
-import org.hibernate.Query;
 import org.hibernate.criterion.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +30,7 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public List<Integer> getTheMostPopularTracks() {
 
+        final Integer count = 10;
         final String hql = "select history.trackId" +
                 " from History history" +
                 " where history.eventType=:trackListened" +
@@ -41,10 +40,7 @@ public class HistoryServiceImpl implements HistoryService {
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("trackListened", EventType.TRACK_LISTENED);
 
-        Query query = dao.getQuery(hql);
-        query.setProperties(parameters);
-        query.setMaxResults(10);
-        return query.list();
+        return dao.getAllBy(hql, parameters, count);
     }
 
     @Override

@@ -121,8 +121,14 @@ public class Dao {
         return entity;
     }
 
-    public Query getQuery(String hql){
-        return currentSession().createQuery(hql);
+    public <T> List<T> getAllBy(String hql, Map<String, Object> parameters, Integer limitCount) {
+        LOG.info("Going to find entities by hql - {}, with parameters - {} limit by {}", hql, parameters, limitCount);
+        final Query<T> query = currentSession().createQuery(hql);
+        query.setProperties(parameters);
+        query.setMaxResults(limitCount);
+        final List<T> entities = query.list();
+        LOG.info(FOUND_ENTITY, entities);
+        return entities;
     }
 
     public void update(String sql, Map<String, List<Serializable>> parametrs) {
