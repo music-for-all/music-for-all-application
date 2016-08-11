@@ -91,9 +91,7 @@ public class HistoryTest {
         historyEventListener.handleTrackListened(event);
         historyEventListener.handleTrackListened(event);
 
-        assertTrue(Objects.equals(historyService.getTheMostPopularTracks(15).get(0), TOP_TRACK_ID));
-        assertEquals(historyService.getTheMostPopularTracks(25).size(), 2);
-
-        assertEquals(historyService.getTheMostPopularTracks(1).size(), 1); //test limit
+        assertTrue(Objects.equals(historyService.getTheMostPopularTracks().get(0), TOP_TRACK_ID));
+        assertEquals(historyService.getTheMostPopularTracks().size(), 2);
     }
 }

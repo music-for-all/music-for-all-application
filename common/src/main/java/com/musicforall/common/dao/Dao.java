@@ -133,7 +133,7 @@ public class Dao {
         LOG.info("Going to find entities by sql - {}, with parameters - {}", sql, parameters);
         final Query query = currentSession().createSQLQuery(sql);
         query.setProperties(parameters);
-        final List<T> entities = (List<T>) query.list();
+        final List<T> entities = query.list();
         LOG.info(FOUND_ENTITY, entities);
         return entities;
     }

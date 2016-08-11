@@ -10,7 +10,6 @@ import com.musicforall.model.Track;
 import com.musicforall.model.User;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
-import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,13 +80,13 @@ public class DbPopulateService {
         return null;
     }
 
-    private void fillListenedTracks(Set<Track> tracks, Integer userId){
+    private void fillListenedTracks(Set<Track> tracks, Integer userId) {
         for (Track t:
              tracks) {
             final Random rnd = new Random();
-            int listened = rnd.nextInt(7);
+            int listened = rnd.nextInt();
 
-            for(int i=0; i<listened; i++){
+            for (int i = 0; i < listened; i++) {
                 History h = new History(t.getId(), new Date(), userId, EventType.TRACK_LISTENED);
                 historyService.record(h);
             }

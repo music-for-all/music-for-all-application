@@ -23,23 +23,23 @@ public class HistoryServiceImpl implements HistoryService {
     private Dao dao;
 
     @Override
-    public void record(History history) {
+    public void record(final History history) {
         dao.save(history);
     }
-    
-    @Override
-    public List<Integer> getTheMostPopularTracks(Integer limitCount) {
 
-        final String sql = "select track_id" +
-                " from history " +
-                " where event_type=:eventType" +
+    @Override
+    public List<Integer> getTheMostPopularTracks() {
+
+        final String limitCount = "10";
+        final String sql = "select track_id from history" +
+                " where event_type=:trackListened" +
                 " group by track_id" +
                 " order by count(track_id) desc" +
                 " limit :limitCount";
 
         final Map<String, String> properties = new HashMap<>();
-        properties.put("limitCount", Integer.toString(limitCount));
-        properties.put("eventType", EventType.TRACK_LISTENED.toString());
+        properties.put("limitCount", limitCount);
+        properties.put("trackListened", String.valueOf(EventType.TRACK_LISTENED));
 
         return dao.getBySql(sql, properties);
     }
@@ -48,7 +48,6 @@ public class HistoryServiceImpl implements HistoryService {
     public History getBy(DetachedCriteria detachedCriteria) {
         return dao.getBy(detachedCriteria);
     }
-
 
     @Override
     public long getLikeCount(Integer trackId) {

@@ -11,7 +11,7 @@ public interface HistoryService {
 
     void record(History history);
 
-    List<Integer> getTheMostPopularTracks(Integer limitCount);
+    List<Integer> getTheMostPopularTracks();
 
     History getBy(DetachedCriteria detachedCriteria);
 
