@@ -118,7 +118,7 @@ public class DbPopulateService {
         final List<Callable<Path>> tasks = LINKS.values().stream().map(DbPopulateService::toURL)
                 .filter(u -> u != null)
                 .peek(u -> LOG.info("going to save file by url - {}", u))
-                .map(url -> (Callable<Path>) () -> fileManager.save(url, false))
+                .map(url -> (Callable<Path>) () -> fileManager.save(url))
                 .collect(toList());
         try {
             executorService.invokeAll(tasks);

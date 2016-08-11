@@ -49,53 +49,40 @@ public class FileManager {
         dir.mkdirs();
     }
 
-    public Path save(final MultipartFile file, final boolean chunked) {
+    public Path save(final MultipartFile file) {
         requireNonNull(file, "file must not be null");
         LOG.info("save file from multipart {}", file);
         try (InputStream in = file.getInputStream()) {
-            return save(in, file.getOriginalFilename(), chunked);
+            return save(in, file.getOriginalFilename());
         } catch (IOException e) {
             LOG.error(SAVE_ERROR_MSG, e);
         }
         return null;
     }
 
-    public Path save(final URL url, final boolean chunked) {
+    public Path save(final URL url) {
         requireNonNull(url, "url must not be null");
         LOG.info("save file by url {}", url);
         final String fileName = FilenameUtils.getName(url.toString());
         try (InputStream in = url.openStream()) {
-            return save(in, fileName, chunked);
+            return save(in, fileName);
         } catch (IOException e) {
             LOG.error(SAVE_ERROR_MSG, e);
         }
         return null;
     }
 
-    private Path save(final InputStream stream, final String fileName, boolean chunked) throws IOException {
+    private Path save(final InputStream stream, final String fileName) throws IOException {
         final Path path = Paths.get(workingDirectory, fileName);
-        if (chunked) {
-            splitAndSave(stream, path);
-        } else {
-            saveOnce(stream, path);
-        }
-        return path;
-    }
-
-    private Path saveOnce(final InputStream stream, final Path path) throws IOException {
-        if (Files.exists(path)) {
-            return path;
-        }
-        Files.copy(stream, path);
-        return path;
-    }
-
-    private Path splitAndSave(final InputStream stream, final Path path) throws IOException {
         if (Files.isDirectory(path)) {
             return path;
         } else {
             Files.createDirectory(path);
         }
+        return splitAndSave(stream, path);
+    }
+
+    private Path splitAndSave(final InputStream stream, final Path path) throws IOException {
         int partCounter = 0;
         byte[] buffer = new byte[CHUNK_SIZE];
         try (BufferedInputStream bis = new BufferedInputStream(stream)) {

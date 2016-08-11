@@ -15,15 +15,16 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static com.musicforall.files.utils.FileTestUtils.mergeFiles;
-import static java.nio.file.Files.*;
+import static java.nio.file.Files.newInputStream;
 import static java.nio.file.Paths.get;
-import static org.easymock.EasyMock.anyObject;
 import static org.junit.Assert.*;
 import static org.powermock.api.easymock.PowerMock.replayAll;
 import static org.powermock.api.easymock.PowerMock.verifyAll;
@@ -32,11 +33,11 @@ import static org.powermock.api.easymock.PowerMock.verifyAll;
 @PrepareForTest(FileManager.class)
 public class FileManagerTest {
 
-    public static final String TEST_FILE_NAME = "resource.jpg";
-    public static final String BIG_TEST_FILE_NAME = "big_test_resource.mp3";
+    private static final String TEST_FILE_NAME = "big_test_resource.mp3";
 
-    private static final URL resourceUrl = FileManagerTest.class.getClassLoader().getResource("test_resource.jpg");
-    private static final URL bigResourceUrl = FileManagerTest.class.getClassLoader().getResource(BIG_TEST_FILE_NAME);
+    private static final URL resourceUrl = FileManagerTest.class.getClassLoader().getResource(TEST_FILE_NAME);
+
+    private static final URL saveByUrlResource = FileManagerTest.class.getClassLoader().getResource("save_by_url_resource.jpg");
 
     private static File testDirectory;
 
@@ -47,7 +48,7 @@ public class FileManagerTest {
         testDirectory = FileTestUtils.createTestDirectory();
         manager = new FileManager();
         ReflectionTestUtils.setField(manager, "workingDirectory", testDirectory.getAbsolutePath());
-        copy(get(resourceUrl.toURI()), get(testDirectory.getAbsolutePath(), TEST_FILE_NAME));
+        Files.copy(get(resourceUrl.toURI()), get(testDirectory.getAbsolutePath(), TEST_FILE_NAME));
     }
 
     @AfterClass
@@ -56,32 +57,17 @@ public class FileManagerTest {
     }
 
     @Test
-    public void testSaveFile() throws Exception {
-        try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), TEST_FILE_NAME))) {
-            MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, inputStream);
-            assertNotNull(manager.save(file, false));
-        }
-    }
-
-    @Test
     public void testGetFileByName() throws Exception {
-        final String COPY_FILE = "copy.jpg";
-        final File copy = get(testDirectory.getAbsolutePath(), COPY_FILE).toFile();
-        try (FileOutputStream outputStream = new FileOutputStream(copy)) {
-            final Path path = manager.getFilePathByName(TEST_FILE_NAME);
-            copy(path, outputStream);
-        }
-
-        assertEquals(size(get(testDirectory.getAbsolutePath(), TEST_FILE_NAME)),
-                size(get(testDirectory.getAbsolutePath(), COPY_FILE)));
+        final Path path = manager.getFilePathByName(TEST_FILE_NAME);
+        assertNotNull(path);
     }
 
     @Test
     public void testSaveAlreadyExistingFile() throws Exception {
-        try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), TEST_FILE_NAME))) {
+        try (InputStream inputStream = newInputStream(get(resourceUrl.toURI()))) {
             final MockMultipartFile file = new MockMultipartFile("file", "saveAlreadyExisted.jpg", null, inputStream);
-            manager.save(file, false);
-            assertNotNull(manager.save(file, false));
+            manager.save(file);
+            assertNotNull(manager.save(file));
         }
     }
 
@@ -92,25 +78,9 @@ public class FileManagerTest {
     }
 
     @Test
-    public void testIOException() throws Exception {
-        PowerMock.mockStatic(Files.class);
-
-        EasyMock.expect(copy(anyObject(InputStream.class), anyObject(Path.class))).andThrow(new IOException());
-        EasyMock.expect(exists(anyObject(Path.class))).andReturn(false);
-        replayAll();
-
-        final Path testFilePath = get(testDirectory.getAbsolutePath(), TEST_FILE_NAME);
-        try (InputStream inputStream = new FileInputStream(testFilePath.toFile())) {
-            final MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, inputStream);
-            assertNull(manager.save(file, false));
-            verifyAll();
-        }
-    }
-
-    @Test
     public void testSaveByUrl() throws Exception {
-        final URL url = resourceUrl;
-        assertNotNull(manager.save(url, false));
+        final URL url = saveByUrlResource;
+        assertNotNull(manager.save(url));
     }
 
     @Test
@@ -118,7 +88,7 @@ public class FileManagerTest {
         final URL url = PowerMock.createMock(URL.class);
         EasyMock.expect(url.openStream()).andThrow(new IOException());
         replayAll();
-        assertNull(manager.save(url, false));
+        assertNull(manager.save(url));
         verifyAll();
     }
 
@@ -127,18 +97,18 @@ public class FileManagerTest {
         final MultipartFile file = PowerMock.createMock(MultipartFile.class);
         EasyMock.expect(file.getInputStream()).andThrow(new IOException());
         replayAll();
-        assertNull(manager.save(file, false));
+        assertNull(manager.save(file));
         verifyAll();
     }
 
     @Test
     public void testSplitAndSaveFile() throws Exception {
-        final Path path = get(bigResourceUrl.toURI());
+        final Path path = get(resourceUrl.toURI());
         try (InputStream inputStream = newInputStream(path)) {
-            final MockMultipartFile file = new MockMultipartFile("file", BIG_TEST_FILE_NAME, null, inputStream);
-            assertNotNull(manager.save(file, true));
+            final MockMultipartFile file = new MockMultipartFile("file", "test.mp3", null, inputStream);
+            assertNotNull(manager.save(file));
 
-            final File[] files = get(testDirectory.getAbsolutePath(), BIG_TEST_FILE_NAME).toFile().listFiles((dir, name) -> name.matches("\\d+"));
+            final File[] files = get(testDirectory.getAbsolutePath(), "test.mp3").toFile().listFiles((dir, name) -> name.matches("\\d+"));
             long chunks = file.getSize() / FileManager.CHUNK_SIZE;
             long left = file.getSize() % FileManager.CHUNK_SIZE;
             assertEquals(left > 0 ? chunks + 1 : chunks, files.length);

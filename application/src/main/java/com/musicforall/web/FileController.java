@@ -54,7 +54,7 @@ public class FileController {
         if (manager.getFilePathByName(filename) != null) {
             return new ResponseEntity<String>("File exist", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        final Path saved = manager.save(file, false);
+        final Path saved = manager.save(file);
         if (saved != null) {
             trackJson.setLocation(filename);
             trackService.save(trackJson);
