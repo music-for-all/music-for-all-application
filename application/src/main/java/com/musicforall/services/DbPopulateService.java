@@ -1,7 +1,10 @@
 package com.musicforall.services;
 
 import com.musicforall.files.manager.FileManager;
-import com.musicforall.model.*;
+import com.musicforall.model.Playlist;
+import com.musicforall.model.Tag;
+import com.musicforall.model.Track;
+import com.musicforall.model.User;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.user.UserService;
@@ -115,7 +118,7 @@ public class DbPopulateService {
         final List<Callable<Path>> tasks = LINKS.values().stream().map(DbPopulateService::toURL)
                 .filter(u -> u != null)
                 .peek(u -> LOG.info("going to save file by url - {}", u))
-                .map(url -> (Callable<Path>) () -> fileManager.save(url))
+                .map(url -> (Callable<Path>) () -> fileManager.save(url, false))
                 .collect(toList());
         try {
             executorService.invokeAll(tasks);

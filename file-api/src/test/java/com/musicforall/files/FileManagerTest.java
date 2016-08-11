@@ -20,6 +20,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static com.musicforall.files.utils.FileTestUtils.mergeFiles;
 import static java.nio.file.Files.*;
 import static java.nio.file.Paths.get;
 import static org.easymock.EasyMock.anyObject;
@@ -32,8 +33,10 @@ import static org.powermock.api.easymock.PowerMock.verifyAll;
 public class FileManagerTest {
 
     public static final String TEST_FILE_NAME = "resource.jpg";
+    public static final String BIG_TEST_FILE_NAME = "big_test_resource.mp3";
 
     private static final URL resourceUrl = FileManagerTest.class.getClassLoader().getResource("test_resource.jpg");
+    private static final URL bigResourceUrl = FileManagerTest.class.getClassLoader().getResource(BIG_TEST_FILE_NAME);
 
     private static File testDirectory;
 
@@ -56,7 +59,7 @@ public class FileManagerTest {
     public void testSaveFile() throws Exception {
         try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), TEST_FILE_NAME))) {
             MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, inputStream);
-            assertNotNull(manager.save(file));
+            assertNotNull(manager.save(file, false));
         }
     }
 
@@ -77,8 +80,8 @@ public class FileManagerTest {
     public void testSaveAlreadyExistingFile() throws Exception {
         try (InputStream inputStream = newInputStream(get(testDirectory.getAbsolutePath(), TEST_FILE_NAME))) {
             final MockMultipartFile file = new MockMultipartFile("file", "saveAlreadyExisted.jpg", null, inputStream);
-            manager.save(file);
-            assertNotNull(manager.save(file));
+            manager.save(file, false);
+            assertNotNull(manager.save(file, false));
         }
     }
 
@@ -99,7 +102,7 @@ public class FileManagerTest {
         final Path testFilePath = get(testDirectory.getAbsolutePath(), TEST_FILE_NAME);
         try (InputStream inputStream = new FileInputStream(testFilePath.toFile())) {
             final MockMultipartFile file = new MockMultipartFile("file", "saved.jpg", null, inputStream);
-            assertNull(manager.save(file));
+            assertNull(manager.save(file, false));
             verifyAll();
         }
     }
@@ -107,7 +110,7 @@ public class FileManagerTest {
     @Test
     public void testSaveByUrl() throws Exception {
         final URL url = resourceUrl;
-        assertNotNull(manager.save(url));
+        assertNotNull(manager.save(url, false));
     }
 
     @Test
@@ -115,7 +118,7 @@ public class FileManagerTest {
         final URL url = PowerMock.createMock(URL.class);
         EasyMock.expect(url.openStream()).andThrow(new IOException());
         replayAll();
-        assertNull(manager.save(url));
+        assertNull(manager.save(url, false));
         verifyAll();
     }
 
@@ -124,7 +127,26 @@ public class FileManagerTest {
         final MultipartFile file = PowerMock.createMock(MultipartFile.class);
         EasyMock.expect(file.getInputStream()).andThrow(new IOException());
         replayAll();
-        assertNull(manager.save(file));
+        assertNull(manager.save(file, false));
         verifyAll();
+    }
+
+    @Test
+    public void testSplitAndSaveFile() throws Exception {
+        final Path path = get(bigResourceUrl.toURI());
+        try (InputStream inputStream = newInputStream(path)) {
+            final MockMultipartFile file = new MockMultipartFile("file", BIG_TEST_FILE_NAME, null, inputStream);
+            assertNotNull(manager.save(file, true));
+
+            final File[] files = get(testDirectory.getAbsolutePath(), BIG_TEST_FILE_NAME).toFile().listFiles((dir, name) -> name.matches("\\d+"));
+            long chunks = file.getSize() / FileManager.CHUNK_SIZE;
+            long left = file.getSize() % FileManager.CHUNK_SIZE;
+            assertEquals(left > 0 ? chunks + 1 : chunks, files.length);
+
+            final File newFile = new File(testDirectory, "new music.mp3");
+            mergeFiles(files, newFile);
+
+            assertEquals(file.getSize(), newFile.length());
+        }
     }
 }

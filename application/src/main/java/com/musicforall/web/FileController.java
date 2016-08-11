@@ -30,9 +30,8 @@ import static com.musicforall.util.SecurityUtil.currentUser;
 
 @Controller
 public class FileController {
-    private static final Logger LOG = LoggerFactory.getLogger(FileController.class);
     public static final int STUB_TRACK_ID = 222;
-
+    private static final Logger LOG = LoggerFactory.getLogger(FileController.class);
     @Autowired
     private ApplicationEventPublisher publisher;
 
@@ -55,7 +54,7 @@ public class FileController {
         if (manager.getFilePathByName(filename) != null) {
             return new ResponseEntity<String>("File exist", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        final Path saved = manager.save(file);
+        final Path saved = manager.save(file, false);
         if (saved != null) {
             trackJson.setLocation(filename);
             trackService.save(trackJson);

@@ -9,9 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,10 +23,9 @@ import static java.util.Objects.requireNonNull;
 
 @Component
 public class FileManager {
+    public static final int CHUNK_SIZE = 500_000;
     private static final Logger LOG = LoggerFactory.getLogger(FileManager.class);
-
     private static final String SAVE_ERROR_MSG = "Exception during file saving!";
-
     /**
      * The name of the directory which stores the uploaded files.
      */
@@ -52,31 +49,40 @@ public class FileManager {
         dir.mkdirs();
     }
 
-    public Path save(final MultipartFile file) {
+    public Path save(final MultipartFile file, final boolean chunked) {
         requireNonNull(file, "file must not be null");
         LOG.info("save file from multipart {}", file);
         try (InputStream in = file.getInputStream()) {
-            return save(in, file.getOriginalFilename());
+            return save(in, file.getOriginalFilename(), chunked);
         } catch (IOException e) {
             LOG.error(SAVE_ERROR_MSG, e);
         }
         return null;
     }
 
-    public Path save(final URL url) {
+    public Path save(final URL url, final boolean chunked) {
         requireNonNull(url, "url must not be null");
         LOG.info("save file by url {}", url);
         final String fileName = FilenameUtils.getName(url.toString());
         try (InputStream in = url.openStream()) {
-            return save(in, fileName);
+            return save(in, fileName, chunked);
         } catch (IOException e) {
             LOG.error(SAVE_ERROR_MSG, e);
         }
         return null;
     }
 
-    private Path save(final InputStream stream, final String fileName) throws IOException {
+    private Path save(final InputStream stream, final String fileName, boolean chunked) throws IOException {
         final Path path = Paths.get(workingDirectory, fileName);
+        if (chunked) {
+            splitAndSave(stream, path);
+        } else {
+            saveOnce(stream, path);
+        }
+        return path;
+    }
+
+    private Path saveOnce(final InputStream stream, final Path path) throws IOException {
         if (Files.exists(path)) {
             return path;
         }
@@ -84,8 +90,29 @@ public class FileManager {
         return path;
     }
 
+    private Path splitAndSave(final InputStream stream, final Path path) throws IOException {
+        if (Files.isDirectory(path)) {
+            return path;
+        } else {
+            Files.createDirectory(path);
+        }
+        int partCounter = 0;
+        byte[] buffer = new byte[CHUNK_SIZE];
+        try (BufferedInputStream bis = new BufferedInputStream(stream)) {
+            int tmp;
+            while ((tmp = bis.read(buffer)) > 0) {
+                File file = new File(path.toFile(), String.format("%04d", partCounter++));
+                try (FileOutputStream out = new FileOutputStream(file)) {
+                    out.write(buffer, 0, tmp);
+                }
+            }
+        }
+        return path;
+    }
+
     /**
      * Converts the given filename to the Path containing the full path to the file.
+     *
      * @param filename the filename of the file
      * @return the path
      */
