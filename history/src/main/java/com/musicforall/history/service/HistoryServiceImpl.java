@@ -1,6 +1,7 @@
 package com.musicforall.history.service;
 
 import com.musicforall.common.dao.Dao;
+import com.musicforall.common.dao.QueryParams;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
 import org.hibernate.criterion.*;
@@ -30,7 +31,8 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public List<Integer> getTheMostPopularTracks() {
 
-        final Integer count = 10;
+        final int count = 10;
+        final int offset = 0;
         final String hql = "select history.trackId" +
                 " from History history" +
                 " where history.eventType=:trackListened" +
@@ -40,7 +42,7 @@ public class HistoryServiceImpl implements HistoryService {
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("trackListened", EventType.TRACK_LISTENED);
 
-        return dao.getAllBy(hql, parameters, count);
+        return dao.getAllBy(hql, parameters, new QueryParams(count, offset));
     }
 
     @Override
