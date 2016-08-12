@@ -88,11 +88,11 @@ public class FileManager {
 
     private Path splitAndSave(final InputStream stream, final Path path) throws IOException {
         int partCounter = 0;
-        byte[] buffer = new byte[CHUNK_SIZE];
+        final byte[] buffer = new byte[CHUNK_SIZE];
         try (BufferedInputStream bis = new BufferedInputStream(stream)) {
             int tmp;
             while ((tmp = bis.read(buffer)) > 0) {
-                File file = new File(path.toFile(), createChunkName(partCounter++));
+                final File file = new File(path.toFile(), createChunkName(partCounter++));
                 try (FileOutputStream out = new FileOutputStream(file)) {
                     out.write(buffer, 0, tmp);
                 }
