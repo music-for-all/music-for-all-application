@@ -11,10 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import java.io.*;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static java.nio.file.Files.*;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -75,10 +75,10 @@ public class FileManager {
 
     private Path save(final InputStream stream, final String fileName) throws IOException {
         final Path path = Paths.get(workingDirectory, fileName);
-        if (Files.isDirectory(path)) {
+        if (isDirectory(path)) {
             return path;
         } else {
-            Files.createDirectory(path);
+            createDirectory(path);
         }
         return splitAndSave(stream, path);
     }
@@ -89,8 +89,8 @@ public class FileManager {
         try (BufferedInputStream bis = new BufferedInputStream(stream)) {
             int tmp;
             while ((tmp = bis.read(buffer)) > 0) {
-                final File file = new File(path.toFile(), createChunkName(partCounter++));
-                try (FileOutputStream out = new FileOutputStream(file)) {
+                final Path chunkPath = path.resolve(createChunkName(partCounter++));
+                try (OutputStream out = newOutputStream(chunkPath)) {
                     out.write(buffer, 0, tmp);
                 }
             }
@@ -107,7 +107,7 @@ public class FileManager {
     public Path getFilePathByName(final String filename) {
         requireNonNull(filename, "filename must not be null");
         final Path path = Paths.get(workingDirectory, filename);
-        if (!Files.exists(path)) {
+        if (!exists(path)) {
             return null;
         }
         return path;
