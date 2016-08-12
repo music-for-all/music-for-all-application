@@ -30,8 +30,8 @@ import static com.musicforall.util.SecurityUtil.currentUser;
 
 @Controller
 public class FileController {
-    public static final int STUB_TRACK_ID = 222;
     private static final Logger LOG = LoggerFactory.getLogger(FileController.class);
+
     @Autowired
     private ApplicationEventPublisher publisher;
 
@@ -65,18 +65,20 @@ public class FileController {
     }
 
     @RequestMapping(value = "/files/{id}/{partId}", method = RequestMethod.GET)
-    public void getFileHandler(HttpServletResponse response, @PathVariable("id") Integer id,
-                               @PathVariable("partId") Integer partId) {
-        final Track track = trackService.get(id);
+    public void getFileHandler(HttpServletResponse response, @PathVariable("id") Integer trackId,
+                               @PathVariable("partId") int partId) {
+        final Track track = trackService.get(trackId);
         final Optional<Path> filePath = Optional.ofNullable(manager.getFilePartById(track.getLocation(), partId));
         LOG.info(String.format("Streaming file: %s\n", track.getLocation()));
 
         if (filePath.isPresent()) {
 
             try {
-                final User user = currentUser();
-                if (user != null) {
-                    publisher.publishEvent(new TrackListenedEvent(STUB_TRACK_ID, user.getId()));
+                if (partId == FileManager.DEFAULT_CHUNK_ID) {
+                    final User user = currentUser();
+                    if (user != null) {
+                        publisher.publishEvent(new TrackListenedEvent(trackId, user.getId()));
+                    }
                 }
 
                 Files.copy(filePath.get(), response.getOutputStream());
@@ -92,5 +94,4 @@ public class FileController {
     public String uploadFile() {
         return "uploadFile";
     }
-
 }

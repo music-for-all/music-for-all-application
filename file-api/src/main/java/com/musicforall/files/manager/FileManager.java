@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 @Component
 public class FileManager {
     public static final int CHUNK_SIZE = 500_000;
+    public static final int DEFAULT_CHUNK_ID = 0;
     private static final Logger LOG = LoggerFactory.getLogger(FileManager.class);
     private static final String SAVE_ERROR_MSG = "Exception during file saving!";
     /**
@@ -37,10 +38,6 @@ public class FileManager {
      * The absolute path to the upload directory.
      */
     private String workingDirectory;
-
-    private String createChunkName(int counter) {
-        return String.format("%04d", counter);
-    }
 
     /**
      * Builds the absolute path to the upload directory;
@@ -87,7 +84,7 @@ public class FileManager {
     }
 
     private Path splitAndSave(final InputStream stream, final Path path) throws IOException {
-        int partCounter = 0;
+        int partCounter = DEFAULT_CHUNK_ID;
         final byte[] buffer = new byte[CHUNK_SIZE];
         try (BufferedInputStream bis = new BufferedInputStream(stream)) {
             int tmp;
@@ -116,8 +113,13 @@ public class FileManager {
         return path;
     }
 
-    public Path getFilePartById(final String location, final Integer partId) {
+    public Path getFilePartById(final String location, final int partId) {
+        requireNonNull(location, "location must not be null");
         final String fileName = location + File.separator + createChunkName(partId);
         return getFilePathByName(fileName);
+    }
+
+    private String createChunkName(int counter) {
+        return String.format("%04d", counter);
     }
 }
