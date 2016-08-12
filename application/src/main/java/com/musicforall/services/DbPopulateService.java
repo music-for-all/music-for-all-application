@@ -23,6 +23,8 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
@@ -80,19 +82,7 @@ public class DbPopulateService {
             LOG.error("URL is malformed {}", url, e);
         }
         return null;
-    }
 
-    private void fillListenedTracks(Set<Track> tracks, Integer userId) {
-        for (Track t:
-             tracks) {
-            final Random rnd = new Random();
-            int listened = rnd.nextInt(MAX_LISTENED);
-
-            for (int i = 0; i < listened; i++) {
-                History h = new History(t.getId(), new Date(), userId, EventType.TRACK_LISTENED);
-                historyService.record(h);
-            }
-        }
     }
 
     @PostConstruct
@@ -151,5 +141,18 @@ public class DbPopulateService {
         } finally {
             LOG.info("finished database population");
         }
+    }
+
+
+    private void fillListenedTracks(Set<Track> tracks, Integer userId) {
+        final Random rnd = new Random();
+        tracks.stream()
+                .flatMap(t -> {
+                    int listened =  rnd.nextInt(MAX_LISTENED);
+                    return IntStream.range(0, listened)
+                            .mapToObj(i -> new History(t.getId(), new Date(), userId, EventType.TRACK_LISTENED))
+                            .collect(Collectors.toList()).stream();
+                })
+                .forEach(historyService::record);
     }
 }
