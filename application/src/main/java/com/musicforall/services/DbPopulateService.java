@@ -1,9 +1,7 @@
 package com.musicforall.services;
 
 import com.musicforall.files.manager.FileManager;
-import com.musicforall.history.handlers.events.EventType;
-import com.musicforall.history.model.History;
-import com.musicforall.history.service.HistoryService;
+import com.musicforall.history.service.DBHistoryPopulateService;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
@@ -17,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -72,8 +71,7 @@ public class DbPopulateService {
     private FileManager fileManager;
 
     @Autowired
-    private HistoryService historyService;
-
+    private DBHistoryPopulateService dbHistoryPopulateService;
 
     private static URL toURL(String url) {
         try {
@@ -125,7 +123,9 @@ public class DbPopulateService {
         final Playlist playlist = new Playlist("Hype", tracks, user);
 
         playlistService.save(playlist);
-        fillListenedTracks(tracks, user.getId());
+
+        final List<Integer> tracksId = tracks.stream().map(Track::getId).collect(Collectors.toList());
+        dbHistoryPopulateService.populateTrackListened(tracksId, user.getId());
 
         LOG.info("playlist {} is saved", playlist);
 
@@ -141,18 +141,5 @@ public class DbPopulateService {
         } finally {
             LOG.info("finished database population");
         }
-    }
-
-
-    private void fillListenedTracks(Set<Track> tracks, Integer userId) {
-        final Random rnd = new Random();
-        tracks.stream()
-                .flatMap(t -> {
-                    int listened =  rnd.nextInt(MAX_LISTENED);
-                    return IntStream.range(0, listened)
-                            .mapToObj(i -> new History(t.getId(), new Date(), userId, EventType.TRACK_LISTENED))
-                            .collect(Collectors.toList()).stream();
-                })
-                .forEach(historyService::record);
     }
 }
