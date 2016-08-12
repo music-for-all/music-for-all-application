@@ -22,6 +22,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static com.musicforall.files.utils.FileTestUtils.getResource;
 import static com.musicforall.files.utils.FileTestUtils.mergeFiles;
 import static java.nio.file.Files.newInputStream;
 import static java.nio.file.Paths.get;
@@ -35,9 +36,9 @@ public class FileManagerTest {
 
     private static final String TEST_FILE_NAME = "big_test_resource.mp3";
 
-    private static final URL resourceUrl = FileManagerTest.class.getClassLoader().getResource(TEST_FILE_NAME);
+    private static final URL resourceUrl = getResource(FileManagerTest.class, TEST_FILE_NAME);
 
-    private static final URL saveByUrlResource = FileManagerTest.class.getClassLoader().getResource("save_by_url_resource.jpg");
+    private static final URL saveByUrlResource = getResource(FileManagerTest.class, "save_by_url_resource.jpg");
 
     private static File testDirectory;
 

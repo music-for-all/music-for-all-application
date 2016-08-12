@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -30,5 +31,9 @@ public final class FileTestUtils {
                 Files.copy(f.toPath(), mergingStream);
             }
         }
+    }
+
+    public static URL getResource(Class<?> clazz, final String resourceName) {
+        return clazz.getClassLoader().getResource(resourceName);
     }
 }
