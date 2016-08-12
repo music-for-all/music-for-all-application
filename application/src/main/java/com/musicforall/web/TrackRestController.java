@@ -85,7 +85,7 @@ public class TrackRestController {
     }
 
 
-    @RequestMapping(value = "/getMostPopular",  method = RequestMethod.GET)
+    @RequestMapping(value = "/popular",  method = RequestMethod.GET)
     public Collection<Track> getByPopularity() {
         return historyService.getTheMostPopularTracks()
                 .stream()

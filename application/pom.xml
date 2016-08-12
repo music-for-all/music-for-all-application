@@ -35,7 +35,6 @@
             <version>${history.version}</version>
         </dependency>
 
-
         <dependency>
             <groupId>org.codehaus.janino</groupId>
             <artifactId>janino</artifactId>

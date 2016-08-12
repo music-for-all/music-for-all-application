@@ -165,7 +165,7 @@
             $("script.trackRowTemplate").html()
     );
 
-    $.when($.get("/tracks/getMostPopular"))
+    $.when($.get('<@spring.url "/tracks/popular"/>'))
             .then(function (response) {
                 $("#tracks").find("thead").after(
                         trackTable(response)
