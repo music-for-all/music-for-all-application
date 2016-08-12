@@ -1,10 +1,11 @@
 package com.musicforall.config.security;
 
-import com.musicforall.services.login.SimpleSocialUsersDetailService;
+import com.musicforall.config.SocialConfig;
+import com.musicforall.services.social.SimpleSocialUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -18,12 +19,12 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.social.security.SocialUserDetailsService;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Import({SocialConfig.class})
-@ComponentScan(basePackages = {"com.musicforall.config.security"})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -45,12 +46,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe().tokenValiditySeconds(REMEMBER_ME_SECONDS)
                 .rememberMeParameter("_spring_security_remember_me")
                 .and()
-                .logout().permitAll();
-//                .and()
-//                .apply(new SpringSocialConfigurer()
-//                        .postLoginUrl("/main")
-//                        .defaultFailureUrl("/")
-//                        .alwaysUsePostLoginUrl(true));
+                .logout().permitAll()
+                .and()
+                .apply(new SpringSocialConfigurer()
+                        .postLoginUrl("/main")
+                        .defaultFailureUrl("/")
+                        .alwaysUsePostLoginUrl(true));
     }
 
     @Bean
