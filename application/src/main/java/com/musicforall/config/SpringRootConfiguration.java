@@ -3,6 +3,7 @@ package com.musicforall.config;
 import com.musicforall.config.security.SecurityConfig;
 import com.musicforall.files.FileApiSpringConfig;
 import com.musicforall.history.HistorySpringConfig;
+import com.musicforall.services.login.SocialConfig;
 import org.springframework.context.annotation.*;
 
 import java.util.concurrent.ExecutorService;

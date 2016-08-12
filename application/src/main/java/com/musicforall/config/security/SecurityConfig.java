@@ -1,11 +1,13 @@
 package com.musicforall.config.security;
 
-import com.musicforall.services.social.SimpleSocialUserDetailService;
+import com.musicforall.services.login.SimpleSocialUsersDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,6 +21,9 @@ import org.springframework.social.security.SocialUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@Import({SocialConfig.class})
+@ComponentScan(basePackages = {"com.musicforall.config.security"})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
