@@ -108,7 +108,9 @@ public class FileManagerTest {
             final MockMultipartFile file = new MockMultipartFile("file", "test.mp3", null, inputStream);
             assertNotNull(manager.save(file));
 
-            final File[] files = get(testDirectory.getAbsolutePath(), "test.mp3").toFile().listFiles((dir, name) -> name.matches("\\d+"));
+            final File[] files = get(testDirectory.getAbsolutePath(), "test.mp3")
+                    .toFile()
+                    .listFiles((dir, name) -> name.matches("\\d+"));
             long chunks = file.getSize() / FileManager.CHUNK_SIZE;
             long left = file.getSize() % FileManager.CHUNK_SIZE;
             assertEquals(left > 0 ? chunks + 1 : chunks, files.length);
@@ -118,5 +120,15 @@ public class FileManagerTest {
 
             assertEquals(file.getSize(), newFile.length());
         }
+    }
+
+    @Test
+    public void testGetFilePartById() throws Exception {
+        final Path path = get(resourceUrl.toURI());
+        try (InputStream inputStream = newInputStream(path)) {
+            final MockMultipartFile file = new MockMultipartFile("file", "testGetFilePartById.mp3", null, inputStream);
+            manager.save(file);
+        }
+        assertNotNull(manager.getFilePartById("testGetFilePartById.mp3", 0));
     }
 }

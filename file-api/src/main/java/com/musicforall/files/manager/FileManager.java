@@ -38,7 +38,7 @@ public class FileManager {
      */
     private String workingDirectory;
 
-    public static String createChunkName(int counter) {
+    private String createChunkName(int counter) {
         return String.format("%04d", counter);
     }
 
@@ -114,5 +114,10 @@ public class FileManager {
             return null;
         }
         return path;
+    }
+
+    public Path getFilePartById(final String location, final Integer partId) {
+        final String fileName = location + File.separator + createChunkName(partId);
+        return getFilePathByName(fileName);
     }
 }
