@@ -99,7 +99,8 @@
         }
         $("form[name=uploadForm]").each(function () {
             var obj = {};
-            obj.name = $(this).find("input[name=artist]").val() + " - " + $(this).find("input[name=name]").val();
+            obj.name = $(this).find("input[name=name]").val() ;
+            obj.artist = $(this).find("input[name=artist]").val();
             obj.location = "unknown";
             obj.tags = $(this).find("#tags").val();
 
