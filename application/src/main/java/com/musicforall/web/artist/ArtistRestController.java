@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @Validated
@@ -36,10 +37,7 @@ public class ArtistRestController {
         searchQuery.setTags(tags);
         final List<Track> tracks = trackService.getAllLike(searchQuery);
 
-        final Set<String> artists = new HashSet<>();
-        for (Track track : tracks) {
-            artists.add(track.getArtist());
-        }
+        final Set<String> artists = tracks.stream().map(Track::getArtist).collect(Collectors.toSet());
         return new ResponseEntity<>(artists, HttpStatus.OK);
     }
 }

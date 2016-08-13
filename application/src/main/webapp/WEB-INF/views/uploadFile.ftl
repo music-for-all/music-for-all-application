@@ -56,6 +56,22 @@
 
     $("#tags").select2(tagSearchConfig(contextPath, placeholder));
 
+    $("input[name=artist]").autocomplete({
+        source: function (request, response) {
+            $.getJSON("/artist", {
+                artistName: request.term
+            }, function (data) {
+                var array = data.error ? [] : $.map(data, function (m) {
+                    return {
+                        label: m,
+                        url: m
+                    };
+                });
+                response(array);
+            });
+        }
+    });
+
     function validateForm() {
         var validator = $("form[name=uploadForm]:last").data("bs.validator");
         validator.validate();
