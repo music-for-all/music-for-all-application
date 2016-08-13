@@ -137,7 +137,7 @@ public class Dao {
      * @return list of persistent instances or null
      */
     @SuppressWarnings("unchecked")
-    public <T> List<T> getAllBy(String hql, Map<String, String> parameters) {
+    public <T> List<T> getAllBy(String hql, Map<String, Object> parameters) {
         LOG.info("Going to find entities by hql - {}, with parameters - {}", hql, parameters);
         final Query<T> query = currentSession().createQuery(hql);
         query.setProperties(parameters);
