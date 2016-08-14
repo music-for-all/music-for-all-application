@@ -82,7 +82,7 @@ public class DbPopulateService {
 
         LOG.info("going to populate database with test data");
 
-        final User user = new User("dev", "password", "nikolsky12@gmail.com");
+        final User user = new User("dev", "password", "dev@musicforall.com");
         userService.save(user);
         LOG.info(USER_IS_SAVED, user);
 
