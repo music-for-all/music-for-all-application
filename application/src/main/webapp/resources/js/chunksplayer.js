@@ -28,10 +28,6 @@ var MP3ChunksPlayer = function () {
 
     var _analyser;
 
-    var _request = new XMLHttpRequest();
-    _request.responseType = 'arraybuffer';
-    _request.addEventListener('load', _onChunkLoaded, false);
-
     /**
      * Creates a new Uint8Array based on two different ArrayBuffers
      *
@@ -60,7 +56,6 @@ var MP3ChunksPlayer = function () {
      */
     var _play = function () {
         // Adding a bit of  scheduling so that we won't have single digit milisecond overlaps.
-        // Thanks to Chris Wilson for his suggestion.
         var scheduledTime = 0.010;
 
         try {
@@ -75,6 +70,11 @@ var MP3ChunksPlayer = function () {
         var currentTime = _audioContext.currentTime + 0.005 || 0;
         _audioSource.start(scheduledTime - 0.005, currentTime, _audioBuffer.duration - currentTime);
         _audioSource.playbackRate.value = 1;
+    };
+
+    var _loadChunk = function (index) {
+        _request.open("GET", "files/" + _track.id + "/" + index, true);
+        _request.send();
     };
 
     function _onChunkLoaded() {
@@ -98,10 +98,9 @@ var MP3ChunksPlayer = function () {
         }
     }
 
-    var _loadChunk = function (index) {
-        _request.open('GET', 'files/' + _track.id + '/' + index, true);
-        _request.send();
-    };
+    var _request = new XMLHttpRequest();
+    _request.responseType = "arraybuffer";
+    _request.addEventListener("load", _onChunkLoaded, false);
 
     /**
      * Initializes the class by loading the first chunk
