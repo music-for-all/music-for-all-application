@@ -87,12 +87,13 @@ public class FileManager {
         int partCounter = DEFAULT_CHUNK_ID;
         final byte[] buffer = new byte[CHUNK_SIZE];
         try (BufferedInputStream bis = new BufferedInputStream(stream)) {
-            int tmp;
-            while ((tmp = bis.read(buffer)) > 0) {
+            int length = bis.read(buffer);
+            while (length > 0) {
                 final Path chunkPath = path.resolve(createChunkName(partCounter++));
                 try (OutputStream out = newOutputStream(chunkPath)) {
-                    out.write(buffer, 0, tmp);
+                    out.write(buffer, 0, length);
                 }
+                length = bis.read(buffer);
             }
         }
         return path;
