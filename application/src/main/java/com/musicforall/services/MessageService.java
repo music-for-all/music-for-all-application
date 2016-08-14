@@ -17,12 +17,12 @@ import java.util.Properties;
 @Transactional
 public class MessageService {
 
-    public void sendWelcomeMessage() {
+    public boolean sendWelcomeMessage() throws MessagingException {
 
         String to = SecurityUtil.currentUser().getEmail();
 
         String from = "musicforall07@gmail.com";
-        final String username = "musicforall07@gmail.com";
+        final String username = "musicforall07";
         final String password = "PolyInkExt";
 
         String host = "smtp.gmail.com";
@@ -40,15 +40,15 @@ public class MessageService {
                     }
                 });
 
-        try {
-            Message message = WelcomeMessage.create(session);
-            message.setFrom(new InternetAddress(from));
-            message.setRecipients(Message.RecipientType.TO,
+
+        Message message = WelcomeMessage.create(session);
+        message.setFrom(new InternetAddress(from));
+        message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(to));
-            Transport.send(message);  // Send message
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
+        Transport.send(message);  // Send message
+
+        return true;
+
     }
 
 }
