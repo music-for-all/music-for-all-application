@@ -6,7 +6,7 @@
 <@m.head>
 <meta charset="UTF-8">
 <title>Web Audio API - Playing a chunked mp3 file</title>
-<script type="text/javascript" src="<@spring.url "/resources/js/chunkedPlayer.js" />"></script>
+<script type="text/javascript" src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
 <script type="text/javascript" src="<@spring.url "/resources/js/track.js" />"></script>
 </@m.head>
 <@m.body>
