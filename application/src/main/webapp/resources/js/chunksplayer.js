@@ -65,6 +65,7 @@ var MP3ChunksPlayer = function () {
         try {
             _audioSource.stop(scheduledTime);
         } catch (e) {
+            console.log(e);
         }
 
         _audioSource = _audioContext.createBufferSource();
