@@ -51,6 +51,9 @@ public class Track implements Serializable {
     @Column(name = "location", nullable = false)
     private String location;
 
+    @Column(nullable = false)
+    private Long size;
+
     @JsonIgnore
     @ManyToMany
     @Cascade(CascadeType.SAVE_UPDATE)
@@ -155,6 +158,14 @@ public class Track implements Serializable {
         this.tags = tags;
     }
 
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(id, tags, name, location);
@@ -185,6 +196,7 @@ public class Track implements Serializable {
                 ", artist='" + artist + '\'' +
                 ", album='" + album + '\'' +
                 ", location='" + location + '\'' +
+                ", size='" + size + '\'' +
                 '}';
     }
 }

@@ -21,7 +21,7 @@ function like(id) {
 
     $.ajax({
         type: "POST",
-        url: "/tracks/like/" + id,
+        url: "/tracks/like/" + id
 
     }).fail(function (xhr, status, errorThrown) {
         var message = status + ": " + xhr.status + " " + errorThrown;

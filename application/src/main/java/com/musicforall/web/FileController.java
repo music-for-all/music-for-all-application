@@ -57,6 +57,7 @@ public class FileController {
         final Path saved = manager.save(file);
         if (saved != null) {
             trackJson.setLocation(filename);
+            trackJson.setSize(file.getSize());
             trackService.save(trackJson);
             return new ResponseEntity<String>("Song successfully saved", HttpStatus.OK);
         } else {
@@ -93,5 +94,10 @@ public class FileController {
     @RequestMapping(value = "/uploadFile", method = RequestMethod.GET)
     public String uploadFile() {
         return "uploadFile";
+    }
+
+    @RequestMapping(value = "/chunking", method = RequestMethod.GET)
+    public String chunking() {
+        return "chunking";
     }
 }
