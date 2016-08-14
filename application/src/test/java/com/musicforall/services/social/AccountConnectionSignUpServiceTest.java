@@ -17,6 +17,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
+import javax.validation.ConstraintViolationException;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -74,6 +76,27 @@ public class AccountConnectionSignUpServiceTest {
     public void testUserNotFound() {
         Connection<?> connection = Mockito.mock(Connection.class);
         when(connection.fetchUserProfile()).thenReturn(null);
+
+        accountConnectionSignUpService.execute(connection);
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void testSaveWithSmallUsername() {
+        Connection<?> connection = Mockito.mock(Connection.class);
+
+        UserProfile userProfile = new UserProfile("", " ,", "1name", " ", "1name@mail.com", "o");
+        when(connection.fetchUserProfile()).thenReturn(userProfile);
+
+        accountConnectionSignUpService.execute(connection);
+    }
+
+
+    @Test(expected = ConstraintViolationException.class)
+    public void testSaveWithBigUsername() {
+        Connection<?> connection = Mockito.mock(Connection.class);
+
+        UserProfile userProfile = new UserProfile("", " ,", "2name", " ", "2name@mail.com", "12345678901234567");
+        when(connection.fetchUserProfile()).thenReturn(userProfile);
 
         accountConnectionSignUpService.execute(connection);
     }
