@@ -51,7 +51,7 @@ public class Track implements Serializable {
     @Column(name = "location", nullable = false)
     private String location;
 
-    @Column(nullable = false)
+    @Column
     private Long size;
 
     @JsonIgnore
