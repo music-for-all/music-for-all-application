@@ -6,20 +6,23 @@ package com.musicforall.services;
 
 import com.musicforall.util.SecurityUtil;
 import com.musicforall.web.messages.WelcomeMessage;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import java.util.Properties;
 
-
+@Service("messageService")
+@Transactional
 public class MessageService {
 
-    void sendWelcomeMessage() {
+    public void sendWelcomeMessage() {
 
         String to = SecurityUtil.currentUser().getEmail();
 
         String from = "musicforall07@gmail.com";
-        final String username = "musicforall07";
+        final String username = "musicforall07@gmail.com";
         final String password = "PolyInkExt";
 
         String host = "smtp.gmail.com";
@@ -31,24 +34,18 @@ public class MessageService {
         props.put("mail.smtp.port", "587");
 
         Session session = Session.getInstance(props,
-                new javax.mail.Authenticator() {
+                new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(username, password);
                     }
                 });
 
         try {
-
-            Message message = WelcomeMessage.createWelcomeMessage(session);
-
+            Message message = WelcomeMessage.create(session);
             message.setFrom(new InternetAddress(from));
-
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(to));
-
-
             Transport.send(message);  // Send message
-
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }

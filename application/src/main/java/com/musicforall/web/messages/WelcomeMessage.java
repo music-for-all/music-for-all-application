@@ -16,7 +16,7 @@ public final class WelcomeMessage {
     private WelcomeMessage() {
     }
 
-    public static Message createWelcomeMessage(Session session) throws MessagingException {
+    public static Message create(Session session) throws MessagingException {
         Message message = new MimeMessage(session);
 
         message.setSubject("Testing Subject"); // header field

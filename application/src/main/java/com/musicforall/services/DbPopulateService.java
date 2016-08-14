@@ -1,7 +1,10 @@
 package com.musicforall.services;
 
 import com.musicforall.files.manager.FileManager;
-import com.musicforall.model.*;
+import com.musicforall.model.Playlist;
+import com.musicforall.model.Tag;
+import com.musicforall.model.Track;
+import com.musicforall.model.User;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.user.UserService;
@@ -79,7 +82,7 @@ public class DbPopulateService {
 
         LOG.info("going to populate database with test data");
 
-        final User user = new User("dev", "password", "dev@musicforall.com");
+        final User user = new User("dev", "password", "nikolsky12@gmail.com");
         userService.save(user);
         LOG.info(USER_IS_SAVED, user);
 
