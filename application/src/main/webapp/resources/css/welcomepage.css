@@ -67,7 +67,7 @@ h6 {
     }
 }
 
-.divider{
+.divider {
     background: #ddd;
     height: 2px;
     display: block;
@@ -76,7 +76,7 @@ h6 {
     margin: 20px auto;
 }
 
-.divider span{
+.divider span {
     width: 30px;
     height: 20px;
     background: #fff;
@@ -93,23 +93,25 @@ h6 {
     overflow: hidden;
     width: 200px;
 }
-.social ul{
+
+.social ul {
     display: block;
     margin: auto;
 }
-.social ul li{
+
+.social ul li {
     list-style: none;
     float: left;
     width: 31.33%;
     margin: 0 2px;
 }
-.social ul li a{
-    display: inline-block;
+
+.social ul li a {
+    display: block;
     font-size: 20px;
     text-decoration: none;
     color: #fff;
     padding: 6px;
-    display: block;
     text-align: center;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -119,13 +121,19 @@ h6 {
     -webkit-transition: all 0.4s ease-in-out;
     transition: all 0.4s ease-in-out;
 }
-.social ul li a:hover{opacity: .8;}
-.social ul li a.facebook{
+
+.social ul li a:hover {
+    opacity: .8;
+}
+
+.social ul li .facebook {
     background: #3a589a;
 }
-.social ul li a.twitter {
+
+.social ul li .twitter {
     background: #4099ff;
 }
-.social ul li a.google {
+
+.social ul li .google {
     background: #e9544f;
 }

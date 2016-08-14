@@ -47,7 +47,7 @@ public class SocialConfig implements SocialConfigurer {
         connectionFactoryConfigurer.addConnectionFactory(new TwitterConnectionFactory(
                 environment.getProperty("spring.social.twitter.appId"),
                 environment.getProperty("spring.social.twitter.appSecret")));
-        GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(
+        final GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(
                 environment.getProperty("spring.social.google.appId"),
                 environment.getProperty("spring.social.google.appSecret"));
         googleConnectionFactory.setScope("email");
@@ -59,7 +59,7 @@ public class SocialConfig implements SocialConfigurer {
         return new UserIdSource() {
             @Override
             public String getUserId() {
-                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                 if (authentication == null) {
                     throw new IllegalStateException("Unable to get a ConnectionRepository: no user signed in");
                 }
@@ -72,7 +72,7 @@ public class SocialConfig implements SocialConfigurer {
     public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator
                                                                           connectionFactoryLocator) {
 //        populate();
-        JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource,
+        final JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource,
                 connectionFactoryLocator, Encryptors.noOpText());
         repository.setConnectionSignUp(connectionSignUp);
         return repository;
@@ -101,21 +101,21 @@ public class SocialConfig implements SocialConfigurer {
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
     public Facebook facebook(ConnectionRepository repository) {
-        Connection<Facebook> connection = repository.findPrimaryConnection(Facebook.class);
-        return connection != null ? connection.getApi() : null;
+        final Connection<Facebook> connection = repository.findPrimaryConnection(Facebook.class);
+        return connection == null ? null : connection.getApi();
     }
 
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
     public Twitter twitter(ConnectionRepository repository) {
-        Connection<Twitter> connection = repository.findPrimaryConnection(Twitter.class);
-        return connection != null ? connection.getApi() : null;
+        final Connection<Twitter> connection = repository.findPrimaryConnection(Twitter.class);
+        return connection == null ? null : connection.getApi();
     }
 
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
     public Google google(ConnectionRepository repository) {
-        Connection<Google> connection = repository.findPrimaryConnection(Google.class);
-        return connection != null ? connection.getApi() : null;
+        final Connection<Google> connection = repository.findPrimaryConnection(Google.class);
+        return connection == null ? null : connection.getApi();
     }
 }

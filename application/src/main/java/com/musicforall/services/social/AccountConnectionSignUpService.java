@@ -22,8 +22,8 @@ public class AccountConnectionSignUpService implements ConnectionSignUp {
     private final int MAX_LENGTH_NAME = 16;
 
     public String execute(Connection<?> connection) {
-        UserProfile profile = connection.fetchUserProfile();
-        User user = new User();
+        final UserProfile profile = connection.fetchUserProfile();
+        final User user = new User();
         if ((profile.getUsername() == null) ||
                 (profile.getUsername().length() < 2) ||
                 (profile.getUsername().length() > MAX_LENGTH_NAME)) {
@@ -39,7 +39,9 @@ public class AccountConnectionSignUpService implements ConnectionSignUp {
     }
 
     private void checkUsername(User user) {
-        String searchUsername, username = searchUsername = user.getUsername();
+        String searchUsername;
+        final String username = user.getUsername();
+        searchUsername = username;
         int i = 0;
         while (userService.getIdByUsername(searchUsername) != null) {
             i++;

@@ -27,6 +27,10 @@ import org.springframework.social.security.SpringSocialConfigurer;
 @Import({SocialConfig.class})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String MAIN = "/main";
+
+    private static final String WELCOME = "/welcome";
+
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -39,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/welcome*", "/files/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/welcome").permitAll()
+                .formLogin().loginPage(WELCOME).permitAll()
                 .successHandler(successHandler())
                 .failureHandler(failureHandler())
                 .and()
@@ -49,8 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().permitAll()
                 .and()
                 .apply(new SpringSocialConfigurer()
-                        .postLoginUrl("/main")
-                        .defaultFailureUrl("/")
+                        .postLoginUrl(MAIN)
+                        .defaultFailureUrl(WELCOME)
                         .alwaysUsePostLoginUrl(true));
     }
 
@@ -71,7 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         final CustomAuthenticationSuccessHandler authSuccessHandler =
                 new CustomAuthenticationSuccessHandler();
-        authSuccessHandler.setDefaultTargetUrl("/main");
+        authSuccessHandler.setDefaultTargetUrl(MAIN);
         authSuccessHandler.setTargetUrlParameter("targetUrl");
         return authSuccessHandler;
     }
