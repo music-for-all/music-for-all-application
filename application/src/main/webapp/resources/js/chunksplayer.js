@@ -28,6 +28,10 @@ var MP3ChunksPlayer = function () {
 
     var _analyser;
 
+    var _request = new XMLHttpRequest();
+    _request.responseType = "arraybuffer";
+    _request.addEventListener("load", _onChunkLoaded, false);
+
     /**
      * Creates a new Uint8Array based on two different ArrayBuffers
      *
@@ -97,10 +101,6 @@ var MP3ChunksPlayer = function () {
             }, 1000);
         }
     }
-
-    var _request = new XMLHttpRequest();
-    _request.responseType = "arraybuffer";
-    _request.addEventListener("load", _onChunkLoaded, false);
 
     /**
      * Initializes the class by loading the first chunk
