@@ -1,4 +1,4 @@
-package com.musicforall.web;
+package com.musicforall.web.track;
 
 import com.musicforall.history.handlers.events.TrackLikedEvent;
 import com.musicforall.history.service.history.HistoryService;

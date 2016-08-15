@@ -58,10 +58,9 @@ public class HistoryServiceImpl implements HistoryService {
         parameters.put("trackId", trackId);
         parameters.put("eventType", EventType.TRACK_LIKED);
 
-        final long count = dao.getBy("select count(*) from History history " +
+        return dao.getBy("select count(*) from History history " +
                         "where history.trackId=:trackId and history.eventType=:eventType",
                 parameters);
-        return count;
     }
 
     private DetachedCriteria toDetachedCriteria(SearchHistoryParams params) {
