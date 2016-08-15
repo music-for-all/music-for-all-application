@@ -2,7 +2,6 @@ package com.musicforall.web;
 
 import com.musicforall.model.Playlist;
 import com.musicforall.services.playlist.PlaylistService;
-import com.musicforall.services.track.TrackService;
 import com.musicforall.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +23,6 @@ public class PlaylistRestController {
 
     @Autowired
     private PlaylistService playlistService;
-
-    @Autowired
-    private TrackService trackService;
 
     @RequestMapping(method = RequestMethod.POST)
     public Playlist createPlaylist(@RequestParam("name") String name) {

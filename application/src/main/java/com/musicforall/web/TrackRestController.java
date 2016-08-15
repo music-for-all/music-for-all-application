@@ -52,10 +52,10 @@ public class TrackRestController {
     public ResponseEntity<Track> getTrack(@PathVariable("id") Integer id) {
 
         final Track track = trackService.get(id);
-        if (track != null) {
-            return new ResponseEntity<>(track, HttpStatus.OK);
-        } else {
+        if (track == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(track, HttpStatus.OK);
         }
     }
 
@@ -96,7 +96,7 @@ public class TrackRestController {
     @RequestMapping(value = "/recommended", method = RequestMethod.GET)
     public ResponseEntity<List<Track>> getRecommendedTracks() {
 
-        List<Track> tracks = trackService.getRecommendedTracks();
+        final List<Track> tracks = trackService.getRecommendedTracks();
 
         return new ResponseEntity<>(tracks, HttpStatus.OK);
     }
