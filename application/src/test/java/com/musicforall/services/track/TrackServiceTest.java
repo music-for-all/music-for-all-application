@@ -17,6 +17,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertNotNull;
@@ -127,7 +128,7 @@ public class TrackServiceTest {
     @Test
     public void testGetAllLike() {
 
-        final Set<Tag> tags = new HashSet<Tag>(Arrays.asList(new Tag("tag1"), new Tag("tag2")));
+        final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag("tag1"), new Tag("tag2")));
 
         List<Track> tracks = Arrays.asList(
                 new Track("track", "title1", "artist1", "album1", "/root/track1.mp3", null),
@@ -146,8 +147,21 @@ public class TrackServiceTest {
     }
 
     @Test
-    public void testFindAll() {
+    public void testGetAllById() {
+        List<Track> tracks = Arrays.asList(
+                new Track("track", "title1", "artist1", "album1", "/root/track1.mp3", null),
+                new Track("track", "title2", "artist2", "album2", "/root/track2.mp3", null),
+                new Track("track", "title3", "artist3", "album3", "/root/track3.mp3", null)
+        );
+        Collection<Track> savedTracks = trackService.saveAll(tracks);
+        List<Integer> ids = savedTracks.stream().limit(2).map(Track::getId).collect(Collectors.toList());
+        Collection<Track> foundTracks = trackService.getAllById(ids);
+        assertEquals(foundTracks.size(), ids.size());
+        assertTrue(foundTracks.stream().allMatch(t -> ids.contains(t.getId())));
+    }
 
+    @Test
+    public void testFindAll() {
         trackService.save(new Track("track3", "/track3.mp3"));
         List<Track> tracks = trackService.findAll();
         assertNotNull(tracks);
