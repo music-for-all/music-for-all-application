@@ -86,9 +86,11 @@ public class DbPopulateService {
         try {
             files = future.get().toFile().listFiles();
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            LOG.error("Future execution failed!", e);
         }
-        if (files == null || files.length <= 0) return 0L;
+        if (files == null || files.length <= 0) {
+            return 0L;
+        }
         for (final File file : files) {
             size += file.length();
         }

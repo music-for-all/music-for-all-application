@@ -84,7 +84,9 @@ function ChunksPlayer() {
     }
 
     function _loadChunk(index) {
-        if (isFullyLoaded()) return;
+        if (isFullyLoaded()) {
+            return;
+        }
         _request.open("GET", "files/" + _track.id + "/" + index, true);
         _request.send();
     }
@@ -120,7 +122,7 @@ function ChunksPlayer() {
     this.pause = function () {
         _paused = true;
         if (_audioContext.state === "running") {
-            _audioContext.suspend()
+            _audioContext.suspend();
         }
     };
 
@@ -128,9 +130,9 @@ function ChunksPlayer() {
         if (_totalChunksLoaded > 0 && _paused) {
             _paused = false;
             if (_audioContext.state === "suspended") {
-                _audioContext.resume()
+                _audioContext.resume();
             }
             _loadChunk(_totalChunksLoaded);
         }
     };
-};
+}
