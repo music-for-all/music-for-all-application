@@ -4,6 +4,8 @@
 <html lang="en">
 <@m.head>
 <title><@spring.message "welcomepage.PageTitle"/></title>
+<script src="/resources/js/player.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <link href="/resources/css/welcomepage.css" rel="stylesheet">
 <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
 </@m.head>
@@ -104,30 +106,72 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="intro-message">
+                    <div class="container">
                     <h1><@spring.message "projectName"/></h1>
                     <h3><@spring.message "welcomepage.Intro"/></h3>
                     <div class="top-table well" id="tops">
-                        <table id="top" class="table table-hover table-striped table-condensed ">
+                        <table id="tracks" class="table table-hover table-striped table-condensed ">
                             <thead>
                             <tr>
-                                <th><@spring.message "welcomepage.Actions"/></th>
-                                <th><@spring.message "welcomepage.Artist"/></th>
-                                <th><@spring.message "welcomepage.Title"/></th>
-                                <th><@spring.message "welcomepage.Duration"/></th>
+                                <td><@spring.message "welcomepage.Actions"/></td>
+                                <td><@spring.message "welcomepage.Artist"/></td>
+                                <td><@spring.message "welcomepage.Title"/></td>
+                                <td><@spring.message "welcomepage.Duration"/></td>
                             </tr>
                             </thead>
-
-                            <audio controls>
-                                <source type="audio/mp3" src="/files/01-Tom-Waits-on-Selvin-On-The-City-part-1.mp3">
-                            </audio>
-
                         </table>
+                    </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/template" class="trackRowTemplate">
+    <tbody>
+    <% _.each(data, function(track){ %>
+    <tr id="<%= track.id %>">
+        <td>
+            <button type='button' class='btn btn-xs btn-success' onclick="onPlay('audio_<%= track.id %>')">
+                <span class='glyphicon glyphicon-play' aria-hidden='true'/>
+            </button>
+            <button type='button' class='btn btn-xs btn-warning pause-track-button'
+                    onclick="onPause('audio_<%= track.id %>')">
+                <span class='glyphicon glyphicon-pause' aria-hidden='true'/>
+            </button>
+            <button type='button' class='btn btn-xs btn-danger delete-song-button'>
+                <span class='glyphicon glyphicon-remove' aria-hidden='true'/>
+            </button>
+        </td>
+        <td>
+            <%= track.name %>
+        </td>
+        <td>
+        </td>
+        <td>
+            <audio id='audio_<%= track.id %>' controls>
+                <source type="audio/mp3" src="/files/<%= track.location %>">
+            </audio>
+        </td>
+    </tr>
+    <% }); %>
+    </tbody>
+</script>
+
+<script type="text/javascript">
+    _.templateSettings.variable = "data";
+    var trackTable = _.template(
+            $("script.trackRowTemplate").html()
+    );
+
+    $.when($.get('<@spring.url "/tracks/popular"/>'))
+            .then(function (response) {
+                $("#tracks").find("thead").after(
+                        trackTable(response)
+                );
+            });
+</script>
 <script type="text/javascript">
     $(document).ready(function() {
 
