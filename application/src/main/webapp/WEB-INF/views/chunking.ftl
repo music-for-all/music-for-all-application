@@ -3,7 +3,7 @@
 <!DOCTYPE HTML>
 <html lang="en-US">
 <@m.head>
-<title>Web Audio API - Playing a chunked mp3 file</title>
+<title>Web Audio API - Playing a chunked audio file</title>
 <script type="text/javascript" src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
 <script type="text/javascript" src="<@spring.url "/resources/js/track.js" />"></script>
 </@m.head>
@@ -15,7 +15,7 @@
     <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
 </button>
 <script type="text/javascript">
-    var player = new MP3ChunksPlayer();
+    var player = new ChunksPlayer();
     var trackManager = new Track();
 
     $("#playBtn").on("click", function () {

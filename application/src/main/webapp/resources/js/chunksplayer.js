@@ -1,6 +1,6 @@
 "use strict";
 
-var MP3ChunksPlayer = function () {
+function ChunksPlayer() {
 
     /**
      * The ArrayBuffer that will have the new chunks appended
@@ -42,18 +42,18 @@ var MP3ChunksPlayer = function () {
      * @param {ArrayBuffers} buffer2 The second buffer.
      * @return {ArrayBuffers} The new ArrayBuffer created out of the two.
      */
-    var _appendBuffer = function (buffer1, buffer2) {
+    function _appendBuffer(buffer1, buffer2) {
         var tmp = new Uint8Array(buffer1.byteLength + buffer2.byteLength);
         tmp.set(new Uint8Array(buffer1), 0);
         tmp.set(new Uint8Array(buffer2), buffer1.byteLength);
         return tmp.buffer;
-    };
+    }
 
-    var _initializeWebAudio = function () {
+    function _initializeWebAudio() {
         _audioContext = new AudioContext();
         _analyser = _audioContext.createAnalyser();
         _analyser.fftSize = 2048;
-    };
+    }
 
     function initAudioSource() {
         var audioSource = _audioContext.createBufferSource();
@@ -66,30 +66,28 @@ var MP3ChunksPlayer = function () {
 
     /**
      * Plays the music from the point that it currently is.
-     *
-     * @private
      */
-    var _play = function () {
+    function _play() {
         try {
             _audioSource.stop();
         } catch (e) {
             console.log(e);
         }
-
         _audioSource = initAudioSource();
         var currentTime = _audioContext.currentTime || 0;
+
         _audioSource.start(0, currentTime, _audioBuffer.duration - currentTime);
-    };
+    }
 
     function isFullyLoaded() {
         return _activeBuffer && _activeBuffer.byteLength >= _track.size;
     }
 
-    var _loadChunk = function (index) {
+    function _loadChunk(index) {
         if (isFullyLoaded()) return;
         _request.open("GET", "files/" + _track.id + "/" + index, true);
         _request.send();
-    };
+    }
 
     function _onChunkLoaded() {
         if (_totalChunksLoaded === 0) {
