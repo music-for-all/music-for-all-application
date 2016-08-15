@@ -1,20 +1,22 @@
 package com.musicforall.services.track;
 
 import com.musicforall.common.dao.Dao;
+import com.musicforall.history.service.HistoryService;
 import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
+import com.musicforall.model.User;
 import com.musicforall.services.SearchCriteriaFactory;
+import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.user.UserService;
+import com.musicforall.util.SecurityUtil;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Pukho on 15.06.2016.
@@ -28,6 +30,12 @@ public class TrackServiceImpl implements TrackService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FollowerService followerService;
+
+    @Autowired
+    private HistoryService historyService;
 
     @Override
     public Track save(Track track) {
@@ -75,5 +83,36 @@ public class TrackServiceImpl implements TrackService {
     @Override
     public List<Track> findAll() {
         return dao.all(Track.class);
+    }
+
+    @Override
+    public List<Track> getRecommendedTracks() {
+
+        final User user = SecurityUtil.currentUser();
+
+        final Map<String, Object> parameters = new HashMap<>();
+        parameters.put("userId", user.getId());
+        parameters.put("followedUserIds", followerService.getFollowingId(user.getId()));
+
+        List<Track> tracks = dao.getAllBy("select t from Track t where t.id in " +
+                "(select h.trackId from History h " +
+                "where h.eventType = 'TRACK_LIKED' and h.userId in (:followedUserIds) " +
+                "group by h.trackId order by count(*) desc)",
+                parameters);
+
+        /* Remove a recommended track if it is already in one of the user's playlists. */
+        for (Iterator<Track> trackIter = tracks.iterator(); trackIter.hasNext();) {
+
+            Track track = trackIter.next();
+            parameters.put("trackId", track.getId());
+            Long num = dao.getBy("select count(*) from Playlist playlist " +
+                            "join playlist.tracks track " +
+                            "where playlist.user.id = :userId and track.id = :trackId",
+                    parameters);
+            if (num > 0) {
+                trackIter.remove();
+            }
+        }
+        return tracks;
     }
 }

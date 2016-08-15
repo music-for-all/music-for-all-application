@@ -66,4 +66,10 @@ public interface TrackService {
      * @return the list of tracks
      */
     List<Track> findAll();
+
+    /**
+     * Gets tracks recommended for the current user.
+     * @return the list of recommended tracks
+     */
+    List<Track> getRecommendedTracks();
 }

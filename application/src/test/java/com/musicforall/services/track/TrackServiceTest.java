@@ -1,14 +1,21 @@
 package com.musicforall.services.track;
 
+import com.musicforall.history.handlers.HistoryEventListener;
+import com.musicforall.history.handlers.events.TrackLikedEvent;
+import com.musicforall.model.Playlist;
 import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
+import com.musicforall.services.follower.FollowerService;
+import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.tag.TagService;
+import com.musicforall.util.SecurityUtil;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -43,6 +50,15 @@ public class TrackServiceTest {
 
     @Autowired
     private TagService tagService;
+
+    @Autowired
+    private HistoryEventListener historyEventListener;
+
+    @Autowired
+    private FollowerService followerService;
+
+    @Autowired
+    private PlaylistService playlistService;
 
     @Test
     public void testSaveTrackWithoutTags() {
@@ -152,5 +168,42 @@ public class TrackServiceTest {
         List<Track> tracks = trackService.findAll();
         assertNotNull(tracks);
         assertTrue(tracks.size() >= 1);
+    }
+
+    @Test
+    @WithUserDetails
+    public void testGetRecommendedTracks() {
+
+        List<Track> tracks = Arrays.asList(
+                new Track("track", "title1", "artist1", "album1", "/root/track1.mp3", null),
+                new Track("track", "title2", "artist2", "album2", "/root/track2.mp3", null),
+                new Track("track", "title3", "artist3", "album3", "/root/track3.mp3", null),
+                new Track("track", "title4", "artist4", "album4", "/root/track4.mp3", null)
+        );
+        trackService.saveAll(tracks);
+
+        final int FOLLOWED_USER_ID = 2;
+        followerService.follow(SecurityUtil.currentUser().getId(), FOLLOWED_USER_ID);
+
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(1, FOLLOWED_USER_ID));
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(1, FOLLOWED_USER_ID));
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(3, FOLLOWED_USER_ID));
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(2, FOLLOWED_USER_ID));
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(2, FOLLOWED_USER_ID));
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(2, FOLLOWED_USER_ID));
+
+        tracks = trackService.getRecommendedTracks();
+
+        assertNotNull(tracks);
+        assertEquals(3, tracks.size());
+
+        final Playlist playlist = playlistService.save("demo");
+        playlist.addTracks(new HashSet<Track>(trackService.findAll()));
+        playlistService.save(playlist);
+
+        tracks = trackService.getRecommendedTracks();
+        assertEquals(0, tracks.size());
+
+        playlistService.delete(playlist.getId());
     }
 }
