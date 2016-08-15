@@ -1,7 +1,12 @@
 package com.musicforall.services;
 
 import com.musicforall.files.manager.FileManager;
-import com.musicforall.model.*;
+import com.musicforall.history.handlers.HistoryEventListener;
+import com.musicforall.history.handlers.events.TrackLikedEvent;
+import com.musicforall.model.Playlist;
+import com.musicforall.model.Tag;
+import com.musicforall.model.Track;
+import com.musicforall.model.User;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.user.UserService;
@@ -61,6 +66,9 @@ public class DbPopulateService {
     @Autowired
     private FileManager fileManager;
 
+    @Autowired
+    private HistoryEventListener historyEventListener;
+
     private static URL toURL(String url) {
         try {
             return new URL(url);
@@ -83,7 +91,7 @@ public class DbPopulateService {
         userService.save(user);
         LOG.info(USER_IS_SAVED, user);
 
-        final User user2 = new User("user2", "password2", "user1@musicforall.com");
+        final User user2 = new User("Dimitri", "password", "dimitri@musicforall.com");
         userService.save(user2);
         LOG.info(USER_IS_SAVED, user2);
 
@@ -92,7 +100,7 @@ public class DbPopulateService {
         followerService.follow(user2.getId(), user.getId());
         LOG.info(USER_IS_FOLLOW, user2, user);
 
-        final User user3 = new User("user3", "password3", "user2@musicforall.com");
+        final User user3 = new User("user3", "password", "user3@musicforall.com");
         userService.save(user3);
         LOG.info(USER_IS_SAVED, user3);
 
@@ -117,6 +125,19 @@ public class DbPopulateService {
                 .peek(u -> LOG.info("going to save file by url - {}", u))
                 .map(url -> (Callable<Path>) () -> fileManager.save(url))
                 .collect(toList());
+
+        final int FOLLOWED_USER_ID = 2;
+        final int TRACK_1_ID = 1;
+        final int TRACK_2_ID = 2;
+        final int TRACK_3_ID = 3;
+
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_1_ID, FOLLOWED_USER_ID));
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_1_ID, FOLLOWED_USER_ID));
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_3_ID, FOLLOWED_USER_ID));
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_2_ID, FOLLOWED_USER_ID));
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_2_ID, FOLLOWED_USER_ID));
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_2_ID, FOLLOWED_USER_ID));
+
         try {
             executorService.invokeAll(tasks);
         } catch (InterruptedException e) {
