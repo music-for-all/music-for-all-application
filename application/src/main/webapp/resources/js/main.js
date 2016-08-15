@@ -9,6 +9,26 @@ jQuery(document).ready(function () {
         var id = $(this).closest("tr").attr("id");
         like(id);
     });
+
+    /*
+     * When a recommended track is clicked, add it to the playlist,
+     */
+    $("#recommendations").on("click", "a", function (e) {
+        e.preventDefault();
+
+        var li = $(this).closest("li");
+        var trackId = li.attr("id");
+        var playlistId = $("#playlists li.active").attr("id");
+        
+        playlist.addTrack(playlistId, trackId)
+            .then(function() {
+                /* Remove the track from the recommended section, and update the current playlist. */
+                li.remove();
+                $("#playlists li.active a").trigger("click");
+            });
+    });
+
+    displayRecommendedTracks();
 });
 /* end $(document).ready() */
 
@@ -50,6 +70,26 @@ function updateLikeCount(id) {
         console.log(message);
 
     }).done(function(likeCount) {
-        $("#" + id + " .num-likes").text(likeCount);
+        $("#tracks #" + id + " .num-likes").text(likeCount);
+    });
+}
+
+/**
+ * Retrieves tracks recommended for the current user.
+ */
+function displayRecommendedTracks() {
+    $.ajax({
+        type: "GET",
+        url: "/tracks/recommended",
+        dataType: "json"
+
+    }).fail(function (xhr, status, errorThrown) {
+        var message = status + ": " + xhr.status + " " + errorThrown;
+        console.log(message);
+
+    }).done(function (tracks) {
+        $.each(tracks, function (i, track) {
+            addRecommendedTrack(track);
+        });
     });
 }
