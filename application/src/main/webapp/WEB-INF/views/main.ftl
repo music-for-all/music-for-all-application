@@ -21,6 +21,13 @@
     <@m.navigation m.pages.Main/>
 
 <div class="container">
+
+    <section id="recommendations-section" class="well  col-md-2 col-md-offset-1">
+        <h4><@spring.message "mainpage.YouMightAlsoLike"/></h4>
+        <ul id="recommendations" class="nav nav-pills nav-stacked">
+        </ul>
+    </section>
+
     <section id="tracks-section" class="well col-md-9 ">
         <table id="tracks" class="table table-hover table-striped table-condensed ">
             <thead>
@@ -38,14 +45,14 @@
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
     </a>
 
-    <div class="well  col-md-2 col-md-offset-1  ">
+    <section id="playlists-section" class="well  col-md-2 col-md-offset-1  ">
         <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">
             <@spring.message "mainpage.CreatePlaylist"/></button>
         <ul id="playlists" class="nav nav-pills nav-stacked"></ul>
     </section>
-</div>
+</div><!-- end .container -->
+
 <script type="text/template" class="trackRowTemplate">
-    <tbody>
     <% _.each(data, function(track){ %>
     <tr id="<%= track.id %>">
         <td>
@@ -74,7 +81,6 @@
         </td>
     </tr>
     <% }); %>
-    </tbody>
 </script>
 <script type="text/template" class="playlistRowTemplate">
     <li id="<%= data.id %>" title="<%= data.name %>">
@@ -90,7 +96,19 @@
         </div>
     </li>
 </script>
+
+<script type="text/template" class="recommendationRowTemplate">
+    <li id="<%= data.id %>" title="<%= data.name %>">
+        <div class="input-group">
+            <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
+                <%= data.name %>
+            </a>
+        </div>
+    </li>
+</script>
+
 <script type="text/javascript">
+    "use strict";
     var contextPath = "<@spring.url "" />";
     var playlist = new Playlist(contextPath);
     var track = new Track(contextPath);
@@ -102,6 +120,10 @@
 
     var playlistRow = _.template(
             $("script.playlistRowTemplate").html()
+    );
+
+    var recommendationRow = _.template(
+            $("script.recommendationRowTemplate").html()
     );
 
     /*
@@ -140,9 +162,10 @@
     $("#tracks").on("click", ".delete-song-button", function (e) {
         var row = $(this).closest("tr");
         var id = row.attr("id");
-        track.remove(id).then(function () {
-            row.remove();
-        });
+        playlist.removeTrack(1, id)
+                .then(function () {
+                    row.remove();
+                });
     });
 
     function deletePlaylist(e) {
@@ -152,7 +175,7 @@
     }
 
     $("#acceptRemovingPlaylistButton").on("click", function (e) {
-        var playlistToRemove = $("#playlists").find("li.active")
+        var playlistToRemove = $("#playlists").find("li.active");
         playlist.remove(playlistToRemove.attr("id"))
                 .then(function () {
                     playlistToRemove.remove();
@@ -174,6 +197,12 @@
         );
     }
 
+    function addRecommendedTrack(track) {
+        $("#recommendations").append(
+                recommendationRow(track)
+        );
+    }
+
     $(document).ready(function () {
 
         /* Fetch all playlists of the current user, and populate the list of playlists with them. */
@@ -185,7 +214,7 @@
                 })
                 .done(function() {
                     /* For testing purpose, select the first playlist (named 'Hype'). */
-                    $("#1 a").trigger("click");
+                    $("#playlists #1 a").trigger("click");
                 });
 
         /* Set focus on the name input field when the modal window has been shown. */
