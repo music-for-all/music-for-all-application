@@ -1,7 +1,7 @@
-package com.musicforall.web;
+package com.musicforall.web.track;
 
 import com.musicforall.history.handlers.events.TrackLikedEvent;
-import com.musicforall.history.service.HistoryService;
+import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
 import com.musicforall.services.track.TrackService;
@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 import static com.musicforall.util.SecurityUtil.currentUser;
@@ -99,5 +100,12 @@ public class TrackRestController {
         final List<Track> tracks = trackService.getRecommendedTracks();
 
         return new ResponseEntity<>(tracks, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/popular",  method = RequestMethod.GET)
+    public Collection<Track> getByPopularity() {
+        List<Integer> popularTracksIds = historyService.getTheMostPopularTracks();
+        return trackService.getAllById(popularTracksIds);
     }
 }
