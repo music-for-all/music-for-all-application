@@ -1,6 +1,7 @@
 package com.musicforall.services;
 
 import com.musicforall.files.manager.FileManager;
+import com.musicforall.history.service.DBHistoryPopulateService;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
