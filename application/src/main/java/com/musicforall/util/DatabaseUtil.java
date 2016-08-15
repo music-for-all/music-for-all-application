@@ -8,7 +8,6 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -23,9 +22,7 @@ public final class DatabaseUtil {
     }
 
     public static void createUsersConnectionRepositoryTable(DataSource dataSource) {
-        Statement statement;
-        try (Connection connection = dataSource.getConnection()) {
-            statement = connection.createStatement();
+        try (Statement statement = dataSource.getConnection().createStatement()) {
             statement.execute("select count(*) from UserConnection");
             statement.execute("DROP TABLE UserConnection");
         } catch (SQLException e) {
