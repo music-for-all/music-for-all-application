@@ -1,7 +1,11 @@
 package com.musicforall.services;
 
 import com.musicforall.files.manager.FileManager;
-import com.musicforall.model.*;
+import com.musicforall.history.service.DBHistoryPopulateService;
+import com.musicforall.model.Playlist;
+import com.musicforall.model.Tag;
+import com.musicforall.model.Track;
+import com.musicforall.model.User;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.user.UserService;
@@ -124,15 +128,6 @@ public class DbPopulateService {
 
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag("Dummy"), new Tag("Classic"), new Tag("2016")));
 
-        final Set<Track> tracks = LINKS.entrySet().stream()
-                .map(entry -> new Track(entry.getKey(), getName(entry.getValue()), tags))
-                .collect(toSet());
-
-        final Playlist playlist = new Playlist("Hype", tracks, user);
-        playlistService.save(playlist);
-
-        LOG.info("playlist {} is saved", playlist);
-
         final List<Callable<Path>> tasks = LINKS.values().stream().map(DbPopulateService::toURL)
                 .filter(u -> u != null)
                 .peek(u -> LOG.info("going to save file by url - {}", u))
@@ -158,6 +153,9 @@ public class DbPopulateService {
 
             final Playlist playlist = new Playlist("Hype", new HashSet<>(tracks), user);
             playlistService.save(playlist);
+
+            final List<Integer> tracksId = tracks.stream().map(Track::getId).collect(toList());
+            dbHistoryPopulateService.populateTrackListened(tracksId, user.getId());
 
             LOG.info("playlist {} is saved", playlist);
 
