@@ -14,15 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.io.FilenameUtils.getName;
 
 /**
@@ -32,7 +34,7 @@ import static org.apache.commons.io.FilenameUtils.getName;
 public class DbPopulateService {
     private static final Logger LOG = LoggerFactory.getLogger(DbPopulateService.class);
 
-    private static final Map<String, String> LINKS = new HashMap<>();
+    private static final Map<String, String> LINKS = new LinkedHashMap<>();
 
     private static final String OPEN_SOURCE_MUSIC_HOST = "http://opensourcemusic.com/files";
 
@@ -73,6 +75,21 @@ public class DbPopulateService {
         return null;
     }
 
+    private static long getFileSize(final Future<Path> future) {
+        long size = 0L;
+        File[] files = new File[0];
+        try {
+            files = future.get().toFile().listFiles();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        if (files == null || files.length <= 0) return 0L;
+        for (final File file : files) {
+            size += file.length();
+        }
+        return size;
+    }
+
     @PostConstruct
     private void populate() {
         final boolean hasUsers = !userService.findAll().isEmpty();
@@ -106,24 +123,36 @@ public class DbPopulateService {
 
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag("Dummy"), new Tag("Classic"), new Tag("2016")));
 
-        final Set<Track> tracks = LINKS.entrySet().stream()
-                .map(entry -> new Track(entry.getKey(), getName(entry.getValue()), tags))
-                .collect(toSet());
-
-        final Playlist playlist = new Playlist("Hype", tracks, user);
-        playlistService.save(playlist);
-
-        LOG.info("playlist {} is saved", playlist);
-
         final List<Callable<Path>> tasks = LINKS.values().stream().map(DbPopulateService::toURL)
                 .filter(u -> u != null)
                 .peek(u -> LOG.info("going to save file by url - {}", u))
                 .map(url -> (Callable<Path>) () -> fileManager.save(url))
                 .collect(toList());
+
         try {
-            executorService.invokeAll(tasks);
+            final List<Future<Path>> futures = executorService.invokeAll(tasks);
+
+            final List<Long> sizes = futures.stream()
+                    .map(DbPopulateService::getFileSize)
+                    .collect(toList());
+
+            final Iterator<Long> iterator = sizes.iterator();
+
+            final List<Track> tracks = LINKS.entrySet().stream()
+                    .map(entry -> {
+                        final Track track = new Track(entry.getKey(), getName(entry.getValue()), tags);
+                        track.setSize(iterator.next());
+                        return track;
+                    })
+                    .collect(toList());
+
+            final Playlist playlist = new Playlist("Hype", new HashSet<>(tracks), user);
+            playlistService.save(playlist);
+
+            LOG.info("playlist {} is saved", playlist);
+
         } catch (InterruptedException e) {
-            LOG.error("interrupted ", e);
+            LOG.error("Saving failed", e);
         } finally {
             LOG.info("finished database population");
         }

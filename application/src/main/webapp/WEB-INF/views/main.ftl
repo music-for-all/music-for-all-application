@@ -91,9 +91,8 @@
     </li>
 </script>
 <script type="text/javascript">
-    var contextPath = "<@spring.url "" />";
-    var playlist = new Playlist(contextPath);
-    var track = new Track(contextPath);
+    var playlist = new Playlist();
+    var track = new Track();
 
     _.templateSettings.variable = "data";
     var trackRow = _.template(

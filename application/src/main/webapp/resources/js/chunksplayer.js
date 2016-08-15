@@ -1,6 +1,6 @@
-var MP3ChunksPlayer = function () {
+"use strict";
 
-    var _self = this;
+var MP3ChunksPlayer = function () {
 
     /**
      * The ArrayBuffer that will have the new chunks appended
@@ -17,6 +17,8 @@ var MP3ChunksPlayer = function () {
     var _audioContext;
 
     var _audioBuffer;
+
+    var _paused = false;
 
     /**
      * The audio source is responsible for playing the music
@@ -53,31 +55,38 @@ var MP3ChunksPlayer = function () {
         _analyser.fftSize = 2048;
     };
 
+    function initAudioSource() {
+        var audioSource = _audioContext.createBufferSource();
+        audioSource.buffer = _audioBuffer;
+        audioSource.connect(_analyser);
+        audioSource.connect(_audioContext.destination);
+        audioSource.playbackRate.value = 1;
+        return audioSource;
+    }
+
     /**
      * Plays the music from the point that it currently is.
      *
      * @private
      */
     var _play = function () {
-        // Adding a bit of  scheduling so that we won't have single digit milisecond overlaps.
-        var scheduledTime = 0.010;
-
         try {
-            _audioSource.stop(scheduledTime);
+            _audioSource.stop();
         } catch (e) {
-            Console.log(e);
+            console.log(e);
         }
 
-        _audioSource = _audioContext.createBufferSource();
-        _audioSource.buffer = _audioBuffer;
-        _audioSource.connect(_analyser);
-        _audioSource.connect(_audioContext.destination);
-        var currentTime = _audioContext.currentTime + 0.005 || 0;
-        _audioSource.start(scheduledTime - 0.005, currentTime, _audioBuffer.duration - currentTime);
-        _audioSource.playbackRate.value = 1;
+        _audioSource = initAudioSource();
+        var currentTime = _audioContext.currentTime || 0;
+        _audioSource.start(0, currentTime, _audioBuffer.duration - currentTime);
     };
 
+    function isFullyLoaded() {
+        return _activeBuffer && _activeBuffer.byteLength >= _track.size;
+    }
+
     var _loadChunk = function (index) {
+        if (isFullyLoaded()) return;
         _request.open("GET", "files/" + _track.id + "/" + index, true);
         _request.send();
     };
@@ -96,23 +105,34 @@ var MP3ChunksPlayer = function () {
         });
 
         _totalChunksLoaded++;
-        if (_activeBuffer.byteLength < _track.size) {
-            setTimeout(function () {
+        setTimeout(function () {
+            if (!_paused) {
                 _loadChunk(_totalChunksLoaded);
-            }, 1000);
-        }
+            }
+        }, 800);
     }
 
-    /**
-     * Initializes the class by loading the first chunk
-     *
-     * @return {MP3ChunksPlayer} Returns a reference to this instance.
-     */
     this.play = function (track) {
         _totalChunksLoaded = 0;
         _audioBuffer = {};
         _track = track;
         _loadChunk(_totalChunksLoaded);
-        return this;
+    };
+
+    this.pause = function () {
+        _paused = true;
+        if (_audioContext.state === "running") {
+            _audioContext.suspend()
+        }
+    };
+
+    this.resume = function () {
+        if (_totalChunksLoaded > 0 && _paused) {
+            _paused = false;
+            if (_audioContext.state === "suspended") {
+                _audioContext.resume()
+            }
+            _loadChunk(_totalChunksLoaded);
+        }
     };
 };

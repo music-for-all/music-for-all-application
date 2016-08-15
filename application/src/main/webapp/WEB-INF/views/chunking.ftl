@@ -1,10 +1,8 @@
 <#import "macros/macros.ftl" as m>
-<#import "macros/popup_macros.ftl" as p>
 <#import "/spring.ftl" as spring />
 <!DOCTYPE HTML>
 <html lang="en-US">
 <@m.head>
-<meta charset="UTF-8">
 <title>Web Audio API - Playing a chunked mp3 file</title>
 <script type="text/javascript" src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
 <script type="text/javascript" src="<@spring.url "/resources/js/track.js" />"></script>
@@ -18,19 +16,21 @@
 </button>
 <script type="text/javascript">
     var player = new MP3ChunksPlayer();
-    var track = new Track("<@spring.url ""/>");
+    var trackManager = new Track();
 
     $("#playBtn").on("click", function () {
-
+        player.resume();
     });
 
     $("#pauseBtn").on("click", function () {
-
+        player.pause();
     });
     $(document).ready(function () {
-        track.get(4)
-                .then(function (response) {
-                    player.play(response);
+        trackManager.get(1)
+                .then(function (track) {
+                    if (track) {
+                        player.play(track);
+                    }
                 });
     });
 </script>
