@@ -37,9 +37,9 @@
                    data-minlength="2"
                    maxlength="30" required/>
 
-            <div class="form-group">
+            <div class="form-group" name="tagsContainer">
                 <h4 class="control-label text-center"><@spring.message "uploadFile.TagsCaption"/></h4>
-                <select class="form-control" id="tags"></select>
+                <select class="form-control" id="tags" name="tags"></select>
             </div>
             <input type="file" name="file" required>
         </form>
@@ -91,7 +91,7 @@
     function clearForms() {
         $("div[name=uploadFormContainer]").not(":first").remove();
         $("div[name=uploadFormContainer]").find("input").val("").end();
-        $("#tags").empty();
+        $("#tags").val(null).trigger("change");;
         $("#result").hide();
     }
 
