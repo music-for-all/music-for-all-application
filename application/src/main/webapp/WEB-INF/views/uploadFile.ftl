@@ -58,16 +58,21 @@
 
     $("input[name=artist]").autocomplete({
         source: function (request, response) {
-            $.getJSON("/artist", {
-                artistName: request.term
-            }, function (data) {
-                var array = data.error ? [] : $.map(data, function (m) {
-                    return {
-                        label: m,
-                        url: m
-                    };
-                });
-                response(array);
+            $.ajax({
+                url: '/artist',
+                data: {
+                    artistName: request.term,
+                    tags: $("#tags").val()
+                },
+                traditional: true,
+                success: function(data) {
+                    var array = data.error ? [] : $.map(data, function (m) {
+                        return {
+                            label: m
+                        };
+                    });
+                    response(array);
+                }
             });
         }
     });
