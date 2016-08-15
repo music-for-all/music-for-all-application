@@ -56,27 +56,30 @@
 
     $("#tags").select2(tagSearchConfig(contextPath, placeholder));
 
-    $("input[name=artist]").autocomplete({
-        source: function (request, response) {
-            $.ajax({
-                url: '/artist',
-                data: {
-                    artistName: request.term,
-                    tags: $("#tags").val()
-                },
-                traditional: true,
-                success: function(data) {
-                    var array = data.error ? [] : $.map(data, function (m) {
-                        return {
-                            label: m
-                        };
-                    });
-                    response(array);
-                }
-            });
-        }
-    });
+    function artistAutocomplete(request, response) {
+        var th = $(this);
+        $.ajax({
+            url: '/artist',
+            data: {
+                artistName: request.term,
+                tags: $("select[name=tags]:last").val()
+            },
+            traditional: true,
+            success: function (data) {
+                var array = data.error ? [] : $.map(data, function (item) {
+                    return {
+                        label: item
+                    };
+                });
+                response(array);
+            }
+        });
+    }
 
+    $("input[name=artist]").autocomplete({
+        source: artistAutocomplete
+    });
+    
     function validateForm() {
         var validator = $("form[name=uploadForm]:last").data("bs.validator");
         validator.validate();
@@ -91,7 +94,7 @@
     function clearForms() {
         $("div[name=uploadFormContainer]").not(":first").remove();
         $("div[name=uploadFormContainer]").find("input").val("").end();
-        $("#tags").val(null).trigger("change");;
+        $("#tags").val(null).trigger("change");
         $("#result").hide();
     }
 
@@ -101,9 +104,16 @@
         }
         $("div[name=uploadFormContainer]:last").clone()
                 .find("input:text").val("").end()
-                .find(".bootstrap-tagsinput:last").remove().end()
+                .find(".select2-container:last").remove().end()
+                .find(".select2-hidden-accessible").remove().end()
                 .appendTo("#container");
-        $("input[name=tags]:last").tagsinput();
+
+        var s = $("<select id=\"tags\" name=\"tags\" class=\"form-control\" />");
+        $(s).appendTo('div[name=tagsContainer]:last');
+        $("input[name=artist]:last").autocomplete({
+            source: artistAutocomplete
+        });
+        $("select[name=tags]:last").select2(tagSearchConfig(contextPath, placeholder));
         $("form[name=uploadForm]:last").validator();
     }
 
