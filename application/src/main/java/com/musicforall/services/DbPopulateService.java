@@ -64,6 +64,9 @@ public class DbPopulateService {
     @Autowired
     private FileManager fileManager;
 
+    @Autowired
+    private DBHistoryPopulateService dbHistoryPopulateService;
+
     private static URL toURL(String url) {
         try {
             return new URL(url);
@@ -71,6 +74,7 @@ public class DbPopulateService {
             LOG.error("URL is malformed {}", url, e);
         }
         return null;
+
     }
 
     @PostConstruct
@@ -111,7 +115,11 @@ public class DbPopulateService {
                 .collect(toSet());
 
         final Playlist playlist = new Playlist("Hype", tracks, user);
+
         playlistService.save(playlist);
+
+        final List<Integer> tracksId = tracks.stream().map(Track::getId).collect(toList());
+        dbHistoryPopulateService.populateTrackListened(tracksId, user.getId());
 
         LOG.info("playlist {} is saved", playlist);
 
