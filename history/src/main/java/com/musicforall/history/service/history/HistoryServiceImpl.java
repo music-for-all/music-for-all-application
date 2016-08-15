@@ -1,4 +1,4 @@
-package com.musicforall.history.service;
+package com.musicforall.history.service.history;
 
 import com.musicforall.common.dao.Dao;
 import com.musicforall.common.dao.QueryParams;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,8 +47,8 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public History getBy(DetachedCriteria detachedCriteria) {
-        return dao.getBy(detachedCriteria);
+    public Collection<History> getAllBy(SearchHistoryParams params) {
+        return dao.getAllBy(toDetachedCriteria(params));
     }
 
     @Override
@@ -61,5 +62,19 @@ public class HistoryServiceImpl implements HistoryService {
                         "where history.trackId=:trackId and history.eventType=:eventType",
                 parameters);
         return count;
+    }
+
+    private DetachedCriteria toDetachedCriteria(SearchHistoryParams params) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(History.class);
+        if (params.getUserId() != null) {
+            criteria.add(Property.forName("userId").eq(params.getUserId()));
+        }
+        if (params.getEventType() != null) {
+            criteria.add(Property.forName("eventType").eq(params.getEventType()));
+        }
+        if (params.getTrackId() != null) {
+            criteria.add(Property.forName("trackId").eq(params.getTrackId()));
+        }
+        return criteria;
     }
 }
