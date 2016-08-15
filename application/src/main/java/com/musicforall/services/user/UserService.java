@@ -49,5 +49,9 @@ public interface UserService extends UserDetailsService {
      */
     List<User> findAll();
 
+    /**
+     * Retrieves all users the id of which is in the given list of ids.
+     * @return a collection of users
+     */
     List<User> getUsersById(List<Integer> usersId);
 }
