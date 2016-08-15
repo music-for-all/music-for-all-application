@@ -29,7 +29,7 @@ public interface PlaylistService {
      * @param playlistId the id of the playlist
      * @return a collection of tracks
      */
-    Set<Track> getAllTracksInPlaylist(Integer playlistId);
+    Set<Track> getTracks(Integer playlistId);
 
     /**
      * Removes a playlist with the given id from the database.
@@ -38,11 +38,25 @@ public interface PlaylistService {
     void delete(Integer playlistId);
 
     /**
+     * Adds a track with the given id to a playlist with the given id.
+     * @param playlistId the id of the playlist
+     * @param trackId the id of the track
+     */
+    void addTrack(Integer playlistId, Integer trackId);
+
+    /**
      * Adds a provided collection of tracks to a playlist with the given id.
      * @param playlistId the id of the playlist
      * @param tracks the collection of tracks
      */
     void addTracks(Integer playlistId, Set<Track> tracks);
+
+    /**
+     * Removes a track with the given id from a playlist with the given id.
+     * @param playlistId the id of the playlist
+     * @param trackId the id of the track
+     */
+    void removeTrack(Integer playlistId, Integer trackId);
 
     /**
      * Retrieves all playlists of a user with the given id.

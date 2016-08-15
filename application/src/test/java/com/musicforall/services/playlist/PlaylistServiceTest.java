@@ -114,7 +114,7 @@ public class PlaylistServiceTest {
         playlistService.addTracks(playlistId, new HashSet<>(tracksInDb));
         System.err.println("playlistService.addTracks");
 
-        final Set<Track> tracksInPlaylist = playlistService.getAllTracksInPlaylist(playlistId);
+        final Set<Track> tracksInPlaylist = playlistService.getTracks(playlistId);
         System.err.println("trackService.getAll");
 
         assertNotNull(tracksInPlaylist);
@@ -125,4 +125,21 @@ public class PlaylistServiceTest {
         }
     }
 
+    @Test
+    @WithUserDetails
+    public void testRemoveTrack() {
+        final Playlist playlist = playlistService.save("test");
+        final Integer playlistId = playlist.getId();
+
+        trackService.saveAll(Arrays.asList(
+                new Track("track1", "location1"),
+                new Track("track2", "location2")));
+
+        final List<Track> tracks = trackService.findAll();
+        playlist.addTracks(new HashSet<Track>(tracks));
+        playlistService.save(playlist);
+
+        playlistService.removeTrack(playlistId, 1);
+        assertEquals(tracks.size() - 1, playlistService.get(playlistId).getTracks().size());
+    }
 }

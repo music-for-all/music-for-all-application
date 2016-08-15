@@ -44,4 +44,28 @@ function Playlist(contextPath) {
     self.all = function () {
         return $.when($.get(baseUrl));
     };
+
+    /**
+     * Adds a track with the given id to a playlist with the given id.
+     * @param playlistId the id of the playlist
+     * @param trackId the id of the track
+     */
+    self.addTrack = function (playlistId, trackId) {
+        return $.when($.ajax({
+            type: "POST",
+            url: baseUrl + "/" + playlistId + "/add/" + trackId
+        }));
+    };
+
+    /**
+     * Removes a track with the given id from a playlist with the given id.
+     * @param playlistId the id of the playlist
+     * @param trackId the id of the track
+     */
+    self.removeTrack = function (playlistId, trackId) {
+        return $.when($.ajax({
+            type: "DELETE",
+            url: baseUrl + "/" + playlistId + "/remove/" + trackId,
+        }));
+    };
 }

@@ -4,15 +4,16 @@ import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
+import com.musicforall.util.SecurityUtil;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -42,7 +43,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     public Playlist save(String playlistName) {
         final Playlist playlist = new Playlist();
 
-        final User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        final User user = SecurityUtil.currentUser();
         playlist.setUser(user);
         playlist.setName(playlistName);
         return save(playlist);
@@ -54,7 +55,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public Set<Track> getAllTracksInPlaylist(Integer playlistId) {
+    public Set<Track> getTracks(Integer playlistId) {
         final Playlist playlist = dao.get(Playlist.class, playlistId);
         return playlist.getTracks();
     }
@@ -66,14 +67,24 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
+    public void addTrack(Integer playlistId, Integer trackId) {
+
+        final Playlist playlist = dao.get(Playlist.class, playlistId);
+        final Track track = dao.get(Track.class, trackId);
+        playlist.getTracks().add(track);
+    }
+
+    @Override
     public void addTracks(Integer playlistId, Set<Track> tracks) {
         final Playlist playlist = dao.get(Playlist.class, playlistId);
         playlist.addTracks(tracks);
         save(playlist);
-
     }
 
-    public void setDao(Dao dao) {
-        this.dao = dao;
+    @Override
+    public void removeTrack(Integer playlistId, Integer trackId) {
+
+        final Playlist playlist = dao.get(Playlist.class, playlistId);
+        playlist.getTracks().removeIf(track -> Objects.equals(track.getId(), trackId));
     }
 }
