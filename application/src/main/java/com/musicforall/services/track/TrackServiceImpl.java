@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Pukho on 15.06.2016.
@@ -70,6 +68,13 @@ public class TrackServiceImpl implements TrackService {
         final DetachedCriteria detachedCriteria =
                 SearchCriteriaFactory.createTrackSearchCriteria(searchCriteria);
         return dao.getAllBy(detachedCriteria);
+    }
+
+    @Override
+    public Collection<Track> getAllById(Collection<Integer> ids) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("ids", ids);
+        return dao.getAllByNamedQuery(Track.class, Track.ALL_BY_ID_QUERY, params);
     }
 
     @Override

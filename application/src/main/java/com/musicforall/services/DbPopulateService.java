@@ -1,10 +1,7 @@
 package com.musicforall.services;
 
 import com.musicforall.files.manager.FileManager;
-import com.musicforall.model.Playlist;
-import com.musicforall.model.Tag;
-import com.musicforall.model.Track;
-import com.musicforall.model.User;
+import com.musicforall.model.*;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.user.UserService;
@@ -66,6 +63,9 @@ public class DbPopulateService {
     @Autowired
     private FileManager fileManager;
 
+    @Autowired
+    private DBHistoryPopulateService dbHistoryPopulateService;
+
     private static URL toURL(String url) {
         try {
             return new URL(url);
@@ -73,6 +73,7 @@ public class DbPopulateService {
             LOG.error("URL is malformed {}", url, e);
         }
         return null;
+
     }
 
     private static long getFileSize(final Future<Path> future) {
@@ -122,6 +123,15 @@ public class DbPopulateService {
         LOG.info(USER_IS_FOLLOW, user3, user2);
 
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag("Dummy"), new Tag("Classic"), new Tag("2016")));
+
+        final Set<Track> tracks = LINKS.entrySet().stream()
+                .map(entry -> new Track(entry.getKey(), getName(entry.getValue()), tags))
+                .collect(toSet());
+
+        final Playlist playlist = new Playlist("Hype", tracks, user);
+        playlistService.save(playlist);
+
+        LOG.info("playlist {} is saved", playlist);
 
         final List<Callable<Path>> tasks = LINKS.values().stream().map(DbPopulateService::toURL)
                 .filter(u -> u != null)

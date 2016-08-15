@@ -8,16 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 @Controller
 public class WelcomeController {
 
-
     private static final Logger LOG = LoggerFactory.getLogger(WelcomeController.class);
     public static final String SPRING_SECURITY_LAST_EXCEPTION = "SPRING_SECURITY_LAST_EXCEPTION";
-
-    public WelcomeController() {
-        LOG.debug("Welcome controller");
-    }
 
     @RequestMapping(value = {"/", "welcome"})
     public String welcome(Model model, HttpServletRequest request) {
@@ -31,4 +27,5 @@ public class WelcomeController {
         model.addAttribute("request", request);
         return "welcome";
     }
+
 }

@@ -40,6 +40,8 @@ public interface TrackService {
      */
     Track get(Integer id);
 
+    Collection<Track> getAllById(Collection<Integer> ids);
+
     /**
      * Adds a collection of tags to the track with the specified id.
      * @param trackId the id of the track
@@ -66,4 +68,5 @@ public interface TrackService {
      * @return the list of tracks
      */
     List<Track> findAll();
+
 }
