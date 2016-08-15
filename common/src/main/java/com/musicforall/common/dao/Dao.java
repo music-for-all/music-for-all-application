@@ -160,7 +160,7 @@ public class Dao {
 
     /**
      * Return the persistent instance of the given entity class with the given parameters,
-     * It uses Criterians. If there are there several entities that meet given parameters, returns first item.
+     * It uses Criterians. If there are there several entities that meet given parameters, exception is thrown.
      *
      * @param criteria criterion to match the search against, for creations of Criterion use
      *                 Restrictions class e.g Restrictions.eq(propertyName, value)
@@ -188,6 +188,16 @@ public class Dao {
         LOG.info("Going to find entities by criteria - {}", criteria);
         final Criteria executableCriteria = criteria.getExecutableCriteria(currentSession());
         final List<T> entities = executableCriteria.list();
+        LOG.info(FOUND_ENTITY, entities);
+        return entities;
+    }
+
+    public <T> Collection<T> getAllByNamedQuery(Class<T> clazz, String namedQuery, Map<String, Object> params) {
+        LOG.info("Going to find entities with class - {} by named query - {} with parameters - {}",
+                clazz, namedQuery, params);
+        Query<T> query = currentSession().createNamedQuery(namedQuery, clazz);
+        query.setProperties(params);
+        final List<T> entities = query.list();
         LOG.info(FOUND_ENTITY, entities);
         return entities;
     }
