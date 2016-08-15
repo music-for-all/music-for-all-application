@@ -21,7 +21,6 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
@@ -41,8 +40,6 @@ public class DbPopulateService {
     private static final String USER_IS_SAVED = "user {} is saved";
 
     private static final String USER_IS_FOLLOW = "user {} is follow {}";
-
-    private static final Integer MAX_LISTENED = 10;
 
     static {
         LINKS.put("Jerry-Lee-Lewis-part-1", OPEN_SOURCE_MUSIC_HOST +
@@ -122,7 +119,7 @@ public class DbPopulateService {
 
         playlistService.save(playlist);
 
-        final List<Integer> tracksId = tracks.stream().map(Track::getId).collect(Collectors.toList());
+        final List<Integer> tracksId = tracks.stream().map(Track::getId).collect(toList());
         dbHistoryPopulateService.populateTrackListened(tracksId, user.getId());
 
         LOG.info("playlist {} is saved", playlist);

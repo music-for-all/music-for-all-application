@@ -40,7 +40,7 @@ public class DBHistoryPopulateService {
         final Random rnd = new Random();
         tracksIds.stream()
                 .flatMap(t -> {
-                    int listened = rnd.nextInt(MAX);
+                    final int listened = rnd.nextInt(MAX);
                     return IntStream.range(0, listened)
                             .mapToObj(i -> new History(t, new Date(), userId, eventType))
                             .collect(Collectors.toList()).stream();

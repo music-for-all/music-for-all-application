@@ -73,7 +73,7 @@ public class HistoryServiceImplTest {
                 .limit(10).collect(Collectors.toList());
         //compare only first top listened track
         //because number of listenings for other tracks is generated randomly
-        assertTrue(Objects.equals(service.getTheMostPopularTracks().get(0), TOP_TRACK_ID));
+        assertEquals(service.getTheMostPopularTracks().get(0), TOP_TRACK_ID);
         assertEquals(service.getTheMostPopularTracks().size(), topListened.size());
     }
 
