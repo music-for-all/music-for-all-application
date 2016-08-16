@@ -1,6 +1,8 @@
 package com.musicforall.files.manager;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,20 +85,31 @@ public class FileManager {
         return splitAndSave(stream, path);
     }
 
-    private Path splitAndSave(final InputStream stream, final Path path) throws IOException {
+    private Path splitAndSave(final InputStream stream, final Path dirPath) throws IOException {
+        final Path tmp = createTempFile(dirPath, null, null);
+        try (BufferedInputStream in = new BufferedInputStream(stream);
+             OutputStream out = newOutputStream(tmp)) {
+
+            IOUtils.copy(in, out);
+            splitFile(tmp, dirPath);
+        }
+        FileUtils.deleteQuietly(tmp.toFile());
+        return dirPath;
+    }
+
+    private void splitFile(final Path filePath, final Path dirPath) throws IOException {
         int partCounter = DEFAULT_CHUNK_ID;
         final byte[] buffer = new byte[CHUNK_SIZE];
-        try (BufferedInputStream bis = new BufferedInputStream(stream)) {
+        try (BufferedInputStream bis = new BufferedInputStream(newInputStream(filePath))) {
             int length = bis.read(buffer);
             while (length > 0) {
-                final Path chunkPath = path.resolve(createChunkName(partCounter++));
+                final Path chunkPath = dirPath.resolve(createChunkName(partCounter++));
                 try (OutputStream out = newOutputStream(chunkPath)) {
                     out.write(buffer, 0, length);
                 }
                 length = bis.read(buffer);
             }
         }
-        return path;
     }
 
     /**

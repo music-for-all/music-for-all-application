@@ -109,7 +109,7 @@ function ChunksPlayer() {
             if (!_paused) {
                 _loadChunk(_totalChunksLoaded);
             }
-        }, 800);
+        }, 10000);
     }
 
     this.play = function (track) {
