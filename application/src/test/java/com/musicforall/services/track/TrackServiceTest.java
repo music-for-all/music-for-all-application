@@ -188,32 +188,33 @@ public class TrackServiceTest {
     @WithUserDetails
     public void testGetRecommendedTracks() {
 
-        List<Track> tracks = Arrays.asList(
-                new Track("track", "title1", "artist1", "album1", "/root/track1.mp3", null),
-                new Track("track", "title2", "artist2", "album2", "/root/track2.mp3", null),
-                new Track("track", "title3", "artist3", "album3", "/root/track3.mp3", null),
-                new Track("track", "title4", "artist4", "album4", "/root/track4.mp3", null)
-        );
-        trackService.saveAll(tracks);
+        final Track track1 = new Track("track", "title1", "artist1", "album1", "/root/track1.mp3", null);
+        final Track track2 = new Track("track", "title2", "artist2", "album2", "/root/track2.mp3", null);
+        final Track track3 = new Track("track", "title3", "artist3", "album3", "/root/track3.mp3", null);
+        final Track track4 = new Track("track", "title4", "artist4", "album4", "/root/track4.mp3", null);
+
+        trackService.save(track1);
+        trackService.save(track2);
+        trackService.save(track3);
+        trackService.save(track4);
 
         final int FOLLOWED_USER_ID = 2;
         followerService.follow(SecurityUtil.currentUser().getId(), FOLLOWED_USER_ID);
 
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(1, FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(1, FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(3, FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(2, FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(2, FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(2, FOLLOWED_USER_ID));
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(track1.getId(), FOLLOWED_USER_ID));
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(track1.getId(), FOLLOWED_USER_ID));
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(track3.getId(), FOLLOWED_USER_ID));
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(track2.getId(), FOLLOWED_USER_ID));
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(track2.getId(), FOLLOWED_USER_ID));
+        historyEventListener.handleTrackLiked(new TrackLikedEvent(track2.getId(), FOLLOWED_USER_ID));
 
-        tracks = trackService.getRecommendedTracks();
+        List<Track> tracks = trackService.getRecommendedTracks();
 
         assertNotNull(tracks);
         assertEquals(3, tracks.size());
 
         final Playlist playlist = playlistService.save("demo");
-        playlist.addTracks(new HashSet<Track>(trackService.findAll()));
-        playlistService.save(playlist);
+        playlistService.addTracks(playlist.getId(), new HashSet<Track>(trackService.findAll()));
 
         tracks = trackService.getRecommendedTracks();
         assertEquals(0, tracks.size());
