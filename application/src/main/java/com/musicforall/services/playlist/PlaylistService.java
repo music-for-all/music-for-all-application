@@ -63,7 +63,7 @@ public interface PlaylistService {
      * @param userId the id of the user
      * @return a collection of playlists
      */
-    Set<Playlist> getAllUserPlaylist(Integer userId);
+    Set<Playlist> getAllUserPlaylists(Integer userId);
 
     /**
      * Retrieves a playlist with the given id.

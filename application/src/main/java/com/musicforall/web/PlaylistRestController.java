@@ -42,7 +42,7 @@ public class PlaylistRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     public Collection<Playlist> getPlaylists() {
-        return playlistService.getAllUserPlaylist(SecurityUtil.currentUser().getId());
+        return playlistService.getAllUserPlaylists(SecurityUtil.currentUser().getId());
     }
 
     @RequestMapping(value = "/{id}/add/{trackId}", method = RequestMethod.POST)

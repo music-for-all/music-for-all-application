@@ -27,7 +27,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     private Dao dao;
 
     @Override
-    public Set<Playlist> getAllUserPlaylist(Integer userId) {
+    public Set<Playlist> getAllUserPlaylists(Integer userId) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Playlist.class)
                 .add(Property.forName("user.id").eq(userId));
         final List<Playlist> usersPlaylists = dao.getAllBy(detachedCriteria);

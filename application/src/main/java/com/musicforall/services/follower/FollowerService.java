@@ -33,5 +33,5 @@ public interface FollowerService {
      * @param userId the id of the user
      * @return the list of ids of followed users
      */
-    List<Integer> getFollowingId(Integer userId);
+    List<Integer> getFollowingsIds(Integer userId);
 }

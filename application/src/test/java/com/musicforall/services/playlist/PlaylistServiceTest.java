@@ -70,7 +70,7 @@ public class PlaylistServiceTest {
 
         final Integer userId = userService.getIdByUsername("user1");
 
-        final Set<Playlist> allUsersPlaylists = playlistService.getAllUserPlaylist(userId);
+        final Set<Playlist> allUsersPlaylists = playlistService.getAllUserPlaylists(userId);
 
         assertTrue(allUsersPlaylists.contains(playlistService.get(playlist1.getId())));
         assertSame(2, allUsersPlaylists.size());
