@@ -4,14 +4,15 @@ package com.musicforall.services;
  * @author IliaNik on 12.08.2016.
  */
 
-import com.musicforall.util.SecurityUtil;
+import com.musicforall.web.messages.WelcomeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 
 @Service("messageService")
@@ -19,25 +20,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class MessageService {
 
     @Autowired
-    private MailSender mailSender;
+    private JavaMailSenderImpl javaMailSenderImpl;
 
-    @Autowired
-    private SimpleMailMessage templateMessage;
-
-    public void sendWelcomeMessage() {
-
-        SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
-        msg.setTo(SecurityUtil.currentUser().getEmail());
-        msg.setText(
-                "Dear " + SecurityUtil.currentUser().getUsername() +
-                        ", thank you for placing order. Your order number is ");
-
+    public boolean sendWelcomeMessage() throws MessagingException {
+        MimeMessage welcomeMessage = WelcomeMessage.create(javaMailSenderImpl);
         try {
-            this.mailSender.send(msg);
+            javaMailSenderImpl.send(welcomeMessage);
         } catch (MailException ex) {
-
             System.err.println(ex.getMessage());
+            return false;
         }
+        return true;
     }
 
 }

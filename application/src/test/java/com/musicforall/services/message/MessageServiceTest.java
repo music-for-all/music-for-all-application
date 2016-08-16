@@ -4,7 +4,6 @@ import com.musicforall.services.MessageService;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
@@ -32,9 +31,8 @@ import static junit.framework.TestCase.assertTrue;
 @ActiveProfiles("dev")
 public class MessageServiceTest {
 
-    @Autowired
-    private MessageService messageService;
 
+    private MessageService messageService;
 
     @Test
     @WithUserDetails("user")
