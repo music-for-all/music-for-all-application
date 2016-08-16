@@ -72,14 +72,6 @@ public class AccountConnectionSignUpServiceTest {
         assertEquals(username, userProfile.getFirstName());
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testUserNotFound() {
-        Connection<?> connection = Mockito.mock(Connection.class);
-        when(connection.fetchUserProfile()).thenReturn(null);
-
-        accountConnectionSignUpService.execute(connection);
-    }
-
     @Test(expected = ConstraintViolationException.class)
     public void testSaveWithSmallUsername() {
         Connection<?> connection = Mockito.mock(Connection.class);
