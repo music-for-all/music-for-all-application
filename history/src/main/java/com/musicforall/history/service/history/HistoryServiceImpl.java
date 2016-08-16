@@ -53,7 +53,6 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public long getLikeCount(Integer trackId) {
-
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("trackId", trackId);
         parameters.put("eventType", EventType.TRACK_LIKED);
@@ -61,6 +60,14 @@ public class HistoryServiceImpl implements HistoryService {
         return dao.getBy("select count(*) from History history " +
                         "where history.trackId=:trackId and history.eventType=:eventType",
                 parameters);
+    }
+
+    @Override
+    public Collection<History> getAllForUsers(EventType type, List<Integer> usersIds) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("usersIds", usersIds);
+        params.put("eventType", type);
+        return dao.getAllByNamedQuery(History.class, "all_for_users_by_type", params);
     }
 
     private DetachedCriteria toDetachedCriteria(SearchHistoryParams params) {
