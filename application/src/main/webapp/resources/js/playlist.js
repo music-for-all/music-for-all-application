@@ -2,13 +2,12 @@
 
 /**
  * The Playlist object encapsulates operations with the Playlist RESTful service.
- * @param contextPath the context path of the application
  * @author ENikolskiy on 6/24/2016.
  */
-function Playlist(contextPath) {
+function Playlist() {
 
     var self = this;
-    var baseUrl = contextPath + "/playlists";
+    var baseUrl = dict.contextPath + "/playlists";
 
     /**
      * Deletes a playlist with the specified id.
