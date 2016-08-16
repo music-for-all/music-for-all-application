@@ -95,9 +95,4 @@ public class FileController {
     public String uploadFile() {
         return "uploadFile";
     }
-
-    @RequestMapping(value = "/chunking", method = RequestMethod.GET)
-    public String chunking() {
-        return "chunking";
-    }
 }
