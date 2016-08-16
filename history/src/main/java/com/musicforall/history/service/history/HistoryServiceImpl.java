@@ -64,7 +64,7 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     private DetachedCriteria toDetachedCriteria(SearchHistoryParams params) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(History.class);
+        final DetachedCriteria criteria = DetachedCriteria.forClass(History.class);
         if (params.getUserId() != null) {
             criteria.add(Property.forName("userId").eq(params.getUserId()));
         }

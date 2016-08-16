@@ -1,20 +1,18 @@
 "use strict";
+function updateLikeCount(id) {
+    $.ajax({
+        type: "GET",
+        url: "/tracks/like/" + id
 
-jQuery(document).ready(function () {
+    }).fail(function (xhr, status, errorThrown) {
+        var message = status + ": " + xhr.status + " " + errorThrown;
+        console.log(message);
 
-    /* Handle the Like button (Ajax). */
-    $("#tracks").on("click", ".like-button", function () {
-
-        /* The id of a track is stored in the containing <tr> element. */
-        var id = $(this).closest("tr").attr("id");
-        like(id);
+    }).done(function(likeCount) {
+        $("#" + id + " .num-likes").text(likeCount);
     });
-});
-/* end $(document).ready() */
+}
 
-/**
- * Performs an Ajax-based request
- */
 function like(id) {
 
     console.log("Like: " + id);
@@ -33,23 +31,16 @@ function like(id) {
         updateLikeCount(id);
 
     });
-}   /* end like() */
-
-/**
- * Fetches the number of likes of a track with the given id,
- * then updates the value in the tracks table.
- * @param id the id of the track
- */
-function updateLikeCount(id) {
-    $.ajax({
-        type: "GET",
-        url: "/tracks/like/" + id
-
-    }).fail(function (xhr, status, errorThrown) {
-        var message = status + ": " + xhr.status + " " + errorThrown;
-        console.log(message);
-
-    }).done(function(likeCount) {
-        $("#" + id + " .num-likes").text(likeCount);
-    });
 }
+
+
+jQuery(document).ready(function () {
+
+    /* Handle the Like button (Ajax). */
+    $("#tracks").on("click", ".like-button", function () {
+
+        /* The id of a track is stored in the containing <tr> element. */
+        var id = $(this).closest("tr").attr("id");
+        like(id);
+    });
+});

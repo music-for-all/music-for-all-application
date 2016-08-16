@@ -72,7 +72,7 @@ public class TrackServiceImpl implements TrackService {
 
     @Override
     public Collection<Track> getAllById(Collection<Integer> ids) {
-        Map<String, Object> params = new HashMap<>();
+        final Map<String, Object> params = new HashMap<>();
         params.put("ids", ids);
         return dao.getAllByNamedQuery(Track.class, Track.ALL_BY_ID_QUERY, params);
     }
