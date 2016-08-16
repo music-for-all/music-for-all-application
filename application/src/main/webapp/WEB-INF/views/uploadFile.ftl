@@ -7,6 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
 <script src="<@spring.url "/resources/js/track.js"/>"></script>
+<script src="<@spring.url "/resources/js/artistAutocomplete.js"/>"></script>
 <script src="<@spring.url "/resources/js/select2config.js"/>"></script>
 <link href="<@spring.url "/resources/css/filespage.css" />" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
@@ -56,29 +57,7 @@
 
     $("#tags").select2(tagSearchConfig(contextPath, placeholder));
 
-    function artistAutocomplete(request, response) {
-        var th = $(this);
-        $.ajax({
-            url: '/artist',
-            data: {
-                artistName: request.term,
-                tags: $("select[name=tags]:last").val()
-            },
-            traditional: true,
-            success: function (data) {
-                var array = data.error ? [] : $.map(data, function (item) {
-                    return {
-                        label: item
-                    };
-                });
-                response(array);
-            }
-        });
-    }
-
-    $("input[name=artist]").autocomplete({
-        source: artistAutocomplete
-    });
+    $("input[name=artist]").autocomplete(artSearchConfig($("select[name=tags]")));
     
     function validateForm() {
         var validator = $("form[name=uploadForm]:last").data("bs.validator");
@@ -110,9 +89,9 @@
 
         var s = $("<select id=\"tags\" name=\"tags\" class=\"form-control\" />");
         $(s).appendTo('div[name=tagsContainer]:last');
-        $("input[name=artist]:last").autocomplete({
-            source: artistAutocomplete
-        });
+        $("input[name=artist]:last").autocomplete(artSearchConfig(
+                $("div[name=uploadFormContainer]:last").find("select[name=tags]")
+        ));
         $("select[name=tags]:last").select2(tagSearchConfig(contextPath, placeholder));
         $("form[name=uploadForm]:last").validator();
     }
