@@ -30,8 +30,10 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableSocial
-@PropertySource(value = "file:${user.home}/application.properties")
 public class SocialConfig implements SocialConfigurer {
+
+    @Autowired
+    private Environment env;
 
     @Inject
     private DataSource dataSource;
@@ -43,14 +45,14 @@ public class SocialConfig implements SocialConfigurer {
     public void addConnectionFactories(ConnectionFactoryConfigurer connectionFactoryConfigurer,
                                        Environment environment) {
         connectionFactoryConfigurer.addConnectionFactory(new FacebookConnectionFactory(
-                environment.getProperty("spring.social.facebook.appId"),
-                environment.getProperty("spring.social.facebook.appSecret")));
+                env.getRequiredProperty("spring.social.facebook.appId"),
+                env.getRequiredProperty("spring.social.facebook.appSecret")));
         connectionFactoryConfigurer.addConnectionFactory(new TwitterConnectionFactory(
-                environment.getProperty("spring.social.twitter.appId"),
-                environment.getProperty("spring.social.twitter.appSecret")));
+                env.getRequiredProperty("spring.social.twitter.appId"),
+                env.getRequiredProperty("spring.social.twitter.appSecret")));
         final GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(
-                environment.getProperty("spring.social.google.appId"),
-                environment.getProperty("spring.social.google.appSecret"));
+                env.getRequiredProperty("spring.social.google.appId"),
+                env.getRequiredProperty("spring.social.google.appSecret"));
         googleConnectionFactory.setScope("email");
         connectionFactoryConfigurer.addConnectionFactory(googleConnectionFactory);
     }

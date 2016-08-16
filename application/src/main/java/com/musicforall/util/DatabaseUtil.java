@@ -26,7 +26,7 @@ public final class DatabaseUtil {
             statement.execute("select count(*) from UserConnection");
             statement.execute("DROP TABLE UserConnection");
         } catch (SQLException e) {
-            LOG.error("Table UserConnection does not exist", e);
+            LOG.error("Table UserConnection does not exist");
         }
         final ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
         databasePopulator.addScript(new ClassPathResource("JdbcUsersConnectionRepository.sql",
