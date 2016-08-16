@@ -52,7 +52,7 @@ public class ContactManagerRestController {
 
     @RequestMapping(value = "/following", method = RequestMethod.GET)
     public Collection<User> getFollowings() {
-        return userService.getUsersById(followerService.getFollowingId(SecurityUtil.currentUser().getId()));
+        return userService.getUsersById(followerService.getFollowingsIds(SecurityUtil.currentUser().getId()));
     }
 
     @RequestMapping(value = "/search={username}", method = RequestMethod.GET)

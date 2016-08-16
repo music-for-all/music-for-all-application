@@ -1,4 +1,5 @@
 package com.musicforall.history.service.history;
+import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
 
 import java.util.Collection;
@@ -17,4 +18,6 @@ public interface HistoryService {
     Collection<History> getAllBy(SearchHistoryParams params);
 
     long getLikeCount(Integer trackId);
+
+    Collection<History> getAllForUsers(EventType type, List<Integer> usersIds);
 }

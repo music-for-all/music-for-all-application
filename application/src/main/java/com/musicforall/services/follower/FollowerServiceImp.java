@@ -51,7 +51,7 @@ public class FollowerServiceImp implements FollowerService {
     }
 
     @Override
-    public List<Integer> getFollowingId(Integer userId) {
+    public List<Integer> getFollowingsIds(Integer userId) {
         final Followers followers = dao.get(Followers.class, userId);
         return followers.getFollowingId();
     }

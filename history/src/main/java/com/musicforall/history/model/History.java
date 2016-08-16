@@ -13,6 +13,16 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "history")
+@NamedQueries(
+        value = {
+                @NamedQuery(
+                        name = "all_for_users_by_type",
+                        query = "select h from History h where h.eventType = :eventType and h.userId in " +
+                                "(:usersIds) order by h.date desc"
+                )
+        }
+)
+
 public class History {
 
     @Id

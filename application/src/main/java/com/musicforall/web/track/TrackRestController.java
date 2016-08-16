@@ -4,6 +4,7 @@ import com.musicforall.history.handlers.events.TrackLikedEvent;
 import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
+import com.musicforall.services.recommendation.RecommendationService;
 import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,9 @@ public class TrackRestController {
 
     @Autowired
     private TrackService trackService;
+
+    @Autowired
+    private RecommendationService recommendationService;
 
     @RequestMapping(method = RequestMethod.POST)
     public Track createTrack(@RequestParam("name") String name) {
@@ -95,17 +99,14 @@ public class TrackRestController {
      * @return the recommended tracks, as well as the HTTP status code
      */
     @RequestMapping(value = "/recommended", method = RequestMethod.GET)
-    public ResponseEntity<List<Track>> getRecommendedTracks() {
-
-        final List<Track> tracks = trackService.getRecommendedTracks();
-
+    public ResponseEntity<Collection<Track>> getRecommendedTracks() {
+        final Collection<Track> tracks = recommendationService.getRecommendedTracks();
         return new ResponseEntity<>(tracks, HttpStatus.OK);
     }
 
 
     @RequestMapping(value = "/popular",  method = RequestMethod.GET)
     public Collection<Track> getByPopularity() {
-        List<Integer> popularTracksIds = historyService.getTheMostPopularTracks();
-        return trackService.getAllById(popularTracksIds);
+        return recommendationService.getMostPopularTracks();
     }
 }
