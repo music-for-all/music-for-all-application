@@ -52,10 +52,9 @@
 <script type="text/javascript">
     const max_length_error = 200;
     var track = new Track();
-    var contextPath = "<@spring.url "" />";
     var placeholder = "<@spring.message "placeholder.Tags"/>";
 
-    $("#tags").select2(tagSearchConfig(contextPath, placeholder));
+    $("#tags").select2(tagSearchConfig(placeholder));
 
     $("input[name=artist]").autocomplete(artSearchConfig($("select[name=tags]")));
     

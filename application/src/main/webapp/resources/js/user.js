@@ -1,9 +1,9 @@
 "use strict";
 
-function User(contextPath) {
+function User() {
 
     var self = this;
-    var baseUrl = contextPath + "/contactManager";
+    var baseUrl = dict.contextPath + "/contactManager";
 
     self.unfollow = function (id) {
         return $.when(

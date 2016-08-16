@@ -2,13 +2,12 @@
 
 /**
  * The Track object encapsulates operations with the Track RESTful service.
- * @param contextPath the context path of the application
  * @author ENikolskiy on 6/26/2016.
  */
-function Track(contextPath) {
+function Track() {
 
     var self = this;
-    var baseUrl = contextPath + "/tracks";
+    var baseUrl = dict.contextPath + "/tracks";
 
     /**
      * Posts the upload track data via Ajax.

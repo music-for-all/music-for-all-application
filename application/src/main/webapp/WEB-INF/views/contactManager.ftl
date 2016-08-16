@@ -88,8 +88,7 @@
     </tbody>
 </script>
 <script type="text/javascript">
-    var contextPath = "<@spring.url "" />";
-    var user = new User(contextPath);
+    var user = new User();
 
     _.templateSettings.variable = "data";
 

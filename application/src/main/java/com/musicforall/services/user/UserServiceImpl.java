@@ -89,7 +89,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         final User user = getByUsername(username);
         if (user == null) {
             LOG.info(String.format("User %s not found", username));

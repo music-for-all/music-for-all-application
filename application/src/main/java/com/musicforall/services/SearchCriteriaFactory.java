@@ -28,10 +28,10 @@ public final class SearchCriteriaFactory {
         }
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class);
 
-        String title = searchCriteria.getTitle();
-        String artist = searchCriteria.getArtist();
-        String album = searchCriteria.getAlbum();
-        List<String> tags = searchCriteria.getTags();
+        final String title = searchCriteria.getTitle();
+        final String artist = searchCriteria.getArtist();
+        final String album = searchCriteria.getAlbum();
+        final List<String> tags = searchCriteria.getTags();
 
         if (title != null && !title.isEmpty()) {
             detachedCriteria.add(Restrictions.ilike("title", QueryUtil.like(title)));
@@ -46,9 +46,8 @@ public final class SearchCriteriaFactory {
 
             final Disjunction disjunction = Restrictions.disjunction();
 
-            for (String tagName : tags) {
-                disjunction.add(Restrictions.eq("tag.name", tagName).ignoreCase());
-            }
+            tags.stream().forEach(t -> disjunction.add(Restrictions.eq("tag.name", t).ignoreCase()));
+
             final DetachedCriteria subcriteria = DetachedCriteria.forClass(Track.class)
                     .createAlias("tags", "tag")
                     .add(disjunction)

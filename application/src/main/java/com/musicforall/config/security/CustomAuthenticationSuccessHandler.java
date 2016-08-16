@@ -18,19 +18,16 @@ public class CustomAuthenticationSuccessHandler
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-
         super.onAuthenticationSuccess(request, response, authentication);
     }
 
     @Override
     protected void handle(HttpServletRequest request, HttpServletResponse response,
                           Authentication authentication) throws IOException, ServletException {
-
-        String targetUrl = determineTargetUrl(request, response);
-
         if (response.isCommitted()) {
             return;
         }
+        final String targetUrl = determineTargetUrl(request, response);
         response.sendRedirect(targetUrl);
         super.handle(request, response, authentication);
     }
