@@ -2,10 +2,15 @@ package com.musicforall.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
 
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -15,11 +20,19 @@ import java.util.Set;
 /**
  * Created by ilianik on 11.06.2016.
  */
+@NamedQueries({
+        @NamedQuery(
+                name = Track.ALL_BY_ID_QUERY,
+                query = "select t from Track t where t.id in (:ids)"
+        )
+})
+
 @Entity
 @Table(name = "tracks")
 public class Track implements Serializable {
 
     private static final long serialVersionUID = -6851477594231058789L;
+    public static final String ALL_BY_ID_QUERY = "all_by_id";
 
     @Id
     @Column(name = "id")
