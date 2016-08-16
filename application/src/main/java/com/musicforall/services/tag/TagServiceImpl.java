@@ -3,6 +3,7 @@ package com.musicforall.services.tag;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.Tag;
+import com.musicforall.model.Track;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +44,9 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<Tag> getAllLike(String tagName) {
-        final String hql = "from Tag where lower(name) like :name";
-        final Map<String, String> properties = new HashMap<>();
+        final Map<String, Object> properties = new HashMap<>();
         properties.put("name", QueryUtil.like(tagName.toLowerCase()));
-        return dao.getAllBy(hql, properties);
+        return dao.getAllByNamedQuery(Tag.class, Tag.ALL_LIKE_NAME_QUERY, properties);
     }
 
     @Override
