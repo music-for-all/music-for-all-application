@@ -72,17 +72,17 @@
                         <form class="social">
                             <ul class="list-inline intro-social-buttons">
                                 <li>
-                                    <a href="/auth/google" class="google">
+                                    <a href=<@spring.url '/auth/google'/> class="google">
                                         <span class="fa fa-google fa-fw"></span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/auth/twitter" class="twitter">
+                                    <a href=<@spring.url '/auth/twitter'/> class="twitter">
                                         <span class="fa fa-twitter fa-fw"></span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/auth/facebook" class="facebook">
+                                    <a href=<@spring.url '/auth/facebook'/> class="facebook">
                                         <span class="fa fa-facebook fa-fw"></span>
                                     </a>
                                 </li>
