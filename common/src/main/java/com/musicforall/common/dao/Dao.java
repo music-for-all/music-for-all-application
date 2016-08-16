@@ -104,17 +104,10 @@ public class Dao {
         currentSession().delete(entity);
     }
 
-    /**
-     * Return the persistent instance of the given entity class with the given parameters,
-     * It uses HQL. If there are there several entities that meet given parameters, returns first item.
-     *
-     * @param hql        a hql query
-     * @param parameters pairs of key/value parameters which will be added to "where" part of the query
-     * @return a persistent instance or null
-     */
-    public <T> T getBy(String hql, Map<String, Object> parameters) {
-        LOG.info("Going to find entity by hql - {}, with parameters - {}", hql, parameters);
-        final Query<T> query = currentSession().createQuery(hql);
+    public <T> T getByNamedQuery(Class<T> clazz, String namedQuery, Map<String, Object> parameters) {
+        LOG.info("Going to find entities with class - {} by named query - {} with parameters - {}",
+                clazz, namedQuery, parameters);
+        final Query<T> query = currentSession().createNamedQuery(namedQuery, clazz);
         query.setProperties(parameters);
         final T entity = query.uniqueResult();
         LOG.info(FOUND_ENTITY, entity);
@@ -129,27 +122,11 @@ public class Dao {
         query.executeUpdate();
     }
 
-    /**
-     * Return the persistent instances of the given entity class which meet given parameters,
-     *
-     * @param hql        a hql query
-     * @param parameters pairs of key/value parameters which will be added to "where" part of the query
-     * @return list of persistent instances or null
-     */
-    @SuppressWarnings("unchecked")
-    public <T> List<T> getAllBy(String hql, Map<String, String> parameters) {
-        LOG.info("Going to find entities by hql - {}, with parameters - {}", hql, parameters);
-        final Query<T> query = currentSession().createQuery(hql);
-        query.setProperties(parameters);
-        final List<T> entities = query.list();
-        LOG.info(FOUND_ENTITY, entities);
-        return entities;
-    }
-
-    public <T> List<T> getAllBy(String hql, Map<String, Object> parameters, QueryParams queryParams) {
-        LOG.info("Going to find entities by hql - {}, with parameters - {}, query parameters - {}",
-                hql, parameters, queryParams);
-        final Query<T> query = currentSession().createQuery(hql);
+    public <T> List<T> getAllByNamedQuery(Class<T> clazz, String namedQuery,
+                                          Map<String, Object> parameters, QueryParams queryParams) {
+        LOG.info("Going to find entities with class - {} by named query - {} with parameters - {}",
+                clazz, namedQuery, parameters);
+        final Query<T> query = currentSession().createNamedQuery(namedQuery, clazz);
         query.setProperties(parameters);
         query.setMaxResults(queryParams.getMaxCount());
         query.setFirstResult(queryParams.getOffset());
@@ -192,7 +169,7 @@ public class Dao {
         return entities;
     }
 
-    public <T> Collection<T> getAllByNamedQuery(Class<T> clazz, String namedQuery, Map<String, Object> params) {
+    public <T> List<T> getAllByNamedQuery(Class<T> clazz, String namedQuery, Map<String, Object> params) {
         LOG.info("Going to find entities with class - {} by named query - {} with parameters - {}",
                 clazz, namedQuery, params);
         Query<T> query = currentSession().createNamedQuery(namedQuery, clazz);
