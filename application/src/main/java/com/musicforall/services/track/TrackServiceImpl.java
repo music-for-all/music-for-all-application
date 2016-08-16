@@ -5,7 +5,6 @@ import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.services.SearchCriteriaFactory;
-import com.musicforall.services.user.UserService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +22,6 @@ public class TrackServiceImpl implements TrackService {
 
     @Autowired
     private Dao dao;
-
-    @Autowired
-    private UserService userService;
 
     @Override
     public Track save(Track track) {

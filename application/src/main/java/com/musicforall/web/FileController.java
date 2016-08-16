@@ -31,7 +31,6 @@ import static com.musicforall.util.SecurityUtil.currentUser;
 @Controller
 public class FileController {
     private static final Logger LOG = LoggerFactory.getLogger(FileController.class);
-    public static final int STUB_TRACK_ID = 222;
 
     @Autowired
     private ApplicationEventPublisher publisher;
@@ -58,6 +57,7 @@ public class FileController {
         final Path saved = manager.save(file);
         if (saved != null) {
             trackJson.setLocation(filename);
+            trackJson.setSize(file.getSize());
             trackService.save(trackJson);
             return new ResponseEntity<String>("Song successfully saved", HttpStatus.OK);
         } else {
@@ -65,17 +65,21 @@ public class FileController {
         }
     }
 
-    @RequestMapping(value = "/files/{fileName:.+}", method = RequestMethod.GET)
-    public void getFileHandler(HttpServletResponse response, @PathVariable("fileName") String name) {
-        final Optional<Path> filePath = Optional.ofNullable(manager.getFilePathByName(name));
-        LOG.info(String.format("Streaming file: %s\n", name));
+    @RequestMapping(value = "/files/{id}/{partId}", method = RequestMethod.GET)
+    public void getFileHandler(HttpServletResponse response, @PathVariable("id") Integer trackId,
+                               @PathVariable("partId") int partId) {
+        final Track track = trackService.get(trackId);
+        final Optional<Path> filePath = Optional.ofNullable(manager.getFilePartById(track.getLocation(), partId));
+        LOG.info(String.format("Streaming file: %s\n", track.getLocation()));
 
         if (filePath.isPresent()) {
 
             try {
-                final User user = currentUser();
-                if (user != null) {
-                    publisher.publishEvent(new TrackListenedEvent(STUB_TRACK_ID, user.getId()));
+                if (partId == FileManager.DEFAULT_CHUNK_ID) {
+                    final User user = currentUser();
+                    if (user != null) {
+                        publisher.publishEvent(new TrackListenedEvent(trackId, user.getId()));
+                    }
                 }
 
                 Files.copy(filePath.get(), response.getOutputStream());
@@ -92,4 +96,8 @@ public class FileController {
         return "uploadFile";
     }
 
+    @RequestMapping(value = "/chunking", method = RequestMethod.GET)
+    public String chunking() {
+        return "chunking";
+    }
 }
