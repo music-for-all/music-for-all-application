@@ -19,7 +19,9 @@ import java.util.concurrent.Executors;
         FileApiSpringConfig.class,
         HistorySpringConfig.class,
         LocaleConfig.class,
-        SecurityConfig.class})
+        SecurityConfig.class,
+        MessageConfigDev.class
+})
 @PropertySource(value = "file:${user.home}/application.properties")
 public class SpringRootConfiguration {
 

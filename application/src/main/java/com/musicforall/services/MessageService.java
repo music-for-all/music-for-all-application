@@ -5,50 +5,39 @@ package com.musicforall.services;
  */
 
 import com.musicforall.util.SecurityUtil;
-import com.musicforall.web.messages.WelcomeMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import java.util.Properties;
+
 
 @Service("messageService")
 @Transactional
 public class MessageService {
 
-    public boolean sendWelcomeMessage() throws MessagingException {
+    @Autowired
+    private MailSender mailSender;
 
-        String to = SecurityUtil.currentUser().getEmail();
+    @Autowired
+    private SimpleMailMessage templateMessage;
 
-        String from = "musicforall07@gmail.com";
-        final String username = "musicforall07";
-        final String password = "PolyInkExt";
+    public void sendWelcomeMessage() {
 
-        String host = "smtp.gmail.com";
+        SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+        msg.setTo(SecurityUtil.currentUser().getEmail());
+        msg.setText(
+                "Dear " + SecurityUtil.currentUser().getUsername() +
+                        ", thank you for placing order. Your order number is ");
 
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", host);
-        props.put("mail.smtp.port", "587");
+        try {
+            this.mailSender.send(msg);
+        } catch (MailException ex) {
 
-        Session session = Session.getInstance(props,
-                new Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password);
-                    }
-                });
-
-
-        Message message = WelcomeMessage.create(session);
-        message.setFrom(new InternetAddress(from));
-        message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse(to));
-        Transport.send(message);  // Send message
-
-        return true;
-
+            System.err.println(ex.getMessage());
+        }
     }
 
 }
