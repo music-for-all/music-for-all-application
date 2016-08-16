@@ -1,4 +1,4 @@
-package com.musicforall.web;
+package com.musicforall.web.profile;
 
 import com.musicforall.services.user.UserService;
 import com.musicforall.util.SecurityUtil;

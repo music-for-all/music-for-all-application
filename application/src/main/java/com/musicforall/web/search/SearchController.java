@@ -1,4 +1,4 @@
-package com.musicforall.web;
+package com.musicforall.web.search;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

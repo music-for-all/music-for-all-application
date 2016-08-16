@@ -60,7 +60,6 @@ public class TrackServiceImpl implements TrackService {
 
     @Override
     public List<Track> getAllLike(SearchTrackRequest searchCriteria) {
-
         final DetachedCriteria detachedCriteria =
                 SearchCriteriaFactory.createTrackSearchCriteria(searchCriteria);
         return dao.getAllBy(detachedCriteria);

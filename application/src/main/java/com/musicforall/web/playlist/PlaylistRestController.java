@@ -1,8 +1,9 @@
-package com.musicforall.web;
+package com.musicforall.web.playlist;
 
 import com.musicforall.model.Playlist;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.util.SecurityUtil;
+import com.musicforall.web.MainController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

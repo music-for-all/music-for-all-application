@@ -1,4 +1,4 @@
-package com.musicforall.web;
+package com.musicforall.web.file;
 
 import com.musicforall.files.manager.FileManager;
 import com.musicforall.history.handlers.events.TrackListenedEvent;

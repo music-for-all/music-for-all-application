@@ -1,4 +1,4 @@
-package com.musicforall.web;
+package com.musicforall.web.search;
 
 import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Track;

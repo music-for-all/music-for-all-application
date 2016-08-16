@@ -1,4 +1,4 @@
-package com.musicforall.web;
+package com.musicforall.web.contact;
 
 import com.musicforall.model.User;
 import com.musicforall.services.follower.FollowerService;
