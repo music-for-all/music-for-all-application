@@ -136,4 +136,20 @@ public class FileManager {
     private String createChunkName(int counter) {
         return String.format("%04d", counter);
     }
+
+    /**
+     * need this only when application is run for first time to be sure
+     * that directory with files doesn't contain old files
+     *
+     * SHOULD NOT BE USED ANYWHERE IN APP!!! ONLY FOR POPULATOR SERVICES
+     */
+
+    public void clearDirectory() {
+        Path path = Paths.get(workingDirectory);
+        try {
+            FileUtils.cleanDirectory(path.toFile());
+        } catch (IOException e) {
+            LOG.error("Exception during directory cleaning! Clean directory manually!");
+        }
+    }
 }

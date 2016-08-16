@@ -135,7 +135,7 @@ public class DbPopulateService {
                 .peek(u -> LOG.info("going to save file by url - {}", u))
                 .map(url -> (Callable<Path>) () -> fileManager.save(url))
                 .collect(toList());
-
+        fileManager.clearDirectory();
         try {
             final List<Future<Path>> futures = executorService.invokeAll(tasks);
 
