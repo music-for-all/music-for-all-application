@@ -7,18 +7,18 @@ function ChunksPlayer() {
      *
      * @private
      * @type {ArrayBuffer}
-     */
-    var _activeBuffer;
+     */    
+    var activeBuffer;
 
-    var _totalChunksLoaded = 0;
+    var totalChunksLoaded = 0;
 
-    var _track;
+    var track;
 
-    var _audioContext;
+    var audioContext;
 
-    var _audioBuffer;
+    var audioBuffer;
 
-    var _paused = false;
+    var paused = false;
 
     /**
      * The audio source is responsible for playing the music
@@ -26,13 +26,13 @@ function ChunksPlayer() {
      * @private
      * @type {AudioBufferSourceNode}
      */
-    var _audioSource;
+    var audioSource;
 
-    var _analyser;
+    var analyser;
 
-    var _request = new XMLHttpRequest();
-    _request.responseType = "arraybuffer";
-    _request.addEventListener("load", _onChunkLoaded, false);
+    var request = new XMLHttpRequest();
+    request.responseType = "arraybuffer";
+    request.addEventListener("load", onChunkLoaded, false);
 
     /**
      * Creates a new Uint8Array based on two different ArrayBuffers
@@ -42,24 +42,24 @@ function ChunksPlayer() {
      * @param {ArrayBuffers} buffer2 The second buffer.
      * @return {ArrayBuffers} The new ArrayBuffer created out of the two.
      */
-    function _appendBuffer(buffer1, buffer2) {
+    function appendBuffer(buffer1, buffer2) {
         var tmp = new Uint8Array(buffer1.byteLength + buffer2.byteLength);
         tmp.set(new Uint8Array(buffer1), 0);
         tmp.set(new Uint8Array(buffer2), buffer1.byteLength);
         return tmp.buffer;
     }
 
-    function _initializeWebAudio() {
-        _audioContext = new AudioContext();
-        _analyser = _audioContext.createAnalyser();
-        _analyser.fftSize = 2048;
+    function initializeWebAudio() {
+        audioContext = new AudioContext();
+        analyser = audioContext.createAnalyser();
+        analyser.fftSize = 2048;
     }
 
     function initAudioSource() {
-        var audioSource = _audioContext.createBufferSource();
-        audioSource.buffer = _audioBuffer;
-        audioSource.connect(_analyser);
-        audioSource.connect(_audioContext.destination);
+        var audioSource = audioContext.createBufferSource();
+        audioSource.buffer = audioBuffer;
+        audioSource.connect(analyser);
+        audioSource.connect(audioContext.destination);
         audioSource.playbackRate.value = 1;
         return audioSource;
     }
@@ -67,72 +67,72 @@ function ChunksPlayer() {
     /**
      * Plays the music from the point that it currently is.
      */
-    function _play() {
+    function play() {
         try {
-            _audioSource.stop();
+            audioSource.stop();
         } catch (e) {
             console.log(e);
         }
-        _audioSource = initAudioSource();
-        var currentTime = _audioContext.currentTime || 0;
+        audioSource = initAudioSource();
+        var currentTime = audioContext.currentTime || 0;
 
-        _audioSource.start(0, currentTime, _audioBuffer.duration - currentTime);
+        audioSource.start(0, currentTime, audioBuffer.duration - currentTime);
     }
 
     function isFullyLoaded() {
-        return _activeBuffer && _activeBuffer.byteLength >= _track.size;
+        return activeBuffer && activeBuffer.byteLength >= track.size;
     }
 
-    function _loadChunk(index) {
+    function loadChunk(index) {
         if (isFullyLoaded()) {
             return;
         }
-        _request.open("GET", "files/" + _track.id + "/" + index, true);
-        _request.send();
+        request.open("GET", "files/" + track.id + "/" + index, true);
+        request.send();
     }
 
-    function _onChunkLoaded() {
-        if (_totalChunksLoaded === 0) {
-            _initializeWebAudio();
-            _activeBuffer = _request.response;
+    function onChunkLoaded() {
+        if (totalChunksLoaded === 0) {
+            initializeWebAudio();
+            activeBuffer = request.response;
         } else {
-            _activeBuffer = _appendBuffer(_activeBuffer, _request.response);
+            activeBuffer = appendBuffer(activeBuffer, request.response);
         }
 
-        _audioContext.decodeAudioData(_activeBuffer, function (buf) {
-            _audioBuffer = buf;
-            _play();
+        audioContext.decodeAudioData(activeBuffer, function (buf) {
+            audioBuffer = buf;
+            play();
         });
 
-        _totalChunksLoaded++;
+        totalChunksLoaded++;
         setTimeout(function () {
-            if (!_paused) {
-                _loadChunk(_totalChunksLoaded);
+            if (!paused) {
+                loadChunk(totalChunksLoaded);
             }
         }, 10000);
     }
 
-    this.play = function (track) {
-        _totalChunksLoaded = 0;
-        _audioBuffer = {};
-        _track = track;
-        _loadChunk(_totalChunksLoaded);
+    this.play = function (trackToPlay) {
+        totalChunksLoaded = 0;
+        audioBuffer = {};
+        track = trackToPlay;
+        loadChunk(totalChunksLoaded);
     };
 
     this.pause = function () {
-        _paused = true;
-        if (_audioContext.state === "running") {
-            _audioContext.suspend();
+        if (audioContext.state === "running") {
+            audioContext.suspend();
         }
+        paused = true;
     };
 
     this.resume = function () {
-        if (_totalChunksLoaded > 0 && _paused) {
-            _paused = false;
-            if (_audioContext.state === "suspended") {
-                _audioContext.resume();
+        if (totalChunksLoaded > 0 && paused) {
+            if (audioContext.state === "suspended") {
+                audioContext.resume();
             }
-            _loadChunk(_totalChunksLoaded);
+            paused = false;
+            loadChunk(totalChunksLoaded);
         }
     };
 }
