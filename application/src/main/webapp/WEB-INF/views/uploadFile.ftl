@@ -55,7 +55,9 @@
 
     $("#tags").select2(tagAutocomplete(placeholder));
 
-    $("input[name=artist]").autocomplete(artistAutocomplete($("select[name=tags]").val()));
+    $("input[name=artist]").autocomplete(artistAutocomplete(function () {
+        return $("select[name=tags]").val()
+    }));
     
     function validateForm() {
         var validator = $("form[name=uploadForm]:last").data("bs.validator");
