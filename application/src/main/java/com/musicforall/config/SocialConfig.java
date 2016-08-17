@@ -2,10 +2,11 @@ package com.musicforall.config;
 
 import com.musicforall.util.DatabaseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.env.Environment;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.social.UserIdSource;
 import org.springframework.social.config.annotation.ConnectionFactoryConfigurer;
@@ -19,10 +20,10 @@ import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.google.api.Google;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
+import org.springframework.social.security.AuthenticationNameUserIdSource;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 
-import javax.inject.Inject;
 import javax.sql.DataSource;
 
 /**
@@ -32,7 +33,7 @@ import javax.sql.DataSource;
 @EnableSocial
 public class SocialConfig implements SocialConfigurer {
 
-    @Inject
+    @Autowired
     private DataSource dataSource;
 
     @Autowired
@@ -56,16 +57,7 @@ public class SocialConfig implements SocialConfigurer {
 
     @Override
     public UserIdSource getUserIdSource() {
-        return new UserIdSource() {
-            @Override
-            public String getUserId() {
-                final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                if (authentication == null) {
-                    throw new IllegalStateException("Unable to get a ConnectionRepository: no user signed in");
-                }
-                return authentication.getName();
-            }
-        };
+        return new AuthenticationNameUserIdSource();
     }
 
     @Override

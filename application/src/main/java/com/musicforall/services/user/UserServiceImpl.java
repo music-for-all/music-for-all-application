@@ -9,7 +9,6 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -88,12 +87,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
         final User user = getByUsername(username);
         if (user == null) {
             LOG.info(String.format("User %s not found", username));
             throw new UsernameNotFoundException("Username not found");
         }
         return user;
+    }
+
+    @Override
+    public User loadUserByUserId(String userName) throws UsernameNotFoundException {
+        return loadUserByUsername(userName);
     }
 }
