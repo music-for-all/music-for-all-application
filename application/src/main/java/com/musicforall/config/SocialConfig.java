@@ -33,6 +33,8 @@ import javax.sql.DataSource;
 @EnableSocial
 public class SocialConfig implements SocialConfigurer {
 
+    private static final String EMAIL = "email";
+
     @Autowired
     private DataSource dataSource;
 
@@ -45,7 +47,7 @@ public class SocialConfig implements SocialConfigurer {
         final FacebookConnectionFactory facebookConnectionFactory = new FacebookConnectionFactory(
                 environment.getRequiredProperty("spring.social.facebook.appId"),
                 environment.getRequiredProperty("spring.social.facebook.appSecret"));
-        facebookConnectionFactory.setScope("email");
+        facebookConnectionFactory.setScope(EMAIL);
         connectionFactoryConfigurer.addConnectionFactory(facebookConnectionFactory);
         connectionFactoryConfigurer.addConnectionFactory(new TwitterConnectionFactory(
                 environment.getRequiredProperty("spring.social.twitter.appId"),
@@ -53,7 +55,7 @@ public class SocialConfig implements SocialConfigurer {
         final GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(
                 environment.getRequiredProperty("spring.social.google.appId"),
                 environment.getRequiredProperty("spring.social.google.appSecret"));
-        googleConnectionFactory.setScope("email");
+        googleConnectionFactory.setScope(EMAIL);
         connectionFactoryConfigurer.addConnectionFactory(googleConnectionFactory);
     }
 
