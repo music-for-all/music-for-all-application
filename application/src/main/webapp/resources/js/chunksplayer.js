@@ -71,7 +71,7 @@ function ChunksPlayer() {
         if (isFullyLoaded()) {
             return;
         }
-        request.open("GET", "files/" + track.id + "/" + index, true);
+        request.open("GET", "/files/" + track.id + "/" + index, true);
         request.send();
     }
 
