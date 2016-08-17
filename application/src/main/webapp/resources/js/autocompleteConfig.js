@@ -4,7 +4,7 @@ function artistAutocomplete(tags) {
         source:   function (request, response) {
             var th = $(this);
             $.ajax({
-                url: '/artist',
+                url: dict.contextPath + "/artist",
                 data: {
                     artistName: request.term,
                     tags: tags
