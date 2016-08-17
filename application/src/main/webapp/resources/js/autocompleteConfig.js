@@ -7,7 +7,7 @@ function artistAutocomplete(tags) {
                 url: '/artist',
                 data: {
                     artistName: request.term,
-                    tags: $(tags).val()
+                    tags: tags
                 },
                 traditional: true,
                 success: function (data) {

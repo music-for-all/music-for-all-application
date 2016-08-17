@@ -55,7 +55,7 @@
 
     $("#tags").select2(tagAutocomplete(placeholder));
 
-    $("input[name=artist]").autocomplete(artistAutocomplete($("select[name=tags]")));
+    $("input[name=artist]").autocomplete(artistAutocomplete($("select[name=tags]").val()));
     
     function validateForm() {
         var validator = $("form[name=uploadForm]:last").data("bs.validator");
@@ -88,9 +88,9 @@
         var s = $("<select id=\"tags\" name=\"tags\" class=\"form-control\" />");
         $(s).appendTo('div[name=tagsContainer]:last');
         $("input[name=artist]:last").autocomplete(artistAutocomplete(
-                $("div[name=uploadFormContainer]:last").find("select[name=tags]")
+                $("div[name=uploadFormContainer]:last").find("select[name=tags]").val()
         ));
-        $("select[name=tags]:last").select2(tagAutocomplete(contextPath, placeholder));
+        $("select[name=tags]:last").select2(tagAutocomplete(placeholder));
         $("form[name=uploadForm]:last").validator();
     }
 
