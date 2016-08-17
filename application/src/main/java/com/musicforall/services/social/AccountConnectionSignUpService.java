@@ -33,23 +33,8 @@ public class AccountConnectionSignUpService implements ConnectionSignUp {
         }
         user.setEmail(profile.getEmail());
         user.setPassword(KeyGenerators.string().generateKey());
-        checkUsername(user);
         userService.save(user);
-        return user.getUsername();
-    }
-
-    private void checkUsername(User user) {
-        String searchUsername;
-        final String username = user.getUsername();
-        searchUsername = username;
-        int i = 0;
-        while (userService.getIdByUsername(searchUsername) != null) {
-            i++;
-            searchUsername = username + i;
-        }
-        if (i > 0) {
-            user.setUsername(searchUsername);
-        }
+        return user.getEmail();
     }
 
     public void setUserService(UserService userService) {

@@ -120,4 +120,12 @@ public class UserServiceTest {
         userService.delete(user3.getId());
         assertEquals(2, userService.getUsersById(users).size());
     }
+
+    @Test
+    public void testLoadUserByUserId() {
+        final User user1 = new User("C_3PO", "password", "c_3po@example.com");
+        userService.save(user1);
+
+        assertNotNull(userService.loadUserByUserId(user1.getEmail()));
+    }
 }

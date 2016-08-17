@@ -52,7 +52,7 @@ public class AccountConnectionSignUpServiceTest {
         when(connection.fetchUserProfile()).thenReturn(userProfile);
 
         String username = accountConnectionSignUpService.execute(connection);
-        assertEquals(username, userProfile.getUsername());
+        assertEquals(username, userProfile.getEmail());
     }
 
     @Test
@@ -63,13 +63,7 @@ public class AccountConnectionSignUpServiceTest {
         when(connection.fetchUserProfile()).thenReturn(userProfile);
 
         String username = accountConnectionSignUpService.execute(connection);
-        assertEquals(username, userProfile.getFirstName());
-
-        userProfile = new UserProfile("", " ,", "F5g", " ", "d7@mail.com", null);
-        when(connection.fetchUserProfile()).thenReturn(userProfile);
-
-        username = accountConnectionSignUpService.execute(connection);
-        assertEquals(username, userProfile.getFirstName());
+        assertEquals(username, userProfile.getEmail());
     }
 
     @Test(expected = ConstraintViolationException.class)

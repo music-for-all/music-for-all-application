@@ -98,6 +98,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User loadUserByUserId(String userName) throws UsernameNotFoundException {
-        return loadUserByUsername(userName);
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
+                .add(Property.forName("email").eq(userName));
+
+        final User user = dao.getBy(detachedCriteria);
+        if (user == null) {
+            LOG.info(String.format("User %s not found", userName));
+            throw new UsernameNotFoundException("Email not found");
+        }
+        return user;
     }
 }
