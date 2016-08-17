@@ -7,8 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
 <script src="<@spring.url "/resources/js/track.js"/>"></script>
-<script src="<@spring.url "/resources/js/artistAutocomplete.js"/>"></script>
-<script src="<@spring.url "/resources/js/select2config.js"/>"></script>
+<script src="<@spring.url "/resources/js/autocompleteConfig.js"/>"></script>
 <link href="<@spring.url "/resources/css/filespage.css" />" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
 </@m.head>
@@ -54,9 +53,9 @@
     var track = new Track();
     var placeholder = "<@spring.message "placeholder.Tags"/>";
 
-    $("#tags").select2(tagSearchConfig(placeholder));
+    $("#tags").select2(tagAutocomplete(placeholder));
 
-    $("input[name=artist]").autocomplete(artSearchConfig($("select[name=tags]")));
+    $("input[name=artist]").autocomplete(artistAutocomplete($("select[name=tags]")));
     
     function validateForm() {
         var validator = $("form[name=uploadForm]:last").data("bs.validator");
@@ -88,10 +87,10 @@
 
         var s = $("<select id=\"tags\" name=\"tags\" class=\"form-control\" />");
         $(s).appendTo('div[name=tagsContainer]:last');
-        $("input[name=artist]:last").autocomplete(artSearchConfig(
+        $("input[name=artist]:last").autocomplete(artistAutocomplete(
                 $("div[name=uploadFormContainer]:last").find("select[name=tags]")
         ));
-        $("select[name=tags]:last").select2(tagSearchConfig(contextPath, placeholder));
+        $("select[name=tags]:last").select2(tagAutocomplete(contextPath, placeholder));
         $("form[name=uploadForm]:last").validator();
     }
 
