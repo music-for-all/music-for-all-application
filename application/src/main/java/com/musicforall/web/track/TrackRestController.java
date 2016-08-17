@@ -103,8 +103,7 @@ public class TrackRestController {
         final Collection<Track> tracks = recommendationService.getRecommendedTracks();
         return new ResponseEntity<>(tracks, HttpStatus.OK);
     }
-
-
+    
     @RequestMapping(value = "/popular",  method = RequestMethod.GET)
     public Collection<Track> getByPopularity() {
         return recommendationService.getMostPopularTracks();

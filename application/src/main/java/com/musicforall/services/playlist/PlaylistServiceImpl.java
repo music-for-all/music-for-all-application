@@ -31,7 +31,7 @@ public class PlaylistServiceImpl implements PlaylistService {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Playlist.class)
                 .add(Property.forName("user.id").eq(userId));
         final List<Playlist> usersPlaylists = dao.getAllBy(detachedCriteria);
-        return new HashSet<Playlist>(usersPlaylists);
+        return new HashSet<>(usersPlaylists);
     }
 
     @Override

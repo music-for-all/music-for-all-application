@@ -1,9 +1,9 @@
 "use strict";
 
-function tagSearchConfig(contextPath, placeholder) {
+function tagSearchConfig(placeholder) {
     return {
         ajax: {
-            url: contextPath + "/tags",
+            url: dict.contextPath + "/tags",
             delay: 250,
             data: function (params) {
                 return {

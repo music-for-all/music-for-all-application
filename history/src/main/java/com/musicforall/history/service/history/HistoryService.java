@@ -1,4 +1,5 @@
 package com.musicforall.history.service.history;
+
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
 

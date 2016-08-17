@@ -75,8 +75,8 @@
             <%= track.artist %>
         </td>
         <td>
-            <audio id="audio_<%= track.id %>" controls>
-                <source type="audio/mp3" src="/files/<%= track.location %>">
+            <audio id="audio_<%= track.id %>" controls preload="none">
+                <source type="audio/mp3" src="<@spring.url "/files/<%= track.id %>/0"/>">
             </audio>
         </td>
     </tr>
@@ -109,9 +109,8 @@
 
 <script type="text/javascript">
     "use strict";
-    var contextPath = "<@spring.url "" />";
-    var playlist = new Playlist(contextPath);
-    var track = new Track(contextPath);
+    var playlist = new Playlist();
+    var track = new Track();
 
     _.templateSettings.variable = "data";
     var trackRow = _.template(
