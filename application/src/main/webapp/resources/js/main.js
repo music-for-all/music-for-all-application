@@ -12,28 +12,6 @@ function updateLikeCount(id) {
     }).done(function(likeCount) {
         $("#" + id + " .num-likes").text(likeCount);
     });
-
-    /*
-     * When a recommended track is clicked, add it to the playlist,
-     */
-    $("#recommendations").on("click", "a", function (e) {
-        e.preventDefault();
-
-        var li = $(this).closest("li");
-        var trackId = li.attr("id");
-        var playlistId = $("#playlists li.active").attr("id");
-        
-        playlist.addTrack(playlistId, trackId)
-            .then(function() {
-                /* Remove the track from the recommended section, and update the current playlist. */
-                li.remove();
-                $("#playlists li.active a").trigger("click");
-            });
-    });
-
-    displayRecommendedTracks();
-});
-/* end $(document).ready() */
 }
 
 function like(id) {
@@ -56,20 +34,6 @@ function like(id) {
     });
 }
 
-
-jQuery(document).ready(function () {
-
-    /* Handle the Like button (Ajax). */
-    $("#tracks").on("click", ".like-button", function () {
-
-        /* The id of a track is stored in the containing <tr> element. */
-        var id = $(this).closest("tr").attr("id");
-        like(id);
-    }).done(function(likeCount) {
-        $("#tracks #" + id + " .num-likes").text(likeCount);
-    });
-});}
-
 /**
  * Retrieves tracks recommended for the current user.
  */
@@ -89,3 +53,36 @@ function displayRecommendedTracks() {
         });
     });
 }
+
+jQuery(document).ready(function () {
+
+    /* Handle the Like button (Ajax). */
+    $("#tracks").on("click", ".like-button", function () {
+
+        /* The id of a track is stored in the containing <tr> element. */
+        var id = $(this).closest("tr").attr("id");
+        like(id);
+    }).done(function(likeCount) {
+        $("#tracks #" + id + " .num-likes").text(likeCount);
+    });
+
+    /*
+     * When a recommended track is clicked, add it to the playlist,
+     */
+    $("#recommendations").on("click", "a", function (e) {
+        e.preventDefault();
+
+        var li = $(this).closest("li");
+        var trackId = li.attr("id");
+        var playlistId = $("#playlists li.active").attr("id");
+
+        playlist.addTrack(playlistId, trackId)
+            .then(function() {
+                /* Remove the track from the recommended section, and update the current playlist. */
+                li.remove();
+                $("#playlists li.active a").trigger("click");
+            });
+    });
+
+    displayRecommendedTracks();
+});

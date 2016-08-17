@@ -38,10 +38,10 @@ public class FollowersServiceTest {
         userService.save(user1);
         userService.save(user2);
         followerService.follow(user1.getId(), user1.getId());
-        assertEquals(0, followerService.getFollowingsIds(user1.getId()).size());
+        assertEquals(0, followerService.getFollowingId(user1.getId()).size());
 
         followerService.follow(user1.getId(), user2.getId());
-        assertNotNull(followerService.getFollowingsIds(user1.getId()));
+        assertNotNull(followerService.getFollowingId(user1.getId()));
     }
 
     @Test
@@ -53,7 +53,7 @@ public class FollowersServiceTest {
         followerService.follow(user_followers.getId(), user.getId());
         followerService.unfollow(user_followers.getId(), user.getId());
 
-        assertEquals(0, followerService.getFollowingsIds(user_followers.getId()).size());
+        assertEquals(0, followerService.getFollowingId(user_followers.getId()).size());
     }
 
     @Test
@@ -77,9 +77,9 @@ public class FollowersServiceTest {
         userService.save(user);
         userService.save(user_followers);
         followerService.follow(user_followers.getId(), user.getId());
-        assertEquals(1, followerService.getFollowingsIds(user_followers.getId()).size());
+        assertEquals(1, followerService.getFollowingId(user_followers.getId()).size());
 
         followerService.unfollow(user_followers.getId(), user.getId());
-        assertEquals(0, followerService.getFollowingsIds(user_followers.getId()).size());
+        assertEquals(0, followerService.getFollowingId(user_followers.getId()).size());
     }
 }
