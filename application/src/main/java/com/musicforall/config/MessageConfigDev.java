@@ -1,11 +1,7 @@
 package com.musicforall.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-
-import java.util.Properties;
 
 /**
  * @author IliaNik on 16.08.2016.
@@ -15,8 +11,8 @@ import java.util.Properties;
 public class MessageConfigDev {
     public static final int PORT = 25;
 
-    @Bean
-    public JavaMailSenderImpl javaMailSenderImpl() {
+    /*@Bean
+    public JavaMailSender javaMailSender() {
 
         Properties javaMailProperties = new Properties();
         javaMailProperties.setProperty("mail.transport.protocol", "smtp");
@@ -33,7 +29,5 @@ public class MessageConfigDev {
         javaMailSender.setJavaMailProperties(javaMailProperties);
 
         return javaMailSender;
-
-    }
-
+    }*/
 }

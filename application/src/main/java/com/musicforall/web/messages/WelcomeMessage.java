@@ -5,7 +5,7 @@ package com.musicforall.web.messages;
  */
 
 import com.musicforall.util.SecurityUtil;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 import javax.mail.MessagingException;
@@ -16,7 +16,7 @@ public final class WelcomeMessage {
     private WelcomeMessage() {
     }
 
-    public static MimeMessage create(JavaMailSenderImpl mailSender) throws MessagingException {
+    public static MimeMessage create(JavaMailSender mailSender) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 

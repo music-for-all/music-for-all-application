@@ -4,6 +4,7 @@ import com.musicforall.services.MessageService;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
@@ -15,6 +16,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import javax.mail.MessagingException;
 
+import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
 /**
@@ -31,19 +33,18 @@ import static junit.framework.TestCase.assertTrue;
 @ActiveProfiles("dev")
 public class MessageServiceTest {
 
-
+    @Autowired
     private MessageService messageService;
 
     @Test
     @WithUserDetails("user")
     public void testSendMessageToRealEmail() throws MessagingException {
         assertTrue(messageService.sendWelcomeMessage());
-
     }
 
-    @Test(expected = MessagingException.class)
+    @Test
     @WithUserDetails("email_not_exist")
     public void testSendMessageToUnrealEmail() throws MessagingException {
-        messageService.sendWelcomeMessage();
+        assertFalse(messageService.sendWelcomeMessage());
     }
 }
