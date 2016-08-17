@@ -42,9 +42,11 @@ public class SocialConfig implements SocialConfigurer {
     @Override
     public void addConnectionFactories(ConnectionFactoryConfigurer connectionFactoryConfigurer,
                                        Environment environment) {
-        connectionFactoryConfigurer.addConnectionFactory(new FacebookConnectionFactory(
+        final FacebookConnectionFactory facebookConnectionFactory = new FacebookConnectionFactory(
                 environment.getRequiredProperty("spring.social.facebook.appId"),
-                environment.getRequiredProperty("spring.social.facebook.appSecret")));
+                environment.getRequiredProperty("spring.social.facebook.appSecret"));
+        facebookConnectionFactory.setScope("email");
+        connectionFactoryConfigurer.addConnectionFactory(facebookConnectionFactory);
         connectionFactoryConfigurer.addConnectionFactory(new TwitterConnectionFactory(
                 environment.getRequiredProperty("spring.social.twitter.appId"),
                 environment.getRequiredProperty("spring.social.twitter.appSecret")));
