@@ -15,7 +15,6 @@ import org.springframework.context.annotation.*;
                 "com.musicforall.common"},
         excludeFilters =
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = {DbPopulateService.class}))
-@Import({HibernateConfigDev.class, SecurityConfig.class})
 @PropertySource(value = "classpath:application.properties")
 @Import({HibernateConfigDev.class, SecurityConfig.class, MessageConfigDev.class})
 public class ServicesTestConfig {
