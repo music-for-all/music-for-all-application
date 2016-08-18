@@ -1,9 +1,12 @@
 "use strict";
 
 function updateLikeCount(id) {
+
+    var baseUrl = dict.contextPath + "/tracks";
+
     $.ajax({
         type: "GET",
-        url: "/tracks/like/" + id
+        url: baseUrl + "/like/" + id
 
     }).fail(function (xhr, status, errorThrown) {
         var message = status + ": " + xhr.status + " " + errorThrown;
@@ -16,11 +19,11 @@ function updateLikeCount(id) {
 
 function like(id) {
 
-    console.log("Like: " + id);
+    var baseUrl = dict.contextPath + "/tracks";
 
     $.ajax({
         type: "POST",
-        url: "/tracks/like/" + id
+        url: baseUrl + "/like/" + id
 
     }).fail(function (xhr, status, errorThrown) {
         var message = status + ": " + xhr.status + " " + errorThrown;
@@ -38,9 +41,11 @@ function like(id) {
  * Retrieves tracks recommended for the current user.
  */
 function displayRecommendedTracks() {
+
+    var baseUrl = dict.contextPath + "/tracks";
     $.ajax({
         type: "GET",
-        url: "/tracks/recommended",
+        url: baseUrl + "/recommended",
         dataType: "json"
 
     }).fail(function (xhr, status, errorThrown) {
