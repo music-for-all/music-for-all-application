@@ -6,7 +6,7 @@ function artistAutocomplete(artistTags) {
                 artistName: request.term
             };
             if (artistTags.call() != null) {
-                $.extend(requestData, {tags: artistTags})
+                $.extend(requestData, {tags: artistTags});
             }
             $.ajax({
                 url: dict.contextPath + "/artist",
