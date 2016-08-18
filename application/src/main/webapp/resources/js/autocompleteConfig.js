@@ -3,10 +3,11 @@ function artistAutocomplete(artistTags) {
     return {
         source: function (request, response) {
             var requestData = {
-                artistName: request.term,
-                tags: artistTags.call() || []
+                artistName: request.term
             };
-
+            if (artistTags.call() != null) {
+                $.extend(requestData, {tags: artistTags});
+            }
             $.ajax({
                 url: dict.contextPath + "/artist",
                 data: requestData,
