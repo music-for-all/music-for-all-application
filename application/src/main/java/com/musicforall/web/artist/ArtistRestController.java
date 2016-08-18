@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class ArtistRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getArtists(@RequestParam("artistName") final String artistName,
-                                     @RequestParam(value = "tags", required = false) final List<String> tags) {
+                                     @RequestParam(value = "tags", required = false)@Size(min=1) final List<String> tags) {
         final SearchTrackRequest searchQuery = new SearchTrackRequest();
         searchQuery.setArtist(artistName);
         searchQuery.setTags(tags);
