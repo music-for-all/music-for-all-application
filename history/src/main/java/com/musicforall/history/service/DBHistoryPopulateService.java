@@ -31,9 +31,6 @@ public class DBHistoryPopulateService {
     @Autowired
     private HistoryService historyService;
 
-    @Autowired
-    private HistoryEventListener historyEventListener;
-
     public void populateTrackListened(List<Integer> tracksIds, Integer userId) {
         LOG.info("going to populate history database with test data");
 
