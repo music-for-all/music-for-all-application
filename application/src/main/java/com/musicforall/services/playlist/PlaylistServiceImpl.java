@@ -72,6 +72,7 @@ public class PlaylistServiceImpl implements PlaylistService {
         final Playlist playlist = dao.get(Playlist.class, playlistId);
         final Track track = dao.get(Track.class, trackId);
         playlist.getTracks().add(track);
+        save(playlist);
     }
 
     @Override
@@ -86,5 +87,6 @@ public class PlaylistServiceImpl implements PlaylistService {
 
         final Playlist playlist = dao.get(Playlist.class, playlistId);
         playlist.getTracks().removeIf(track -> Objects.equals(track.getId(), trackId));
+        save(playlist);
     }
 }
