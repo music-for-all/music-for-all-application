@@ -29,7 +29,6 @@ public class MessageBootstrap {
         }
         lock.lock();
 
-        dao.save(new User("email_not_exist", "password", "nikolsky1238738275877@gmail.com"));
         dao.save(new User("user", "password1", "nikolsky12@gmail.com"));
 
         bootstraped = true;

@@ -1,6 +1,7 @@
 package com.musicforall.util;
 
 import com.musicforall.config.HibernateConfigDev;
+import com.musicforall.config.MessageConfigDev;
 import com.musicforall.config.security.SecurityConfig;
 import com.musicforall.services.DbPopulateService;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,7 +18,7 @@ import org.springframework.context.annotation.Import;
                 "com.musicforall.common"},
         excludeFilters =
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = {DbPopulateService.class}))
-@Import({HibernateConfigDev.class, SecurityConfig.class})
+@Import({HibernateConfigDev.class, SecurityConfig.class, MessageConfigDev.class})
 public class ServicesTestConfig {
 
 }

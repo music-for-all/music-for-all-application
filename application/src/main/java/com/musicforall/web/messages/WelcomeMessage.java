@@ -24,7 +24,15 @@ public final class WelcomeMessage {
         helper.setFrom("musicforall07@gmail.com");
         helper.setSubject("Music For All");
         helper.setText(
-                "<html><body><h1>Welcome, " + SecurityUtil.currentUser().getUsername() + "<h1></body></html>", true);
+                "<html><body>" +
+                        "<div style='border:4px ridge red;text-align:center;" +
+                        "font-family:Verdana,Arial,Helvetica,sans-serif'> " +
+                        "<h1 style='color:red'>Welcome," + SecurityUtil.currentUser().getUsername() + "!</h1><br>" +
+                        " <p>You have just been registered in the best music player</p>" +
+                        "<h2>Congratulation!</h2>" +
+                        "</div>" +
+                        "</body></html>", true);
+
 
         return message;
     }
