@@ -43,12 +43,12 @@ import static junit.framework.TestCase.assertTrue;
 public class MessageServiceTest {
 
     @Autowired
-    private MessageService messageService;
+    private static MessageService messageService;
 
-    private GreenMail testSmtp;
+    private static GreenMail testSmtp;
 
     @BeforeClass
-    public void testSmtpInit() {
+    public static void testSmtpInit() {
         testSmtp = new GreenMail(ServerSetupTest.SMTP);
         testSmtp.start();
 
@@ -57,7 +57,7 @@ public class MessageServiceTest {
     }
 
     @AfterClass
-    public void cleanup() {
+    public static void cleanup() {
         testSmtp.stop();
     }
 
