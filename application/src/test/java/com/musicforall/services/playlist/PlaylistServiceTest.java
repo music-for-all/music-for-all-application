@@ -106,16 +106,12 @@ public class PlaylistServiceTest {
         trackService.saveAll(Arrays.asList(
                 new Track("track1", "location1"),
                 new Track("track2", "location2")));
-        System.err.println("trackService.saveAll");
 
         final List<Track> tracksInDb = trackService.findAll();
-        System.err.println("trackService.findAll");
 
         playlistService.addTracks(playlistId, new HashSet<>(tracksInDb));
-        System.err.println("playlistService.addTracks");
 
         final Set<Track> tracksInPlaylist = playlistService.getTracks(playlistId);
-        System.err.println("trackService.getAll");
 
         assertNotNull(tracksInPlaylist);
         Assert.assertEquals(tracksInDb.size(), tracksInPlaylist.size());
@@ -127,17 +123,28 @@ public class PlaylistServiceTest {
 
     @Test
     @WithUserDetails
+    public void testAddTrack() {
+
+        final Playlist playlist = playlistService.save("testAddTrack");
+        final Integer playlistId = playlist.getId();
+        final Integer trackId = trackService.save(new Track("testAddTrack", "location")).getId();
+
+        playlistService.addTrack(playlistId, trackId);
+        assertEquals(1, playlistService.get(playlistId).getTracks().size());
+    }
+
+    @Test
+    @WithUserDetails
     public void testRemoveTrack() {
 
         final Playlist playlist = playlistService.save("test");
         final Integer playlistId = playlist.getId();
-
         final Integer trackId = trackService.save(new Track("testTrack", "location")).getId();
 
-        final List<Track> tracks = trackService.findAll();
-        playlistService.addTracks(playlistId, new HashSet<Track>(tracks));
+        playlistService.addTrack(playlistId, trackId);
+        assertEquals(1, playlistService.get(playlistId).getTracks().size());
 
         playlistService.removeTrack(playlistId, trackId);
-        assertEquals(tracks.size() - 1, playlistService.get(playlistId).getTracks().size());
+        assertEquals(0, playlistService.get(playlistId).getTracks().size());
     }
 }
