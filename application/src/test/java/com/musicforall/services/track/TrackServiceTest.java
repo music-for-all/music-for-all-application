@@ -8,6 +8,7 @@ import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
+import com.musicforall.services.recommendation.RecommendationService;
 import com.musicforall.services.tag.TagService;
 import com.musicforall.util.SecurityUtil;
 import com.musicforall.util.ServicesTestConfig;
@@ -51,6 +52,9 @@ public class TrackServiceTest {
 
     @Autowired
     private TagService tagService;
+
+    @Autowired
+    private RecommendationService recommendationService;
 
     @Autowired
     private HistoryEventListener historyEventListener;
@@ -208,7 +212,7 @@ public class TrackServiceTest {
         historyEventListener.handleTrackLiked(new TrackLikedEvent(track2.getId(), FOLLOWED_USER_ID));
         historyEventListener.handleTrackLiked(new TrackLikedEvent(track2.getId(), FOLLOWED_USER_ID));
 
-        List<Track> tracks = trackService.getRecommendedTracks();
+        Collection<Track> tracks = recommendationService.getRecommendedTracks();
 
         assertNotNull(tracks);
         assertEquals(3, tracks.size());
@@ -216,7 +220,7 @@ public class TrackServiceTest {
         final Playlist playlist = playlistService.save("demo");
         playlistService.addTracks(playlist.getId(), new HashSet<Track>(trackService.findAll()));
 
-        tracks = trackService.getRecommendedTracks();
+        tracks = recommendationService.getRecommendedTracks();
         assertEquals(0, tracks.size());
 
         playlistService.delete(playlist.getId());
