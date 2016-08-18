@@ -1,6 +1,5 @@
 package com.musicforall.history.service;
 
-import com.musicforall.history.handlers.HistoryEventListener;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
@@ -9,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -38,12 +36,9 @@ public class DBHistoryPopulateService {
         recordHistories(tracksIds, userId, EventType.TRACK_LIKED);
     }
 
-    public void populateTrackLikedByFollowedUsers() {
+    public void populateTrackLikedByFollowedUsers(List<Integer> trackIds, Integer userId) {
 
-        final int FOLLOWED_USER_ID = 2;
-        final List<Integer> trackIds = Arrays.asList(1, 2, 3);
-
-        recordHistories(trackIds, FOLLOWED_USER_ID, EventType.TRACK_LIKED);
+        recordHistories(trackIds, userId, EventType.TRACK_LIKED);
     }
 
     private void recordHistories(List<Integer> tracksIds, Integer userId, EventType eventType) {
