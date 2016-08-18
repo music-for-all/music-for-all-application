@@ -37,12 +37,12 @@ public class HistoryServiceImpl implements HistoryService {
         final int offset = 0;
         final String hql = "select history.trackId" +
                 " from History history" +
-                " where history.eventType=:trackListened" +
+                " where history.eventType=:eventType" +
                 " group by history.trackId" +
                 " order by count(history.trackId) desc";
 
         final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("trackListened", EventType.TRACK_LISTENED);
+        parameters.put("eventType", EventType.TRACK_LISTENED);
 
         return dao.getAllBy(hql, parameters, new QueryParams(count, offset));
     }

@@ -6,8 +6,6 @@ import com.musicforall.model.Playlist;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
-import com.musicforall.history.handlers.HistoryEventListener;
-import com.musicforall.history.handlers.events.TrackLikedEvent;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.user.UserService;
@@ -71,9 +69,6 @@ public class DbPopulateService {
 
     @Autowired
     private DBHistoryPopulateService dbHistoryPopulateService;
-
-    @Autowired
-    private HistoryEventListener historyEventListener;
 
     private static URL toURL(String url) {
         try {
@@ -141,18 +136,6 @@ public class DbPopulateService {
                 .collect(toList());
         fileManager.clearDirectory();
 
-        final int FOLLOWED_USER_ID = 2;
-        final int TRACK_1_ID = 1;
-        final int TRACK_2_ID = 2;
-        final int TRACK_3_ID = 3;
-
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_1_ID, FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_1_ID, FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_3_ID, FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_2_ID, FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_2_ID, FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_2_ID, FOLLOWED_USER_ID));
-
         try {
             final List<Future<Path>> futures = executorService.invokeAll(tasks);
 
@@ -175,6 +158,8 @@ public class DbPopulateService {
 
             final List<Integer> tracksId = tracks.stream().map(Track::getId).collect(toList());
             dbHistoryPopulateService.populateTrackListened(tracksId, user.getId());
+
+            dbHistoryPopulateService.populateTrackLikedByFollowedUsers();
 
             LOG.info("playlist {} is saved", playlist);
 
