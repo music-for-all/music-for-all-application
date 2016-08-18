@@ -4,8 +4,7 @@ package com.musicforall.web.messages;
  * @author IliaNik on 12.08.2016.
  */
 
-import com.musicforall.util.SecurityUtil;
-import org.springframework.mail.javamail.JavaMailSender;
+import com.musicforall.model.User;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 import javax.mail.MessagingException;
@@ -17,19 +16,19 @@ public final class WelcomeMessage {
 
     }
 
-    public static MimeMessage create(JavaMailSender mailSender) throws MessagingException {
-        MimeMessage message = mailSender.createMimeMessage();
+    public static MimeMessage decorate(MimeMessage message, User user) throws MessagingException {
+
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        helper.setTo(SecurityUtil.currentUser().getEmail());
+        helper.setTo(user.getEmail());
         helper.setFrom("musicforall07@gmail.com");
         helper.setSubject("Music For All");
-        helper.setText(getWelcomeText(SecurityUtil.currentUser().getUsername()), true);
+        helper.setText(getWelcomeText(user.getUsername()), true);
 
         return message;
     }
 
-    public static String getWelcomeText(String username) {
+    public static String getWelcomeText(final String username) {
         return "<html><body>" +
                 "<div style='border:4px ridge red;text-align:center;" +
                 "font-family:Verdana,Arial,Helvetica,sans-serif'> " +

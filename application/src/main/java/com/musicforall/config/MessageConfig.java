@@ -1,8 +1,9 @@
 package com.musicforall.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
@@ -11,9 +12,11 @@ import java.util.Properties;
  * @author IliaNik on 16.08.2016.
  */
 @Configuration
-@Profile("dev")
-public class MessageConfigDev {
+public class MessageConfig {
     public static final int PORT = 25;
+
+    @Autowired
+    private Environment env;
 
     @Bean
     public JavaMailSenderImpl javaMailSender() {
@@ -21,8 +24,8 @@ public class MessageConfigDev {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost("smtp.gmail.com");
         javaMailSender.setPort(PORT);
-        javaMailSender.setUsername("musicforall07@gmail.com");
-        javaMailSender.setPassword("PolyInkExt");
+        javaMailSender.setUsername(env.getRequiredProperty("application.email"));
+        javaMailSender.setPassword(env.getRequiredProperty("application.password"));
 
         Properties javaMailProperties = new Properties();
         javaMailProperties.setProperty("mail.transport.protocol", "smtp");

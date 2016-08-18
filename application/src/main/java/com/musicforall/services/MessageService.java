@@ -4,7 +4,10 @@ package com.musicforall.services;
  * @author IliaNik on 12.08.2016.
  */
 
+import com.musicforall.util.SecurityUtil;
 import com.musicforall.web.messages.WelcomeMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -19,25 +22,28 @@ import javax.mail.internet.MimeMessage;
 @Transactional
 public class MessageService {
 
-    public static final int PORT = 25;
+    private static final Logger LOG = LoggerFactory.getLogger(MessageService.class);
 
     @Autowired
     private JavaMailSenderImpl javaMailSender;
 
     public void sendWelcomeMessage() throws MessagingException {
-        MimeMessage welcomeMessage = WelcomeMessage.create(javaMailSender);
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessage welcomeMessage = WelcomeMessage.decorate(message, SecurityUtil.currentUser());
+
         try {
             javaMailSender.send(welcomeMessage);
         } catch (MailException ex) {
-            System.err.println(ex.getMessage());
+            LOG.error(ex.getMessage());
         }
     }
 
-    public void setPort(int Port) {
-        javaMailSender.setPort(Port);
+    public void setPort(final int port) {
+        javaMailSender.setPort(port);
     }
 
-    public void setHost(String Host) {
-        javaMailSender.setHost(Host);
+    public void setHost(final String host) {
+        javaMailSender.setHost(host);
     }
 }
