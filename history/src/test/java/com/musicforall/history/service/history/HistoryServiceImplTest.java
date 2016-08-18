@@ -1,6 +1,5 @@
 package com.musicforall.history.service.history;
 
-import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.DBHistoryPopulateService;
 import com.musicforall.history.util.ServicesTestConfig;
@@ -16,9 +15,12 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.musicforall.history.handlers.events.EventType.TRACK_LIKED;
+import static com.musicforall.history.handlers.events.EventType.TRACK_LISTENED;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -28,9 +30,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
-@TestExecutionListeners({
-        DependencyInjectionTestExecutionListener.class,
-})
+@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 @ActiveProfiles("dev")
 public class HistoryServiceImplTest {
 
@@ -51,11 +51,11 @@ public class HistoryServiceImplTest {
 
     @Test
     public void testRecord() throws Exception {
-        SearchHistoryParams params = SearchHistoryParams.create()
-                .eventType(EventType.TRACK_LISTENED)
+        final SearchHistoryParams params = SearchHistoryParams.create()
+                .eventType(TRACK_LISTENED)
                 .userId(USER_ID).trackId(TRACK_ID).get();
         int initialSize = service.getAllBy(params).size();
-        service.record(new History(TRACK_ID, new Date(), USER_ID, EventType.TRACK_LISTENED));
+        service.record(new History(TRACK_ID, new Date(), USER_ID, TRACK_LISTENED));
         int currentSize = service.getAllBy(params).size();
         assertEquals(currentSize - initialSize, 1);
     }
@@ -63,14 +63,19 @@ public class HistoryServiceImplTest {
     @Test
     public void testGetTheMostPopularTracks() throws Exception {
         IntStream.range(0, 100)
-                .mapToObj(i -> new History(TOP_TRACK_ID, new Date(), USER_ID, EventType.TRACK_LISTENED))
+                .mapToObj(i -> new History(TOP_TRACK_ID, new Date(), USER_ID, TRACK_LISTENED))
                 .forEach(service::record);
-        Collection<History> histories = service.getAllBy(SearchHistoryParams.create().eventType(EventType.TRACK_LISTENED).get());
-        Map<Integer, Integer> listenedByTrackId = histories.stream()
-                .collect(Collectors.toMap(History::getTrackId, h -> 1, Integer::sum));
-        List<Integer> topListened = listenedByTrackId.keySet().stream()
+        final Collection<History> histories = service.getAllBy(SearchHistoryParams.create()
+                .eventType(TRACK_LISTENED)
+                .get());
+
+        final Map<Integer, Integer> listenedByTrackId = histories.stream()
+                .collect(toMap(History::getTrackId, h -> 1, Integer::sum));
+
+        final List<Integer> topListened = listenedByTrackId.keySet().stream()
                 .sorted((i1, i2) -> listenedByTrackId.get(i2).compareTo(listenedByTrackId.get(i1)))
-                .limit(10).collect(Collectors.toList());
+                .limit(10)
+                .collect(toList());
         //compare only first top listened track
         //because number of listenings for other tracks is generated randomly
         assertEquals(service.getTheMostPopularTracks().get(0), TOP_TRACK_ID);
@@ -79,10 +84,17 @@ public class HistoryServiceImplTest {
 
     @Test
     public void testGetAllBy() throws Exception {
-        Collection<History> histories = service.getAllBy(SearchHistoryParams.create().eventType(EventType.TRACK_LIKED).get());
-        assertTrue(histories.stream().allMatch(h -> h.getEventType() == EventType.TRACK_LIKED));
-        histories = service.getAllBy(SearchHistoryParams.create().eventType(EventType.TRACK_LISTENED).userId(USER_ID).get());
-        assertTrue(histories.stream().allMatch(h -> h.getEventType() == EventType.TRACK_LISTENED && h.getUserId().equals(USER_ID)));
+        Collection<History> histories = service.getAllBy(SearchHistoryParams.create()
+                .eventType(TRACK_LIKED)
+                .get());
+        assertTrue(histories.stream().allMatch(h -> h.getEventType() == TRACK_LIKED));
+
+        histories = service.getAllBy(SearchHistoryParams.create()
+                .eventType(TRACK_LISTENED)
+                .userId(USER_ID)
+                .get());
+        assertTrue(histories.stream().allMatch(h -> h.getEventType() == TRACK_LISTENED && h.getUserId().equals(USER_ID)));
+
         histories = service.getAllBy(SearchHistoryParams.create().trackId(TRACK_ID).get());
         assertTrue(histories.stream().allMatch(h -> h.getTrackId().equals(TRACK_ID)));
     }

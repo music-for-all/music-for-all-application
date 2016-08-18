@@ -25,9 +25,8 @@ import java.util.Map.Entry;
 @Repository
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class Dao {
-    private static final Logger LOG = LoggerFactory.getLogger(Dao.class);
     public static final String FOUND_ENTITY = "Found entity - {}";
-
+    private static final Logger LOG = LoggerFactory.getLogger(Dao.class);
     private final int batchSize = 20;
 
     @Autowired
@@ -195,7 +194,7 @@ public class Dao {
     public <T> Collection<T> getAllByNamedQuery(Class<T> clazz, String namedQuery, Map<String, Object> params) {
         LOG.info("Going to find entities with class - {} by named query - {} with parameters - {}",
                 clazz, namedQuery, params);
-        Query<T> query = currentSession().createNamedQuery(namedQuery, clazz);
+        final Query<T> query = currentSession().createNamedQuery(namedQuery, clazz);
         query.setProperties(params);
         final List<T> entities = query.list();
         LOG.info(FOUND_ENTITY, entities);

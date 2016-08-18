@@ -3,7 +3,7 @@ package com.musicforall.model;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.social.security.SocialUserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -17,7 +17,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "users")
-public class User implements UserDetails, Serializable {
+public class User implements SocialUserDetails, Serializable {
 
     private static final long serialVersionUID = 1959293141381203004L;
 
@@ -36,7 +36,7 @@ public class User implements UserDetails, Serializable {
     private String password;
 
     @Email
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String email;
 
     public User() {
@@ -103,6 +103,11 @@ public class User implements UserDetails, Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String getUserId() {
+        return username;
     }
 
     @Override

@@ -7,7 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
 <script src="<@spring.url "/resources/js/track.js"/>"></script>
-<script src="<@spring.url "/resources/js/select2config.js"/>"></script>
+<script src="<@spring.url "/resources/js/autocompleteConfig.js"/>"></script>
 <link href="<@spring.url "/resources/css/filespage.css" />" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
 </@m.head>
@@ -37,9 +37,9 @@
                    data-minlength="2"
                    maxlength="30" required/>
 
-            <div class="form-group">
+            <div class="form-group" name="tagsContainer">
                 <h4 class="control-label text-center"><@spring.message "uploadFile.TagsCaption"/></h4>
-                <select class="form-control" id="tags"></select>
+                <select class="form-control" id="tags" name="tags"></select>
             </div>
             <input type="file" name="file" required>
         </form>
@@ -51,11 +51,14 @@
 <script type="text/javascript">
     const max_length_error = 200;
     var track = new Track();
-    var contextPath = "<@spring.url "" />";
     var placeholder = "<@spring.message "placeholder.Tags"/>";
 
-    $("#tags").select2(tagSearchConfig(contextPath, placeholder));
+    $("#tags").select2(tagAutocomplete(placeholder));
 
+    $("input[name=artist]").autocomplete(artistAutocomplete(function () {
+        return $("select[name=tags]").val()
+    }));
+    
     function validateForm() {
         var validator = $("form[name=uploadForm]:last").data("bs.validator");
         validator.validate();
@@ -70,7 +73,7 @@
     function clearForms() {
         $("div[name=uploadFormContainer]").not(":first").remove();
         $("div[name=uploadFormContainer]").find("input").val("").end();
-        $("#tags").empty();
+        $("#tags").val(null).trigger("change");
         $("#result").hide();
     }
 
@@ -80,9 +83,16 @@
         }
         $("div[name=uploadFormContainer]:last").clone()
                 .find("input:text").val("").end()
-                .find(".bootstrap-tagsinput:last").remove().end()
+                .find(".select2-container:last").remove().end()
+                .find(".select2-hidden-accessible").remove().end()
                 .appendTo("#container");
-        $("input[name=tags]:last").tagsinput();
+
+        var s = $("<select id=\"tags\" name=\"tags\" class=\"form-control\" />");
+        $(s).appendTo('div[name=tagsContainer]:last');
+        $("input[name=artist]:last").autocomplete(artistAutocomplete(
+                $("div[name=uploadFormContainer]:last").find("select[name=tags]").val()
+        ));
+        $("select[name=tags]:last").select2(tagAutocomplete(placeholder));
         $("form[name=uploadForm]:last").validator();
     }
 
@@ -99,7 +109,8 @@
         }
         $("form[name=uploadForm]").each(function () {
             var obj = {};
-            obj.name = $(this).find("input[name=artist]").val() + " - " + $(this).find("input[name=name]").val();
+            obj.name = $(this).find("input[name=name]").val() ;
+            obj.artist = $(this).find("input[name=artist]").val();
             obj.location = "unknown";
             obj.tags = $(this).find("#tags").val();
 

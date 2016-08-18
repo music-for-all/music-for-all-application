@@ -19,16 +19,14 @@ import java.util.Set;
         @NamedQuery(
                 name = Track.ALL_BY_ID_QUERY,
                 query = "select t from Track t where t.id in (:ids)"
-        )
-})
+        )})
 
 @Entity
 @Table(name = "tracks")
 public class Track implements Serializable {
 
-    private static final long serialVersionUID = -6851477594231058789L;
     public static final String ALL_BY_ID_QUERY = "all_by_id";
-
+    private static final long serialVersionUID = -6851477594231058789L;
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +56,9 @@ public class Track implements Serializable {
     @Size(min = 2, max = 128)
     @Column(name = "location", nullable = false)
     private String location;
+
+    @Column
+    private Long size;
 
     @JsonIgnore
     @ManyToMany
@@ -163,6 +164,14 @@ public class Track implements Serializable {
         this.tags = tags;
     }
 
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(id, tags, name, location);
@@ -193,6 +202,7 @@ public class Track implements Serializable {
                 ", artist='" + artist + '\'' +
                 ", album='" + album + '\'' +
                 ", location='" + location + '\'' +
+                ", size='" + size + '\'' +
                 '}';
     }
 }
