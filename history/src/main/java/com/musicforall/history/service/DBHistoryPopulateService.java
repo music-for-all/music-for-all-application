@@ -2,7 +2,6 @@ package com.musicforall.history.service;
 
 import com.musicforall.history.handlers.HistoryEventListener;
 import com.musicforall.history.handlers.events.EventType;
-import com.musicforall.history.handlers.events.TrackLikedEvent;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
 import org.slf4j.Logger;
@@ -10,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -44,16 +44,9 @@ public class DBHistoryPopulateService {
     public void populateTrackLikedByFollowedUsers() {
 
         final int FOLLOWED_USER_ID = 2;
-        final int TRACK_1_ID = 1;
-        final int TRACK_2_ID = 2;
-        final int TRACK_3_ID = 3;
+        final List<Integer> trackIds = Arrays.asList(1, 2, 3);
 
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_1_ID, FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_1_ID, FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_3_ID, FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_2_ID, FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_2_ID, FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(TRACK_2_ID, FOLLOWED_USER_ID));
+        recordHistories(trackIds, FOLLOWED_USER_ID, EventType.TRACK_LIKED);
     }
 
     private void recordHistories(List<Integer> tracksIds, Integer userId, EventType eventType) {
@@ -71,4 +64,3 @@ public class DBHistoryPopulateService {
                 .forEach(historyService::record);
     }
 }
-
