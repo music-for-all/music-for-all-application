@@ -21,7 +21,7 @@ public final class WelcomeMessage {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         helper.setTo(user.getEmail());
-        helper.setFrom("musicforall07@gmail.com");
+        helper.setFrom("musicforal07@gmail.com");
         helper.setSubject("Music For All");
         helper.setText(getWelcomeText(user.getUsername()), true);
 

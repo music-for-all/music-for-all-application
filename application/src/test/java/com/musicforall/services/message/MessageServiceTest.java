@@ -1,4 +1,3 @@
-
 package com.musicforall.services.message;
 
 import com.icegreen.greenmail.util.GreenMail;
@@ -8,8 +7,8 @@ import com.musicforall.services.MessageService;
 import com.musicforall.util.SecurityUtil;
 import com.musicforall.util.ServicesTestConfig;
 import com.musicforall.web.messages.WelcomeMessage;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +23,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -50,7 +47,7 @@ public class MessageServiceTest {
 
     private GreenMail testSmtp;
 
-    @Before
+    @BeforeClass
     public void testSmtpInit() {
         testSmtp = new GreenMail(ServerSetupTest.SMTP);
         testSmtp.start();
@@ -59,6 +56,10 @@ public class MessageServiceTest {
         messageService.setHost("localhost");
     }
 
+    @AfterClass
+    public void cleanup() {
+        testSmtp.stop();
+    }
 
     @Test
     @WithUserDetails("user")
@@ -70,20 +71,9 @@ public class MessageServiceTest {
         assertEquals("Music For All", messages[0].getSubject());
         String body = GreenMailUtil.getBody(messages[0]).replaceAll("=\r?\n", "");
 
-        String pattern = "(.*)(" +
-                WelcomeMessage.getWelcomeText(SecurityUtil.currentUser().getUsername()) + ")(.*)";
+        String text =
+                WelcomeMessage.getWelcomeText(SecurityUtil.currentUser().getUsername());
 
-        Matcher m = Pattern.compile(pattern).matcher(body);
-
-        assertTrue(m.find());
-    }
-
-
-    @After
-    public void cleanup() {
-        testSmtp.stop();
-
-        messageService.setPort(25);
-        messageService.setHost("smtp.gmail.com");
+        assertTrue(body.contains(text));
     }
 }
