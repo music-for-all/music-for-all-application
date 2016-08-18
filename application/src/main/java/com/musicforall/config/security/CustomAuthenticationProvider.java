@@ -34,8 +34,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication)
             throws AuthenticationException {
 
-        final String username = authentication.getName();
-        final UserDetails user = userDetailsService.loadUserByUsername(username);
+        final String email = authentication.getName();
+        final UserDetails user = userDetailsService.loadUserByUsername(email);
 
         if (user == null) {
             throw new BadCredentialsException("Username not found.");

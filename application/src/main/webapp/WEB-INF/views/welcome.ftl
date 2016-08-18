@@ -56,9 +56,9 @@
 
                     <div class="hide" id="popover-content">
                         <@m.form "/welcome", "POST", "login">
-                            <label for="inputUsername" class="sr-only"><@spring.message "welcomepage.Username"/></label>
+                            <label for="inputUsername" class="sr-only"><@spring.message "welcomepage.Email"/></label>
                             <input type="text" id="inputUsername" name="username" class="form-control"
-                                   placeholder="Username"
+                                   placeholder="Email"
                                    required />
                             <label for="inputPassword" class="sr-only"><@spring.message "welcomepage.Password"/></label>
                             <input type="password" id="inputPassword" name="password" class="form-control"

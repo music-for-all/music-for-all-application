@@ -19,17 +19,17 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
 
     /**
      * Retrieves a user with the given id.
-     * @param id the id of the user
+     * @param userId the id of the user
      * @return the retrieved user
      */
-    User get(Integer id);
+    User get(Integer userId);
 
     /**
      * Retrieves an id of a user with the given username.
-     * @param username the username of the user
+     * @param email the username of the user
      * @return the id of retrieved user
      */
-    Integer getIdByUsername(String username);
+    Integer getIdByEmail(String email);
 
     /**
      * Deletes a user with the specified id from the database.
@@ -39,10 +39,10 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
 
     /**
      * Retrieves a user with the given username.
-     * @param username the id of the user
+     * @param email the id of the user
      * @return the retrieved user
      */
-    User getByUsername(String username);
+    User getByEmail(String email);
 
     /**
      * Retrieves all User records stored in the database.
@@ -51,4 +51,6 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
     List<User> findAll();
 
     List<User> getUsersById(List<Integer> usersId);
+
+    List<User> getUsersByUsername(String username);
 }

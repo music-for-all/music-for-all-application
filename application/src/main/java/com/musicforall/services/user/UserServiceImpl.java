@@ -45,8 +45,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer getIdByUsername(String username) {
-        final User user = getByUsername(username);
+    public Integer getIdByEmail(String email) {
+        final User user = getByEmail(email);
         if (user != null) {
             return user.getId();
         }
@@ -60,9 +60,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getByUsername(String username) {
+    public User getByEmail(String email) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
-                .add(Property.forName("username").eq(username));
+                .add(Property.forName("email").eq(email));
 
         return dao.getBy(detachedCriteria);
     }
@@ -87,25 +87,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        final User user = getByUsername(username);
+    public User loadUserByUsername(String email) throws UsernameNotFoundException {
+        final User user = getByEmail(email);
         if (user == null) {
-            LOG.info(String.format("User %s not found", username));
+            LOG.info(String.format("User %s not found", email));
             throw new UsernameNotFoundException("Username not found");
         }
         return user;
     }
 
     @Override
-    public User loadUserByUserId(String userName) throws UsernameNotFoundException {
-        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
-                .add(Property.forName("email").eq(userName));
-
-        final User user = dao.getBy(detachedCriteria);
+    public User loadUserByUserId(String email) throws UsernameNotFoundException {
+        final User user = getByEmail(email);
         if (user == null) {
-            LOG.info(String.format("User %s not found", userName));
+            LOG.info(String.format("User %s not found", email));
             throw new UsernameNotFoundException("Email not found");
         }
         return user;
+    }
+
+    @Override
+    public List<User> getUsersByUsername(String username) {
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
+                .add(Property.forName("username").eq(username));
+
+        return dao.getAllBy(detachedCriteria);
     }
 }
