@@ -8,7 +8,6 @@ function artistAutocomplete(tags) {
             if (tags.call() != null) {
                 $.extend(data, {tags: tags})
             }
-            console.log(tags.toString());
             $.ajax({
                 url: dict.contextPath + "/artist",
                 data: data,
