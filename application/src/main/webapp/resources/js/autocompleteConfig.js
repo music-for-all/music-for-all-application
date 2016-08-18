@@ -1,14 +1,17 @@
 
 function artistAutocomplete(tags) {
     return {
-        source:   function (request, response) {
-            var th = $(this);
+        source: function (request, response) {
+            var data = {
+                artistName: request.term
+            };
+            if (tags.call() != null) {
+                $.extend(data, {tags: tags})
+            }
+            console.log(tags.toString());
             $.ajax({
                 url: dict.contextPath + "/artist",
-                data: {
-                    artistName: request.term,
-                    tags: tags
-                },
+                data: data,
                 traditional: true,
                 success: function (data) {
                     var array = data.error ? [] : $.map(data, function (item) {
