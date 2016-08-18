@@ -22,7 +22,7 @@ function artistAutocomplete(artistTags) {
                 }
             });
         }
-    }
+    };
 }
 
 function tagAutocomplete(placeholder) {
