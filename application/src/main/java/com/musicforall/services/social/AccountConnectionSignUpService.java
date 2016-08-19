@@ -33,7 +33,9 @@ public class AccountConnectionSignUpService implements ConnectionSignUp {
         }
         user.setEmail(profile.getEmail());
         user.setPassword(KeyGenerators.string().generateKey());
-        userService.save(user);
+        if (userService.getByEmail(user.getEmail()) == null) {
+            userService.save(user);
+        }
         return user.getEmail();
     }
 
