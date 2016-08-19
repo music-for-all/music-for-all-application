@@ -42,21 +42,25 @@ public class SocialConfig implements SocialConfigurer {
     private ConnectionSignUp connectionSignUp;
 
     @Override
-    public void addConnectionFactories(ConnectionFactoryConfigurer connectionFactoryConfigurer,
-                                       Environment environment) {
-        final FacebookConnectionFactory facebookConnectionFactory = new FacebookConnectionFactory(
-                environment.getRequiredProperty("spring.social.facebook.appId"),
-                environment.getRequiredProperty("spring.social.facebook.appSecret"));
-        facebookConnectionFactory.setScope(EMAIL);
-        connectionFactoryConfigurer.addConnectionFactory(facebookConnectionFactory);
-        connectionFactoryConfigurer.addConnectionFactory(new TwitterConnectionFactory(
-                environment.getRequiredProperty("spring.social.twitter.appId"),
-                environment.getRequiredProperty("spring.social.twitter.appSecret")));
-        final GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(
-                environment.getRequiredProperty("spring.social.google.appId"),
-                environment.getRequiredProperty("spring.social.google.appSecret"));
-        googleConnectionFactory.setScope(EMAIL);
-        connectionFactoryConfigurer.addConnectionFactory(googleConnectionFactory);
+    public void addConnectionFactories(ConnectionFactoryConfigurer configurer,
+                                       Environment env) {
+        final FacebookConnectionFactory facebook = new FacebookConnectionFactory(
+                env.getRequiredProperty("spring.social.facebook.appId"),
+                env.getRequiredProperty("spring.social.facebook.appSecret"));
+        facebook.setScope(EMAIL);
+
+        final TwitterConnectionFactory twitter = new TwitterConnectionFactory(
+                env.getRequiredProperty("spring.social.twitter.appId"),
+                env.getRequiredProperty("spring.social.twitter.appSecret"));
+
+        final GoogleConnectionFactory google = new GoogleConnectionFactory(
+                env.getRequiredProperty("spring.social.google.appId"),
+                env.getRequiredProperty("spring.social.google.appSecret"));
+        google.setScope(EMAIL);
+
+        configurer.addConnectionFactory(facebook);
+        configurer.addConnectionFactory(google);
+        configurer.addConnectionFactory(twitter);
     }
 
     @Override
@@ -65,11 +69,10 @@ public class SocialConfig implements SocialConfigurer {
     }
 
     @Override
-    public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator
-                                                                          connectionFactoryLocator) {
+    public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator locator) {
         DatabaseUtil.createUsersConnectionRepositoryTable(dataSource);
         final JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource,
-                connectionFactoryLocator, Encryptors.noOpText());
+                locator, Encryptors.noOpText());
         repository.setConnectionSignUp(connectionSignUp);
         return repository;
     }
