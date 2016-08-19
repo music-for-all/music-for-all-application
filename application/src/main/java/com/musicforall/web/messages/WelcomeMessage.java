@@ -4,31 +4,22 @@ package com.musicforall.web.messages;
  * @author IliaNik on 12.08.2016.
  */
 
-import com.musicforall.model.User;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-public final class WelcomeMessage {
+import static com.musicforall.util.SecurityUtil.currentUser;
 
-    private WelcomeMessage() {
+public final class WelcomeMessage implements MessagePart {
 
+    private final MessagePart part;
+
+    public WelcomeMessage(MessagePart part) {
+        this.part = part;
     }
 
-    public static MimeMessage decorate(MimeMessage message, User user) throws MessagingException {
-
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-        helper.setTo(user.getEmail());
-        helper.setFrom("musicforall07@gmail.com");
-        helper.setSubject("Music For All");
-        helper.setText(getWelcomeText(user.getUsername()), true);
-
-        return message;
-    }
-
-    public static String getWelcomeText(final String username) {
+    public static String text(final String username) {
         return "<html><body>" +
                 "<div style='border:4px ridge red;text-align:center;" +
                 "font-family:Verdana,Arial,Helvetica,sans-serif'> " +
@@ -37,5 +28,19 @@ public final class WelcomeMessage {
                 "<h2>Congratulation!</h2>" +
                 "</div>" +
                 "</body></html>";
+    }
+
+    private MimeMessage decorate(final MimeMessage message) throws MessagingException {
+        final String username = currentUser().getUsername();
+
+        final MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setText(WelcomeMessage.text(username), true);
+
+        return helper.getMimeMessage();
+    }
+
+    @Override
+    public MimeMessage getMimeMessage() throws MessagingException {
+        return decorate(part.getMimeMessage());
     }
 }

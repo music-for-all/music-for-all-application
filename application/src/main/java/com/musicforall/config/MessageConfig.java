@@ -21,13 +21,13 @@ public class MessageConfig {
     @Bean
     public JavaMailSenderImpl javaMailSender() {
 
-        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+        final JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost("smtp.gmail.com");
         javaMailSender.setPort(PORT);
         javaMailSender.setUsername(env.getRequiredProperty("message.email"));
         javaMailSender.setPassword(env.getRequiredProperty("message.password"));
 
-        Properties javaMailProperties = new Properties();
+        final Properties javaMailProperties = new Properties();
         javaMailProperties.setProperty("mail.transport.protocol", "smtp");
         javaMailProperties.setProperty("mail.smtp.auth", "true");
         javaMailProperties.setProperty("mail.smtp.starttls.enable", "true");
@@ -35,5 +35,10 @@ public class MessageConfig {
         javaMailSender.setJavaMailProperties(javaMailProperties);
 
         return javaMailSender;
+    }
+
+    @Bean(name = "email")
+    public String email() {
+        return env.getRequiredProperty("message.email");
     }
 }

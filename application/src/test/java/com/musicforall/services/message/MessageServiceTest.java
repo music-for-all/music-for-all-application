@@ -4,7 +4,6 @@ import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import com.musicforall.services.MessageService;
-import com.musicforall.util.SecurityUtil;
 import com.musicforall.util.ServicesTestConfig;
 import com.musicforall.web.messages.WelcomeMessage;
 import org.junit.AfterClass;
@@ -24,6 +23,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import static com.musicforall.util.SecurityUtil.currentUser;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
@@ -43,7 +43,7 @@ import static junit.framework.TestCase.assertTrue;
 public class MessageServiceTest {
 
     @Autowired
-    private static MessageService messageService;
+    private MessageService messageService;
 
     private static GreenMail testSmtp;
 
@@ -52,8 +52,8 @@ public class MessageServiceTest {
         testSmtp = new GreenMail(ServerSetupTest.SMTP);
         testSmtp.start();
 
-        messageService.setPort(3025);
-        messageService.setHost("localhost");
+//        messageService.setPort(3025);
+//        messageService.setHost("localhost");
     }
 
     @AfterClass
@@ -66,14 +66,12 @@ public class MessageServiceTest {
     public void testEmail() throws InterruptedException, MessagingException {
         messageService.sendWelcomeMessage();
 
-        MimeMessage[] messages = testSmtp.getReceivedMessages();
+        final MimeMessage[] messages = testSmtp.getReceivedMessages();
         assertEquals(1, messages.length);
         assertEquals("Music For All", messages[0].getSubject());
-        String body = GreenMailUtil.getBody(messages[0]).replaceAll("=\r?\n", "");
 
-        String text =
-                WelcomeMessage.getWelcomeText(SecurityUtil.currentUser().getUsername());
-
+        final String body = GreenMailUtil.getBody(messages[0]).replaceAll("=\r?\n", "");
+        final String text = WelcomeMessage.text(currentUser().getUsername());
         assertTrue(body.contains(text));
     }
 }

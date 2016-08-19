@@ -4,7 +4,7 @@ package com.musicforall.services;
  * @author IliaNik on 12.08.2016.
  */
 
-import com.musicforall.util.SecurityUtil;
+import com.musicforall.web.messages.MessageTemplate;
 import com.musicforall.web.messages.WelcomeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +28,8 @@ public class MessageService {
     private JavaMailSenderImpl javaMailSender;
 
     public void sendWelcomeMessage() throws MessagingException {
-
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessage welcomeMessage = WelcomeMessage.decorate(message, SecurityUtil.currentUser());
+        final MimeMessage message = javaMailSender.createMimeMessage();
+        final MimeMessage welcomeMessage = new WelcomeMessage(new MessageTemplate(message)).getMimeMessage();
 
         try {
             javaMailSender.send(welcomeMessage);
