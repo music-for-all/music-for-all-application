@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
         final User user = getByEmail(email);
         if (user == null) {
-            LOG.info(String.format("User %s not found", email));
+            LOG.info("User {} not found", email);
             throw new UsernameNotFoundException("Username not found");
         }
         return user;
@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
     public User loadUserByUserId(String email) throws UsernameNotFoundException {
         final User user = getByEmail(email);
         if (user == null) {
-            LOG.info(String.format("User %s not found", email));
+            LOG.info("User {} not found", email);
             throw new UsernameNotFoundException("Email not found");
         }
         return user;
