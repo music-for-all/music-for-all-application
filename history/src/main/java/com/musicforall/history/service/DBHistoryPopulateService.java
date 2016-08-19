@@ -24,7 +24,7 @@ public class DBHistoryPopulateService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DBHistoryPopulateService.class);
 
-    private static final Integer MAX = 10;
+    private static final int MAX = 10;
 
     @Autowired
     private HistoryService historyService;
@@ -34,6 +34,11 @@ public class DBHistoryPopulateService {
 
         recordHistories(tracksIds, userId, EventType.TRACK_LISTENED);
         recordHistories(tracksIds, userId, EventType.TRACK_LIKED);
+    }
+
+    public void populateTrackLikedByFollowedUsers(List<Integer> trackIds, Integer userId) {
+
+        recordHistories(trackIds, userId, EventType.TRACK_LIKED);
     }
 
     private void recordHistories(List<Integer> tracksIds, Integer userId, EventType eventType) {
@@ -51,4 +56,3 @@ public class DBHistoryPopulateService {
                 .forEach(historyService::record);
     }
 }
-

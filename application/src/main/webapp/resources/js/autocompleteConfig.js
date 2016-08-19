@@ -1,14 +1,15 @@
+"use strict";
 
-function artistAutocomplete(tags) {
+function artistAutocomplete(tagsFunction) {
     return {
-        source:   function (request, response) {
-            var th = $(this);
+        source: function (request, response) {
+            var requestData = {
+                artistName: request.term,
+                tags: tagsFunction() || []
+            };
             $.ajax({
                 url: dict.contextPath + "/artist",
-                data: {
-                    artistName: request.term,
-                    tags: tags
-                },
+                data: requestData,
                 traditional: true,
                 success: function (data) {
                     var array = data.error ? [] : $.map(data, function (item) {
@@ -20,7 +21,7 @@ function artistAutocomplete(tags) {
                 }
             });
         }
-    }
+    };
 }
 
 function tagAutocomplete(placeholder) {
