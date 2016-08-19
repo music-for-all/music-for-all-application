@@ -33,6 +33,7 @@ function updateLikeCount(id) {
 
     }).done(function(likeCount) {
         $("#tracks #" + id + " .num-likes").text(likeCount);
+        $("#recommendations #" + id + " .num-likes").text(likeCount);
     });
 }
 
@@ -54,37 +55,7 @@ function displayRecommendedTracks() {
     }).done(function (tracks) {
         $.each(tracks, function (i, track) {
             addRecommendedTrack(track);
+            updateLikeCount(track.id);
         });
     });
 }
-
-jQuery(document).ready(function () {
-
-    /* Handle the Like button (Ajax). */
-    $("#tracks").on("click", ".like-button", function () {
-
-        /* The id of a track is stored in the containing <tr> element. */
-        var id = $(this).closest("tr").attr("id");
-        like(id);
-    });
-
-    /*
-     * When a recommended track is clicked, add it to the playlist,
-     */
-    $("#recommendations").on("click", "a", function (e) {
-        e.preventDefault();
-
-        var li = $(this).closest("li");
-        var trackId = li.attr("id");
-        var playlistId = $("#playlists li.active").attr("id");
-
-        playlist.addTrack(playlistId, trackId)
-            .then(function() {
-                /* Remove the track from the recommended section, and update the current playlist. */
-                li.remove();
-                $("#playlists li.active a").trigger("click");
-            });
-    });
-
-    displayRecommendedTracks();
-});

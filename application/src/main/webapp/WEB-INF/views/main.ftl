@@ -22,12 +22,6 @@
 
 <div class="container">
 
-    <section id="recommendations-section" class="well  col-md-2 col-md-offset-1">
-        <h4><@spring.message "mainpage.YouMightAlsoLike"/></h4>
-        <ul id="recommendations" class="nav nav-pills nav-stacked">
-        </ul>
-    </section>
-
     <section id="tracks-section" class="well col-md-9 ">
         <table id="tracks" class="table table-hover table-striped table-condensed ">
             <thead>
@@ -49,6 +43,12 @@
         <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">
             <@spring.message "mainpage.CreatePlaylist"/></button>
         <ul id="playlists" class="nav nav-pills nav-stacked"></ul>
+    </section>
+
+    <section id="recommendations-section" class="well  col-md-9 col-md-offset-0">
+        <h4><@spring.message "mainpage.YouMightAlsoLike"/></h4>
+        <ul id="recommendations" class="nav nav-pills nav-stacked">
+        </ul>
     </section>
 </div><!-- end .container -->
 
@@ -98,11 +98,14 @@
 </script>
 
 <script type="text/template" class="recommendationRowTemplate">
-    <li id="<%= data.id %>" title="<%= data.name %>">
+    <li id="<%= data.id %>" title="<%= data.artist %> - <%= data.title %> - <%= data.album %>">
         <div class="input-group">
             <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
                 <%= data.name %>
             </a>
+                <span class="col-sm-2 form-control"><%= data.artist %></span>
+                <span class="col-sm-2 form-control"><%= data.title %></span>
+                <span class="col-sm-2 form-control">Liked: <span class="glyphicon num-likes" aria-hidden="true"></span></span>
         </div>
     </li>
 </script>
@@ -215,6 +218,36 @@
                     /* For testing purpose, select the first playlist (named 'Hype'). */
                     $("#playlists #1 a").trigger("click");
                 });
+
+        displayRecommendedTracks();
+
+        /* Handle the Like button (Ajax). */
+        $("#tracks").on("click", ".like-button", function () {
+
+            /* The id of a track is stored in the containing <tr> element. */
+            var id = $(this).closest("tr").attr("id");
+            like(id);
+        });
+
+
+        /*
+         * When a recommended track is clicked, add it to the playlist,
+         */
+        $("#recommendations").on("click", "a", function (e) {
+            e.preventDefault();
+
+            var li = $(this).closest("li");
+            var trackId = li.attr("id");
+            var playlistId = $("#playlists li.active").attr("id");
+
+            playlist.addTrack(playlistId, trackId)
+                    .then(function() {
+                        /* Remove the track from the recommended section, and update the current playlist. */
+                        li.remove();
+                        $("#playlists li.active a").trigger("click");
+                    });
+        });
+
 
         /* Set focus on the name input field when the modal window has been shown. */
         $("#addPlaylistModal").on("shown.bs.modal", function () {
