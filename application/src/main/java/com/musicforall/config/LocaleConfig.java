@@ -15,7 +15,7 @@ public class LocaleConfig extends WebMvcConfigurerAdapter {
 
     @Bean(name = "messageSource")
     public ReloadableResourceBundleMessageSource reloadableResourceBundleMessageSource() {
-        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasenames("classpath:locale");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
@@ -23,7 +23,7 @@ public class LocaleConfig extends WebMvcConfigurerAdapter {
 
     @Bean(name = "localeResolver")
     public LocaleContextResolver getLocaleContextResolver() {
-        CookieLocaleResolver localeResolver = new CookieLocaleResolver();
+        final CookieLocaleResolver localeResolver = new CookieLocaleResolver();
         localeResolver.setDefaultLocale(Locale.ENGLISH);
         return localeResolver;
     }

@@ -67,9 +67,8 @@
     <a id="scroll-to-top" href="#top" title="Scroll to top"><@spring.message "searchpage.ScrollToTop"/></a>
 </div>
 <script type="text/javascript">
-    var contextPath = "<@spring.url "" />";
     var placeholder = "<@spring.message "placeholder.Tags"/>";
-    $("#tags").select2(tagSearchConfig(contextPath, placeholder));
+    $("#tags").select2(tagSearchConfig(placeholder));
 </script>
 </@m.body>
 </html>

@@ -6,6 +6,10 @@
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
+    <script src="<@spring.url "/resources/js/dict.js" />"></script>
+    <script type="text/javascript">
+        dict.contextPath = "<@spring.url "" />";
+    </script>
     <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>

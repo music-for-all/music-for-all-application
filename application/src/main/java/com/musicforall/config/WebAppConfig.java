@@ -47,7 +47,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public MethodValidationPostProcessor getMethodValidationPostProcessor() {
-        MethodValidationPostProcessor processor = new MethodValidationPostProcessor();
+        final MethodValidationPostProcessor processor = new MethodValidationPostProcessor();
         processor.setValidator(validator());
         return processor;
     }

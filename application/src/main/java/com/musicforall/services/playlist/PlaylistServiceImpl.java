@@ -4,10 +4,10 @@ import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
+import com.musicforall.util.SecurityUtil;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +30,7 @@ public class PlaylistServiceImpl implements PlaylistService {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Playlist.class)
                 .add(Property.forName("user.id").eq(userId));
         final List<Playlist> usersPlaylists = dao.getAllBy(detachedCriteria);
-        return new HashSet<Playlist>(usersPlaylists);
+        return new HashSet<>(usersPlaylists);
     }
 
     @Override
@@ -41,8 +41,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public Playlist save(String playlistName) {
         final Playlist playlist = new Playlist();
-
-        final User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        final User user = SecurityUtil.currentUser();
         playlist.setUser(user);
         playlist.setName(playlistName);
         return save(playlist);
@@ -70,7 +69,6 @@ public class PlaylistServiceImpl implements PlaylistService {
         final Playlist playlist = dao.get(Playlist.class, playlistId);
         playlist.addTracks(tracks);
         save(playlist);
-
     }
 
     public void setDao(Dao dao) {

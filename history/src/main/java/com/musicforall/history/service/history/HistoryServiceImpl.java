@@ -4,7 +4,8 @@ import com.musicforall.common.dao.Dao;
 import com.musicforall.common.dao.QueryParams;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
-import org.hibernate.criterion.*;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +60,7 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     private DetachedCriteria toDetachedCriteria(SearchHistoryParams params) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(History.class);
+        final DetachedCriteria criteria = DetachedCriteria.forClass(History.class);
         if (params.getUserId() != null) {
             criteria.add(Property.forName("userId").eq(params.getUserId()));
         }
