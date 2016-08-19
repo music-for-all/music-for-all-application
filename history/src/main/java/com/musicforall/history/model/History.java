@@ -31,9 +31,9 @@ import javax.persistence.NamedQuery;
 @Table(name = "history")
 public class History {
 
-    public final static String POPULAR_TRACKS_QUERY = "most_popular_tracks";
+    public static final String POPULAR_TRACKS_QUERY = "most_popular_tracks";
 
-    public final static String TRACK_LIKES_COUNT_QUERY = "get_likes_count";
+    public static final String TRACK_LIKES_COUNT_QUERY = "get_likes_count";
 
     @Id
     @Column(name = "id")
