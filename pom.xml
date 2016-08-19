@@ -41,7 +41,7 @@
         <spring-social-twitter.version>1.1.2.RELEASE</spring-social-twitter.version>
         <spring-security-web.version>4.1.0.RELEASE</spring-security-web.version>
         <logback-classic.version>1.1.7</logback-classic.version>
-        <hibernate-core.version>5.2.0.Final</hibernate-core.version>
+        <hibernate-core.version>5.2.2.Final</hibernate-core.version>
         <hibernate-entitymanager.version>5.1.0.Final</hibernate-entitymanager.version>
         <hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
         <freemarker.version>2.3.20</freemarker.version>
