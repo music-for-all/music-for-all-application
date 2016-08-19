@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -73,7 +74,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUsersById(List<Integer> usersId) {
+    public List<User> getUsersById(Collection<Integer> usersId) {
         if (usersId.isEmpty()) {
             return new ArrayList<>();
         }

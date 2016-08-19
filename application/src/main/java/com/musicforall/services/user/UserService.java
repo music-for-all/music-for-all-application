@@ -4,6 +4,7 @@ import com.musicforall.model.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.social.security.SocialUserDetailsService;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -50,7 +51,7 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
      */
     List<User> findAll();
 
-    List<User> getUsersById(List<Integer> usersId);
+    List<User> getUsersById(Collection<Integer> usersId);
 
     List<User> getUsersByUsername(String username);
 }
