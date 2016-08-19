@@ -1,6 +1,29 @@
-"use strict";
 
-function tagSearchConfig(placeholder) {
+function artistAutocomplete(tagsFunction) {
+    return {
+        source: function (request, response) {
+            var requestData = {
+                artistName: request.term,
+                tags: tagsFunction() || []
+            };
+            $.ajax({
+                url: dict.contextPath + "/artist",
+                data: requestData,
+                traditional: true,
+                success: function (data) {
+                    var array = data.error ? [] : $.map(data, function (item) {
+                        return {
+                            label: item
+                        };
+                    });
+                    response(array);
+                }
+            });
+        }
+    };
+}
+
+function tagAutocomplete(placeholder) {
     return {
         ajax: {
             url: dict.contextPath + "/tags",
