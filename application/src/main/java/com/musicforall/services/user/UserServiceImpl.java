@@ -89,12 +89,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
-        final User user = getByEmail(email);
-        if (user == null) {
-            LOG.info("User {} not found", email);
-            throw new UsernameNotFoundException("Username not found");
-        }
-        return user;
+        return loadUserByUserId(email);
     }
 
     @Override
