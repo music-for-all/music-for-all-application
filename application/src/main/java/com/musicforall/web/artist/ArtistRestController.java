@@ -1,5 +1,6 @@
 package com.musicforall.web.artist;
 
+import com.musicforall.model.Artist;
 import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Track;
 import com.musicforall.services.track.TrackService;
@@ -36,7 +37,8 @@ public class ArtistRestController {
         searchQuery.setTags(tags);
         final List<Track> tracks = trackService.getAllLike(searchQuery);
 
-        final Set<String> artists = tracks.stream().map(Track::getArtist).collect(Collectors.toSet());
+        //Set String changed to Set Artists
+        final Set<Artist> artists = tracks.stream().map(Track::getArtist).collect(Collectors.toSet());
         return new ResponseEntity<>(artists, HttpStatus.OK);
     }
 }

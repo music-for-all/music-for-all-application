@@ -1,12 +1,21 @@
 package com.musicforall.web;
 
+import com.musicforall.model.Artist;
+import com.musicforall.model.Tag;
+import com.musicforall.model.Track;
+import com.musicforall.services.artist.ArtistService;
+import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Controller
