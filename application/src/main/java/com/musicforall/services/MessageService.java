@@ -32,9 +32,10 @@ public class MessageService {
 
     public void sendWelcomeMessage() throws MessagingException {
         final MimeMessage message = javaMailSender.createMimeMessage();
-        messageRoot.setMessage(message);
-        final MimeMessage welcomeMessage = new WelcomeMessage(messageRoot).getMimeMessage();
 
+        messageRoot.setMessage(message);
+
+        final MimeMessage welcomeMessage = new WelcomeMessage(messageRoot).getMimeMessage();
         try {
             javaMailSender.send(welcomeMessage);
         } catch (MailException ex) {

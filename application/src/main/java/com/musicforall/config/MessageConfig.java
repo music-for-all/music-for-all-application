@@ -2,6 +2,7 @@ package com.musicforall.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -12,6 +13,7 @@ import java.util.Properties;
  * @author IliaNik on 16.08.2016.
  */
 @Configuration
+@ComponentScan({"com.musicforall.web.messages"})
 public class MessageConfig {
     public static final int PORT = 25;
 

@@ -26,8 +26,6 @@ public final class WelcomeMessage implements MessagePart {
 
     private static final Logger LOG = LoggerFactory.getLogger(WelcomeMessage.class);
 
-    private static Configuration freemarkerConfiguration = new Configuration();
-
     private final MessagePart part;
 
     public WelcomeMessage(MessagePart part) {
@@ -36,13 +34,15 @@ public final class WelcomeMessage implements MessagePart {
 
     public static String text(final String username) throws IOException {
 
+        Configuration freemarkerConfiguration = new Configuration();
+
         FileTemplateLoader templateLoader = new FileTemplateLoader(new File("src/main/resources"));
         freemarkerConfiguration.setTemplateLoader(templateLoader);
 
         Map<String, Object> freeMarkerTemplateMap = new HashMap<>();
         freeMarkerTemplateMap.put("username", username);
 
-        Template template = freemarkerConfiguration.getTemplate("welcomeMessage.ftl");
+        Template template = freemarkerConfiguration.getTemplate("welcomeMessageTemplate.ftl");
 
         try {
             String messageText =
@@ -54,22 +54,21 @@ public final class WelcomeMessage implements MessagePart {
         return null;
     }
 
-    private MimeMessage decorate(final MimeMessage message) throws MessagingException, IOException {
+    private MimeMessage decorate(final MimeMessage message) throws MessagingException {
         final String username = currentUser().getUsername();
 
         final MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        helper.setText(WelcomeMessage.text(username), true);
+        try {
+            helper.setText(WelcomeMessage.text(username), true);
+        } catch (IOException e) {
+            LOG.error(e.getMessage());
+        }
 
         return helper.getMimeMessage();
     }
 
     @Override
     public MimeMessage getMimeMessage() throws MessagingException {
-        try {
-            return decorate(part.getMimeMessage());
-        } catch (IOException ex) {
-            LOG.error(ex.getMessage());
-        }
-        return null;
+        return decorate(part.getMimeMessage());
     }
 }

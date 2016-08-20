@@ -23,10 +23,6 @@ public final class MessageRoot implements MessagePart {
     @Qualifier("email")
     private String email;
 
-    public MessageRoot(MimeMessage message) {
-        this.message = message;
-    }
-
     public void setMessage(MimeMessage message) {
         this.message = message;
     }
