@@ -4,7 +4,6 @@ package com.musicforall.web.messages;
  * @author IliaNik on 12.08.2016.
  */
 
-import freemarker.cache.FileTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -15,7 +14,6 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,25 +31,18 @@ public final class WelcomeMessage implements MessagePart {
     }
 
     public static String text(final String username) throws IOException {
-
-        Configuration freemarkerConfiguration = new Configuration();
-
-        FileTemplateLoader templateLoader = new FileTemplateLoader(new File("src/main/resources"));
-        freemarkerConfiguration.setTemplateLoader(templateLoader);
-
-        Map<String, Object> freeMarkerTemplateMap = new HashMap<>();
+        final Configuration freemarkerConfiguration = new Configuration();
+        final Map<String, Object> freeMarkerTemplateMap = new HashMap<>();
         freeMarkerTemplateMap.put("username", username);
 
-        Template template = freemarkerConfiguration.getTemplate("welcomeMessageTemplate.ftl");
+        final Template template = freemarkerConfiguration.getTemplate("welcomeMessageTemplate.ftl");
 
         try {
-            String messageText =
-                    FreeMarkerTemplateUtils.processTemplateIntoString(template, freeMarkerTemplateMap);
-            return messageText;
+            return FreeMarkerTemplateUtils.processTemplateIntoString(template, freeMarkerTemplateMap);
         } catch (TemplateException ex) {
-            LOG.error(ex.getMessage());
+            LOG.error("Template creation failed!", ex);
+            return null;
         }
-        return null;
     }
 
     private MimeMessage decorate(final MimeMessage message) throws MessagingException {
