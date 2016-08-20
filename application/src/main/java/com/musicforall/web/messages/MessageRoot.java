@@ -17,13 +17,17 @@ import static com.musicforall.util.SecurityUtil.currentUser;
 @Component
 public final class MessageRoot implements MessagePart {
 
-    private final MimeMessage message;
+    private MimeMessage message;
 
     @Autowired
     @Qualifier("email")
     private String email;
 
     public MessageRoot(MimeMessage message) {
+        this.message = message;
+    }
+
+    public void setMessage(MimeMessage message) {
         this.message = message;
     }
 

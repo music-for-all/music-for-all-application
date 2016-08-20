@@ -27,9 +27,13 @@ public class MessageService {
     @Autowired
     private JavaMailSenderImpl javaMailSender;
 
+    @Autowired
+    private MessageRoot messageRoot;
+
     public void sendWelcomeMessage() throws MessagingException {
         final MimeMessage message = javaMailSender.createMimeMessage();
-        final MimeMessage welcomeMessage = new WelcomeMessage(new MessageRoot(message)).getMimeMessage();
+        messageRoot.setMessage(message);
+        final MimeMessage welcomeMessage = new WelcomeMessage(messageRoot).getMimeMessage();
 
         try {
             javaMailSender.send(welcomeMessage);
