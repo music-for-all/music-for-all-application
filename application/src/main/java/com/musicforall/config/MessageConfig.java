@@ -41,4 +41,5 @@ public class MessageConfig {
     public String email() {
         return env.getRequiredProperty("message.email");
     }
+
 }

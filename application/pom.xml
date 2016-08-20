@@ -41,6 +41,8 @@
             <version>2.7.8</version>
         </dependency>
 
+        <!-- mail components -->
+
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>

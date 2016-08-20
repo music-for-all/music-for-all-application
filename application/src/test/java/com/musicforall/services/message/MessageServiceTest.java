@@ -6,8 +6,8 @@ import com.icegreen.greenmail.util.ServerSetupTest;
 import com.musicforall.services.MessageService;
 import com.musicforall.util.ServicesTestConfig;
 import com.musicforall.web.messages.WelcomeMessage;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +22,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
 
 import static com.musicforall.util.SecurityUtil.currentUser;
 import static junit.framework.TestCase.assertEquals;
@@ -47,23 +48,23 @@ public class MessageServiceTest {
 
     private static GreenMail testSmtp;
 
-    @BeforeClass
-    public static void testSmtpInit() {
+    @Before
+    public void testSmtpInit() {
         testSmtp = new GreenMail(ServerSetupTest.SMTP);
         testSmtp.start();
 
-//        messageService.setPort(3025);
-//        messageService.setHost("localhost");
+        messageService.setPort(3025);
+        messageService.setHost("localhost");
     }
 
-    @AfterClass
-    public static void cleanup() {
+    @After
+    public void cleanup() {
         testSmtp.stop();
     }
 
     @Test
     @WithUserDetails("user")
-    public void testEmail() throws InterruptedException, MessagingException {
+    public void testEmail() throws InterruptedException, MessagingException, IOException {
         messageService.sendWelcomeMessage();
 
         final MimeMessage[] messages = testSmtp.getReceivedMessages();
