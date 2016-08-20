@@ -32,7 +32,7 @@ public class ArtistServiceImpl implements ArtistService{
     @Override
     public Artist get(String name) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Artist.class)
-                .add(Property.forName("name").eq(name));
+                .add(Property.forName("artname").eq(name));
         return dao.getBy(detachedCriteria);
     }
 

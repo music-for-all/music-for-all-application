@@ -21,20 +21,30 @@ public class Artist implements Serializable {
 
     private static final long serialVersionUID = 5787383287840000175L;
 
-    @Id
-    @Column(name = "artist_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
 
+    @Id
     @Size(min = 2, max = 30)
     @Column(name = "artist_name")
     private String artname;
+
+    @ManyToMany
+    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
+    @JoinTable(name = "artist_tag",
+            joinColumns = {@JoinColumn(name = "artist_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_name")})
+    private Set<Tag> tags;
+
 
     public Artist() {
     }
 
     public Artist(String name) {
         this.artname = name;
+    }
+
+    public Artist(String name, Set<Tag> tags) {
+        this.artname = name;
+        this.tags= tags;
     }
 
     public String getArtname() {
@@ -66,7 +76,15 @@ public class Artist implements Serializable {
     public String toString() {
         return "Artist{" +
                 "artname='" + artname + '\'' +
+                "tags='" + tags + '\'' +
                 '}';
     }
 
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
 }
