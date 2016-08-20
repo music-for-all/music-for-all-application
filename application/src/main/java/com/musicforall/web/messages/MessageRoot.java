@@ -15,7 +15,7 @@ import static com.musicforall.util.SecurityUtil.currentUser;
  * @author IliaNik on 19.08.2016.
  */
 @Component
-public final class MessageTemplate implements MessagePart {
+public final class MessageRoot implements MessagePart {
 
     private final MimeMessage message;
 
@@ -23,7 +23,7 @@ public final class MessageTemplate implements MessagePart {
     @Qualifier("email")
     private String email;
 
-    public MessageTemplate(MimeMessage message) {
+    public MessageRoot(MimeMessage message) {
         this.message = message;
     }
 

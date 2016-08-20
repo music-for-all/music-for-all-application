@@ -4,7 +4,7 @@ package com.musicforall.services;
  * @author IliaNik on 12.08.2016.
  */
 
-import com.musicforall.web.messages.MessageTemplate;
+import com.musicforall.web.messages.MessageRoot;
 import com.musicforall.web.messages.WelcomeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ public class MessageService {
 
     public void sendWelcomeMessage() throws MessagingException {
         final MimeMessage message = javaMailSender.createMimeMessage();
-        final MimeMessage welcomeMessage = new WelcomeMessage(new MessageTemplate(message)).getMimeMessage();
+        final MimeMessage welcomeMessage = new WelcomeMessage(new MessageRoot(message)).getMimeMessage();
 
         try {
             javaMailSender.send(welcomeMessage);
