@@ -1,9 +1,5 @@
 package com.musicforall.messages;
 
-/**
- * @author IliaNik on 12.08.2016.
- */
-
 import freemarker.cache.FileTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -21,6 +17,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.musicforall.util.SecurityUtil.currentUser;
+
+/**
+ * @author IliaNik on 12.08.2016.
+ */
 
 public final class WelcomeMessage implements MessagePart {
 
