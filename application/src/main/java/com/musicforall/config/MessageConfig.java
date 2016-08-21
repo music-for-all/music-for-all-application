@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import java.util.Properties;
 
@@ -14,11 +16,15 @@ import java.util.Properties;
  */
 @Configuration
 @ComponentScan({"com.musicforall.messages"})
+@Import({WebAppConfig.class})
 public class MessageConfig {
     public static final int PORT = 25;
 
     @Autowired
     private Environment env;
+
+    @Autowired
+    private FreeMarkerConfigurer configurer;
 
     @Bean
     public JavaMailSenderImpl javaMailSender() {
@@ -44,4 +50,8 @@ public class MessageConfig {
         return env.getRequiredProperty("message.email");
     }
 
+    @Bean
+    public freemarker.template.Configuration configuration() {
+        return configurer.getConfiguration();
+    }
 }

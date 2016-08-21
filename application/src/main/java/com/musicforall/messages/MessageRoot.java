@@ -15,7 +15,7 @@ import static com.musicforall.util.SecurityUtil.currentUser;
  * @author IliaNik on 19.08.2016.
  */
 @Component
-public final class MessageRoot implements MessagePart {
+public class MessageRoot implements MessagePart {
 
     private MimeMessage message;
 

@@ -1,9 +1,5 @@
 package com.musicforall.services;
 
-/**
- * @author IliaNik on 12.08.2016.
- */
-
 import com.musicforall.messages.MessageRoot;
 import com.musicforall.messages.WelcomeMessage;
 import org.slf4j.Logger;
@@ -17,8 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-
-@Service("messageService")
+/**
+ * @author IliaNik on 12.08.2016.
+ */
+@Service
 @Transactional
 public class MessageService {
 
@@ -30,14 +28,16 @@ public class MessageService {
     @Autowired
     private MessageRoot messageRoot;
 
+    @Autowired
+    private WelcomeMessage welcomeMessage;
+
     public void sendWelcomeMessage() {
         final MimeMessage message = javaMailSender.createMimeMessage();
-
-        messageRoot.setMessage(message);
-
+        welcomeMessage
+                .root(messageRoot)
+                .setMessage(message);
         try {
-            final MimeMessage welcomeMessage = new WelcomeMessage(messageRoot).getMimeMessage();
-            javaMailSender.send(welcomeMessage);
+            javaMailSender.send(welcomeMessage.getMimeMessage());
         } catch (MailException | MessagingException ex) {
             LOG.error("Message sending failed!", ex);
         }

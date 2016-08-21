@@ -1,18 +1,13 @@
 package com.musicforall.messages;
 
-import freemarker.cache.FileTemplateLoader;
+import com.musicforall.util.MessageUtil;
 import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,49 +17,25 @@ import static com.musicforall.util.SecurityUtil.currentUser;
  * @author IliaNik on 12.08.2016.
  */
 
-public final class WelcomeMessage implements MessagePart {
+@Component
+public class WelcomeMessage extends JoinableMessage {
 
-    private static final Logger LOG = LoggerFactory.getLogger(WelcomeMessage.class);
+    @Autowired
+    private Configuration configuration;
 
-    private final MessagePart part;
+    public String message(final String username) {
+        final Map<String, Object> templateParams = new HashMap<>();
+        templateParams.put("username", username);
 
-    public WelcomeMessage(MessagePart part) {
-        this.part = part;
-    }
-
-    public static String text(final String username) throws IOException {
-        final Configuration config = new Configuration();
-        final FileTemplateLoader templateLoader = new FileTemplateLoader(new File("./WEB-INF/views/"));
-        config.setTemplateLoader(templateLoader);
-
-        final Map<String, Object> freeMarkerTemplateMap = new HashMap<>();
-        freeMarkerTemplateMap.put("username", username);
-
-        final Template template = config.getTemplate("welcomeMessageTemplate.ftl");
-
-        try {
-            return FreeMarkerTemplateUtils.processTemplateIntoString(template, freeMarkerTemplateMap);
-        } catch (TemplateException ex) {
-            LOG.error("Template creation failed!", ex);
-            return null;
-        }
-    }
-
-    private MimeMessage decorate(final MimeMessage message) throws MessagingException {
-        final String username = currentUser().getUsername();
-
-        final MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        try {
-            helper.setText(WelcomeMessage.text(username), true);
-        } catch (IOException e) {
-            LOG.error(e.getMessage());
-        }
-
-        return helper.getMimeMessage();
+        return MessageUtil.createMessageFromTemplate(configuration, templateParams, "welcomeMessageTemplate.ftl");
     }
 
     @Override
-    public MimeMessage getMimeMessage() throws MessagingException {
-        return decorate(part.getMimeMessage());
+    protected MimeMessage decorate(final MimeMessage message) throws MessagingException {
+        final String username = currentUser().getUsername();
+
+        final MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setText(message(username), true);
+        return helper.getMimeMessage();
     }
 }

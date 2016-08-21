@@ -71,7 +71,7 @@ public class MessageServiceTest {
         assertEquals("Music For All", messages[0].getSubject());
 
         final String body = GreenMailUtil.getBody(messages[0]).replaceAll("=\r?\n", "");
-        final String text = WelcomeMessage.text(currentUser().getUsername());
+        final String text = new WelcomeMessage().message(currentUser().getUsername());
         assertTrue(body.contains(text));
     }
 }
