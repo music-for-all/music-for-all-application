@@ -3,13 +3,19 @@ package com.musicforall.services.message;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
-import com.musicforall.messages.WelcomeMessage;
 import com.musicforall.services.MessageService;
+import com.musicforall.util.MessageUtil;
 import com.musicforall.util.ServicesTestConfig;
-import org.junit.After;
-import org.junit.Before;
+import freemarker.template.Configuration;
+import org.easymock.EasyMock;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -23,47 +29,55 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.util.Map;
 
-import static com.musicforall.util.SecurityUtil.currentUser;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
-
+import static org.easymock.EasyMock.anyObject;
 
 /**
  * @author IliaNik on 14.08.2016.
  */
 
-
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(PowerMockRunner.class)
+@PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
         MessageTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 @ActiveProfiles("dev")
+@PrepareForTest(MessageUtil.class)
 public class MessageServiceTest {
 
     private static GreenMail testSmtp;
     @Autowired
     private MessageService messageService;
 
-    @Before
-    public void testSmtpInit() {
+    @BeforeClass
+    public static void testSmtpInit() {
         testSmtp = new GreenMail(ServerSetupTest.SMTP);
         testSmtp.start();
-
-        messageService.setPort(3025);
-        messageService.setHost("localhost");
     }
 
-    @After
-    public void cleanup() {
+    @AfterClass
+    public static void cleanup() {
         testSmtp.stop();
     }
 
     @Test
     @WithUserDetails("user")
     public void testEmail() throws InterruptedException, MessagingException, IOException {
+        final String testMessage = "Test email message";
+
+        PowerMock.mockStatic(MessageUtil.class);
+        EasyMock.expect(MessageUtil.createMessageFromTemplate(
+                anyObject(Configuration.class),
+                anyObject(Map.class),
+                anyObject(String.class)))
+                .andReturn(testMessage);
+        PowerMock.replayAll();
+
         messageService.sendWelcomeMessage();
 
         final MimeMessage[] messages = testSmtp.getReceivedMessages();
@@ -71,7 +85,7 @@ public class MessageServiceTest {
         assertEquals("Music For All", messages[0].getSubject());
 
         final String body = GreenMailUtil.getBody(messages[0]).replaceAll("=\r?\n", "");
-        final String text = new WelcomeMessage().message(currentUser().getUsername());
-        assertTrue(body.contains(text));
+        assertTrue(body.contains(testMessage));
+        PowerMock.verifyAll();
     }
 }
