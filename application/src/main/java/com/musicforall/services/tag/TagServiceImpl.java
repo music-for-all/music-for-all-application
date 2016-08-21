@@ -43,10 +43,9 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<Tag> getAllLike(String tagName) {
-        final String hql = "from Tag where lower(name) like :name";
-        final Map<String, String> properties = new HashMap<>();
+        final Map<String, Object> properties = new HashMap<>();
         properties.put("name", QueryUtil.like(tagName.toLowerCase()));
-        return dao.getAllBy(hql, properties);
+        return dao.getAllByNamedQuery(Tag.class, Tag.ALL_LIKE_NAME_QUERY, properties);
     }
 
     @Override

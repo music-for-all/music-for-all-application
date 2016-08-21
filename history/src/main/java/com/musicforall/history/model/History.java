@@ -6,14 +6,34 @@ import com.musicforall.history.handlers.events.EventType;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  * @author IliaNik on 17.07.2016.
  */
 
 @Entity
+@NamedQueries({
+        @NamedQuery(
+                name = History.POPULAR_TRACKS_QUERY,
+                query = "select history.trackId" +
+                        " from History history" +
+                        " where history.eventType=:trackListened" +
+                        " group by history.trackId" +
+                        " order by count(history.trackId) desc"
+        ),
+        @NamedQuery(
+        name = History.TRACK_LIKES_COUNT_QUERY,
+        query = "select count(*) from History history " +
+                "where history.trackId=:trackId and history.eventType=:eventType")
+})
 @Table(name = "history")
 public class History {
+
+    public static final String POPULAR_TRACKS_QUERY = "most_popular_tracks";
+
+    public static final String TRACK_LIKES_COUNT_QUERY = "get_likes_count";
 
     @Id
     @Column(name = "id")
