@@ -103,6 +103,17 @@ public class Dao {
         currentSession().delete(entity);
     }
 
+    /**
+     * Return the persistent instance of the given entity class with the given parameters,
+     * with NamedQuery annotation
+     *
+     * @param clazz type of return class entity
+     * @param namedQuery - name of query
+     * @param parameters - pairs of key/value parameters which will be added to "where" part of the query
+     *
+     * @return a persistent instance or null
+     */
+
     public <T> T getByNamedQuery(Class<T> clazz, String namedQuery, Map<String, Object> parameters) {
         LOG.info("Going to find entities with class - {} by named query - {} with parameters - {}",
                 clazz, namedQuery, parameters);
@@ -120,6 +131,17 @@ public class Dao {
         }
         query.executeUpdate();
     }
+
+    /**
+     * Return the persistent instances of the given entity class with the given parameters,
+     *
+     * @param clazz type of return class entity
+     * @param namedQuery - name of query
+     * @param parameters - pairs of key/value parameters which will be added to "where" part of the query
+     * @param queryParams - list of QueryParams parameters
+     *
+     * @return list of persistent instances or null
+     */
 
     public <T> List<T> getAllByNamedQuery(Class<T> clazz, String namedQuery,
                                           Map<String, Object> parameters, QueryParams queryParams) {
@@ -167,6 +189,16 @@ public class Dao {
         LOG.info(FOUND_ENTITY, entities);
         return entities;
     }
+
+    /**
+     * Return the persistent instances of the given entity class with the given parameters,
+     *
+     * @param clazz type of return class entity
+     * @param namedQuery - name of query
+     * @param params - pairs of key/value parameters which will be added to "where" part of the query
+     *
+     * @return list of persistent instances or null
+     */
 
     public <T> List<T> getAllByNamedQuery(Class<T> clazz, String namedQuery, Map<String, Object> params) {
         LOG.info("Going to find entities with class - {} by named query - {} with parameters - {}",
