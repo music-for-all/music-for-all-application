@@ -13,7 +13,7 @@ import java.util.Properties;
  * @author IliaNik on 16.08.2016.
  */
 @Configuration
-@ComponentScan({"com.musicforall.web.messages"})
+@ComponentScan({"com.musicforall.messages"})
 public class MessageConfig {
     public static final int PORT = 25;
 

@@ -1,9 +1,10 @@
-package com.musicforall.web.messages;
+package com.musicforall.messages;
 
 /**
  * @author IliaNik on 12.08.2016.
  */
 
+import freemarker.cache.FileTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -14,6 +15,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,11 +33,14 @@ public final class WelcomeMessage implements MessagePart {
     }
 
     public static String text(final String username) throws IOException {
-        final Configuration freemarkerConfiguration = new Configuration();
+        final Configuration config = new Configuration();
+        final FileTemplateLoader templateLoader = new FileTemplateLoader(new File("./WEB-INF/views/"));
+        config.setTemplateLoader(templateLoader);
+
         final Map<String, Object> freeMarkerTemplateMap = new HashMap<>();
         freeMarkerTemplateMap.put("username", username);
 
-        final Template template = freemarkerConfiguration.getTemplate("welcomeMessageTemplate.ftl");
+        final Template template = config.getTemplate("welcomeMessageTemplate.ftl");
 
         try {
             return FreeMarkerTemplateUtils.processTemplateIntoString(template, freeMarkerTemplateMap);

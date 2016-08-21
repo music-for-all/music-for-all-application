@@ -1,4 +1,4 @@
-package com.musicforall.web.messages;
+package com.musicforall.messages;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;

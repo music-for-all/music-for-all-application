@@ -56,6 +56,7 @@ public class TrackRestController {
 
     /**
      * Stores the like as a history event.
+     *
      * @param id the id of the track to like
      * @return HTTP status code
      */
@@ -73,6 +74,7 @@ public class TrackRestController {
 
     /**
      * Retrieves the number of likes for the track with the given id.
+     *
      * @param id the id of the track
      * @return the number of likes
      */

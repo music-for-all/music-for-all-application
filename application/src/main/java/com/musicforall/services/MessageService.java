@@ -4,8 +4,8 @@ package com.musicforall.services;
  * @author IliaNik on 12.08.2016.
  */
 
-import com.musicforall.web.messages.MessageRoot;
-import com.musicforall.web.messages.WelcomeMessage;
+import com.musicforall.messages.MessageRoot;
+import com.musicforall.messages.WelcomeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,16 +30,16 @@ public class MessageService {
     @Autowired
     private MessageRoot messageRoot;
 
-    public void sendWelcomeMessage() throws MessagingException {
+    public void sendWelcomeMessage() {
         final MimeMessage message = javaMailSender.createMimeMessage();
 
         messageRoot.setMessage(message);
 
-        final MimeMessage welcomeMessage = new WelcomeMessage(messageRoot).getMimeMessage();
         try {
+            final MimeMessage welcomeMessage = new WelcomeMessage(messageRoot).getMimeMessage();
             javaMailSender.send(welcomeMessage);
-        } catch (MailException ex) {
-            LOG.error(ex.getMessage());
+        } catch (MailException | MessagingException ex) {
+            LOG.error("Message sending failed!", ex);
         }
     }
 

@@ -1,4 +1,4 @@
-package com.musicforall.web.messages;
+package com.musicforall.messages;
 
 import com.musicforall.model.User;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,9 +3,9 @@ package com.musicforall.services.message;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
+import com.musicforall.messages.WelcomeMessage;
 import com.musicforall.services.MessageService;
 import com.musicforall.util.ServicesTestConfig;
-import com.musicforall.web.messages.WelcomeMessage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,10 +43,9 @@ import static junit.framework.TestCase.assertTrue;
 @ActiveProfiles("dev")
 public class MessageServiceTest {
 
+    private static GreenMail testSmtp;
     @Autowired
     private MessageService messageService;
-
-    private static GreenMail testSmtp;
 
     @Before
     public void testSmtpInit() {
