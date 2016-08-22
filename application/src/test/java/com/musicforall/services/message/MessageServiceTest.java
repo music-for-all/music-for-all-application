@@ -83,7 +83,7 @@ public class MessageServiceTest {
         assertEquals(1, messages.length);
         assertEquals("Music For All", messages[0].getSubject());
 
-        final String body = GreenMailUtil.getBody(messages[0]).replaceAll("=\r?\n", "");
+        final String body = GreenMailUtil.getBody(messages[0]);
         assertTrue(body.contains(testMessage));
         PowerMock.verifyAll();
     }

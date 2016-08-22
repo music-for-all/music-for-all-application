@@ -29,7 +29,7 @@ public class MessageBootstrap {
         }
         lock.lock();
 
-        dao.save(new User("user", "password1", "nikolsky12@gmail.com"));
+        dao.save(new User("user", "password1", "user@mail.com"));
 
         bootstraped = true;
         lock.unlock();

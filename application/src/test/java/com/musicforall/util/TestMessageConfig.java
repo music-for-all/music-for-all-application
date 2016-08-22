@@ -14,7 +14,7 @@ import java.util.Properties;
 @Configuration
 @ComponentScan({"com.musicforall.messages"})
 public class TestMessageConfig {
-    private static final int PORT = 25;
+    private static final int PORT = 3025;
     private static final String EMAIL = "test@email.com";
     private static final String PASSWORD = "password";
 
