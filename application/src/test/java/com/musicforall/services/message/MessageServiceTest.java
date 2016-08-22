@@ -28,7 +28,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
@@ -67,7 +66,7 @@ public class MessageServiceTest {
 
     @Test
     @WithUserDetails("user")
-    public void testEmail() throws InterruptedException, MessagingException, IOException {
+    public void testEmail() throws MessagingException {
         final String testMessage = "Test email message";
 
         PowerMock.mockStatic(MessageUtil.class);
