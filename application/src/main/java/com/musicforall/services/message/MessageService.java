@@ -47,11 +47,11 @@ public class MessageService {
         final Map<String, Object> params = new HashMap<>();
         params.put("username", user.getUsername());
 
-        final TemplateMessage templateMessage = messageFactory.newTemplateMessage(params, "welcomeMessageTemplate.ftl");
-        templateMessage
+        final TemplateMessage welcomeMessage = messageFactory.newTemplateMessage(params, "welcomeMessageTemplate.ftl");
+        welcomeMessage
                 .root(messageRoot)
                 .setMessage(message);
-        send(templateMessage);
+        send(welcomeMessage);
     }
 
     private void send(final MessagePart message) {
