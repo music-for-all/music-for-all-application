@@ -12,6 +12,20 @@ import java.util.Objects;
  */
 
 @Entity
+@NamedQueries({
+        @NamedQuery(
+                name = History.POPULAR_TRACKS_QUERY,
+                query = "select history.trackId" +
+                        " from History history" +
+                        " where history.eventType=:eventType" +
+                        " group by history.trackId" +
+                        " order by count(history.trackId) desc"
+        ),
+        @NamedQuery(
+        name = History.TRACK_LIKES_COUNT_QUERY,
+        query = "select count(*) from History history " +
+                "where history.trackId=:trackId and history.eventType=:eventType")
+})
 @Table(name = "history")
 @NamedQueries(
         value = {
@@ -24,6 +38,10 @@ import java.util.Objects;
 )
 
 public class History {
+
+    public static final String POPULAR_TRACKS_QUERY = "most_popular_tracks";
+
+    public static final String TRACK_LIKES_COUNT_QUERY = "get_likes_count";
 
     @Id
     @Column(name = "id")

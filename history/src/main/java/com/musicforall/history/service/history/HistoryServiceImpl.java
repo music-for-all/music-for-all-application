@@ -35,16 +35,12 @@ public class HistoryServiceImpl implements HistoryService {
 
         final int count = 10;
         final int offset = 0;
-        final String hql = "select history.trackId" +
-                " from History history" +
-                " where history.eventType=:eventType" +
-                " group by history.trackId" +
-                " order by count(history.trackId) desc";
 
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("eventType", EventType.TRACK_LISTENED);
 
-        return dao.getAllBy(hql, parameters, new QueryParams(count, offset));
+        return dao.getAllByNamedQuery(Integer.class, History.POPULAR_TRACKS_QUERY,
+                parameters, new QueryParams(count, offset));
     }
 
     @Override
@@ -54,12 +50,12 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public long getLikeCount(Integer trackId) {
+
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("trackId", trackId);
         parameters.put("eventType", EventType.TRACK_LIKED);
 
-        return dao.getBy("select count(*) from History history " +
-                        "where history.trackId=:trackId and history.eventType=:eventType",
+        return dao.getByNamedQuery(Long.class, History.TRACK_LIKES_COUNT_QUERY,
                 parameters);
     }
 
