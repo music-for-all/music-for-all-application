@@ -6,8 +6,6 @@ import com.musicforall.history.handlers.events.EventType;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 
 /**
  * @author IliaNik on 17.07.2016.
@@ -19,7 +17,7 @@ import javax.persistence.NamedQuery;
                 name = History.POPULAR_TRACKS_QUERY,
                 query = "select history.trackId" +
                         " from History history" +
-                        " where history.eventType=:trackListened" +
+                        " where history.eventType=:eventType" +
                         " group by history.trackId" +
                         " order by count(history.trackId) desc"
         ),

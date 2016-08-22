@@ -37,7 +37,7 @@ public class HistoryServiceImpl implements HistoryService {
         final int offset = 0;
 
         final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("trackListened", EventType.TRACK_LISTENED);
+        parameters.put("eventType", EventType.TRACK_LISTENED);
 
         return dao.getAllByNamedQuery(Integer.class, History.POPULAR_TRACKS_QUERY,
                 parameters, new QueryParams(count, offset));
