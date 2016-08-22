@@ -8,6 +8,7 @@ import com.musicforall.util.ServicesTestConfig;
 import freemarker.template.Configuration;
 import org.easymock.EasyMock;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
@@ -56,12 +58,16 @@ public class MessageServiceTest {
     @BeforeClass
     public static void testSmtpInit() {
         testSmtp = new GreenMail(ServerSetupTest.SMTP);
-        testSmtp.start();
     }
 
     @AfterClass
     public static void cleanup() {
         testSmtp.stop();
+    }
+
+    @Before
+    public void before() {
+        testSmtp.reset();
     }
 
     @Test
@@ -86,5 +92,14 @@ public class MessageServiceTest {
         final String body = GreenMailUtil.getBody(messages[0]);
         assertTrue(body.contains(testMessage));
         PowerMock.verifyAll();
+    }
+
+    @Test
+    @WithAnonymousUser
+    public void testSendMessageToEmptyUser() throws MessagingException {
+        messageService.sendWelcomeMessage();
+
+        final MimeMessage[] messages = testSmtp.getReceivedMessages();
+        assertEquals(0, messages.length);
     }
 }
