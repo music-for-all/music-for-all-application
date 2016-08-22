@@ -49,6 +49,7 @@ import static org.easymock.EasyMock.anyObject;
 public class MessageServiceTest {
 
     private static GreenMail testSmtp;
+
     @Autowired
     private MessageService messageService;
 
@@ -65,7 +66,7 @@ public class MessageServiceTest {
 
     @Test
     @WithUserDetails("user")
-    public void testEmail() throws MessagingException {
+    public void testSendMessage() throws MessagingException {
         final String testMessage = "Test email message";
 
         PowerMock.mockStatic(MessageUtil.class);

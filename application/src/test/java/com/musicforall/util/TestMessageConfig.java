@@ -1,11 +1,16 @@
 package com.musicforall.util;
 
+import com.musicforall.messages.HtmlMessage;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -19,8 +24,7 @@ public class TestMessageConfig {
     private static final String PASSWORD = "password";
 
     @Bean
-    public JavaMailSenderImpl javaMailSender() {
-
+    public JavaMailSender javaMailSender() {
         final JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost("localhost");
         javaMailSender.setPort(PORT);
@@ -43,15 +47,16 @@ public class TestMessageConfig {
     }
 
     @Bean
-    public freemarker.template.Configuration configuration() {
-        return freeMarkerConfigurer().getConfiguration();
-    }
-
-    @Bean
     public FreeMarkerConfigurer freeMarkerConfigurer() {
         final FreeMarkerConfigurer conf = new FreeMarkerConfigurer();
         conf.setTemplateLoaderPath("/WEB-INF/views/");
         conf.setDefaultEncoding("UTF-8");
         return conf;
+    }
+
+    @Bean
+    @Scope(BeanDefinition.SCOPE_PROTOTYPE)
+    public HtmlMessage newHtmlMessage(final Map<String, Object> params, final String templateName) {
+        return new HtmlMessage(freeMarkerConfigurer().getConfiguration(), params, templateName);
     }
 }

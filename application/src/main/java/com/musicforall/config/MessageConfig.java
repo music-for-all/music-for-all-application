@@ -1,14 +1,15 @@
 package com.musicforall.config;
 
+import com.musicforall.messages.HtmlMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -27,8 +28,7 @@ public class MessageConfig {
     private FreeMarkerConfigurer configurer;
 
     @Bean
-    public JavaMailSenderImpl javaMailSender() {
-
+    public JavaMailSender javaMailSender() {
         final JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost("smtp.gmail.com");
         javaMailSender.setPort(PORT);
@@ -51,7 +51,8 @@ public class MessageConfig {
     }
 
     @Bean
-    public freemarker.template.Configuration configuration() {
-        return configurer.getConfiguration();
+    @Scope(BeanDefinition.SCOPE_PROTOTYPE)
+    public HtmlMessage newHtmlMessage(final Map<String, Object> params, final String templateName) {
+        return new HtmlMessage(configurer.getConfiguration(), params, templateName);
     }
 }
