@@ -14,9 +14,9 @@ import java.util.Map;
 
 public class TemplateMessage extends JoinableMessage {
 
-    private String templateName;
-    private Configuration configuration;
-    private Map<String, Object> params;
+    private final String templateName;
+    private final Configuration configuration;
+    private final Map<String, Object> params;
 
     public TemplateMessage(Configuration configuration, Map<String, Object> params, String templateName) {
         this.configuration = configuration;
@@ -28,7 +28,7 @@ public class TemplateMessage extends JoinableMessage {
     protected MimeMessage decorate(final MimeMessage message) throws MessagingException {
         final MimeMessageHelper helper = new MimeMessageHelper(message, true);
         final String text = MessageUtil.createMessageFromTemplate(configuration, params, templateName);
-        helper.setText(text != null ? text : "", true);
+        helper.setText(text == null ? "" : text, true);
         return helper.getMimeMessage();
     }
 }
