@@ -42,12 +42,4 @@ public class MessageService {
             LOG.error("Message sending failed!", ex);
         }
     }
-
-    public void setPort(final int port) {
-        javaMailSender.setPort(port);
-    }
-
-    public void setHost(final String host) {
-        javaMailSender.setHost(host);
-    }
 }
