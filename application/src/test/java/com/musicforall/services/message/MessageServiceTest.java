@@ -3,7 +3,6 @@ package com.musicforall.services.message;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
-import com.musicforall.services.MessageService;
 import com.musicforall.util.MessageUtil;
 import com.musicforall.util.ServicesTestConfig;
 import freemarker.template.Configuration;

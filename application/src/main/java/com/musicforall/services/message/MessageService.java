@@ -1,4 +1,4 @@
-package com.musicforall.services;
+package com.musicforall.services.message;
 
 import com.musicforall.messages.MessageRoot;
 import com.musicforall.messages.WelcomeMessage;
