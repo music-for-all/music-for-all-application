@@ -1,6 +1,6 @@
 package com.musicforall.config;
 
-import com.musicforall.messages.HtmlMessage;
+import com.musicforall.messages.TemplateMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.*;
@@ -52,7 +52,7 @@ public class MessageConfig {
 
     @Bean
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-    public HtmlMessage newHtmlMessage(final Map<String, Object> params, final String templateName) {
-        return new HtmlMessage(configurer.getConfiguration(), params, templateName);
+    public TemplateMessage newHtmlMessage(final Map<String, Object> params, final String templateName) {
+        return new TemplateMessage(configurer.getConfiguration(), params, templateName);
     }
 }

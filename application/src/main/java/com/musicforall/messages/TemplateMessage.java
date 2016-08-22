@@ -12,13 +12,13 @@ import java.util.Map;
  * @author IliaNik on 12.08.2016.
  */
 
-public class HtmlMessage extends JoinableMessage {
+public class TemplateMessage extends JoinableMessage {
 
     private String templateName;
     private Configuration configuration;
     private Map<String, Object> params;
 
-    public HtmlMessage(Configuration configuration, Map<String, Object> params, String templateName) {
+    public TemplateMessage(Configuration configuration, Map<String, Object> params, String templateName) {
         this.configuration = configuration;
         this.params = params;
         this.templateName = templateName;

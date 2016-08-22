@@ -12,7 +12,7 @@ import java.util.Map;
 @Component
 public class MessageFactory {
     @Lookup
-    public HtmlMessage newHtmlMessage(final Map<String, Object> params, final String templateName) {
-        return new HtmlMessage(new Configuration(), params, templateName);
+    public TemplateMessage newTemplateMessage(final Map<String, Object> params, final String templateName) {
+        return new TemplateMessage(new Configuration(), params, templateName);
     }
 }

@@ -1,9 +1,9 @@
 package com.musicforall.services.message;
 
-import com.musicforall.messages.HtmlMessage;
 import com.musicforall.messages.MessageFactory;
 import com.musicforall.messages.MessagePart;
 import com.musicforall.messages.MessageRoot;
+import com.musicforall.messages.TemplateMessage;
 import com.musicforall.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,11 +47,11 @@ public class MessageService {
         final Map<String, Object> params = new HashMap<>();
         params.put("username", user.getUsername());
 
-        final HtmlMessage htmlMessage = messageFactory.newHtmlMessage(params, "welcomeMessageTemplate.ftl");
-        htmlMessage
+        final TemplateMessage templateMessage = messageFactory.newTemplateMessage(params, "welcomeMessageTemplate.ftl");
+        templateMessage
                 .root(messageRoot)
                 .setMessage(message);
-        send(htmlMessage);
+        send(templateMessage);
     }
 
     private void send(final MessagePart message) {
