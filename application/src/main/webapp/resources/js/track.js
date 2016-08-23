@@ -56,7 +56,7 @@ function Track() {
                 var message = status + ": " + xhr.status + " " + errorThrown;
                 console.log(message);
             }));
-    }
+    };
 
     self.getRecommendedTracks = function (id) {
         return $.when(
@@ -70,5 +70,5 @@ function Track() {
                 console.log(message);
 
             }));
-    }
+    };
 }
