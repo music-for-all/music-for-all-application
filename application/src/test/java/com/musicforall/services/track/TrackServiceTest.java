@@ -1,7 +1,6 @@
 package com.musicforall.services.track;
 
-import com.musicforall.history.handlers.HistoryEventListener;
-import com.musicforall.history.handlers.events.TrackLikedEvent;
+import com.musicforall.history.service.DBHistoryPopulateService;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Tag;
@@ -57,13 +56,13 @@ public class TrackServiceTest {
     private RecommendationService recommendationService;
 
     @Autowired
-    private HistoryEventListener historyEventListener;
-
-    @Autowired
     private FollowerService followerService;
 
     @Autowired
     private PlaylistService playlistService;
+
+    @Autowired
+    private DBHistoryPopulateService dbHistoryPopulateService;
 
     @Test
     public void testSaveTrackWithoutTags() {
@@ -201,19 +200,13 @@ public class TrackServiceTest {
         trackService.save(track2);
         trackService.save(track3);
         trackService.save(track4);
-
+        final List<Integer> trackIds = Arrays.asList(track1.getId(), track2.getId(), track3.getId());
         final int FOLLOWED_USER_ID = 2;
         followerService.follow(SecurityUtil.currentUser().getId(), FOLLOWED_USER_ID);
 
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(track1.getId(), FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(track1.getId(), FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(track3.getId(), FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(track2.getId(), FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(track2.getId(), FOLLOWED_USER_ID));
-        historyEventListener.handleTrackLiked(new TrackLikedEvent(track2.getId(), FOLLOWED_USER_ID));
+        dbHistoryPopulateService.populateTrackLikedByFollowedUsers(trackIds, FOLLOWED_USER_ID);
 
         Collection<Track> tracks = recommendationService.getRecommendedTracks();
-
         assertNotNull(tracks);
         assertEquals(3, tracks.size());
 
