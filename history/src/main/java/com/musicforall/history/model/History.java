@@ -24,7 +24,12 @@ import java.util.Objects;
         @NamedQuery(
         name = History.TRACK_LIKES_COUNT_QUERY,
         query = "select count(*) from History history " +
-                "where history.trackId=:trackId and history.eventType=:eventType")
+                "where history.trackId=:trackId and history.eventType=:eventType"),
+        @NamedQuery(
+                name = "all_for_users_by_type",
+                query = "select h from History h where h.eventType = :eventType and h.userId in " +
+                        "(:usersIds) order by h.date desc"
+        )
 })
 @Table(name = "history")
 public class History {
