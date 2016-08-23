@@ -226,7 +226,11 @@
 
             /* The id of a track is stored in the containing <tr> element. */
             var id = $(this).closest("tr").attr("id");
-            like(id);
+            track.like(id)
+                    .then(function() {
+                        $("#" + id + " .like-button").css("opacity", "0.5");
+                        updateLikeCount(id);
+                    });
         });
 
 
