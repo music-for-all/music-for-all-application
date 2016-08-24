@@ -56,9 +56,9 @@
 
                     <div class="hide" id="popover-content">
                         <@m.form "/welcome", "POST", "login">
-                            <label for="inputUsername" class="sr-only"><@spring.message "welcomepage.Username"/></label>
+                            <label for="inputUsername" class="sr-only"><@spring.message "welcomepage.Email"/></label>
                             <input type="text" id="inputUsername" name="username" class="form-control"
-                                   placeholder="Username"
+                                   placeholder="Email"
                                    required />
                             <label for="inputPassword" class="sr-only"><@spring.message "welcomepage.Password"/></label>
                             <input type="password" id="inputPassword" name="password" class="form-control"
@@ -74,17 +74,17 @@
                         <form class="social">
                             <ul class="list-inline intro-social-buttons">
                                 <li>
-                                    <a href=<@spring.url '/auth/google'/> class="google">
+                                    <a href="<@spring.url "/auth/google"/>" class="google">
                                         <span class="fa fa-google fa-fw"></span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href=<@spring.url '/auth/twitter'/> class="twitter">
+                                    <a href="<@spring.url "/auth/twitter"/>" class="twitter">
                                         <span class="fa fa-twitter fa-fw"></span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href=<@spring.url '/auth/facebook'/> class="facebook">
+                                    <a href="<@spring.url "/auth/facebook"/>" class="facebook">
                                         <span class="fa fa-facebook fa-fw"></span>
                                     </a>
                                 </li>
@@ -138,15 +138,17 @@
     <% _.each(data, function(track){ %>
     <tr id="<%= track.id %>">
         <td>
-            <button type='button' class='btn btn-xs btn-success' onclick="onPlay('audio_<%= track.id %>')">
-                <span class='glyphicon glyphicon-play' aria-hidden='true'/>
+            <button type="button" class="btn btn-xs btn-success" onclick="onPlay(" audio_
+            <%= track.id %>")">
+            <span class="glyphicon glyphicon-play" aria-hidden="true"/>
             </button>
-            <button type='button' class='btn btn-xs btn-warning pause-track-button'
-                    onclick="onPause('audio_<%= track.id %>')">
-                <span class='glyphicon glyphicon-pause' aria-hidden='true'/>
+            <button type="button" class="btn btn-xs btn-warning pause-track-button"
+                    onclick="onPause(" audio_
+            <%= track.id %>")">
+            <span class="glyphicon glyphicon-pause" aria-hidden="true"/>
             </button>
-            <button type='button' class='btn btn-xs btn-danger delete-song-button'>
-                <span class='glyphicon glyphicon-remove' aria-hidden='true'/>
+            <button type="button" class="btn btn-xs btn-danger delete-song-button">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"/>
             </button>
         </td>
         <td>
@@ -155,7 +157,7 @@
         <td>
         </td>
         <td>
-            <audio id='audio_<%= track.id %>' controls>
+            <audio id="audio_<%= track.id %>" controls preload="none">
                 <source type="audio/mp3" src="/files/<%= track.location %>">
             </audio>
         </td>
@@ -170,7 +172,7 @@
             $("script.trackRowTemplate").html()
     );
 
-    $.when($.get('<@spring.url "/tracks/popular"/>'))
+    $.when($.get("<@spring.url "/tracks/popular"/>"))
             .then(function (response) {
                 $("#tracks").find("thead").after(
                         trackTable(response)
@@ -180,7 +182,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
 
-        $('#popover').popover({
+        $("#popover").popover({
             html: true,
             content: function () {
                 return $("#popover-content").html();

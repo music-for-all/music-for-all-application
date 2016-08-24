@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 /**
  * Created by Andrey on 7/31/16.
@@ -57,8 +56,6 @@ public class ContactManagerRestController {
 
     @RequestMapping(value = "/search={username}", method = RequestMethod.GET)
     public Collection<User> search(@PathVariable("username") String username) {
-        final HashSet<User> users = new HashSet<>();
-        users.add(userService.getByUsername(username));
-        return users;
+        return userService.getUsersByUsername(username);
     }
 }
