@@ -33,6 +33,8 @@ import static org.mockito.Mockito.when;
 @ActiveProfiles("dev")
 public class AccountConnectionSignUpServiceTest {
 
+    public static final String EXISTING_USER_EMAIL = "user@example.com";
+
     @Autowired
     private UserService userService;
 
@@ -52,7 +54,7 @@ public class AccountConnectionSignUpServiceTest {
         when(connection.fetchUserProfile()).thenReturn(userProfile);
 
         String username = accountConnectionSignUpService.execute(connection);
-        assertEquals(username, userProfile.getUsername());
+        assertEquals(username, userProfile.getEmail());
     }
 
     @Test
@@ -63,13 +65,7 @@ public class AccountConnectionSignUpServiceTest {
         when(connection.fetchUserProfile()).thenReturn(userProfile);
 
         String username = accountConnectionSignUpService.execute(connection);
-        assertEquals(username, userProfile.getFirstName());
-
-        userProfile = new UserProfile("", " ,", "F5g", " ", "d7@mail.com", null);
-        when(connection.fetchUserProfile()).thenReturn(userProfile);
-
-        username = accountConnectionSignUpService.execute(connection);
-        assertEquals(username, userProfile.getFirstName());
+        assertEquals(username, userProfile.getEmail());
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -91,5 +87,16 @@ public class AccountConnectionSignUpServiceTest {
         when(connection.fetchUserProfile()).thenReturn(userProfile);
 
         accountConnectionSignUpService.execute(connection);
+    }
+
+    @Test
+    public void testSaveWithExistingEmail() {
+        Connection<?> connection = Mockito.mock(Connection.class);
+
+        UserProfile userProfile = new UserProfile("", " ,", "Fgname", " ", EXISTING_USER_EMAIL, "");
+        when(connection.fetchUserProfile()).thenReturn(userProfile);
+
+        String username = accountConnectionSignUpService.execute(connection);
+        assertEquals(username, userProfile.getEmail());
     }
 }
