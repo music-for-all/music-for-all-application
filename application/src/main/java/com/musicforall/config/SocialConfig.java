@@ -41,6 +41,9 @@ public class SocialConfig implements SocialConfigurer {
     @Autowired
     private ConnectionSignUp connectionSignUp;
 
+    @Autowired
+    private Environment environment;
+
     @Override
     public void addConnectionFactories(ConnectionFactoryConfigurer configurer,
                                        Environment env) {
@@ -72,7 +75,8 @@ public class SocialConfig implements SocialConfigurer {
     public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator locator) {
         DatabaseUtil.createUsersConnectionRepositoryTable(dataSource);
         final JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource,
-                locator, Encryptors.noOpText());
+                locator, Encryptors.text(environment.getProperty("social.security.encryptPassword"),
+                environment.getProperty("social.security.encryptSalt")));
         repository.setConnectionSignUp(connectionSignUp);
         return repository;
     }
