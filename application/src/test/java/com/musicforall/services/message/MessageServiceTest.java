@@ -71,7 +71,7 @@ public class MessageServiceTest {
     }
 
     @Test
-    @WithUserDetails("user")
+    @WithUserDetails("user@mail.com")
     public void testSendMessage() throws MessagingException {
         final String testMessage = "Test email message";
 
