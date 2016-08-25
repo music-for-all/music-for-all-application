@@ -25,8 +25,10 @@ public class RecommendationService {
 
     @Autowired
     private HistoryService historyService;
+
     @Autowired
     private TrackService trackService;
+
     @Autowired
     private PlaylistService playlistService;
 
