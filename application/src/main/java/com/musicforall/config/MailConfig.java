@@ -1,34 +1,26 @@
 package com.musicforall.config;
 
-import com.musicforall.messages.TemplateMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
-import java.util.Map;
 import java.util.Properties;
 
 /**
  * @author IliaNik on 16.08.2016.
  */
 @Configuration
-@ComponentScan({"com.musicforall.messages"})
-
 public class MailConfig {
     public static final int PORT = 25;
 
     @Autowired
     private Environment env;
 
-    @Autowired
-    private FreeMarkerConfigurer configurer;
-
     @Bean
-    public JavaMailSender javaMailSender() {
+    public MailSender javaMailSender() {
         final JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost("smtp.gmail.com");
         javaMailSender.setPort(PORT);
@@ -48,11 +40,5 @@ public class MailConfig {
     @Bean(name = "email")
     public String email() {
         return env.getRequiredProperty("message.email");
-    }
-
-    @Bean
-    @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-    public TemplateMessage newTemplateMessage(final Map<String, Object> params, final String templateName) {
-        return new TemplateMessage(configurer.getConfiguration(), params, templateName);
     }
 }
