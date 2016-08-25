@@ -47,4 +47,9 @@ public class TestMessageConfig {
         conf.setDefaultEncoding("UTF-8");
         return conf;
     }
+
+    @Bean
+    public freemarker.template.Configuration freeMarkerConfiguration() {
+        return freeMarkerConfigurer().getConfiguration();
+    }
 }
