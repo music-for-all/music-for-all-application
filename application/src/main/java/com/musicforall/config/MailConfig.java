@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import java.util.Properties;
 
@@ -40,5 +41,18 @@ public class MailConfig {
     @Bean(name = "email")
     public String email() {
         return env.getRequiredProperty("message.email");
+    }
+
+    @Bean
+    public FreeMarkerConfigurer freeMarkerConfigurer() {
+        final FreeMarkerConfigurer conf = new FreeMarkerConfigurer();
+        conf.setTemplateLoaderPath("/WEB-INF/views/mails/");
+        conf.setDefaultEncoding("UTF-8");
+        return conf;
+    }
+
+    @Bean
+    public freemarker.template.Configuration freeMarkerConfiguration() {
+        return freeMarkerConfigurer().getConfiguration();
     }
 }

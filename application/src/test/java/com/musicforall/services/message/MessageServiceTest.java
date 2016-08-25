@@ -5,14 +5,16 @@ import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import com.musicforall.services.template.TemplateService;
 import com.musicforall.util.ServicesTestConfig;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
@@ -23,7 +25,6 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import static junit.framework.TestCase.assertEquals;
@@ -86,15 +87,5 @@ public class MessageServiceTest {
 
         final String body = GreenMailUtil.getBody(messages[0]);
         assertTrue(body.contains(testMessage));
-    }
-
-    @Test
-    @Ignore
-    @WithAnonymousUser
-    public void testSendMessageToEmptyUser() throws MessagingException {
-        mailService.send(mails.welcomeMail());
-
-        final MimeMessage[] messages = testSmtp.getReceivedMessages();
-        assertEquals(0, messages.length);
     }
 }
