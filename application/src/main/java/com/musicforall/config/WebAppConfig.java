@@ -40,7 +40,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     @Bean
     public FreeMarkerConfigurer freeMarkerConfigurer() {
         final FreeMarkerConfigurer conf = new FreeMarkerConfigurer();
-        conf.setTemplateLoaderPath("/WEB-INF/views/*");
+        conf.setTemplateLoaderPath("/WEB-INF/views/");
         conf.setDefaultEncoding("UTF-8");
         return conf;
     }
