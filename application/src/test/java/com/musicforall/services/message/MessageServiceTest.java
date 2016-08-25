@@ -3,15 +3,14 @@ package com.musicforall.services.message;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
+import com.musicforall.services.template.TemplateService;
 import com.musicforall.util.ServicesTestConfig;
-import freemarker.template.Template;
-import org.easymock.EasyMock;
 import org.junit.*;
 import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
@@ -26,18 +25,17 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
-import static org.easymock.EasyMock.anyObject;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 /**
  * @author IliaNik on 14.08.2016.
  */
 
-@RunWith(PowerMockRunner.class)
-@PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
@@ -53,7 +51,11 @@ public class MessageServiceTest {
     private MailService mailService;
 
     @Autowired
+    @InjectMocks
     private Mails mails;
+
+    @Mock
+    private TemplateService templateService;
 
     @BeforeClass
     public static void testSmtpInit() {
@@ -67,6 +69,7 @@ public class MessageServiceTest {
 
     @Before
     public void before() {
+        MockitoAnnotations.initMocks(this);
         testSmtp.reset();
     }
 
@@ -75,13 +78,7 @@ public class MessageServiceTest {
     public void testSendMessage() throws Exception {
         final String testMessage = "Test email message";
 
-        PowerMock.mockStatic(FreeMarkerTemplateUtils.class);
-        EasyMock.expect(FreeMarkerTemplateUtils.processTemplateIntoString(
-                anyObject(Template.class),
-                anyObject(Map.class)))
-                .andReturn(testMessage);
-        PowerMock.replayAll();
-
+        when(templateService.from(any(), any())).thenReturn(testMessage);
         mailService.send(mails.welcomeMail());
 
         final MimeMessage[] messages = testSmtp.getReceivedMessages();
@@ -89,7 +86,6 @@ public class MessageServiceTest {
 
         final String body = GreenMailUtil.getBody(messages[0]);
         assertTrue(body.contains(testMessage));
-        PowerMock.verifyAll();
     }
 
     @Test

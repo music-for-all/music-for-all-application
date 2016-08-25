@@ -2,7 +2,6 @@ package com.musicforall.services.message;
 
 import com.musicforall.model.User;
 import com.musicforall.services.template.TemplateService;
-import com.musicforall.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.SimpleMailMessage;
@@ -39,7 +38,7 @@ public class Mails {
     }
 
     private String emailTo() {
-        return SecurityUtil.currentUser().getEmail();
+        return currentUser().getEmail();
     }
 
     private String mailText(String template, Map<String, Object> params) {

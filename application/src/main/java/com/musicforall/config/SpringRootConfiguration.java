@@ -4,6 +4,7 @@ import com.musicforall.config.security.SecurityConfig;
 import com.musicforall.files.FileApiSpringConfig;
 import com.musicforall.history.HistorySpringConfig;
 import org.springframework.context.annotation.*;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,5 +31,18 @@ public class SpringRootConfiguration {
     @Bean
     public ExecutorService executorService() {
         return Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+    }
+
+    @Bean
+    public FreeMarkerConfigurer freeMarkerConfigurer() {
+        final FreeMarkerConfigurer conf = new FreeMarkerConfigurer();
+        conf.setTemplateLoaderPath("/WEB-INF/views/");
+        conf.setDefaultEncoding("UTF-8");
+        return conf;
+    }
+
+    @Bean
+    public freemarker.template.Configuration freeMarkerConfiguration() {
+        return freeMarkerConfigurer().getConfiguration();
     }
 }

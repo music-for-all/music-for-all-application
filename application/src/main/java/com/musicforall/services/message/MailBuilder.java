@@ -41,7 +41,7 @@ public final class MailBuilder {
     }
 
     public SimpleMailMessage get() {
-        SimpleMailMessage message = new SimpleMailMessage();
+        final SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from);
         message.setTo(to);
         message.setSubject(subject);
