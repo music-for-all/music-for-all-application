@@ -46,6 +46,11 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
+    public freemarker.template.Configuration freeMarkerConfiguration() {
+        return freeMarkerConfigurer().getConfiguration();
+    }
+
+    @Bean
     public MethodValidationPostProcessor getMethodValidationPostProcessor() {
         final MethodValidationPostProcessor processor = new MethodValidationPostProcessor();
         processor.setValidator(validator());

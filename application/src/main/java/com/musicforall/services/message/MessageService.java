@@ -1,5 +1,4 @@
 package com.musicforall.services.message;
-
 import com.musicforall.messages.MessageFactory;
 import com.musicforall.messages.MessagePart;
 import com.musicforall.messages.MessageRoot;
