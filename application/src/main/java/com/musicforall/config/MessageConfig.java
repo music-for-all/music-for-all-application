@@ -52,7 +52,7 @@ public class MessageConfig {
 
     @Bean
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-    public TemplateMessage newHtmlMessage(final Map<String, Object> params, final String templateName) {
+    public TemplateMessage newTemplateMessage(final Map<String, Object> params, final String templateName) {
         return new TemplateMessage(configurer.getConfiguration(), params, templateName);
     }
 }
