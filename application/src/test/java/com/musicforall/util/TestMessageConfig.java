@@ -52,5 +52,4 @@ public class TestMessageConfig {
     public freemarker.template.Configuration freeMarkerConfiguration() {
         return freeMarkerConfigurer().getConfiguration();
     }
-
 }
