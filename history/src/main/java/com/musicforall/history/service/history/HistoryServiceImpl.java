@@ -60,7 +60,7 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public Collection<History> getAllForUsers(EventType type, List<Integer> usersIds) {
+    public Collection<History> getAllForUsers(EventType type, Collection<Integer> usersIds) {
         Map<String, Object> params = new HashMap<>();
         params.put("usersIds", usersIds);
         params.put("eventType", type);

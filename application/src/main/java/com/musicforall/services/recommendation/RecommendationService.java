@@ -43,8 +43,8 @@ public class RecommendationService {
     public Collection<Track> getRecommendedTracks() {
         final User user = SecurityUtil.currentUser();
 
-        Collection<History> histories = historyService.getAllForUsers(EventType.TRACK_LIKED,
-                followerService.getFollowingId(user.getId()));
+        Collection<Integer> ids = followerService.getFollowingId(user.getId());
+        Collection<History> histories = historyService.getAllForUsers(EventType.TRACK_LIKED, ids);
         Collection<Integer> userTracks = usersTracksIds(user);
 
         Map<Integer, Integer> likesCountsByTrackId = histories.stream()

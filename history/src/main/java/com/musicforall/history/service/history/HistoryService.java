@@ -20,5 +20,5 @@ public interface HistoryService {
 
     long getLikeCount(Integer trackId);
 
-    Collection<History> getAllForUsers(EventType type, List<Integer> usersIds);
+    Collection<History> getAllForUsers(EventType type, Collection<Integer> usersIds);
 }
