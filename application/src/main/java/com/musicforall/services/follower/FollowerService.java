@@ -1,5 +1,6 @@
 package com.musicforall.services.follower;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -33,5 +34,5 @@ public interface FollowerService {
      * @param userId the id of the user
      * @return the list of ids of followed users
      */
-    List<Integer> getFollowingId(Integer userId);
+    Collection<Integer> getFollowingId(Integer userId);
 }

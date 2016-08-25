@@ -27,8 +27,8 @@ public class User implements SocialUserDetails, Serializable {
     private Integer id;
 
     @Size(min = 2, max = 16)
-    @Pattern(regexp = "^(^[a-zA-Z][a-zA-Z0-9-_\\.]+)$")
-    @Column(nullable = false, unique = true)
+    @Pattern(regexp = "^(^[a-zA-Z\\p{InCyrillic}][a-zA-Z0-9-_\\.\\p{InCyrillic}]+)$")
+    @Column(nullable = false)
     private String username;
 
     @Size(min = 4, max = 128)
@@ -107,7 +107,7 @@ public class User implements SocialUserDetails, Serializable {
 
     @Override
     public String getUserId() {
-        return username;
+        return email;
     }
 
     @Override

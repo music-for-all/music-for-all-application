@@ -44,6 +44,10 @@ public class PlaylistServiceTest {
 
     public static final String PLAYLIST_2 = "playlist2";
 
+    public static final String USER_EMAIL_1 = "user1@gmail.com";
+
+    public static final String USER_EMAIL_2 = "user2@example.com";
+
     @Autowired
     private PlaylistService playlistService;
 
@@ -54,7 +58,7 @@ public class PlaylistServiceTest {
     private TrackService trackService;
 
     @Test
-    @WithUserDetails
+    @WithUserDetails(USER_EMAIL_2)
     public void testSavePlaylist() {
         final Playlist savedPlaylist = playlistService.save(PLAYLIST_1);
 
@@ -63,12 +67,12 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    @WithUserDetails("user1")
+    @WithUserDetails(USER_EMAIL_1)
     public void testGetAllUserPlaylist() {
         final Playlist playlist1 = playlistService.save(PLAYLIST_1);
         playlistService.save(PLAYLIST_2);
 
-        final Integer userId = userService.getIdByUsername("user1");
+        final Integer userId = userService.getIdByEmail("user1@gmail.com");
 
         final Set<Playlist> allUsersPlaylists = playlistService.getAllUserPlaylists(userId);
 
@@ -77,7 +81,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    @WithUserDetails
+    @WithUserDetails(USER_EMAIL_1)
     public void testDeletePlaylist() {
         final Playlist playlist = playlistService.save(PLAYLIST_2);
         final Integer playlistId = playlist.getId();
@@ -87,7 +91,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    @WithUserDetails
+    @WithUserDetails("user@example.com")
     public void testGetTracks() {
         final Playlist playlist = playlistService.save("playlist_for_get");
         final Playlist expectedPlaylist = playlistService.get(playlist.getId());
@@ -98,7 +102,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    @WithUserDetails("user2")
+    @WithUserDetails(USER_EMAIL_2)
     public void testGetAllTracksInPlaylistAddTracksToPlaylist() {
         final Playlist playlist = playlistService.save(PLAYLIST_1);
         final Integer playlistId = playlist.getId();
