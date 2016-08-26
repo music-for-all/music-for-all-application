@@ -1,5 +1,6 @@
 .username {
-    background-color: #C71585;
+    background: url("http://vismech.ru/images/00001763.jpg");
+    background-position: right bottom;
     font-size: 150%;
     color: #FFFFE0;
     padding-top: 10px;
@@ -8,13 +9,16 @@
     border-top-left-radius: 20px;
 }
 
+
 .activity > .date {
     text-align: right;
     background-color: #FFD2FE;
+
 }
 
 .username:hover {
-    background-color: #AF0698;
+    background: url("http://www.wallpapersbyte.com/wp-content/uploads/2015/07/Purple-Solid-Color-Bright-Gradient-Background-WallpapersByte-com-1920x1080.jpg");
+    background-position: right bottom;
 }
 
 .activity > .event {
