@@ -1,0 +1,30 @@
+.username {
+    background-color: #C71585;
+    font-size: 150%;
+    color: #FFFFE0;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+}
+
+.activity > .date {
+    text-align: right;
+    background-color: #FFD2FE;
+}
+
+.username:hover {
+    background-color: #AF0698;
+}
+
+.activity > .event {
+    background-color: #FFCAF0;
+}
+
+.activity {
+    border-bottom: solid;
+    border-width: 2px;
+    border-color: #000080;
+    margin: 0px;
+
+}
