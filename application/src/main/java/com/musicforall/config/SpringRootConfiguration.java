@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
-import static java.util.concurrent.Executors.defaultThreadFactory;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
 /**
@@ -37,11 +36,7 @@ public class SpringRootConfiguration implements AsyncConfigurer {
 
     @Bean
     public ExecutorService executorService() {
-        return newFixedThreadPool(THREAD_POOL_SIZE, r -> {
-            final Thread t = defaultThreadFactory().newThread(r);
-            t.setDaemon(true);
-            return t;
-        });
+        return newFixedThreadPool(THREAD_POOL_SIZE);
     }
 
     @Override
