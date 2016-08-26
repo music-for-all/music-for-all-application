@@ -1,0 +1,41 @@
+package com.musicforall.services.template;
+
+import com.musicforall.util.ServicesTestConfig;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertTrue;
+
+/**
+ * @author ENikolskiy.
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
+@TestExecutionListeners({
+        DependencyInjectionTestExecutionListener.class
+})
+@ActiveProfiles("dev")
+public class TemplateServiceTest {
+
+    @Autowired
+    private TemplateService templateService;
+
+    @Test
+    public void testFrom() throws Exception {
+        final Map<String, Object> params = new HashMap<>(1);
+        params.put("username", "testUser");
+
+        final String from = templateService.from("template.ftl", params);
+        assertTrue(from.contains("Hello, testUser"));
+    }
+}
