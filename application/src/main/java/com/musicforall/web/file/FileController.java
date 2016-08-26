@@ -5,6 +5,7 @@ import com.musicforall.history.handlers.events.TrackListenedEvent;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
 import com.musicforall.services.track.TrackService;
+import com.musicforall.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,32 +49,31 @@ public class FileController {
             @RequestPart("file") MultipartFile file) {
 
         if (file.isEmpty()) {
-            return new ResponseEntity<String>("File is empty", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("File is empty", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         final String filename = file.getOriginalFilename();
         if (manager.getFilePathByName(filename) != null) {
-            return new ResponseEntity<String>("File exist", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("File exist", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        final Path saved = manager.save(file);
-        if (saved != null) {
+        final Optional<Path> saved = manager.save(file);
+        if (saved.isPresent()) {
             trackJson.setLocation(filename);
             trackJson.setSize(file.getSize());
             trackService.save(trackJson);
-            return new ResponseEntity<String>("Song successfully saved", HttpStatus.OK);
+            return new ResponseEntity<>("Song successfully saved", HttpStatus.OK);
         } else {
-            return new ResponseEntity<String>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @RequestMapping(value = "/files/{id}/{partId}", method = RequestMethod.GET)
-    public void getFileHandler(HttpServletResponse response, @PathVariable("id") Integer trackId,
+    public void getFileHandler(HttpServletResponse response, @PathVariable(Constants.ID) Integer trackId,
                                @PathVariable("partId") int partId) {
         final Track track = trackService.get(trackId);
-        final Optional<Path> filePath = Optional.ofNullable(manager.getFilePartById(track.getLocation(), partId));
+        final Optional<Path> filePath = manager.getFilePartById(track.getLocation(), partId);
         LOG.info(String.format("Streaming file: %s\n", track.getLocation()));
 
         if (filePath.isPresent()) {
-
             try {
                 if (partId == FileManager.DEFAULT_CHUNK_ID) {
                     final User user = currentUser();
