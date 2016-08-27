@@ -54,12 +54,6 @@ public class TrackRestController {
         return trackService.get(id);
     }
 
-    /**
-     * Stores the like as a history event.
-     *
-     * @param id the id of the track to like
-     * @return HTTP status code
-     */
     @RequestMapping(value = "/like/{id}", method = RequestMethod.POST)
     public ResponseEntity like(@PathVariable Integer id) {
 
@@ -72,12 +66,6 @@ public class TrackRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    /**
-     * Retrieves the number of likes for the track with the given id.
-     *
-     * @param id the id of the track
-     * @return the number of likes
-     */
     @RequestMapping(value = "/like/{id}", method = RequestMethod.GET)
     public ResponseEntity<Long> getLikeCount(@PathVariable("id") Integer id) {
 
