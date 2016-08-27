@@ -22,9 +22,20 @@ import java.util.Objects;
                         " order by count(history.trackId) desc"
         ),
         @NamedQuery(
-        name = History.TRACK_LIKES_COUNT_QUERY,
-        query = "select count(*) from History history " +
-                "where history.trackId=:trackId and history.eventType=:eventType")
+                name = History.TRACK_LIKES_COUNT_QUERY,
+                query = "select count(*) from History history " +
+                        "where history.trackId=:trackId and history.eventType=:eventType"
+        ),
+        @NamedQuery(
+                name = History.FOLLOWING_HISTORIES_QUERY,
+                query = " select history" +
+                        " from History" +
+                        " where history.userId IN :usersIds" +
+                        " and day(current_date()) - day(history.date) <= 1" +
+                        " order by history.date desc"
+        )
+
+
 })
 @Table(name = "history")
 public class History {
@@ -32,6 +43,8 @@ public class History {
     public static final String POPULAR_TRACKS_QUERY = "most_popular_tracks";
 
     public static final String TRACK_LIKES_COUNT_QUERY = "get_likes_count";
+
+    public static final String FOLLOWING_HISTORIES_QUERY = "get_following_histories";
 
     @Id
     @Column(name = "id")
