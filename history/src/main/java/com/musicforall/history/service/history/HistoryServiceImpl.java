@@ -4,16 +4,15 @@ import com.musicforall.common.dao.Dao;
 import com.musicforall.common.dao.QueryParams;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
+import com.musicforall.services.follower.FollowerService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Pukho on 08.08.2016.
@@ -24,6 +23,9 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Autowired
     private Dao dao;
+
+    @Autowired
+    private FollowerService followerService;
 
     @Override
     public void record(final History history) {
@@ -71,5 +73,27 @@ public class HistoryServiceImpl implements HistoryService {
             criteria.add(Property.forName("trackId").eq(params.getTrackId()));
         }
         return criteria;
+    }
+
+    public Collection<History> getUsersHistories(Collection<Integer> usersIds) {
+
+        final Map<String, Object> parameters = new HashMap<>();
+        parameters.put("usersIds", usersIds);
+
+        return dao.getAllByNamedQuery(History.class, History.FOLLOWING_HISTORIES_QUERY,
+                parameters);
+    }
+
+    public Map<Integer, List<History>> getFollowingHistories(Integer userId) {
+        Collection<Integer> usersIds = followerService.getFollowingId(userId);
+
+        List<History> histories = (List) getUsersHistories(usersIds);
+
+        return histories
+                .stream()
+                .collect(Collectors.groupingBy(p -> p.getUserId(), LinkedHashMap::new,
+                        Collectors.mapping(p -> p, Collectors.toList())));
+
+
     }
 }
