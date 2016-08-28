@@ -69,6 +69,10 @@
 <script type="text/javascript">
     var placeholder = "<@spring.message "placeholder.Tags"/>";
     $("#tags").select2(tagAutocomplete(placeholder));
+
+    $("input[name=artist]").autocomplete(artistAutocomplete(function () {
+        return $("select[name=tags]").val()
+    }));
 </script>
 </@m.body>
 </html>
