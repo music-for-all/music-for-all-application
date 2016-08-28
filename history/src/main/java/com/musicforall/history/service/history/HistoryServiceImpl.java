@@ -80,20 +80,16 @@ public class HistoryServiceImpl implements HistoryService {
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("usersIds", usersIds);
 
-        return dao.getAllByNamedQuery(History.class, History.FOLLOWING_HISTORIES_QUERY,
+        return dao.getAllByNamedQuery(History.class, History.USERS_HISTORIES_QUERY,
                 parameters);
     }
 
-    public Map<Integer, List<History>> getFollowingHistories(Integer userId) {
+    public Map<Integer, List<History>> getGroupedFollowingHistories(Integer userId) {
         Collection<Integer> usersIds = followerService.getFollowingId(userId);
 
-        List<History> histories = (List) getUsersHistories(usersIds);
-
-        return histories
+        return getUsersHistories(usersIds)
                 .stream()
                 .collect(Collectors.groupingBy(p -> p.getUserId(), LinkedHashMap::new,
                         Collectors.mapping(p -> p, Collectors.toList())));
-
-
     }
 }

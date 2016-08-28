@@ -27,7 +27,7 @@ import java.util.Objects;
                         "where history.trackId=:trackId and history.eventType=:eventType"
         ),
         @NamedQuery(
-                name = History.FOLLOWING_HISTORIES_QUERY,
+                name = History.USERS_HISTORIES_QUERY,
                 query = " select history" +
                         " from History" +
                         " where history.userId IN :usersIds" +
@@ -44,7 +44,7 @@ public class History {
 
     public static final String TRACK_LIKES_COUNT_QUERY = "get_likes_count";
 
-    public static final String FOLLOWING_HISTORIES_QUERY = "get_following_histories";
+    public static final String USERS_HISTORIES_QUERY = "get_users_histories";
 
     @Id
     @Column(name = "id")
