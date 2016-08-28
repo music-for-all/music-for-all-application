@@ -108,4 +108,37 @@ public class HistoryServiceImplTest {
         numLikes = service.getLikeCount(TRACK_ID + 1234);
         assertEquals(0, numLikes);
     }
+
+    @Test
+    public void testGetUsersHistories() {
+
+        int initialSize = service.getUsersHistories((Arrays.asList(USER_ID, USER_ID + 1))).size();
+
+        service.record(new History(TRACK_ID, new Date(), USER_ID, TRACK_LISTENED));
+        service.record(new History(TRACK_ID, new Date(), USER_ID + 1, TRACK_LISTENED));
+        service.record(new History(TRACK_ID, new Date(), USER_ID, TRACK_LIKED));
+        service.record(new History(TRACK_ID, new Date(), USER_ID + 1, TRACK_LIKED));
+
+        List<History> histories = (List) service.getUsersHistories((Arrays.asList(USER_ID, USER_ID + 1)));
+        int currentSize = histories.size();
+
+        assertEquals(currentSize - initialSize, 4);
+        assertTrue(histories.get(currentSize - 1).getUserId() == USER_ID + 1 &&
+                histories.get(currentSize - 1).getEventType() == TRACK_LIKED);
+        assertTrue(histories.get(currentSize - 4).getUserId() == USER_ID &&
+                histories.get(currentSize - 1).getEventType() == TRACK_LISTENED);
+
+    }
+
+
+    @Test
+    public void testGetUsersHistoriesBadDate() {
+
+        int initialSize = service.getUsersHistories((Arrays.asList(2))).size();
+        Date d = new Date();
+        service.record(new History(TRACK_ID, new Date(d.getTime() - 2 * 24 * 3600 * 1000l), 2, TRACK_LISTENED));
+        int currentSize = service.getUsersHistories((Arrays.asList(2))).size();
+
+        assertEquals(currentSize - initialSize, 0);
+    }
 }
