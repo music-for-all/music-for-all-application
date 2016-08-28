@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
 <script src="<@spring.url "/resources/js/searchpage.js"/>"></script>
-<script src="<@spring.url "/resources/js/select2config.js"/>"></script>
+<script src="<@spring.url "/resources/js/autocompleteConfig.js"/>"></script>
 <link href="<@spring.url "/resources/css/searchpage.css" />" rel="stylesheet">
 <link href="<@spring.url "/resources/css/font-awesome.min.css"/>" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
@@ -68,7 +68,7 @@
 </div>
 <script type="text/javascript">
     var placeholder = "<@spring.message "placeholder.Tags"/>";
-    $("#tags").select2(tagSearchConfig(placeholder));
+    $("#tags").select2(tagAutocomplete(placeholder));
 </script>
 </@m.body>
 </html>
