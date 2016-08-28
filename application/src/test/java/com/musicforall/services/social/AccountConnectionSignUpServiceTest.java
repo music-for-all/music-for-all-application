@@ -23,8 +23,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import javax.validation.ConstraintViolationException;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 /**
@@ -53,7 +51,6 @@ public class AccountConnectionSignUpServiceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        doNothing().when(publisher).publishEvent(any());
     }
 
     @Test
