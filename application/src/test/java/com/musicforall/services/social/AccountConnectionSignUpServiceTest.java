@@ -1,13 +1,16 @@
 package com.musicforall.services.social;
 
-import com.musicforall.services.user.UserService;
+import com.musicforall.services.message.Mails;
 import com.musicforall.services.user.UserTestExecutionListener;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.UserProfile;
 import org.springframework.test.context.ActiveProfiles;
@@ -20,6 +23,8 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import javax.validation.ConstraintViolationException;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 /**
@@ -36,67 +41,62 @@ public class AccountConnectionSignUpServiceTest {
     public static final String EXISTING_USER_EMAIL = "user@example.com";
 
     @Autowired
-    private UserService userService;
-
-    private AccountConnectionSignUpService accountConnectionSignUpService;
+    @InjectMocks
+    private AccountConnectionSignUpService signUpService;
+    @Mock
+    private Connection connection;
+    @Mock
+    private Mails mails;
+    @Mock
+    private ApplicationEventPublisher publisher;
 
     @Before
     public void setUp() {
-        accountConnectionSignUpService = new AccountConnectionSignUpService();
-        accountConnectionSignUpService.setUserService(userService);
+        MockitoAnnotations.initMocks(this);
+        doNothing().when(publisher).publishEvent(any());
     }
 
     @Test
     public void testSaveWithUsername() {
-        Connection<?> connection = Mockito.mock(Connection.class);
-
         UserProfile userProfile = new UserProfile("", " ,", " ", " ", "ddd@mail.com", "Lol");
         when(connection.fetchUserProfile()).thenReturn(userProfile);
 
-        String username = accountConnectionSignUpService.execute(connection);
+        String username = signUpService.execute(connection);
         assertEquals(username, userProfile.getEmail());
     }
 
     @Test
     public void testSaveWithoutUsername() {
-        Connection<?> connection = Mockito.mock(Connection.class);
-
         UserProfile userProfile = new UserProfile("", " ,", "Fg", " ", "dd@mail.com", "");
         when(connection.fetchUserProfile()).thenReturn(userProfile);
 
-        String username = accountConnectionSignUpService.execute(connection);
+        String username = signUpService.execute(connection);
         assertEquals(username, userProfile.getEmail());
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void testSaveWithSmallUsername() {
-        Connection<?> connection = Mockito.mock(Connection.class);
-
         UserProfile userProfile = new UserProfile("", " ,", "1name", " ", "1name@mail.com", "o");
         when(connection.fetchUserProfile()).thenReturn(userProfile);
 
-        accountConnectionSignUpService.execute(connection);
+        signUpService.execute(connection);
     }
 
 
     @Test(expected = ConstraintViolationException.class)
     public void testSaveWithBigUsername() {
-        Connection<?> connection = Mockito.mock(Connection.class);
-
         UserProfile userProfile = new UserProfile("", " ,", "2name", " ", "2name@mail.com", "12345678901234567");
         when(connection.fetchUserProfile()).thenReturn(userProfile);
 
-        accountConnectionSignUpService.execute(connection);
+        signUpService.execute(connection);
     }
 
     @Test
     public void testSaveWithExistingEmail() {
-        Connection<?> connection = Mockito.mock(Connection.class);
-
         UserProfile userProfile = new UserProfile("", " ,", "Fgname", " ", EXISTING_USER_EMAIL, "");
         when(connection.fetchUserProfile()).thenReturn(userProfile);
 
-        String username = accountConnectionSignUpService.execute(connection);
+        String username = signUpService.execute(connection);
         assertEquals(username, userProfile.getEmail());
     }
 }

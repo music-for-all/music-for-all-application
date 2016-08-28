@@ -44,8 +44,4 @@ public class AccountConnectionSignUpService implements ConnectionSignUp {
         }
         return user.getEmail();
     }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
 }
