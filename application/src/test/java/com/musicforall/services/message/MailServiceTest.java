@@ -25,6 +25,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import javax.mail.internet.MimeMessage;
 
+import static com.musicforall.util.SecurityUtil.currentUser;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.any;
@@ -77,7 +78,7 @@ public class MailServiceTest {
         final String testMessage = "Test email message";
 
         when(templateService.from(any(), any())).thenReturn(testMessage);
-        mailService.send(mails.welcomeMail());
+        mailService.send(mails.welcomeMail(currentUser()));
 
         final MimeMessage[] messages = testSmtp.getReceivedMessages();
         assertEquals(1, messages.length);

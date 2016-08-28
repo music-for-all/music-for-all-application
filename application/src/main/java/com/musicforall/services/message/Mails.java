@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.musicforall.util.SecurityUtil.currentUser;
-
 /**
  * Created by kgavrylchenko on 25.08.16.
  */
@@ -24,21 +22,15 @@ public class Mails {
     @Qualifier("email")
     private String emailFrom;
 
-    public SimpleMailMessage welcomeMail() {
-        final User user = currentUser();
-
+    public SimpleMailMessage welcomeMail(final User user) {
         final Map<String, Object> params = new HashMap<>();
         params.put("username", user.getUsername());
         return MailBuilder.build()
-                .to(emailTo())
+                .to(user.getEmail())
                 .from(emailFrom)
                 .subject("WELCOME")
                 .text(mailText("welcomeMessageTemplate.ftl", params))
                 .get();
-    }
-
-    private String emailTo() {
-        return currentUser().getEmail();
     }
 
     private String mailText(String template, Map<String, Object> params) {
