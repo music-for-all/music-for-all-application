@@ -3,9 +3,6 @@ package com.musicforall.model;
 /**
  * @author IliaNik on 15.06.2016.
  */
-
-import org.hibernate.annotations.*;
-
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
