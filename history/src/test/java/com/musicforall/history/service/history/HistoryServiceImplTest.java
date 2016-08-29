@@ -113,7 +113,7 @@ public class HistoryServiceImplTest {
     @Test
     public void testGetUsersHistories() {
 
-        int initialSize = new ArrayList(service.getUsersHistories(Arrays.asList(USER_ID, USER_ID2))).size();
+        int initialSize = service.getUsersHistories(Arrays.asList(USER_ID, USER_ID2)).size();
 
         service.record(new History(TRACK_ID, new Date(), USER_ID, TRACK_LISTENED));
         service.record(new History(TRACK_ID, new Date(), USER_ID2, TRACK_LISTENED));
