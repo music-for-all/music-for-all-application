@@ -113,14 +113,14 @@ public class HistoryServiceImplTest {
     @Test
     public void testGetUsersHistories() {
 
-        int initialSize = service.getUsersHistories(Arrays.asList(USER_ID, USER_ID2)).size();
+        int initialSize = new ArrayList(service.getUsersHistories(Arrays.asList(USER_ID, USER_ID2))).size();
 
         service.record(new History(TRACK_ID, new Date(), USER_ID, TRACK_LISTENED));
         service.record(new History(TRACK_ID, new Date(), USER_ID2, TRACK_LISTENED));
         service.record(new History(TRACK_ID, new Date(), USER_ID, TRACK_LIKED));
         service.record(new History(TRACK_ID, new Date(), USER_ID2, TRACK_LIKED));
 
-        List<History> histories = (List<History>) service.getUsersHistories((Arrays.asList(USER_ID, USER_ID2)));
+        List<History> histories = new ArrayList(service.getUsersHistories(Arrays.asList(USER_ID, USER_ID2)));
         int currentSize = histories.size();
 
         assertEquals(currentSize - initialSize, 4);
@@ -136,9 +136,9 @@ public class HistoryServiceImplTest {
     @Test
     public void testGetUsersHistoriesBadDate() {
 
-        int initialSize = service.getUsersHistories((Arrays.asList(2))).size();
+        int initialSize = service.getUsersHistories(Arrays.asList(USER_ID)).size();
         Date d = new Date();
-        service.record(new History(TRACK_ID, new Date(d.getTime() - 2 * 24 * 3600 * 1000L), 2, TRACK_LISTENED));
+        service.record(new History(TRACK_ID, new Date(d.getTime() - 2 * 24 * 3600 * 1000L), USER_ID, TRACK_LISTENED));
         int currentSize = service.getUsersHistories((Arrays.asList(2))).size();
 
         assertEquals(currentSize - initialSize, 0);
