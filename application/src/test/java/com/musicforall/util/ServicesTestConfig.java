@@ -2,6 +2,7 @@ package com.musicforall.util;
 
 import com.musicforall.config.HibernateConfigDev;
 import com.musicforall.config.security.SecurityConfig;
+import com.musicforall.history.HistorySpringConfig;
 import com.musicforall.services.DbPopulateService;
 import org.springframework.context.annotation.*;
 
@@ -11,12 +12,11 @@ import org.springframework.context.annotation.*;
 @Configuration
 @ComponentScan(
         value = {"com.musicforall.services",
-                "com.musicforall.common",
-                "com.musicforall.history"},
+                "com.musicforall.common"},
         excludeFilters =
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = {DbPopulateService.class}))
 @PropertySource(value = "classpath:application.properties")
-@Import({HibernateConfigDev.class, SecurityConfig.class, TestMessageConfig.class})
+@Import({HibernateConfigDev.class, SecurityConfig.class, TestMessageConfig.class, HistorySpringConfig.class})
 public class ServicesTestConfig {
 
 }
