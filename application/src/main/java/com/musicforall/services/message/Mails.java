@@ -2,11 +2,13 @@ package com.musicforall.services.message;
 
 import com.musicforall.model.User;
 import com.musicforall.services.template.TemplateService;
+import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +39,7 @@ public class Mails {
         String mailText;
         try {
             mailText = templateService.from(template, params);
-        } catch (Exception e) {
+        } catch (TemplateException | IOException e) {
             throw new RuntimeException(e);
         }
 
