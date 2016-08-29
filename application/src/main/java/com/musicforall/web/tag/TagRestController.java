@@ -34,4 +34,10 @@ public class TagRestController {
         final List<Tag> tags = tagService.getAllLike(tagName);
         return new ResponseEntity<>(tags, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/popular", method = RequestMethod.GET)
+    public ResponseEntity getByPopularityDummy() {
+        final List<Tag> tags = tagService.getAllTags();
+        return new ResponseEntity<>(tags, HttpStatus.OK);
+    }
 }

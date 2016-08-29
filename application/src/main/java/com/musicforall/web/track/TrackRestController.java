@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -79,5 +80,12 @@ public class TrackRestController {
     public Collection<Track> getByPopularity() {
         final List<Integer> popularTracksIds = historyService.getTheMostPopularTracks();
         return trackService.getAllById(popularTracksIds);
+    }
+
+    @RequestMapping(value = "/popular/tag={name}",  method = RequestMethod.GET)
+    public ResponseEntity getPopularByTagDummy(@PathVariable("name") final String tag) {
+        final List<String> tags = new ArrayList<>();
+        tags.add(tag);
+        return new ResponseEntity<>(tags, HttpStatus.OK);
     }
 }
