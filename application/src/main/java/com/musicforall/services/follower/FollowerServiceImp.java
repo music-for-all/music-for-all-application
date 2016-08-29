@@ -69,11 +69,11 @@ public class FollowerServiceImp implements FollowerService {
 
     @Override
     public Map<Integer, List<History>> getGroupedFollowingHistories(Integer userId) {
-        Collection<Integer> usersIds = getFollowingId(userId);
+        final Collection<Integer> usersIds = getFollowingId(userId);
 
         return historyService.getUsersHistories(usersIds)
                 .stream()
-                .collect(Collectors.groupingBy(p -> p.getUserId(), LinkedHashMap::new,
+                .collect(Collectors.groupingBy(History::getUserId, LinkedHashMap::new,
                         Collectors.mapping(p -> p, Collectors.toList())));
     }
 }
