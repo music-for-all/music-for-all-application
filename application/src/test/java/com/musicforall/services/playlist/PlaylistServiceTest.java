@@ -126,7 +126,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    @WithUserDetails
+    @WithUserDetails("user@example.com")
     public void testAddTrack() {
 
         final Playlist playlist = playlistService.save("testAddTrack");
@@ -138,7 +138,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    @WithUserDetails
+    @WithUserDetails("user@example.com")
     public void testRemoveTrack() {
 
         final Playlist playlist = playlistService.save("test");

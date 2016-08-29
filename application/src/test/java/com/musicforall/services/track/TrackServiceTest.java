@@ -188,7 +188,7 @@ public class TrackServiceTest {
     }
 
     @Test
-    @WithUserDetails
+    @WithUserDetails("user@example.com")
     public void testGetRecommendedTracks() {
 
         final Track track1 = new Track("track", "title1", "artist1", "album1", "/root/track1.mp3", null);
