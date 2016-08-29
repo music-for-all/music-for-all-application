@@ -119,7 +119,7 @@ public class HistoryServiceImplTest {
         service.record(new History(TRACK_ID, new Date(), USER_ID, TRACK_LIKED));
         service.record(new History(TRACK_ID, new Date(), USER_ID + 1, TRACK_LIKED));
 
-        List<History> histories = (List) service.getUsersHistories((Arrays.asList(USER_ID, USER_ID + 1)));
+        List<History> histories = (List<History>) service.getUsersHistories((Arrays.asList(USER_ID, USER_ID + 1)));
         int currentSize = histories.size();
 
         assertEquals(currentSize - initialSize, 4);
