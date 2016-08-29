@@ -17,9 +17,6 @@ jQuery(document).ready(function () {
     });
 });
 
-/**
- * Performs an Ajax-based search; populates the results table with found tracks.
- */
 function search() {
 
     var title = $("#title").val();
@@ -91,12 +88,7 @@ function search() {
         populateResultsTable(results);
     });
 }
-/* End of search() */
 
-/**
- * Inserts the search results into the results table.
- * @param items the items to be inserted
- */
 function populateResultsTable(items) {
 
     $.each(items, function (i, item) {
@@ -122,18 +114,11 @@ function populateResultsTable(items) {
     });
 }
 
-/**
- * Fetches the track with the given id and plays it.
- * @param id the id of the track
- */
+
 function playPreview(id) {
     console.log("Play: " + id);
 }
 
-/**
- * Adds the track with the given id to the current playlist.
- * @param id the id of the track
- */
 function addToPlaylist(id) {
     console.log("Add: " + id);
 }

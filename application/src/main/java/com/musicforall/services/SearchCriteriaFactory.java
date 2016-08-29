@@ -14,13 +14,6 @@ public final class SearchCriteriaFactory {
 
     private SearchCriteriaFactory() {
     }
-
-    /**
-     * Creates a detached criteria based on the data provided in a SearchCriteria object.
-     *
-     * @param searchCriteria an instance of the SearchCriteria class
-     * @return the detached criteria
-     */
     public static DetachedCriteria createTrackSearchCriteria(SearchTrackRequest searchCriteria) {
 
         if (searchCriteria == null) {

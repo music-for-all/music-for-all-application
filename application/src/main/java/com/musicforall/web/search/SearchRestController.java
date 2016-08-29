@@ -29,9 +29,6 @@ public class SearchRestController {
     @Autowired
     private TrackService trackService;
 
-    /**
-     * Searches tracks by the specified criteria.
-     */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity search(@Valid SearchTrackRequest searchCriteria, BindingResult bindingResult) {
         LOG.info(searchCriteria.toString());
