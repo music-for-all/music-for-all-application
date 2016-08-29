@@ -98,17 +98,18 @@ public class FollowersServiceTest {
 
     @Test
     public void testGetGroupedFollowingHistories() {
-        final User user = new User("Adolf Hitler", PASSWORD, "meinkampf@example.com");
-        final User user1 = new User("Iosiv Stalin", PASSWORD, "tribunal@example.com");
-        final User user2 = new User("Winston Churchill", PASSWORD, "UK@example.com");
+        final User user = new User("Adolf", PASSWORD, "meinkampf@example.com");
+        final User user1 = new User("Iosiv", PASSWORD, "tribunal@example.com");
+        final User user2 = new User("Winston", PASSWORD, "UK@example.com");
+
+        userService.save(user);
+        userService.save(user1);
+        userService.save(user2);
 
         final int USER1_ID = user1.getId();
         final int USER2_ID = user2.getId();
         final int USER_ID = user.getId();
 
-        userService.save(user);
-        userService.save(user1);
-        userService.save(user2);
         followerService.follow(user.getId(), USER1_ID);
         followerService.follow(user.getId(), USER2_ID);
         History history1 = new History(TRACK_ID, new Date(), USER1_ID, TRACK_LISTENED);
