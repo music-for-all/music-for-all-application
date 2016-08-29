@@ -113,19 +113,19 @@ public class HistoryServiceImplTest {
     @Test
     public void testGetUsersHistories() {
 
-        int initialSize = service.getUsersHistories(Arrays.asList(USER_ID, USER_ID2)).size();
+        final int initialSize = service.getUsersHistories(Arrays.asList(USER_ID, USER_ID2)).size();
 
         service.record(new History(TRACK_ID, new Date(), USER_ID, TRACK_LISTENED));
         service.record(new History(TRACK_ID, new Date(), USER_ID2, TRACK_LISTENED));
         service.record(new History(TRACK_ID, new Date(), USER_ID, TRACK_LIKED));
         service.record(new History(TRACK_ID, new Date(), USER_ID2, TRACK_LIKED));
 
-        List<History> histories = new ArrayList(service.getUsersHistories(Arrays.asList(USER_ID, USER_ID2)));
+        final List<History> histories = new ArrayList<>(service.getUsersHistories(Arrays.asList(USER_ID, USER_ID2)));
         int currentSize = histories.size();
 
         assertEquals(currentSize - initialSize, 4);
 
-        History history = histories.get(currentSize - 1);
+        final History history = histories.get(currentSize - 1);
 
         assertEquals(USER_ID, history.getUserId());
         assertEquals(TRACK_LISTENED, history.getEventType());
