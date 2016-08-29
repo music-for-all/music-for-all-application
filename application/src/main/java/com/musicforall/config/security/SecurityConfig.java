@@ -42,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage(WELCOME).permitAll()
+                .usernameParameter("email")
                 .successHandler(successHandler())
                 .failureHandler(failureHandler())
                 .and()
