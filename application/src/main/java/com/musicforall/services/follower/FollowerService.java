@@ -3,8 +3,8 @@ package com.musicforall.services.follower;
 import com.musicforall.history.model.History;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by andrey on 8/2/16.
@@ -19,5 +19,5 @@ public interface FollowerService {
 
     Collection<Integer> getFollowingId(Integer userId);
 
-    Map<Integer, List<History>> getGroupedFollowingHistories(Integer userId);
+    LinkedHashMap<Integer, List<History>> getGroupedFollowingHistories(Integer userId);
 }

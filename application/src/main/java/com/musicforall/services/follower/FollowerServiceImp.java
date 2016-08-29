@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -68,7 +67,7 @@ public class FollowerServiceImp implements FollowerService {
     }
 
     @Override
-    public Map<Integer, List<History>> getGroupedFollowingHistories(Integer userId) {
+    public LinkedHashMap<Integer, List<History>> getGroupedFollowingHistories(Integer userId) {
         final Collection<Integer> usersIds = getFollowingId(userId);
 
         return historyService.getUsersHistories(usersIds)

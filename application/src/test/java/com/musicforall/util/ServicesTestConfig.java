@@ -11,7 +11,8 @@ import org.springframework.context.annotation.*;
 @Configuration
 @ComponentScan(
         value = {"com.musicforall.services",
-                "com.musicforall.common"},
+                "com.musicforall.common",
+                "com.musicforall.history"},
         excludeFilters =
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = {DbPopulateService.class}))
 @PropertySource(value = "classpath:application.properties")
