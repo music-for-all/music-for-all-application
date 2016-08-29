@@ -127,9 +127,9 @@ public class HistoryServiceImplTest {
 
         History history = histories.get(currentSize - 1);
 
-        assertTrue(history.getUserId() == USER_ID2);
-        assertTrue(history.getEventType() == TRACK_LIKED);
-        assertTrue(history.getTrackId() == TRACK_ID);
+        assertEquals(USER_ID, history.getUserId());
+        assertEquals(TRACK_LISTENED, history.getEventType());
+        assertEquals(TRACK_ID, history.getTrackId());
     }
 
 
@@ -139,8 +139,8 @@ public class HistoryServiceImplTest {
         int initialSize = service.getUsersHistories(Arrays.asList(USER_ID)).size();
         Date d = new Date();
         service.record(new History(TRACK_ID, new Date(d.getTime() - 2 * 24 * 3600 * 1000L), USER_ID, TRACK_LISTENED));
-        int currentSize = service.getUsersHistories((Arrays.asList(2))).size();
+        int currentSize = service.getUsersHistories((Arrays.asList(USER_ID))).size();
 
-        assertEquals(currentSize - initialSize, 0);
+        assertEquals(0, currentSize - initialSize);
     }
 }

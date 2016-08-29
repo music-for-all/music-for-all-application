@@ -67,6 +67,7 @@ public class FollowerServiceImp implements FollowerService {
         return followers.getFollowingId();
     }
 
+    @Override
     public Map<Integer, List<History>> getGroupedFollowingHistories(Integer userId) {
         Collection<Integer> usersIds = getFollowingId(userId);
 

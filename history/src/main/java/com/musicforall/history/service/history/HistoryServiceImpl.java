@@ -73,6 +73,7 @@ public class HistoryServiceImpl implements HistoryService {
         return criteria;
     }
 
+    @Override
     public Collection<History> getUsersHistories(Collection<Integer> usersIds) {
 
         final Map<String, Object> parameters = new HashMap<>();

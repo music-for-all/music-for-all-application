@@ -28,8 +28,7 @@ import java.util.Objects;
         ),
         @NamedQuery(
                 name = History.USERS_HISTORIES_QUERY,
-                query = " select history" +
-                        " from History" +
+                query = " from History history" +
                         " where history.userId IN :usersIds" +
                         " and day(current_date()) - day(history.date) <= 1" +
                         " order by history.date desc"
