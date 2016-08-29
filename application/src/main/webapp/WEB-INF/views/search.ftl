@@ -78,6 +78,15 @@
     <a id="scroll-to-top" href="#top" title="Scroll to top"><@spring.message "searchpage.ScrollToTop"/></a>
 </div>
 
+<script type="text/template" class="tagBtnTemplate">
+    <% _.each(data, function(tag){ %>
+    <label id="<%= tag.name %>" class="btn btn-success" onclick="getTracksByTag(this)">
+    <input type="radio" autocomplete="off">
+     <%= tag.name %>
+    </label>
+    <% }); %>
+</script>
+
 <script type="text/template" class="trackRowTemplate">
     <tbody>
     <% _.each(data, function(track){ %>
@@ -116,6 +125,10 @@
             $("script.trackRowTemplate").html()
     );
 
+    var setOfTags = _.template(
+            $("script.tagBtnTemplate").html()
+    );
+
     $("input[name=artist]").autocomplete(artistAutocomplete(function () {
         return $("select[name=tags]").val()
     }));
@@ -135,7 +148,25 @@
                 });
     }
 
+    function getTracksByTag(tag) {
+        console.log(tag);
+        $.when($.get("<@spring.url "/tracks/popular/tag="/>" + tag.id))
+                .then(function (response) {
+                    $('#status-message').text('Top 20 for tag "' + tag.id + '":');
+                });
+    }
+
+    function getPopularTags() {
+        $.when($.get("<@spring.url "/tags/popular"/>"))
+                .then(function (response) {
+                    $("#popular").after(
+                            setOfTags(response)
+                    );
+                });
+    }
+
     getPopularTracks();
+    getPopularTags();
 </script>
 </@m.body>
 </html>
