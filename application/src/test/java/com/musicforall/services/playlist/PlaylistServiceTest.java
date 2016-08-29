@@ -115,7 +115,7 @@ public class PlaylistServiceTest {
 
         playlistService.addTracks(playlistId, new HashSet<>(tracksInDb));
 
-        final Set<Track> tracksInPlaylist = playlistService.getTracks(playlistId);
+        final Set<Track> tracksInPlaylist = playlistService.getAllTracksInPlaylist(playlistId);
 
         assertNotNull(tracksInPlaylist);
         Assert.assertEquals(tracksInDb.size(), tracksInPlaylist.size());
