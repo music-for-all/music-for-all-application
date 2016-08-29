@@ -21,8 +21,7 @@ import static com.musicforall.history.handlers.events.EventType.TRACK_LIKED;
 import static com.musicforall.history.handlers.events.EventType.TRACK_LISTENED;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author IliaNik on 29.07.2016.
@@ -135,12 +134,10 @@ public class HistoryServiceImplTest {
 
     @Test
     public void testGetUsersHistoriesBadDate() {
+        final History history = new History(TRACK_ID, new Date(new Date().getTime() - 2 * 24 * 3600 * 1000L), USER_ID, TRACK_LISTENED);
+        service.record(history);
 
-        int initialSize = service.getUsersHistories(Arrays.asList(USER_ID)).size();
-        Date d = new Date();
-        service.record(new History(TRACK_ID, new Date(d.getTime() - 2 * 24 * 3600 * 1000L), USER_ID, TRACK_LISTENED));
-        int currentSize = service.getUsersHistories((Arrays.asList(USER_ID))).size();
-
-        assertEquals(0, currentSize - initialSize);
+        final Collection<History> histories = service.getUsersHistories(Collections.singletonList(USER_ID));
+        assertFalse(histories.contains(history));
     }
 }
