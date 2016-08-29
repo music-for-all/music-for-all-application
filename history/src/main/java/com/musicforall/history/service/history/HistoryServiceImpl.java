@@ -4,15 +4,16 @@ import com.musicforall.common.dao.Dao;
 import com.musicforall.common.dao.QueryParams;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
-import com.musicforall.services.follower.FollowerService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Pukho on 08.08.2016.
@@ -23,9 +24,6 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Autowired
     private Dao dao;
-
-    @Autowired
-    private FollowerService followerService;
 
     @Override
     public void record(final History history) {
@@ -84,12 +82,4 @@ public class HistoryServiceImpl implements HistoryService {
                 parameters);
     }
 
-    public Map<Integer, List<History>> getGroupedFollowingHistories(Integer userId) {
-        Collection<Integer> usersIds = followerService.getFollowingId(userId);
-
-        return getUsersHistories(usersIds)
-                .stream()
-                .collect(Collectors.groupingBy(p -> p.getUserId(), LinkedHashMap::new,
-                        Collectors.mapping(p -> p, Collectors.toList())));
-    }
 }

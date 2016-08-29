@@ -35,6 +35,7 @@ import static org.junit.Assert.assertTrue;
 public class HistoryServiceImplTest {
 
     private static final Integer USER_ID = 1111;
+    private static final Integer USER_ID2 = 1112;
     private static final Integer TRACK_ID = 2222;
     private static final Integer TOP_TRACK_ID = 2225;
 
@@ -112,22 +113,23 @@ public class HistoryServiceImplTest {
     @Test
     public void testGetUsersHistories() {
 
-        int initialSize = service.getUsersHistories((Arrays.asList(USER_ID, USER_ID + 1))).size();
+        int initialSize = service.getUsersHistories((Arrays.asList(USER_ID, USER_ID2))).size();
 
         service.record(new History(TRACK_ID, new Date(), USER_ID, TRACK_LISTENED));
-        service.record(new History(TRACK_ID, new Date(), USER_ID + 1, TRACK_LISTENED));
+        service.record(new History(TRACK_ID, new Date(), USER_ID2, TRACK_LISTENED));
         service.record(new History(TRACK_ID, new Date(), USER_ID, TRACK_LIKED));
-        service.record(new History(TRACK_ID, new Date(), USER_ID + 1, TRACK_LIKED));
+        service.record(new History(TRACK_ID, new Date(), USER_ID2, TRACK_LIKED));
 
-        List<History> histories = (List<History>) service.getUsersHistories((Arrays.asList(USER_ID, USER_ID + 1)));
+        List<History> histories = (List<History>) service.getUsersHistories((Arrays.asList(USER_ID, USER_ID2)));
         int currentSize = histories.size();
 
         assertEquals(currentSize - initialSize, 4);
-        assertTrue(histories.get(currentSize - 1).getUserId() == USER_ID + 1 &&
-                histories.get(currentSize - 1).getEventType() == TRACK_LIKED);
-        assertTrue(histories.get(currentSize - 4).getUserId() == USER_ID &&
-                histories.get(currentSize - 1).getEventType() == TRACK_LISTENED);
 
+        History history = histories.get(currentSize - 1);
+
+        assertTrue(history.getUserId() == USER_ID2);
+        assertTrue(history.getEventType() == TRACK_LIKED);
+        assertTrue(history.getTrackId() == TRACK_ID);
     }
 
 
@@ -136,7 +138,7 @@ public class HistoryServiceImplTest {
 
         int initialSize = service.getUsersHistories((Arrays.asList(2))).size();
         Date d = new Date();
-        service.record(new History(TRACK_ID, new Date(d.getTime() - 2 * 24 * 3600 * 1000l), 2, TRACK_LISTENED));
+        service.record(new History(TRACK_ID, new Date(d.getTime() - 2 * 24 * 3600 * 1000L), 2, TRACK_LISTENED));
         int currentSize = service.getUsersHistories((Arrays.asList(2))).size();
 
         assertEquals(currentSize - initialSize, 0);
