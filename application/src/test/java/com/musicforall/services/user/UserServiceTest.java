@@ -33,11 +33,13 @@ import static org.junit.Assert.assertNull;
 @ActiveProfiles("dev")
 public class UserServiceTest {
 
-    public static final String USER_1 = "user1";
+    public static final String USER_EMAIL_1 = "user@example.com";
+
+    public static final String USER_1 = "user";
 
     public static final String USER_NOT_EXIST = "user_not_exist";
 
-    public static final String USER = "user";
+    public static final String USER_EMAIL = "user1@gmail.com";
 
     @Autowired
     private UserService userService;
@@ -56,16 +58,16 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testGetIdUserByUsername() {
-        final Integer userId = userService.getIdByUsername(USER_1);
-        assertEquals(userService.get(userId).getUsername(), USER_1);
-        assertNull(userService.getIdByUsername(USER_NOT_EXIST));
+    public void testGetIdUserByEmail() {
+        final Integer userId = userService.getIdByEmail(USER_EMAIL_1);
+        assertEquals(userService.get(userId).getEmail(), USER_EMAIL_1);
+        assertNull(userService.getIdByEmail(USER_NOT_EXIST));
     }
 
     @Test
     public void testGetUserByUsername() {
-        assertEquals(userService.getByUsername(USER_1).getUsername(), USER_1);
-        assertNull(userService.getByUsername(USER_NOT_EXIST));
+        assertEquals(userService.getByEmail(USER_EMAIL_1).getEmail(), USER_EMAIL_1);
+        assertNull(userService.getByEmail(USER_NOT_EXIST));
     }
 
     @Test
@@ -79,12 +81,12 @@ public class UserServiceTest {
 
     @Test
     public void testGetUser() {
-        final Integer userId = userService.getIdByUsername(USER);
+        final Integer userId = userService.getIdByEmail(USER_EMAIL);
         final User user = userService.get(userId);
 
-        assertEquals(USER, user.getUsername());
+        assertEquals(USER_EMAIL, user.getEmail());
         assertNotNull(userService.get(userId));
-        assertNull(userService.getByUsername(USER_NOT_EXIST));
+        assertNull(userService.getByEmail(USER_NOT_EXIST));
     }
 
     @Test
@@ -97,7 +99,7 @@ public class UserServiceTest {
 
     @Test(expected = UsernameNotFoundException.class)
     public void testLoadUserByUsername() {
-        final UserDetails user = userService.loadUserByUsername(USER_1);
+        final UserDetails user = userService.loadUserByUsername(USER_EMAIL_1);
         assertEquals(USER_1, user.getUsername());
         assertNotNull(userService.loadUserByUsername(USER_NOT_EXIST));
     }
@@ -119,5 +121,13 @@ public class UserServiceTest {
         assertEquals(users.size(), userService.getUsersById(users).size());
         userService.delete(user3.getId());
         assertEquals(2, userService.getUsersById(users).size());
+    }
+
+    @Test
+    public void testLoadUserByUserId() {
+        final User user1 = new User("C_3PO", "password", "c_3po@example.com");
+        userService.save(user1);
+
+        assertNotNull(userService.loadUserByUserId(user1.getEmail()));
     }
 }

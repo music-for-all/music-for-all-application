@@ -20,7 +20,7 @@ public class Followers implements Serializable {
     @ElementCollection
     @CollectionTable(name = "user_followers", joinColumns = @JoinColumn(name = "followers_id"))
     @Column(name = "following_id")
-    private final List<Integer> followingId = new ArrayList<>();
+    private final Set<Integer> followingId = new HashSet<>();
 
     public Followers() {
 
@@ -38,7 +38,7 @@ public class Followers implements Serializable {
         this.followingId.remove(followingId);
     }
 
-    public List<Integer> getFollowingId() {
+    public Set<Integer> getFollowingId() {
         return followingId;
     }
 

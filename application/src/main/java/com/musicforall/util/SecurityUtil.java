@@ -12,10 +12,6 @@ public final class SecurityUtil {
     private SecurityUtil() {
     }
 
-    /**
-     * Gets the identity of the authenticated principal.
-     * @return the authenticated user, or <code>null</code> if no user is authenticated
-     */
     public static User currentUser() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

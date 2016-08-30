@@ -2,6 +2,7 @@ package com.musicforall.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.musicforall.common.Constants;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -28,7 +29,7 @@ public class Track implements Serializable {
     public static final String ALL_BY_ID_QUERY = "all_by_id";
     private static final long serialVersionUID = -6851477594231058789L;
     @Id
-    @Column(name = "id")
+    @Column(name = Constants.ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
@@ -41,7 +42,7 @@ public class Track implements Serializable {
 
     @Deprecated
     @Size(min = 2, max = 30)
-    @Column(name = "name", nullable = false)
+    @Column(name = Constants.NAME, nullable = false)
     private String name;
 
     @Size(min = 2, max = 30)
