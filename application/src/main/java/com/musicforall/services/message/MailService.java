@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -26,7 +25,7 @@ public class MailService {
 
     @Async
     @EventListener
-    public void send(SimpleMailMessage mail) {
+    public void send(Mail mail) {
         Objects.requireNonNull(mail, "mail must not be null!");
         try {
             mailSender.send(toMimeMessage(mail));
@@ -35,7 +34,7 @@ public class MailService {
         }
     }
 
-    private MimeMessage toMimeMessage(final SimpleMailMessage mail) throws MessagingException {
+    private MimeMessage toMimeMessage(final Mail mail) throws MessagingException {
         final MimeMessageHelper helper = new MimeMessageHelper(mailSender.createMimeMessage());
         helper.setTo(mail.getTo());
         helper.setFrom(mail.getFrom());
