@@ -114,7 +114,11 @@
     );
 
     $("input[name=artist]").autocomplete(artistAutocomplete(function () {
-        return $("select[name=tags]").val()
+        var tag = $('#tags .active').attr('id');
+        if (tag === "popular"){
+            return null;
+        }
+        return tag;
     }));
 
     function clearTracks() {
@@ -133,7 +137,6 @@
     }
 
     function getTracksByTag(tag) {
-        console.log(tag);
         $.when($.get("<@spring.url "/tracks/popular/tag="/>" + tag.id))
                 .then(function (response) {
                     $('#status-message').text('Top 20 for tag "' + tag.id + '":');
