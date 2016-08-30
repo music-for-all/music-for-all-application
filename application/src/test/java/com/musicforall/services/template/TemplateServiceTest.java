@@ -1,6 +1,8 @@
 package com.musicforall.services.template;
 
 import com.musicforall.util.ServicesTestConfig;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +13,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
+import java.io.File;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.unmodifiableList;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author ENikolskiy.
@@ -30,6 +34,7 @@ import static org.junit.Assert.assertTrue;
 @ActiveProfiles("dev")
 public class TemplateServiceTest {
     private final static List<String> WORDS = unmodifiableList(Arrays.asList("key", "value", "test", "user"));
+    private final static URL url = TemplateServiceTest.class.getClassLoader().getResource("test.html");
 
     @Autowired
     private TemplateService templateService;
@@ -40,6 +45,10 @@ public class TemplateServiceTest {
         params.put("words", WORDS);
 
         final String html = templateService.from("template.ftl", params);
-        WORDS.stream().forEach(w -> assertTrue(html.contains(w)));
+        final Document template = Jsoup.parse(html);
+
+        final Document expectedHtml = Jsoup.parse(new File(url.toURI()), "UTF-8");
+
+        assertEquals(expectedHtml.html(), template.html());
     }
 }

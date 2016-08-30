@@ -2,7 +2,7 @@
 <body>
 <div>
 <#list words as word>
-<p>${word}
+    <p>${word}</p>
 </#list>
 </div>
 </body>
