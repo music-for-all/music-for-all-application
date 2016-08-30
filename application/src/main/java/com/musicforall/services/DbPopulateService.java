@@ -24,6 +24,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.io.FilenameUtils.getName;
@@ -81,7 +82,6 @@ public class DbPopulateService {
     }
 
     private static long getFileSize(final Future<Path> future) {
-        long size = 0L;
         File[] files = new File[0];
         try {
             files = future.get().toFile().listFiles();
@@ -91,10 +91,9 @@ public class DbPopulateService {
         if (files == null || files.length <= 0) {
             return 0L;
         }
-        for (final File file : files) {
-            size += file.length();
-        }
-        return size;
+        return Stream.of(files)
+                .map(File::length)
+                .reduce(0L, (x, y) -> x + y);
     }
 
     @PostConstruct
@@ -133,7 +132,7 @@ public class DbPopulateService {
         final List<Callable<Path>> tasks = LINKS.values().stream().map(DbPopulateService::toURL)
                 .filter(u -> u != null)
                 .peek(u -> LOG.info("going to save file by url - {}", u))
-                .map(url -> (Callable<Path>) () -> fileManager.save(url))
+                .map(url -> (Callable<Path>) () -> fileManager.save(url).get())
                 .collect(toList());
         fileManager.clearDirectory();
         try {

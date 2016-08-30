@@ -3,6 +3,7 @@ package com.musicforall.services.tag;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.Tag;
+import com.musicforall.common.Constants;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public Tag get(String name) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Tag.class)
-                .add(Property.forName("name").eq(name));
+                .add(Property.forName(Constants.NAME).eq(name));
         return dao.getBy(detachedCriteria);
     }
 
@@ -44,7 +45,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<Tag> getAllLike(String tagName) {
         final Map<String, Object> properties = new HashMap<>();
-        properties.put("name", QueryUtil.like(tagName.toLowerCase()));
+        properties.put(Constants.NAME, QueryUtil.like(tagName.toLowerCase()));
         return dao.getAllByNamedQuery(Tag.class, Tag.ALL_LIKE_NAME_QUERY, properties);
     }
 

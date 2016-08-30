@@ -15,6 +15,7 @@ import java.io.*;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 import static java.nio.file.Files.*;
 import static java.util.Objects.requireNonNull;
@@ -52,27 +53,27 @@ public class FileManager {
         dir.mkdirs();
     }
 
-    public Path save(final MultipartFile file) {
+    public Optional<Path> save(final MultipartFile file) {
         requireNonNull(file, "file must not be null");
         LOG.info("save file from multipart {}", file);
         try (InputStream in = file.getInputStream()) {
-            return save(in, file.getOriginalFilename());
+            return Optional.of(save(in, file.getOriginalFilename()));
         } catch (IOException e) {
             LOG.error(SAVE_ERROR_MSG, e);
         }
-        return null;
+        return Optional.empty();
     }
 
-    public Path save(final URL url) {
+    public Optional<Path> save(final URL url) {
         requireNonNull(url, "url must not be null");
         LOG.info("save file by url {}", url);
         final String fileName = FilenameUtils.getName(url.toString());
         try (InputStream in = url.openStream()) {
-            return save(in, fileName);
+            return Optional.of(save(in, fileName));
         } catch (IOException e) {
             LOG.error(SAVE_ERROR_MSG, e);
         }
-        return null;
+        return Optional.empty();
     }
 
     private Path save(final InputStream stream, final String fileName) throws IOException {
@@ -118,16 +119,16 @@ public class FileManager {
      * @param filename the filename of the file
      * @return the path
      */
-    public Path getFilePathByName(final String filename) {
+    public Optional<Path> getFilePathByName(final String filename) {
         requireNonNull(filename, "filename must not be null");
         final Path path = Paths.get(workingDirectory, filename);
         if (!exists(path)) {
-            return null;
+            return Optional.empty();
         }
-        return path;
+        return Optional.of(path);
     }
 
-    public Path getFilePartById(final String location, final int partId) {
+    public Optional<Path> getFilePartById(final String location, final int partId) {
         requireNonNull(location, "location must not be null");
         final String fileName = location + File.separator + createChunkName(partId);
         return getFilePathByName(fileName);
@@ -145,7 +146,7 @@ public class FileManager {
      */
 
     public void clearDirectory() {
-        Path path = Paths.get(workingDirectory);
+        final Path path = Paths.get(workingDirectory);
         try {
             FileUtils.cleanDirectory(path.toFile());
         } catch (IOException e) {

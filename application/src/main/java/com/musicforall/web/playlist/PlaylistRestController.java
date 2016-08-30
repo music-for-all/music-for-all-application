@@ -2,6 +2,7 @@ package com.musicforall.web.playlist;
 
 import com.musicforall.model.Playlist;
 import com.musicforall.services.playlist.PlaylistService;
+import com.musicforall.common.Constants;
 import com.musicforall.util.SecurityUtil;
 import com.musicforall.web.MainController;
 import org.slf4j.Logger;
@@ -26,18 +27,18 @@ public class PlaylistRestController {
     private PlaylistService playlistService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public Playlist createPlaylist(@RequestParam("name") String name) {
+    public Playlist createPlaylist(@RequestParam(Constants.NAME) String name) {
         return playlistService.save(name);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deletePlaylist(@PathVariable("id") Integer id) {
+    public ResponseEntity deletePlaylist(@PathVariable(Constants.ID) Integer id) {
         playlistService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Playlist getPlaylist(@PathVariable("id") Integer id) {
+    public Playlist getPlaylist(@PathVariable(Constants.ID) Integer id) {
         return playlistService.get(id);
     }
 
