@@ -3,6 +3,7 @@ package com.musicforall.services.message;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
+import com.musicforall.model.User;
 import com.musicforall.services.template.TemplateService;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.AfterClass;
@@ -15,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -25,7 +25,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import javax.mail.internet.MimeMessage;
 
-import static com.musicforall.util.SecurityUtil.currentUser;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.any;
@@ -39,10 +38,8 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
-        MessageTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 @ActiveProfiles("dev")
-@WithUserDetails("user@mail.com")
 public class MailServiceTest {
 
     private static GreenMail testSmtp;
@@ -76,9 +73,10 @@ public class MailServiceTest {
     @Test
     public void testSendMessage() throws Exception {
         final String testMessage = "Test email message";
+        final User user = new User("user", "password1", "user@mail.com");
 
         when(templateService.from(any(), any())).thenReturn(testMessage);
-        mailService.send(mails.welcomeMail(currentUser()));
+        mailService.send(mails.welcomeMail(user));
 
         final MimeMessage[] messages = testSmtp.getReceivedMessages();
         assertEquals(1, messages.length);
