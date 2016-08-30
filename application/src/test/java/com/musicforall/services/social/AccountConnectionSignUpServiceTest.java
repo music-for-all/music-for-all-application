@@ -1,6 +1,6 @@
 package com.musicforall.services.social;
 
-import com.musicforall.services.message.Mails;
+import com.musicforall.services.mail.Mails;
 import com.musicforall.services.user.UserTestExecutionListener;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Before;

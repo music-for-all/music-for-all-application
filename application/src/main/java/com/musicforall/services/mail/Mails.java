@@ -1,5 +1,6 @@
-package com.musicforall.services.message;
+package com.musicforall.services.mail;
 
+import com.musicforall.dto.mail.Mail;
 import com.musicforall.model.User;
 import com.musicforall.services.template.TemplateService;
 import freemarker.template.TemplateException;

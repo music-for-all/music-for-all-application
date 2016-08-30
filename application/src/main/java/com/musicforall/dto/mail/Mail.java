@@ -1,4 +1,4 @@
-package com.musicforall.services.message;
+package com.musicforall.dto.mail;
 
 /**
  * Created by kgavrylchenko on 25.08.16.
@@ -6,10 +6,10 @@ package com.musicforall.services.message;
 
 public final class Mail {
 
-    private String text;
-    private String from;
-    private String to;
-    private String subject;
+    private final String text;
+    private final String from;
+    private final String to;
+    private final String subject;
 
     private Mail(String from, String to, String subject, String text) {
         this.from = from;

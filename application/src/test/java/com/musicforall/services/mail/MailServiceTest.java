@@ -1,4 +1,4 @@
-package com.musicforall.services.message;
+package com.musicforall.services.mail;
 
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
