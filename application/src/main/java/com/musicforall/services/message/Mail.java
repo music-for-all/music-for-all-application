@@ -11,15 +11,19 @@ public final class Mail {
     private String to;
     private String subject;
 
-    private Mail(Builder builder) {
-        text = builder.text;
-        from = builder.from;
-        to = builder.to;
-        subject = builder.subject;
+    private Mail(String from, String to, String subject, String text) {
+        this.from = from;
+        this.to = to;
+        this.subject = subject;
+        this.text = text;
     }
 
     public static Builder build() {
         return new Builder();
+    }
+
+    public static Builder build(final Mail mail) {
+        return new Builder(mail);
     }
 
     public String getText() {
@@ -47,6 +51,13 @@ public final class Mail {
         private Builder() {
         }
 
+        public Builder(final Mail mail) {
+            this.text = mail.text;
+            this.from = mail.from;
+            this.to = mail.to;
+            this.subject = mail.subject;
+        }
+
         public Builder text(String val) {
             text = val;
             return this;
@@ -68,7 +79,7 @@ public final class Mail {
         }
 
         public Mail get() {
-            return new Mail(this);
+            return new Mail(from, to, subject, text);
         }
     }
 }
