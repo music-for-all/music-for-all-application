@@ -5,7 +5,7 @@ import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
 import com.musicforall.services.track.TrackService;
-import com.musicforall.util.Constants;
+import com.musicforall.common.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

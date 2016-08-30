@@ -1,6 +1,7 @@
 package com.musicforall.history.model;
 
 
+import com.musicforall.common.Constants;
 import com.musicforall.history.handlers.events.EventType;
 
 import javax.persistence.*;
@@ -36,7 +37,7 @@ public class History {
     public static final String TRACK_LIKES_COUNT_QUERY = "get_likes_count";
 
     @Id
-    @Column(name = "id")
+    @Column(name = Constants.ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

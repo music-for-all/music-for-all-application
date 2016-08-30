@@ -4,7 +4,7 @@ package com.musicforall.model;
  * @author IliaNik on 15.06.2016.
  */
 
-import com.musicforall.util.Constants;
+import com.musicforall.common.Constants;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;

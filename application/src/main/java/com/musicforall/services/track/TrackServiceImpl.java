@@ -1,11 +1,12 @@
 package com.musicforall.services.track;
 
 import com.musicforall.common.dao.Dao;
+import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.services.SearchCriteriaFactory;
-import com.musicforall.util.Constants;
+import com.musicforall.common.Constants;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class TrackServiceImpl implements TrackService {
     @Override
     public List<Track> getAllByName(String trackName) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class)
-                .add(Restrictions.like(Constants.NAME, "%" + trackName + "%").ignoreCase());
+                .add(Restrictions.like(Constants.NAME, QueryUtil.like(trackName)).ignoreCase());
         return dao.getAllBy(detachedCriteria);
     }
 

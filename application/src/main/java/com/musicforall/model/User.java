@@ -1,6 +1,6 @@
 package com.musicforall.model;
 
-import com.musicforall.util.Constants;
+import com.musicforall.common.Constants;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
