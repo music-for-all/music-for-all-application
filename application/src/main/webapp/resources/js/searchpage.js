@@ -19,51 +19,30 @@ jQuery(document).ready(function () {
 
 function search() {
 
-    var title = $("#title").val();
     var artist = $("#artist").val();
-    var album = $("#album").val();
-    var tags = $("#tags").val();
+    var tag = $('#tags .active').attr('id');
 
     /* If a field is empty or too short, ignore it. */
     const MIN_QUERY = 2;
 
-    if (title.length < MIN_QUERY) {
-        title = null;
-    }
     if (artist.length < MIN_QUERY) {
         artist = null;
     }
-    if (album.length < MIN_QUERY) {
-        album = null;
-    }
 
     /* If all the fields are empty, do not proceed with search. */
-    if (!title && !artist && !album && !tags) {
+    if (!artist && !tag) {
         return;
     }
 
     /* Truncate the query string to the maximum allowed size. */
     const MAX_QUERY = 16;
 
-    if (title && title.length > MAX_QUERY) {
-        title = title.substr(0, MAX_QUERY);
-    }
     if (artist && artist.length > MAX_QUERY) {
         artist = artist.substr(0, MAX_QUERY);
     }
-    if (album && album.length > MAX_QUERY) {
-        album = album.substr(0, MAX_QUERY);
-    }
-
-    /* If tags are provided, make them a string with comma-separated values. */
-    if (tags) {
-        tags = tags.join(",");
-    }
 
     var trackData = {
-        title: title,
         artist: artist,
-        album: album,
         tags: tags
     };
     console.log(trackData);

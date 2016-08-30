@@ -33,12 +33,8 @@
 
     <form id="search-form" class="form-inline text-center ">
         <div class="input-group">
-            <input id="title" class="form-control" type="text" value="" placeholder="<@spring.message "placeholder.Title"/>"
-                   name="title" autofocus="autofocus"/>
             <input id="artist" class="form-control" type="text" value="" placeholder="<@spring.message "placeholder.Artist"/>"
-                   name="artist"/>
-            <input id="album" class="form-control" type="text" value="" placeholder="<@spring.message "placeholder.Album"/>"
-                   name="album"/>
+                   name="artist" autofocus="autofocus"/>
             <div class="input-group-btn">
                 <input id="searchButton" data-style="slide-left" class="btn btn-success "
                        type="submit" value="<@spring.message "searchpage.SubmitButton"/>"/>
