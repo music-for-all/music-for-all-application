@@ -24,14 +24,12 @@ public final class DatabaseUtil {
     public static void createUsersConnectionRepositoryTable(DataSource dataSource) {
         try (Statement statement = dataSource.getConnection().createStatement()) {
             statement.execute("select count(*) from UserConnection");
-            statement.execute("DROP TABLE UserConnection");
         } catch (SQLException e) {
-            LOG.error("Table UserConnection does not exist");
+            final ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
+            databasePopulator.addScript(new ClassPathResource("JdbcUsersConnectionRepository.sql",
+                    JdbcUsersConnectionRepository.class));
+            DatabasePopulatorUtils.execute(databasePopulator, dataSource);
+            LOG.info("Table UserConnection successfully created");
         }
-        final ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
-        databasePopulator.addScript(new ClassPathResource("JdbcUsersConnectionRepository.sql",
-                JdbcUsersConnectionRepository.class));
-        DatabasePopulatorUtils.execute(databasePopulator, dataSource);
-        LOG.info("Table UserConnection successfully created");
     }
 }
