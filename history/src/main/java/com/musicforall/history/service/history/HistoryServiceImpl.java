@@ -22,6 +22,9 @@ import java.util.Map;
 @Transactional
 public class HistoryServiceImpl implements HistoryService {
 
+    private static final String EVENT_TYPE = "eventType";
+    private static final String TRACK_ID = "trackId";
+
     @Autowired
     private Dao dao;
 
@@ -37,7 +40,7 @@ public class HistoryServiceImpl implements HistoryService {
         final int offset = 0;
 
         final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("eventType", EventType.TRACK_LISTENED);
+        parameters.put(EVENT_TYPE, EventType.TRACK_LISTENED);
 
         return dao.getAllByNamedQuery(Integer.class, History.POPULAR_TRACKS_QUERY,
                 parameters, new QueryParams(count, offset));
@@ -52,8 +55,8 @@ public class HistoryServiceImpl implements HistoryService {
     public long getLikeCount(Integer trackId) {
 
         final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("trackId", trackId);
-        parameters.put("eventType", EventType.TRACK_LIKED);
+        parameters.put(TRACK_ID, trackId);
+        parameters.put(EVENT_TYPE, EventType.TRACK_LIKED);
 
         return dao.getByNamedQuery(Long.class, History.TRACK_LIKES_COUNT_QUERY,
                 parameters);
@@ -73,10 +76,10 @@ public class HistoryServiceImpl implements HistoryService {
             criteria.add(Property.forName("userId").eq(params.getUserId()));
         }
         if (params.getEventType() != null) {
-            criteria.add(Property.forName("eventType").eq(params.getEventType()));
+            criteria.add(Property.forName(EVENT_TYPE).eq(params.getEventType()));
         }
         if (params.getTrackId() != null) {
-            criteria.add(Property.forName("trackId").eq(params.getTrackId()));
+            criteria.add(Property.forName(TRACK_ID).eq(params.getTrackId()));
         }
         return criteria;
     }

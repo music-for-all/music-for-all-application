@@ -1,5 +1,6 @@
 package com.musicforall.model;
 
+import com.musicforall.common.Constants;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -22,7 +23,7 @@ public class User implements SocialUserDetails, Serializable {
     private static final long serialVersionUID = 1959293141381203004L;
 
     @Id
-    @Column(name = "id")
+    @Column(name = Constants.ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

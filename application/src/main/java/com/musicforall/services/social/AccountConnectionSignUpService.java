@@ -1,8 +1,10 @@
 package com.musicforall.services.social;
 
 import com.musicforall.model.User;
+import com.musicforall.services.mail.Mails;
 import com.musicforall.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
@@ -16,10 +18,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccountConnectionSignUpService implements ConnectionSignUp {
 
+    private final int MAX_LENGTH_NAME = 16;
     @Autowired
     private UserService userService;
-
-    private final int MAX_LENGTH_NAME = 16;
+    @Autowired
+    private ApplicationEventPublisher publisher;
+    @Autowired
+    private Mails mails;
 
     public String execute(Connection<?> connection) {
         final UserProfile profile = connection.fetchUserProfile();
@@ -35,11 +40,8 @@ public class AccountConnectionSignUpService implements ConnectionSignUp {
         user.setPassword(KeyGenerators.string().generateKey());
         if (userService.getByEmail(user.getEmail()) == null) {
             userService.save(user);
+            publisher.publishEvent(mails.welcomeMail(user));
         }
         return user.getEmail();
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 }

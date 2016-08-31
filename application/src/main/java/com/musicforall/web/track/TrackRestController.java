@@ -6,6 +6,7 @@ import com.musicforall.model.Track;
 import com.musicforall.model.User;
 import com.musicforall.services.recommendation.RecommendationService;
 import com.musicforall.services.track.TrackService;
+import com.musicforall.common.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,20 +41,20 @@ public class TrackRestController {
     private RecommendationService recommendationService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public Track createTrack(@RequestParam("name") String name) {
+    public Track createTrack(@RequestParam(Constants.NAME) String name) {
         final Track track = new Track();
         track.setName(name);
         return trackService.save(track);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteTrack(@PathVariable("id") Integer id) {
+    public ResponseEntity deleteTrack(@PathVariable(Constants.ID) Integer id) {
         trackService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Track> getTrack(@PathVariable("id") Integer id) {
+    public ResponseEntity<Track> getTrack(@PathVariable(Constants.ID) Integer id) {
 
         final Track track = trackService.get(id);
         if (track == null) {
@@ -76,7 +77,7 @@ public class TrackRestController {
     }
 
     @RequestMapping(value = "/like/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Long> getLikeCount(@PathVariable("id") Integer id) {
+    public ResponseEntity<Long> getLikeCount(@PathVariable(Constants.ID) Integer id) {
 
         final long numLikes = historyService.getLikeCount(id);
 
@@ -93,7 +94,7 @@ public class TrackRestController {
         return new ResponseEntity<>(tracks, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/popular",  method = RequestMethod.GET)
+    @RequestMapping(value = "/popular", method = RequestMethod.GET)
     public Collection<Track> getByPopularity() {
         return recommendationService.getMostPopularTracks();
     }

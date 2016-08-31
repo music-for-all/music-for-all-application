@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 import static com.musicforall.files.utils.FileTestUtils.getResource;
 import static com.musicforall.files.utils.FileTestUtils.mergeFiles;
@@ -59,8 +60,8 @@ public class FileManagerTest {
 
     @Test
     public void testGetFileByName() throws Exception {
-        final Path path = manager.getFilePathByName(TEST_FILE_NAME);
-        assertNotNull(path);
+        final Optional<Path> path = manager.getFilePathByName(TEST_FILE_NAME);
+        assertTrue(path.isPresent());
     }
 
     @Test
@@ -74,14 +75,14 @@ public class FileManagerTest {
 
     @Test
     public void testGetNonExistingFile() throws Exception {
-        final Path path = manager.getFilePathByName("fakeResource.jpg");
-        assertNull(path);
+        final Optional<Path> path = manager.getFilePathByName("fakeResource.jpg");
+        assertFalse(path.isPresent());
     }
 
     @Test
     public void testSaveByUrl() throws Exception {
         final URL url = saveByUrlResource;
-        assertNotNull(manager.save(url));
+        assertTrue(manager.save(url).isPresent());
     }
 
     @Test
@@ -89,7 +90,7 @@ public class FileManagerTest {
         final URL url = PowerMock.createMock(URL.class);
         EasyMock.expect(url.openStream()).andThrow(new IOException());
         replayAll();
-        assertNull(manager.save(url));
+        assertFalse(manager.save(url).isPresent());
         verifyAll();
     }
 
@@ -98,7 +99,7 @@ public class FileManagerTest {
         final MultipartFile file = PowerMock.createMock(MultipartFile.class);
         EasyMock.expect(file.getInputStream()).andThrow(new IOException());
         replayAll();
-        assertNull(manager.save(file));
+        assertFalse(manager.save(file).isPresent());
         verifyAll();
     }
 
@@ -107,7 +108,7 @@ public class FileManagerTest {
         final Path path = get(resourceUrl.toURI());
         try (InputStream inputStream = newInputStream(path)) {
             final MockMultipartFile file = new MockMultipartFile("file", "test.mp3", null, inputStream);
-            assertNotNull(manager.save(file));
+            assertTrue(manager.save(file).isPresent());
 
             final File[] files = get(testDirectory.getAbsolutePath(), "test.mp3")
                     .toFile()
@@ -130,6 +131,6 @@ public class FileManagerTest {
             final MockMultipartFile file = new MockMultipartFile("file", "testGetFilePartById.mp3", null, inputStream);
             manager.save(file);
         }
-        assertNotNull(manager.getFilePartById("testGetFilePartById.mp3", 0));
+        assertTrue(manager.getFilePartById("testGetFilePartById.mp3", 0).isPresent());
     }
 }
