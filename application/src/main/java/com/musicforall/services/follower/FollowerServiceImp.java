@@ -23,21 +23,21 @@ public class FollowerServiceImp implements FollowerService {
     private Dao dao;
 
     @Override
-    public void follow(Integer userId, Integer following_userId) {
+    public void follow(Integer userId, Integer followingUserId) {
         Followers followers = dao.get(Followers.class, userId);
         if (followers == null) {
             followers = new Followers(userId);
         }
-        if (!userId.equals(following_userId)) {
-            followers.follow(following_userId);
+        if (!userId.equals(followingUserId)) {
+            followers.follow(followingUserId);
         }
         dao.save(followers);
     }
 
     @Override
-    public void unfollow(Integer userId, Integer following_userId) {
+    public void unfollow(Integer userId, Integer followingUserId) {
         final Followers followers = dao.get(Followers.class, userId);
-        followers.unfollow(following_userId);
+        followers.unfollow(followingUserId);
         dao.save(followers);
     }
 

@@ -4,6 +4,7 @@ import com.musicforall.history.handlers.events.TrackLikedEvent;
 import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
+import com.musicforall.services.recommendation.RecommendationService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.common.Constants;
 import org.slf4j.Logger;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import static com.musicforall.util.SecurityUtil.currentUser;
 
@@ -38,6 +38,9 @@ public class TrackRestController {
     @Autowired
     private TrackService trackService;
 
+    @Autowired
+    private RecommendationService recommendationService;
+
     @RequestMapping(method = RequestMethod.POST)
     public Track createTrack(@RequestParam(Constants.NAME) String name) {
         final Track track = new Track();
@@ -52,13 +55,17 @@ public class TrackRestController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Track getTrack(@PathVariable(Constants.ID) Integer id) {
-        return trackService.get(id);
+    public ResponseEntity<Track> getTrack(@PathVariable(Constants.ID) Integer id) {
+        final Track track = trackService.get(id);
+        if (track == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(track, HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = "/like/{id}", method = RequestMethod.POST)
     public ResponseEntity like(@PathVariable Integer id) {
-
         final User user = currentUser();
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -70,17 +77,18 @@ public class TrackRestController {
 
     @RequestMapping(value = "/like/{id}", method = RequestMethod.GET)
     public ResponseEntity<Long> getLikeCount(@PathVariable(Constants.ID) Integer id) {
-
-        final long numLikes = historyService.getLikeCount(id);
-
-        return new ResponseEntity<>(numLikes, HttpStatus.OK);
+        return new ResponseEntity<>(historyService.getLikeCount(id), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/recommended", method = RequestMethod.GET)
+    public ResponseEntity<Collection<Track>> getRecommendedTracks() {
+        final Collection<Track> tracks = recommendationService.getRecommendedTracks();
+        return new ResponseEntity<>(tracks, HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/popular", method = RequestMethod.GET)
     public Collection<Track> getByPopularity() {
-        final List<Integer> popularTracksIds = historyService.getTheMostPopularTracks();
-        return trackService.getAllById(popularTracksIds);
+        return recommendationService.getMostPopularTracks();
     }
 
     @RequestMapping(value = "/popular/tag={name}",  method = RequestMethod.GET)

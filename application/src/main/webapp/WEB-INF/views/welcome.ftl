@@ -38,8 +38,8 @@
 
                     <div class="hide" id="popover-content">
                         <@m.form "/welcome", "POST", "login">
-                            <label for="inputUsername" class="sr-only"><@spring.message "welcomepage.Email"/></label>
-                            <input type="text" id="inputUsername" name="username" class="form-control"
+                            <label for="inputEmail" class="sr-only"><@spring.message "welcomepage.Email"/></label>
+                            <input type="text" id="inputEmail" name="email" class="form-control"
                                    placeholder="Email"
                                    required />
                             <label for="inputPassword" class="sr-only"><@spring.message "welcomepage.Password"/></label>
@@ -179,7 +179,7 @@
         /* Set focus on the name input field when the pop-up window has been shown. */
         $("#popover").on("shown.bs.popover", function () {
 
-            $("#inputUsername").focus();
+            $("#inputEmail").focus();
         });
     });
 </script>

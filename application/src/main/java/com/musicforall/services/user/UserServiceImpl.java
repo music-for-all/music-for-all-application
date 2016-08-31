@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByEmail(String email) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
-                .add(Property.forName("email").eq(email));
+                .add(Property.forName(Constants.EMAIL).eq(email));
 
         return dao.getBy(detachedCriteria);
     }

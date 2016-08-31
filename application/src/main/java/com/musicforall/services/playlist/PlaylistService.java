@@ -20,7 +20,11 @@ public interface PlaylistService {
 
     void addTracks(Integer playlistId, Set<Track> tracks);
 
-    Set<Playlist> getAllUserPlaylist(Integer userId);
+    Set<Playlist> getAllUserPlaylists(Integer userId);
 
     Playlist get(Integer playlistId);
+
+    void addTrack(Integer playlistId, Integer trackId);
+
+    void removeTrack(Integer playlistId, Integer trackId);
 }
