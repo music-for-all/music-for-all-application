@@ -3,6 +3,7 @@ package com.musicforall.web.artist;
 import com.musicforall.model.Artist;
 import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Track;
+import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.web.tag.TagRestController;
 import org.slf4j.Logger;
@@ -29,11 +30,20 @@ public class ArtistRestController {
     @Autowired
     private TrackService trackService;
 
+    @Autowired
+    private ArtistService artistService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getArtists(@RequestParam("artistName") final String artistName,
                                      @RequestParam(value = "tags", required = false) final List<String> tags) {
         final SearchTrackRequest searchQuery = new SearchTrackRequest();
-        searchQuery.setArtist(artistName);
+
+        final Artist searchArtist = artistService.get(artistName);
+        if (searchArtist != null) {
+            searchQuery.setArtist(searchArtist);
+        } else {
+            searchQuery.setArtist(new Artist(artistName));
+        }
         searchQuery.setTags(tags);
         final List<Track> tracks = trackService.getAllLike(searchQuery);
 

@@ -1,9 +1,7 @@
 package com.musicforall.services.artist;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.Artist;
-import com.musicforall.model.Tag;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Pavel Podgorniy on 8/19/2016.
  */
 @Service("artistService")
 @Transactional
-public class ArtistServiceImpl implements ArtistService{
+public class ArtistServiceImpl implements ArtistService {
     @Autowired
     private Dao dao;
 

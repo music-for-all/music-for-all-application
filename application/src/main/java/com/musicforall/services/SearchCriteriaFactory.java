@@ -1,6 +1,7 @@
 package com.musicforall.services;
 
 import com.musicforall.common.query.QueryUtil;
+import com.musicforall.model.Artist;
 import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Track;
 import com.musicforall.common.Constants;
@@ -23,15 +24,16 @@ public final class SearchCriteriaFactory {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class);
 
         final String title = searchCriteria.getTitle();
-        final String artist = searchCriteria.getArtist();
+        final Artist artist = searchCriteria.getArtist();
         final String album = searchCriteria.getAlbum();
         final List<String> tags = searchCriteria.getTags();
 
         if (title != null && !title.isEmpty()) {
             detachedCriteria.add(Restrictions.ilike("title", QueryUtil.like(title)));
         }
-        if (artist != null && !artist.isEmpty()) {
-            detachedCriteria.add(Restrictions.ilike("artist", QueryUtil.like(artist)));
+        //Check correctness of using Artist entity
+        if (artist != null) {
+            detachedCriteria.add(Restrictions.ilike("artist.artistName", QueryUtil.like(artist.getArtistName())));
         }
         if (album != null && !album.isEmpty()) {
             detachedCriteria.add(Restrictions.ilike("album", QueryUtil.like(album)));

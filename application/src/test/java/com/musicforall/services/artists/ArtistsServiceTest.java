@@ -1,9 +1,7 @@
 package com.musicforall.services.artists;
 
 import com.musicforall.model.Artist;
-import com.musicforall.model.Tag;
 import com.musicforall.services.artist.ArtistService;
-import com.musicforall.services.tag.TagService;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,9 +12,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by Pavel Podgorniy on 8/19/2016.
@@ -31,10 +31,24 @@ public class ArtistsServiceTest {
     private ArtistService artistService;
 
     @Test
-    public void testSaveAllArtistsGetAllArtists() {
+    public void testSaveArtistWithoutTags() {
         final Artist artist1 = new Artist("artist_for_save1");
+        Artist savesArtist = artistService.save(artist1);
+        assertEquals(artist1, savesArtist);
+    }
 
-        final Artist savesArtists = artistService.save(artist1);
-        assertTrue(artistService.getAllArtists().contains(savesArtists));
+    @Test
+    public void testGetArtist() {
+        final Artist artist1 = new Artist("artist_for_save1");
+        artistService.save(artist1);
+        final Artist savesArtists = artistService.get("artist_for_save1");
+        assertNotNull(savesArtists);
+    }
+
+    @Test
+    public void testSaveAll() {
+        final Set<Artist> artistSet = new HashSet<>(Arrays.asList(new Artist("artist1"), new Artist("artist2")));
+        final Set<Artist> savesArtists = new HashSet<>(artistService.saveAll(artistSet));
+        assertEquals(artistSet, savesArtists);
     }
 }

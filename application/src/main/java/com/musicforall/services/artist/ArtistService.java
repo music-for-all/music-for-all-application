@@ -1,7 +1,6 @@
 package com.musicforall.services.artist;
 
 import com.musicforall.model.Artist;
-import com.musicforall.model.Tag;
 
 import java.util.Collection;
 import java.util.List;
@@ -12,6 +11,7 @@ import java.util.List;
 public interface ArtistService {
     /**
      * Saves the given instance of the Artist class to the database.
+     *
      * @param artist the artist to be saved
      * @return a saved Artist instance
      */
@@ -19,6 +19,7 @@ public interface ArtistService {
 
     /**
      * Saves the given collection of artists in the database.
+     *
      * @param artists the collection of artists to be saved
      * @return a collection of saved artists
      */
@@ -26,6 +27,7 @@ public interface ArtistService {
 
     /**
      * Retrieves a Artist with the provided name.
+     *
      * @param artist the name of the artist
      * @return an instance of the retrieved Artist
      */
@@ -33,6 +35,7 @@ public interface ArtistService {
 
     /**
      * Gets a collection of all c recorded in the database.
+     *
      * @return a collection of type Artist
      */
     List<Artist> getAllArtists();

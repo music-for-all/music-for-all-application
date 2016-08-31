@@ -153,7 +153,7 @@ public class TrackServiceTest {
         );
         trackService.saveAll(tracks);
 
-        SearchTrackRequest searchCriteria = new SearchTrackRequest("title", "artist", "album", Arrays.asList("tag1", "tag2"));
+        SearchTrackRequest searchCriteria = new SearchTrackRequest("title", new Artist("artist"), "album", Arrays.asList("tag1", "tag2"));
         tracks = trackService.getAllLike(searchCriteria);
         assertNotNull(tracks);
         assertEquals(1, tracks.size());

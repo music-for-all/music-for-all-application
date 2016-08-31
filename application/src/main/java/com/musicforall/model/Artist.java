@@ -4,11 +4,9 @@ package com.musicforall.model;
  * @author IliaNik on 15.06.2016.
  */
 
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
@@ -19,8 +17,7 @@ import java.util.Set;
 public class Artist implements Serializable {
 
     private static final long serialVersionUID = 5787383287840000175L;
-
-
+    
     @Id
     @Size(min = 2, max = 30)
     @Column(name = "artist_name")
@@ -43,7 +40,7 @@ public class Artist implements Serializable {
 
     public Artist(String name, Set<Tag> tags) {
         this.artistName = name;
-        this.tags= tags;
+        this.tags = tags;
     }
 
     public String getArtistName() {
@@ -62,13 +59,13 @@ public class Artist implements Serializable {
         this.tags = tags;
     }
 
-    public void extendTags(Set<Tag> tags){
+    public void extendTags(Set<Tag> tags) {
         this.tags.addAll(tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(artistName,tags);
+        return Objects.hash(artistName, tags);
     }
 
     @Override
@@ -81,7 +78,7 @@ public class Artist implements Serializable {
         }
         final Artist other = (Artist) obj;
         return Objects.equals(this.artistName, other.artistName)
-                && Objects.equals(this.tags, other.tags) ;
+                && Objects.equals(this.tags, other.tags);
     }
 
     @Override
