@@ -74,8 +74,7 @@
 "Add": {"url": '/uploadFile', "title": "${addCaption}", "icon": "fa-plus"},
 "Profile": {"url": '/profile', "title": "", "icon": "fa-cog"},
 "Contacts": {"url": '/contactManager', "title": "", "icon": "fa-users"},
-"WithoutActivePage": {"url": ''},
-
+"WithoutActivePage": {"url": ''}
 }>
 
 <#macro navigation activePage=pages.WithoutActivePage>
