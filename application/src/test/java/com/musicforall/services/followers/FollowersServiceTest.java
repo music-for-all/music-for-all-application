@@ -15,8 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.musicforall.history.handlers.events.EventType.TRACK_LIKED;
 import static com.musicforall.history.handlers.events.EventType.TRACK_LISTENED;
@@ -120,8 +120,7 @@ public class FollowersServiceTest {
         historyService.record(history2);
         historyService.record(history3);
 
-        LinkedHashMap<User, List<History>> followingHistories = (LinkedHashMap<User, List<History>>) followerService
-                .getGroupedFollowingHistories(USER_ID);
+        Map<User, List<History>> followingHistories = followerService.getGroupedFollowingHistories(USER_ID);
 
         assertTrue(followingHistories.get(user1).contains(history1));
         assertTrue(followingHistories.get(user1).contains(history2));

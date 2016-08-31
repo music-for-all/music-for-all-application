@@ -18,14 +18,14 @@ import java.util.Map;
  * @author IliaNik on 30.08.2016.
  */
 @RestController
-@RequestMapping("/yourFollowingActivity")
+@RequestMapping("/feed")
 public class FollowingController {
     private static final Logger LOG = LoggerFactory.getLogger(FollowingController.class);
 
     @Autowired
     private FollowerService followerService;
 
-    @RequestMapping(value = "/groupedHistories", method = RequestMethod.GET)
+    @RequestMapping(value = "/histories", method = RequestMethod.GET)
     public Map<User, List<History>> getGroupedHistories() {
         return followerService
                 .getGroupedFollowingHistories(SecurityUtil.currentUser().getId());

@@ -6,7 +6,7 @@
 <title><@spring.message "followingpage.Title"/></title>
 <link href="/resources/css/following.css" rel="stylesheet">
 <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
-
+<script src="/resources/js/following.js"></script>
 </@m.head>
 
 <@m.body>
@@ -22,27 +22,30 @@
 
 <script type="text/template" class="groupedHistories">
     <% _.each(data, function(user, histories){
-    var i = 0;%>
+    var count = 0;%>
 
     <div id="following_user">
-        <div class="username text-center" data-toggle="collapse" data-target="#username1"><%= user.username %></div>
+        <div class="username text-center" data-toggle="collapse" data-target="#<%= user.email %>"><%= user.username %>
+        </div>
         <div class="activities">
 
-            <% _.each(histories, function(history){
-            i++;
-            if(i <= 2){%>
+            <% _.every(histories, function(history){
+            count++;
+            if(count <= 2 || (count > 3 && count <= 30)){%>
             <div class="row activity">
                 <div class="col-xs-6 col-sm-9 event"><%history.eventType%></div>
                 <div class="col-xs-6 col-sm-3 date"><%history.date%></div>
             </div>
-            <%} else if (i > 2 && i <= 30){%>
-            <div id="user" class="collapse">
+            <%} else if (count = 3){%>
+            <div id="<%= user.email %>" class="collapse">
                 <div class="row activity">
-                    <div class="col-xs-6 col-sm-9 event"><%history.eventType%></div>
+                    <div clasusers="col-xs-6 col-sm-9 event"><%history.eventType%></div>
                     <div class="col-xs-6 col-sm-3 date"><%history.date%></div>
                 </div>
+                <% } else return false;});
+                if(count > 2){%>
             </div>
-            <% } else break;}); %>
+            <% } %>
         </div>
     </div>
     <% }); %>
@@ -55,7 +58,7 @@
     );
 
     function getGroupedHistories() {
-        self.getGroupedHistories().then(function (users) {
+        getHistories().then(function (users) {
             $("#followingsHistories").after(
                     userGroupedHistories(users)
             );
