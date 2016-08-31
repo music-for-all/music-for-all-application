@@ -78,7 +78,6 @@ public class DbPopulateService {
             LOG.error("URL is malformed {}", url, e);
         }
         return null;
-
     }
 
     private static long getFileSize(final Future<Path> future) {
@@ -135,6 +134,7 @@ public class DbPopulateService {
                 .map(url -> (Callable<Path>) () -> fileManager.save(url).get())
                 .collect(toList());
         fileManager.clearDirectory();
+
         try {
             final List<Future<Path>> futures = executorService.invokeAll(tasks);
 
@@ -157,6 +157,8 @@ public class DbPopulateService {
 
             final List<Integer> tracksId = tracks.stream().map(Track::getId).collect(toList());
             dbHistoryPopulateService.populateTrackListened(tracksId, user.getId());
+
+            dbHistoryPopulateService.populateTrackLikedByFollowedUsers(tracksId, user2.getId());
 
             LOG.info("playlist {} is saved", playlist);
 

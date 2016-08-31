@@ -26,14 +26,14 @@ import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 
 import javax.sql.DataSource;
 
+import static com.musicforall.common.Constants.EMAIL;
+
 /**
  * Created by Andrey on 8/11/16.
  */
 @Configuration
 @EnableSocial
 public class SocialConfig implements SocialConfigurer {
-
-    private static final String EMAIL = "email";
 
     @Autowired
     private DataSource dataSource;

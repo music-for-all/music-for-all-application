@@ -43,30 +43,30 @@ public class SearchCriteriaFactoryTest {
         final Set<Tag> tags = new HashSet<Tag>(Arrays.asList(new Tag("tag1"), new Tag("tag2")));
 
         List<Track> tracks = Arrays.asList(
-                new Track("track", "title1", "artist1", "album1", "/root/track1.mp3", null),
-                new Track("track", "title2", "artist2", "album2", "/root/track2.mp3", tags),
-                new Track("track", "title3", "artist3", "album3", "/root/track3.mp3", null)
+                new Track("track", "testTitle1", "artist1", "album1", "/root/track1.mp3", null),
+                new Track("track", "testTitle2", "artist2", "album2", "/root/track2.mp3", tags),
+                new Track("track", "testTitle3", "artist3", "album3", "/root/track3.mp3", null)
         );
         trackService.saveAll(tracks);
 
         tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(
-                new SearchTrackRequest("title", null, null, null)));
+                new SearchTrackRequest("testTitle", null, null, null)));
         assertEquals(3, tracks.size());
 
         tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(
-                new SearchTrackRequest("title2", "", null, null)));
+                new SearchTrackRequest("testTitle2", "", null, null)));
         assertEquals(1, tracks.size());
 
         tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(
-                new SearchTrackRequest("title3", "artist", null, null)));
+                new SearchTrackRequest("testTitle3", "artist", null, null)));
         assertEquals(1, tracks.size());
 
         tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(
-                new SearchTrackRequest("title3", "artist3", "", null)));
+                new SearchTrackRequest("testTitle3", "artist3", "", null)));
         assertEquals(1, tracks.size());
 
         tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(
-                new SearchTrackRequest("title1", "artist1", "album", null)));
+                new SearchTrackRequest("testTitle1", "artist1", "album", null)));
         assertEquals(1, tracks.size());
 
         tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(
