@@ -46,9 +46,13 @@ public class TemplateServiceTest {
 
         final String html = templateService.from("template.ftl", params);
         final Document template = Jsoup.parse(html);
-
         final Document expectedHtml = Jsoup.parse(new File(url.toURI()), "UTF-8");
 
-        assertEquals(expectedHtml.html(), template.html());
+        int nodeSize = template.childNodes().size();
+        assertEquals(nodeSize, expectedHtml.childNodeSize());
+
+        for (int i = 0; i < nodeSize; i++) {
+            template.childNode(i).hasSameValue(expectedHtml.childNode(i));
+        }
     }
 }
