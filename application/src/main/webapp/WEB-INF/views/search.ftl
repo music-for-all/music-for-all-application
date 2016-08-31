@@ -5,11 +5,9 @@
 <@m.head>
 <title><@spring.message "searchpage.Title"/></title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="/resources/js/player.js"></script>
-<script src="/resources/js/main.js"></script>
-<script src="/resources/js/track.js"></script>
+<script src="<@spring.url "/resources/js/player.js"/>"></script>
+<script src="<@spring.url "/resources/js/track.js"/>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
 <script src="<@spring.url "/resources/js/searchpage.js"/>"></script>
 <script src="<@spring.url "/resources/js/autocompleteConfig.js"/>"></script>
 <link href="<@spring.url "/resources/css/searchpage.css" />" rel="stylesheet">
