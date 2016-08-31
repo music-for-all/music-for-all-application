@@ -44,6 +44,18 @@ public class PlaylistRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     public Collection<Playlist> getPlaylists() {
-        return playlistService.getAllUserPlaylist(SecurityUtil.currentUser().getId());
+        return playlistService.getAllUserPlaylists(SecurityUtil.currentUser().getId());
+    }
+
+    @RequestMapping(value = "/{id}/add/{trackId}", method = RequestMethod.POST)
+    public ResponseEntity addTrack(@PathVariable("id") Integer playlistId, @PathVariable Integer trackId) {
+        playlistService.addTrack(playlistId, trackId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}/remove/{trackId}", method = RequestMethod.DELETE)
+    public ResponseEntity removeTrack(@PathVariable("id") Integer playlistId, @PathVariable Integer trackId) {
+        playlistService.removeTrack(playlistId, trackId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

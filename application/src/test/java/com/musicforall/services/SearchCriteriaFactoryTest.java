@@ -24,7 +24,7 @@ import java.util.Set;
 import static junit.framework.TestCase.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class })
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
 @ActiveProfiles("dev")
 @Transactional
 public class SearchCriteriaFactoryTest {
@@ -51,23 +51,23 @@ public class SearchCriteriaFactoryTest {
         trackService.saveAll(tracks);
 
         tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(
-                new SearchTrackRequest("title", null, null, null)));
+                new SearchTrackRequest("testTitle", null, null, null)));
         assertEquals(3, tracks.size());
 
         tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(
-                new SearchTrackRequest("title2", "", null, null)));
+                new SearchTrackRequest("testTitle2", "", null, null)));
         assertEquals(1, tracks.size());
 
         tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(
-                new SearchTrackRequest("title3", "artist", null, null)));
+                new SearchTrackRequest("testTitle3", "artist", null, null)));
         assertEquals(1, tracks.size());
 
         tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(
-                new SearchTrackRequest("title3", "artist3", "", null)));
+                new SearchTrackRequest("testTitle3", "artist3", "", null)));
         assertEquals(1, tracks.size());
 
         tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(
-                new SearchTrackRequest("title1", "artist1", "album", null)));
+                new SearchTrackRequest("testTitle1", "artist1", "album", null)));
         assertEquals(1, tracks.size());
 
         tracks = dao.getAllBy(SearchCriteriaFactory.createTrackSearchCriteria(

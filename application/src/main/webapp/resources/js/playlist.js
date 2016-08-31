@@ -1,9 +1,5 @@
 "use strict";
 
-/**
- * The Playlist object encapsulates operations with the Playlist RESTful service.
- * @author ENikolskiy on 6/24/2016.
- */
 function Playlist() {
 
     var self = this;
@@ -27,5 +23,20 @@ function Playlist() {
 
     self.all = function () {
         return $.when($.get(baseUrl));
+    };
+
+    self.addTrack = function (playlistId, trackId) {
+        return $.when($.ajax({
+            type: "POST",
+            url: baseUrl + "/" + playlistId + "/add/" + trackId
+        }));
+    };
+
+
+    self.removeTrack = function (playlistId, trackId) {
+        return $.when($.ajax({
+            type: "DELETE",
+            url: baseUrl + "/" + playlistId + "/remove/" + trackId,
+        }));
     };
 }
