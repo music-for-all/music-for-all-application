@@ -51,10 +51,10 @@
         <table id="tracks" class="table table-hover table-striped table-condensed ">
             <thead>
             <tr>
-                <th><@spring.message "welcomepage.Actions"/></th>
-                <th><@spring.message "welcomepage.Artist"/></th>
-                <th><@spring.message "welcomepage.Title"/></th>
-                <th><@spring.message "welcomepage.Duration"/></th>
+                <th><@spring.message "songTable.Actions"/></th>
+                <th><@spring.message "songTable.Artist"/></th>
+                <th><@spring.message "songTable.Title"/></th>
+                <th><@spring.message "songTable.Duration"/></th>
             </tr>
             </thead>
 
@@ -122,57 +122,49 @@
         return tag;
     }));
 
-    $("#search-form").on("submit", function () {
+    function buildTrackTable(tracks) {
+        $("#tracks tr:gt(0)").remove();
+        $("#tracks").find("thead").after(
+                trackTable(tracks)
+        );
+        tracks.forEach(function (track) {
+            updateLikeCount(track.id);
+        });
+    }
 
-        search().then(function (track) {
-            $("#status-message").text("Found: " + track.length);
-            $("#tracks").find("thead").after(
-                    trackTable(track)
-            );
+    $("#search-form").on("submit", function () {
+        search().then(function (tracks) {
+            $("#status-message").text("Found: " + tracks.length);
+            buildTrackTable(tracks);
         });
         /* Prevent default */
         return false;
     });
 
-    $("#tracks").on("click", ".add-song-button", function (e) {
+    $("#tracks").on("click", ".add-song-button", function () {
         console.log("add track");
     });
 
-    function clearTracks() {
-        $("#tracks tr:gt(0)").remove();
-    }
-
     function getPopularTracks() {
         $('#status-message').text('Popular songs');
-        $.when($.get("<@spring.url "/tracks/popular"/>"))
-                .then(function (response) {
-                    clearTracks();
-                    $("#tracks").find("thead").after(
-                            trackTable(response)
-                    );
-                });
+        popularTracks().then(function (response) {
+            buildTrackTable(response)
+        });
     }
 
     function getTracksByTag(tag) {
-        clearTracks();
-
-        $.getJSON("<@spring.url "/api/search"/>", {tags: tag})
-        <#--$.when($.get("/tracks/popular/tag=" + tag.id))-->
-                .then(function (track) {
-                    $('#status-message').text('Top 20 for tag "' + tag + '":');
-                    $("#tracks").find("thead").after(
-                            trackTable(track)
-                    );
-                });
+        $('#status-message').text('Top songs for tag "' + tag + '":');
+        getTracks(tag).then(function (tracks) {
+            buildTrackTable(tracks);
+        });
     }
 
     function getPopularTags() {
-        $.when($.get("<@spring.url "/tags/popular"/>"))
-                .then(function (response) {
-                    $("#popular").after(
-                            setOfTags(response)
-                    );
-                });
+        popularTags().then(function (tags) {
+            $("#popular").after(
+                    setOfTags(tags)
+            );
+        });
     }
 
     getPopularTracks();

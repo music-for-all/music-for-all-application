@@ -10,8 +10,6 @@ jQuery(document).ready(function () {
 });
 
 function search() {
-
-    clearTracks();
     var artist = $("#artist").val();
     var tag = $('#tags .active').attr('id');
 
@@ -42,5 +40,18 @@ function search() {
         tags: tag
     };
 
-    return $.getJSON("/api/search", trackData);
+    return $.when($.getJSON("/api/search", trackData));
+}
+
+function popularTags() {
+    return $.when($.get("/tags/popular"));
+}
+
+function popularTracks() {
+    return $.when($.get("/tracks/popular"));
+}
+
+function getTracks(tag) {
+    return $.when($.getJSON("/api/search", {tags: tag}));
+// $.when($.get("/tracks/popular/tag=" + tag.id))
 }
