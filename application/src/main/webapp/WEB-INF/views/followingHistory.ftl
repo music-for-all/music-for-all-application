@@ -35,7 +35,7 @@
                     <div class="col-xs-6 col-sm-3 date"><%history.date%></div>
                 </div>
                 <% });
-                if(_.size(histories) > 1){%>
+                if(_.size(histories) > 2){%>
                 </div>
             <% } %>
         </div>
