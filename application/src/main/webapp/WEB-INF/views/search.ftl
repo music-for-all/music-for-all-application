@@ -121,6 +121,18 @@
         return tag;
     }));
 
+    $("#search-form").on("submit", function () {
+
+        search().then(function (track) {
+            $("#status-message").text("Found: " + track.length);
+            $("#results").find("thead").after(
+                    trackTable(track)
+            );
+        });
+        /* Prevent default */
+        return false;
+    });
+
     function clearTracks() {
         $("#results tr:gt(0)").remove();
     }
