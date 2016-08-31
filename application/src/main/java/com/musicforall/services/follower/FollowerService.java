@@ -12,9 +12,9 @@ import java.util.Map;
  */
 public interface FollowerService {
 
-    void follow(Integer userId, Integer following_userId);
+    void follow(Integer userId, Integer followingUserId);
 
-    void unfollow(Integer userId, Integer following_userId);
+    void unfollow(Integer userId, Integer followingUserId);
 
     List<Integer> getFollowersId(Integer userId);
 

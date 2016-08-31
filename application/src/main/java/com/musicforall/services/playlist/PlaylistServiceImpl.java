@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -26,7 +27,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     private Dao dao;
 
     @Override
-    public Set<Playlist> getAllUserPlaylist(Integer userId) {
+    public Set<Playlist> getAllUserPlaylists(Integer userId) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Playlist.class)
                 .add(Property.forName("user.id").eq(userId));
         final List<Playlist> usersPlaylists = dao.getAllBy(detachedCriteria);
@@ -42,6 +43,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     public Playlist save(String playlistName) {
         final Playlist playlist = new Playlist();
         final User user = SecurityUtil.currentUser();
+
         playlist.setUser(user);
         playlist.setName(playlistName);
         return save(playlist);
@@ -65,13 +67,24 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
+    public void addTrack(Integer playlistId, Integer trackId) {
+        final Playlist playlist = dao.get(Playlist.class, playlistId);
+        final Track track = dao.get(Track.class, trackId);
+        playlist.getTracks().add(track);
+        save(playlist);
+    }
+
+    @Override
     public void addTracks(Integer playlistId, Set<Track> tracks) {
         final Playlist playlist = dao.get(Playlist.class, playlistId);
         playlist.addTracks(tracks);
         save(playlist);
     }
 
-    public void setDao(Dao dao) {
-        this.dao = dao;
+    @Override
+    public void removeTrack(Integer playlistId, Integer trackId) {
+        final Playlist playlist = dao.get(Playlist.class, playlistId);
+        playlist.getTracks().removeIf(track -> Objects.equals(track.getId(), trackId));
+        save(playlist);
     }
 }

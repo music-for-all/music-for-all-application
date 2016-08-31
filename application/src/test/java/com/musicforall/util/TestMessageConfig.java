@@ -6,6 +6,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 /**
@@ -42,14 +45,15 @@ public class TestMessageConfig {
 
     @Bean
     public FreeMarkerConfigurer freeMarkerConfigurer() {
-        final FreeMarkerConfigurer conf = new FreeMarkerConfigurer();
-        conf.setTemplateLoaderPath("/WEB-INF/views/");
-        conf.setDefaultEncoding("UTF-8");
-        return conf;
+        return new FreeMarkerConfigurer();
     }
 
     @Bean
-    public freemarker.template.Configuration freeMarkerConfiguration() {
-        return freeMarkerConfigurer().getConfiguration();
+    public freemarker.template.Configuration freeMarkerConfiguration() throws IOException {
+        final freemarker.template.Configuration config = freeMarkerConfigurer().getConfiguration();
+        final Path resourcePath = Paths.get(System.getProperty("user.dir"), "src", "test", "resources");
+
+        config.setDirectoryForTemplateLoading(resourcePath.toFile());
+        return config;
     }
 }

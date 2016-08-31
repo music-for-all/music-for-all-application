@@ -1,6 +1,7 @@
 package com.musicforall.history.model;
 
 
+import com.musicforall.common.Constants;
 import com.musicforall.history.handlers.events.EventType;
 
 import javax.persistence.*;
@@ -22,9 +23,13 @@ import java.util.Objects;
                         " order by count(history.trackId) desc"
         ),
         @NamedQuery(
-                name = History.TRACK_LIKES_COUNT_QUERY,
-                query = "select count(*) from History history " +
-                        "where history.trackId=:trackId and history.eventType=:eventType"
+        name = History.TRACK_LIKES_COUNT_QUERY,
+        query = "select count(*) from History history " +
+                "where history.trackId=:trackId and history.eventType=:eventType"),
+        @NamedQuery(
+                name = History.ALL_USERS_BY_TYPE_QUERY,
+                query = "select h from History h where h.eventType = :eventType and h.userId in " +
+                        "(:usersIds) order by h.date desc"
         ),
         @NamedQuery(
                 name = History.USERS_HISTORIES_QUERY,
@@ -45,8 +50,10 @@ public class History {
 
     public static final String USERS_HISTORIES_QUERY = "get_users_histories";
 
+    public static final String ALL_USERS_BY_TYPE_QUERY = "all_for_users_by_type";
+
     @Id
-    @Column(name = "id")
+    @Column(name = Constants.ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

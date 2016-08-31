@@ -2,6 +2,7 @@ package com.musicforall.services.user;
 
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.User;
+import com.musicforall.common.Constants;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Property;
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByEmail(String email) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
-                .add(Property.forName("email").eq(email));
+                .add(Property.forName(Constants.EMAIL).eq(email));
 
         return dao.getBy(detachedCriteria);
     }
@@ -80,7 +81,7 @@ public class UserServiceImpl implements UserService {
         }
         final Disjunction disjunction = Restrictions.disjunction();
         for (final Integer follower : usersId) {
-            disjunction.add(Property.forName("id").eq(follower));
+            disjunction.add(Property.forName(Constants.ID).eq(follower));
         }
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
                 .add(disjunction);
