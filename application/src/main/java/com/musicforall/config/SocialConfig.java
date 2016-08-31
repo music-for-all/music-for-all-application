@@ -1,6 +1,5 @@
 package com.musicforall.config;
 
-import com.musicforall.common.Constants;
 import com.musicforall.util.DatabaseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
