@@ -38,11 +38,6 @@ function Track() {
             $.ajax({
                 type: "POST",
                 url: baseUrl + "/like/" + id
-
-            }).fail(function (xhr, status, errorThrown) {
-                var message = status + ": " + xhr.status + " " + errorThrown;
-                console.log(message);
-
             }));
     };
 
@@ -51,10 +46,6 @@ function Track() {
             $.ajax({
                 type: "GET",
                 url: baseUrl + "/like/" + id
-
-            }).fail(function (xhr, status, errorThrown) {
-                var message = status + ": " + xhr.status + " " + errorThrown;
-                console.log(message);
             }));
     };
 
@@ -64,11 +55,6 @@ function Track() {
                 type: "GET",
                 url: baseUrl + "/recommended",
                 dataType: "json"
-
-            }).fail(function (xhr, status, errorThrown) {
-                var message = status + ": " + xhr.status + " " + errorThrown;
-                console.log(message);
-
             }));
     };
 }
