@@ -3,6 +3,7 @@ package com.musicforall.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.musicforall.common.Constants;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -23,12 +24,12 @@ public class Playlist implements Serializable {
     private static final long serialVersionUID = 3556491830874885637L;
 
     @Id
-    @Column(name = "id")
+    @Column(name = Constants.ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Size(max = 20)
-    @Column(name = "name", nullable = false)
+    @Column(name = Constants.NAME, nullable = false)
     private String name;
 
     @ManyToMany
