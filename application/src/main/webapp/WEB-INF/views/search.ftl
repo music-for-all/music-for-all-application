@@ -114,6 +114,8 @@
             $("script.tagBtnTemplate").html()
     );
 
+    var track = new Track();
+
     $("input[name=artist]").autocomplete(artistAutocomplete(function () {
         var tag = $('#tags .active').attr('id');
         if (tag === "popular") {
@@ -167,8 +169,30 @@
         });
     }
 
-    getPopularTracks();
-    getPopularTags();
+    function updateLikeCount(id) {
+
+        track.getLikeCount(id)
+                .then(function(likeCount) {
+                    $("#tracks #" + id + " .num-likes").text(likeCount);
+                });
+    }
+
+    $(document).ready(function () {
+
+        $("#tracks").on("click", ".like-button", function () {
+
+            /* The id of a track is stored in the containing <tr> element. */
+            var id = $(this).closest("tr").attr("id");
+            track.like(id)
+                    .then(function() {
+                        $("#" + id + " .like-button").css("opacity", "0.5");
+                        updateLikeCount(id);
+                    });
+        });
+
+        getPopularTracks();
+        getPopularTags();
+    });
 </script>
 </@m.body>
 </html>
