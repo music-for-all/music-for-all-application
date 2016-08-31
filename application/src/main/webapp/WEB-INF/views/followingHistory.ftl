@@ -29,21 +29,16 @@
         </div>
         <div class="activities">
 
-            <% _.every(histories, function(history){
-            count++;
-            if(count <= 2 || (count > 3 && count <= 30)){%>
-            <div class="row activity">
-                <div class="col-xs-6 col-sm-9 event"><%history.eventType%></div>
-                <div class="col-xs-6 col-sm-3 date"><%history.date%></div>
-            </div>
-            <%} else if (count = 3){%>
+            <% _.every(histories, function(history, index){
+            if(index == 3 ){ %>
             <div id="<%= user.email %>" class="collapse">
+                <% } %>
                 <div class="row activity">
-                    <div clasusers="col-xs-6 col-sm-9 event"><%history.eventType%></div>
+                    <div class="col-xs-6 col-sm-9 event"><%history.eventType%></div>
                     <div class="col-xs-6 col-sm-3 date"><%history.date%></div>
                 </div>
-                <% } else return false;});
-                if(count > 2){%>
+                <% });
+                if(_.size(histories) > 2){%>
                 </div>
             <% } %>
         </div>
