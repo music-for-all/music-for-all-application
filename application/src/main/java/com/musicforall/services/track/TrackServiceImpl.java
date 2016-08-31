@@ -1,12 +1,12 @@
 package com.musicforall.services.track;
 
+import com.musicforall.common.Constants;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.services.SearchCriteriaFactory;
-import com.musicforall.common.Constants;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;

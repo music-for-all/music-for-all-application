@@ -21,16 +21,13 @@
 </div>
 
 <script type="text/template" class="groupedHistories">
-    <% _.each(data, function(user, histories){
-    var count = 0;%>
-
+    <% _.each(data, function(user, histories){%>
     <div id="following_user">
         <div class="username text-center" data-toggle="collapse" data-target="#<%= user.email %>"><%= user.username %>
         </div>
         <div class="activities">
-
             <% _.every(histories, function(history, index){
-            if(index == 3 ){ %>
+            if(index == 2 ){ %>
             <div id="<%= user.email %>" class="collapse">
                 <% } %>
                 <div class="row activity">
@@ -38,7 +35,7 @@
                     <div class="col-xs-6 col-sm-3 date"><%history.date%></div>
                 </div>
                 <% });
-                if(_.size(histories) > 2){%>
+                if(_.size(histories) > 1){%>
                 </div>
             <% } %>
         </div>

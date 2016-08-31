@@ -1,9 +1,9 @@
 package com.musicforall.services;
 
+import com.musicforall.common.Constants;
 import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Track;
-import com.musicforall.common.Constants;
 import org.hibernate.criterion.*;
 
 import java.util.List;

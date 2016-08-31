@@ -1,9 +1,9 @@
 package com.musicforall.services.tag;
 
+import com.musicforall.common.Constants;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.Tag;
-import com.musicforall.common.Constants;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;

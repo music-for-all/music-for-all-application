@@ -50,7 +50,8 @@
         <ul id="recommendations" class="nav nav-pills nav-stacked">
         </ul>
     </section>
-</div><!-- end .container -->
+</div>
+<!-- end .container -->
 
 <script type="text/template" class="trackRowTemplate">
     <% _.each(data, function(track){ %>
@@ -103,9 +104,10 @@
             <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
                 <%= data.name %>
             </a>
-                <span class="col-sm-2 form-control"><%= data.artist %></span>
-                <span class="col-sm-2 form-control"><%= data.title %></span>
-                <span class="col-sm-2 form-control">Liked: <span class="glyphicon num-likes" aria-hidden="true"></span></span>
+            <span class="col-sm-2 form-control"><%= data.artist %></span>
+            <span class="col-sm-2 form-control"><%= data.title %></span>
+            <span class="col-sm-2 form-control">Liked: <span class="glyphicon num-likes"
+                                                             aria-hidden="true"></span></span>
         </div>
     </li>
 </script>
@@ -208,7 +210,7 @@
     function updateLikeCount(id) {
 
         track.getLikeCount(id)
-                .then(function(likeCount) {
+                .then(function (likeCount) {
                     $("#tracks #" + id + " .num-likes").text(likeCount);
                     $("#recommendations #" + id + " .num-likes").text(likeCount);
                 });
@@ -250,7 +252,7 @@
             /* The id of a track is stored in the containing <tr> element. */
             var id = $(this).closest("tr").attr("id");
             track.like(id)
-                    .then(function() {
+                    .then(function () {
                         $("#" + id + " .like-button").css("opacity", "0.5");
                         updateLikeCount(id);
                     });
@@ -268,7 +270,7 @@
             var playlistId = $("#playlists li.active").attr("id");
 
             playlist.addTrack(playlistId, trackId)
-                    .then(function() {
+                    .then(function () {
                         /* Remove the track from the recommended section, and update the current playlist. */
                         li.remove();
                         $("#playlists li.active a").trigger("click");
