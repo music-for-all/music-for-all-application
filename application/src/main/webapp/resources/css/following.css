@@ -9,6 +9,9 @@
     border-top-left-radius: 20px;
 }
 
+.title {
+    margin-bottom: 60px;
+}
 
 .activity > .date {
     text-align: right;

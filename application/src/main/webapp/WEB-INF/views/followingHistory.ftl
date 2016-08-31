@@ -1,19 +1,18 @@
 <#import "macros/macros.ftl" as m>
-<#import "/spring.ftl" as spring />
+<#import "/spring.ftl" as spring/>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <@m.head>
 <title><@spring.message "followingpage.Title"/></title>
 <link href="/resources/css/following.css" rel="stylesheet">
-<link href="/resources/css/font-awesome.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="/resources/js/following.js"></script>
 </@m.head>
-
 <@m.body>
 
     <@m.navigation/>
 
-<div class="container">
+<div class="container title">
     <h2><@spring.message "followingpage.Title"/></h2>
 
     <div id="followingsHistories">
