@@ -120,10 +120,11 @@ public class FollowersServiceTest {
         historyService.record(history2);
         historyService.record(history3);
 
-        LinkedHashMap<Integer, List<History>> followingHistories = followerService.getGroupedFollowingHistories(USER_ID);
+        LinkedHashMap<User, List<History>> followingHistories = (LinkedHashMap<User, List<History>>) followerService
+                .getGroupedFollowingHistories(USER_ID);
 
-        assertTrue(followingHistories.get(USER1_ID).contains(history1));
-        assertTrue(followingHistories.get(USER1_ID).contains(history2));
-        assertTrue(followingHistories.get(USER2_ID).contains(history3));
+        assertTrue(followingHistories.get(user1).contains(history1));
+        assertTrue(followingHistories.get(user1).contains(history2));
+        assertTrue(followingHistories.get(user2).contains(history3));
     }
 }

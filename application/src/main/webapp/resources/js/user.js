@@ -25,6 +25,10 @@ function User() {
         return $.when($.get(baseUrl + "/following"));
     };
 
+    self.getGroupedHistories = function () {
+        return $.when($.get(dict.contextPath + "/yourFollowingActivity" + "/groupedHistories"));
+    };
+
     self.search = function (username) {
         return $.when($.get(baseUrl + "/search=" + username));
     };
