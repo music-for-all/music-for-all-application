@@ -24,7 +24,7 @@
 
     <div class="well well-sm">
         <div id="tags" data-toggle="buttons">
-            <label id="popular" name="tag" class="btn btn-success active" onclick="getPopularTracks()" >
+            <label id="popular" name="tag" class="btn btn-success active" onclick="getPopularTracks()">
                 <input type="radio">
                 popular
             </label>
@@ -33,7 +33,8 @@
 
     <form id="search-form" class="form-inline text-center ">
         <div class="input-group">
-            <input id="artist" class="form-control" type="text" value="" placeholder="<@spring.message "placeholder.Artist"/>"
+            <input id="artist" class="form-control" type="text" value=""
+                   placeholder="<@spring.message "placeholder.Artist"/>"
                    name="artist" autofocus="autofocus"/>
             <div class="input-group-btn">
                 <button id="searchButton" data-style="slide-left" class="btn btn-success "
@@ -47,7 +48,7 @@
     <span id="status-message" class="well"></span>
 
     <div id="tracks-results" class="well ">
-        <table id="results" class="table table-hover table-striped table-condensed ">
+        <table id="tracks" class="table table-hover table-striped table-condensed ">
             <thead>
             <tr>
                 <th><@spring.message "welcomepage.Actions"/></th>
@@ -64,7 +65,7 @@
 
 <script type="text/template" class="tagBtnTemplate">
     <% _.each(data, function(tag){ %>
-    <label id="<%= tag.name %>" class="btn btn-success" name="tag" onclick="getTracksByTag(this)">
+    <label id="<%= tag.name %>" class="btn btn-success" name="tag" onclick="getTracksByTag(this.id)">
         <input type="radio">
         <%= tag.name %>
     </label>
@@ -82,7 +83,7 @@
             <button type="button" class="btn btn-xs btn-warning pause-track-button">
                 <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
             </button>
-            <button type="button" class="btn btn-xs btn-success delete-song-button">
+            <button type="button" class="btn btn-xs btn-success add-song-button">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             </button>
             <button class="btn btn-xs btn-primary like-button"><@spring.message "mainpage.Like" /></button>
@@ -115,7 +116,7 @@
 
     $("input[name=artist]").autocomplete(artistAutocomplete(function () {
         var tag = $('#tags .active').attr('id');
-        if (tag === "popular"){
+        if (tag === "popular") {
             return null;
         }
         return tag;
@@ -125,7 +126,7 @@
 
         search().then(function (track) {
             $("#status-message").text("Found: " + track.length);
-            $("#results").find("thead").after(
+            $("#tracks").find("thead").after(
                     trackTable(track)
             );
         });
@@ -133,8 +134,12 @@
         return false;
     });
 
+    $("#tracks").on("click", ".add-song-button", function (e) {
+        console.log("add track");
+    });
+
     function clearTracks() {
-        $("#results tr:gt(0)").remove();
+        $("#tracks tr:gt(0)").remove();
     }
 
     function getPopularTracks() {
@@ -142,16 +147,22 @@
         $.when($.get("<@spring.url "/tracks/popular"/>"))
                 .then(function (response) {
                     clearTracks();
-                    $("#results").find("thead").after(
+                    $("#tracks").find("thead").after(
                             trackTable(response)
                     );
                 });
     }
 
     function getTracksByTag(tag) {
-        $.when($.get("<@spring.url "/tracks/popular/tag="/>" + tag.id))
-                .then(function (response) {
-                    $('#status-message').text('Top 20 for tag "' + tag.id + '":');
+        clearTracks();
+
+        $.getJSON("<@spring.url "/api/search"/>", {tags: tag})
+        <#--$.when($.get("/tracks/popular/tag=" + tag.id))-->
+                .then(function (track) {
+                    $('#status-message').text('Top 20 for tag "' + tag + '":');
+                    $("#tracks").find("thead").after(
+                            trackTable(track)
+                    );
                 });
     }
 
