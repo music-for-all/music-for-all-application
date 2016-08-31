@@ -55,7 +55,6 @@ public class TrackRestController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Track> getTrack(@PathVariable(Constants.ID) Integer id) {
-
         final Track track = trackService.get(id);
         if (track == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -66,7 +65,6 @@ public class TrackRestController {
 
     @RequestMapping(value = "/like/{id}", method = RequestMethod.POST)
     public ResponseEntity like(@PathVariable Integer id) {
-
         final User user = currentUser();
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -78,16 +76,9 @@ public class TrackRestController {
 
     @RequestMapping(value = "/like/{id}", method = RequestMethod.GET)
     public ResponseEntity<Long> getLikeCount(@PathVariable(Constants.ID) Integer id) {
-
-        final long numLikes = historyService.getLikeCount(id);
-
-        return new ResponseEntity<>(numLikes, HttpStatus.OK);
+        return new ResponseEntity<>(historyService.getLikeCount(id), HttpStatus.OK);
     }
 
-    /**
-     * Retrieves tracks recommended for the current user.
-     * @return the recommended tracks, as well as the HTTP status code
-     */
     @RequestMapping(value = "/recommended", method = RequestMethod.GET)
     public ResponseEntity<Collection<Track>> getRecommendedTracks() {
         final Collection<Track> tracks = recommendationService.getRecommendedTracks();

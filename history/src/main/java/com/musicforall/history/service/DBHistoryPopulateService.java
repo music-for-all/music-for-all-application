@@ -37,7 +37,6 @@ public class DBHistoryPopulateService {
     }
 
     public void populateTrackLikedByFollowedUsers(List<Integer> trackIds, Integer userId) {
-
         recordHistories(trackIds, userId, EventType.TRACK_LIKED);
     }
 

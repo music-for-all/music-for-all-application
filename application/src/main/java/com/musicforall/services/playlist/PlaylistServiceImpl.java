@@ -42,8 +42,8 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public Playlist save(String playlistName) {
         final Playlist playlist = new Playlist();
-
         final User user = SecurityUtil.currentUser();
+
         playlist.setUser(user);
         playlist.setName(playlistName);
         return save(playlist);
@@ -68,7 +68,6 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     public void addTrack(Integer playlistId, Integer trackId) {
-
         final Playlist playlist = dao.get(Playlist.class, playlistId);
         final Track track = dao.get(Track.class, trackId);
         playlist.getTracks().add(track);
@@ -84,7 +83,6 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     public void removeTrack(Integer playlistId, Integer trackId) {
-
         final Playlist playlist = dao.get(Playlist.class, playlistId);
         playlist.getTracks().removeIf(track -> Objects.equals(track.getId(), trackId));
         save(playlist);

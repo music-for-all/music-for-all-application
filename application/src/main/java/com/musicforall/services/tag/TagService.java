@@ -18,10 +18,5 @@ public interface TagService {
 
     List<Tag> getAllTags();
 
-    /**
-     * Retrieves tags the names of which are like the given tag name.
-     * @param tagName the name of a tag to be found
-     * @return the list of found tags
-     */
     List<Tag> getAllLike(String tagName);
 }
