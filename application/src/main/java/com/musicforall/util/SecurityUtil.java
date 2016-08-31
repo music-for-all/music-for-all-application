@@ -1,6 +1,7 @@
 package com.musicforall.util;
 
 import com.musicforall.model.User;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -15,7 +16,7 @@ public final class SecurityUtil {
     public static User currentUser() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication.getPrincipal().equals("anonymousUser")) {
+        if (authentication instanceof AnonymousAuthenticationToken) {
             return null;
         }
         return (User) authentication.getPrincipal();
