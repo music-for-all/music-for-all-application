@@ -7,7 +7,6 @@ package com.musicforall.model;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -25,7 +24,7 @@ public class Artist implements Serializable {
     @Id
     @Size(min = 2, max = 30)
     @Column(name = "artist_name")
-    private String artname;
+    private String artistName;
 
     @ManyToMany
     @Cascade(org.hibernate.annotations.CascadeType.MERGE)
@@ -39,25 +38,37 @@ public class Artist implements Serializable {
     }
 
     public Artist(String name) {
-        this.artname = name;
+        this.artistName = name;
     }
 
     public Artist(String name, Set<Tag> tags) {
-        this.artname = name;
+        this.artistName = name;
         this.tags= tags;
     }
 
-    public String getArtname() {
-        return artname;
+    public String getArtistName() {
+        return artistName;
     }
 
-    public void setArtname(String artname) {
-        this.artname = artname;
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public void extendTags(Set<Tag> tags){
+        this.tags.addAll(tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(artname);
+        return Objects.hash(artistName,tags);
     }
 
     @Override
@@ -69,22 +80,16 @@ public class Artist implements Serializable {
             return false;
         }
         final Artist other = (Artist) obj;
-        return Objects.equals(this.artname, other.artname);
+        return Objects.equals(this.artistName, other.artistName)
+                && Objects.equals(this.tags, other.tags) ;
     }
 
     @Override
     public String toString() {
         return "Artist{" +
-                "artname='" + artname + '\'' +
+                "artistName='" + artistName + '\'' +
                 "tags='" + tags + '\'' +
                 '}';
     }
 
-    public Set<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
-    }
 }
