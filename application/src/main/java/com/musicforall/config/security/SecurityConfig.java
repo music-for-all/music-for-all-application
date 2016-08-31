@@ -1,5 +1,6 @@
 package com.musicforall.config.security;
 
+import com.musicforall.common.Constants;
 import com.musicforall.config.SocialConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -42,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage(WELCOME).permitAll()
-                .usernameParameter("email")
+                .usernameParameter(Constants.EMAIL)
                 .successHandler(successHandler())
                 .failureHandler(failureHandler())
                 .and()
