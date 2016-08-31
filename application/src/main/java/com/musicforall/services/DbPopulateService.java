@@ -159,9 +159,8 @@ public class DbPopulateService {
             final List<Integer> tracksId = tracks.stream().map(Track::getId).collect(toList());
             dbHistoryPopulateService.populateTrackListened(tracksId, user.getId());
 
-            final List<Integer> trackIds = Arrays.asList(1, 2, 3);
-            final int FOLLOWED_USER_ID = 2;
-            dbHistoryPopulateService.populateTrackLikedByFollowedUsers(trackIds, FOLLOWED_USER_ID);
+            final int FOLLOWED_USER_ID = user2.getId();
+            dbHistoryPopulateService.populateTrackLikedByFollowedUsers(tracksId, FOLLOWED_USER_ID);
 
             LOG.info("playlist {} is saved", playlist);
 

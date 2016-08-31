@@ -26,7 +26,7 @@ import java.util.Objects;
         query = "select count(*) from History history " +
                 "where history.trackId=:trackId and history.eventType=:eventType"),
         @NamedQuery(
-                name = "all_for_users_by_type",
+                name = History.ALL_USERS_BY_TYPE_QUERY,
                 query = "select h from History h where h.eventType = :eventType and h.userId in " +
                         "(:usersIds) order by h.date desc"
         )
@@ -37,6 +37,8 @@ public class History {
     public static final String POPULAR_TRACKS_QUERY = "most_popular_tracks";
 
     public static final String TRACK_LIKES_COUNT_QUERY = "get_likes_count";
+
+    public static final String ALL_USERS_BY_TYPE_QUERY = "all_for_users_by_type";
 
     @Id
     @Column(name = "id")
