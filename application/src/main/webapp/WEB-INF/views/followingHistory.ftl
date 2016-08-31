@@ -44,7 +44,7 @@
                 </div>
                 <% } else return false;});
                 if(count > 2){%>
-            </div>
+                </div>
             <% } %>
         </div>
     </div>
@@ -59,7 +59,7 @@
 
     function getGroupedHistories() {
         getHistories().then(function (users) {
-            $("#followingsHistories").after(
+            $("#followingsHistories").html(
                     userGroupedHistories(users)
             );
         })
