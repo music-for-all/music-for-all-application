@@ -1,16 +1,14 @@
 package com.musicforall.web.track;
 
-import com.musicforall.history.handlers.events.TrackLikedEvent;
+import com.musicforall.common.Constants;
 import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
 import com.musicforall.services.recommendation.RecommendationService;
 import com.musicforall.services.track.TrackService;
-import com.musicforall.common.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +25,6 @@ import static com.musicforall.util.SecurityUtil.currentUser;
 public class TrackRestController {
 
     private static final Logger LOG = LoggerFactory.getLogger(TrackRestController.class);
-
-    @Autowired
-    private ApplicationEventPublisher publisher;
 
     @Autowired
     private HistoryService historyService;
@@ -70,7 +65,6 @@ public class TrackRestController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        publisher.publishEvent(new TrackLikedEvent(id, user.getId()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

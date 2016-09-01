@@ -50,7 +50,8 @@
         <ul id="recommendations" class="nav nav-pills nav-stacked">
         </ul>
     </section>
-</div><!-- end .container -->
+</div>
+<!-- end .container -->
 
 <script type="text/template" class="trackRowTemplate">
     <% _.each(data, function(track){ %>
@@ -88,6 +89,7 @@
             <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
                 <%= data.name %>
             </a>
+
             <div class="input-group-btn">
                 <button type="button" id="removePlaylistButton" class="btn btn-danger" onclick="deletePlaylist(this)">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
@@ -103,9 +105,10 @@
             <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
                 <%= data.name %>
             </a>
-                <span class="col-sm-2 form-control"><%= data.artist %></span>
-                <span class="col-sm-2 form-control"><%= data.title %></span>
-                <span class="col-sm-2 form-control">Liked: <span class="glyphicon num-likes" aria-hidden="true"></span></span>
+            <span class="col-sm-2 form-control"><%= data.artist %></span>
+            <span class="col-sm-2 form-control"><%= data.title %></span>
+            <span class="col-sm-2 form-control">Liked: <span class="glyphicon num-likes"
+                                                             aria-hidden="true"></span></span>
         </div>
     </li>
 </script>
@@ -142,7 +145,7 @@
                     $("#tracks").find("thead").after(
                             trackRow(response.tracks)
                     );
-                    response.tracks.forEach(function(track) {
+                    response.tracks.forEach(function (track) {
                         updateLikeCount(track.id);
                     });
                 });
@@ -164,7 +167,8 @@
     $("#tracks").on("click", ".delete-song-button", function (e) {
         var row = $(this).closest("tr");
         var id = row.attr("id");
-        playlist.removeTrack(1, id)
+        var playlistToRemove = $("#playlists").find("li.active");
+        playlist.removeTrack(playlistToRemove.attr("id"), id)
                 .then(function () {
                     row.remove();
                 });
@@ -208,7 +212,7 @@
     function updateLikeCount(id) {
 
         track.getLikeCount(id)
-                .then(function(likeCount) {
+                .then(function (likeCount) {
                     $("#tracks #" + id + " .num-likes").text(likeCount);
                     $("#recommendations #" + id + " .num-likes").text(likeCount);
                 });
@@ -237,7 +241,7 @@
                         addPlaylist(this);
                     });
                 })
-                .done(function() {
+                .done(function () {
                     /* For testing purpose, select the first playlist (named 'Hype'). */
                     $("#playlists #1 a").trigger("click");
                 });
@@ -250,7 +254,7 @@
             /* The id of a track is stored in the containing <tr> element. */
             var id = $(this).closest("tr").attr("id");
             track.like(id)
-                    .then(function() {
+                    .then(function () {
                         $("#" + id + " .like-button").css("opacity", "0.5");
                         updateLikeCount(id);
                     });
@@ -268,7 +272,7 @@
             var playlistId = $("#playlists li.active").attr("id");
 
             playlist.addTrack(playlistId, trackId)
-                    .then(function() {
+                    .then(function () {
                         /* Remove the track from the recommended section, and update the current playlist. */
                         li.remove();
                         $("#playlists li.active a").trigger("click");
@@ -283,7 +287,7 @@
         });
 
         /* Event handler for the 'Return' key. */
-        $("#inputNamePlaylist").on("keydown", function(e) {
+        $("#inputNamePlaylist").on("keydown", function (e) {
 
             if (e.keyCode == 0xD) {
                 $("#acceptCreatingPlaylistButton").trigger("click");

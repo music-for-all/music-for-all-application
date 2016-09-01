@@ -1,12 +1,12 @@
 package com.musicforall.history.handlers;
 
-import com.musicforall.history.handlers.events.EventType;
-import com.musicforall.history.handlers.events.TrackLikedEvent;
-import com.musicforall.history.handlers.events.TrackListenedEvent;
+import com.musicforall.history.handlers.events.PlaylistEvent;
+import com.musicforall.history.handlers.events.TrackEvent;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -20,28 +20,21 @@ public class HistoryEventListener {
     @Autowired
     private HistoryService service;
 
+    @Async
     @EventListener
-    public void handleTrackListened(TrackListenedEvent event) {
+    public void handleTrackEvent(TrackEvent event) {
         service.record(toHistoryEntity(event));
     }
 
+    @Async
     @EventListener
-    public void handleTrackLiked(TrackLikedEvent event) {
-        service.record(toHistoryEntity(event));
+    public void handlePlaylistEvent(PlaylistEvent event) {
+
     }
 
-    private History toHistoryEntity(TrackLikedEvent event) {
+    private History toHistoryEntity(TrackEvent event) {
         final History history = new History();
-        history.setEventType(EventType.TRACK_LIKED);
-        history.setTrackId(event.getTrackId());
-        history.setUserId(event.getUserId());
-        history.setDate(new Date());
-        return history;
-    }
-
-    private History toHistoryEntity(TrackListenedEvent event) {
-        final History history = new History();
-        history.setEventType(EventType.TRACK_LISTENED);
+        history.setEventType(event.getType());
         history.setTrackId(event.getTrackId());
         history.setUserId(event.getUserId());
         history.setDate(new Date());
