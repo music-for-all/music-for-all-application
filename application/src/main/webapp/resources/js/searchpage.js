@@ -9,6 +9,8 @@ jQuery(document).ready(function () {
     });
 });
 
+var baseUrl = dict.contextPath;
+
 function search() {
     var artist = $("#artist").val();
     var tag = $('#tags .active').attr('id');
@@ -40,18 +42,18 @@ function search() {
         tags: tag
     };
 
-    return $.when($.getJSON("/api/search", trackData));
+    return $.when($.getJSON(baseUrl + "/api/search", trackData));
 }
 
 function popularTags() {
-    return $.when($.get("/tags/popular"));
+    return $.when($.get(baseUrl + "/tags/popular"));
 }
 
 function popularTracks() {
-    return $.when($.get("/tracks/popular"));
+    return $.when($.get(baseUrl + "/tracks/popular"));
 }
 
 function getTracks(tag) {
-    return $.when($.getJSON("/api/search", {tags: tag}));
+    return $.when($.getJSON(baseUrl + "/api/search", {tags: tag}));
 // $.when($.get("/tracks/popular/tag=" + tag.id))
 }
