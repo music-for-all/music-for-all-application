@@ -26,11 +26,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by Pukho on 28.06.2016.
