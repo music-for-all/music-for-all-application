@@ -184,6 +184,12 @@ public class TrackServiceTest {
     }
 
     @Test
+    public void testGetAllByNullIds() {
+        final Collection<Track> tracks = trackService.getAllById(null);
+        assertTrue(tracks.isEmpty());
+    }
+
+    @Test
     public void testFindAll() {
         trackService.save(new Track("track3", "/track3.mp3"));
         List<Track> tracks = trackService.findAll();
