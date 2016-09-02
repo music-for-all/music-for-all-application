@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -37,16 +38,16 @@ public class FeedServiceImpl implements FeedService {
     public Map<User, List<History>> getGroupedFollowingHistories(Integer userId) {
         final Collection<Integer> usersIds = followerService.getFollowingId(userId);
 
-        List<User> users = userService.getUsersById(usersIds);
+        final List<User> users = userService.getUsersById(usersIds);
 
         return historyService.getUsersHistories(usersIds)
                 .stream()
-                .collect(Collectors.groupingBy(p -> users
+                .collect(Collectors.groupingBy(h -> users
                                 .stream()
-                                .filter(u -> u.getId().equals(p.getUserId()))
+                                .filter(u -> u.getId().equals(h.getUserId()))
                                 .findFirst()
                                 .get(),
                         LinkedHashMap::new,
-                        Collectors.mapping(p -> p, Collectors.toList())));
+                        Collectors.mapping(Function.identity(), Collectors.toList())));
     }
 }
