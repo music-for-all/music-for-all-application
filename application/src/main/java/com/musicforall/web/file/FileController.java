@@ -1,11 +1,13 @@
 package com.musicforall.web.file;
 
+import com.musicforall.common.Constants;
 import com.musicforall.files.manager.FileManager;
 import com.musicforall.history.handlers.events.TrackListenedEvent;
+import com.musicforall.model.Artist;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
+import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.track.TrackService;
-import com.musicforall.common.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,9 @@ public class FileController {
     @Autowired
     private TrackService trackService;
 
+    @Autowired
+    private ArtistService artistService;
+
     @RequestMapping(value = "/files", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> uploadFileHandler(
@@ -52,13 +57,15 @@ public class FileController {
             return new ResponseEntity<>("File is empty", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         final String filename = file.getOriginalFilename();
-        if (manager.getFilePathByName(filename) != null) {
-            return new ResponseEntity<>("File exist", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
         final Optional<Path> saved = manager.save(file);
         if (saved.isPresent()) {
             trackJson.setLocation(filename);
             trackJson.setSize(file.getSize());
+            final Artist existingArtist = artistService.get(trackJson.getArtist().getArtistName());
+            if (existingArtist != null) {
+                existingArtist.extendTags(trackJson.getTags());
+                trackJson.setArtist(existingArtist);
+            }
             trackService.save(trackJson);
             return new ResponseEntity<>("Song successfully saved", HttpStatus.OK);
         } else {
