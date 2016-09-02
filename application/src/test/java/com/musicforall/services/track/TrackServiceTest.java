@@ -26,15 +26,17 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by Pukho on 28.06.2016.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class })
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
         TrackTestExecutionListener.class,
@@ -177,6 +179,12 @@ public class TrackServiceTest {
         Collection<Track> foundTracks = trackService.getAllById(ids);
         assertEquals(foundTracks.size(), ids.size());
         assertTrue(foundTracks.stream().allMatch(t -> ids.contains(t.getId())));
+    }
+
+    @Test
+    public void testGetAllByEmptyIds() {
+        final Collection<Track> tracks = trackService.getAllById(Collections.emptyList());
+        assertTrue(tracks.isEmpty());
     }
 
     @Test
