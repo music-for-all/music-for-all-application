@@ -1,7 +1,9 @@
 package com.musicforall.services.tag;
 
 import com.musicforall.common.dao.Dao;
+import com.musicforall.common.dao.QueryParams;
 import com.musicforall.common.query.QueryUtil;
+import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Tag;
 import com.musicforall.common.Constants;
 import org.hibernate.criterion.DetachedCriteria;
@@ -10,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Pukho on 22.06.2016.
@@ -29,6 +28,9 @@ public class TagServiceImpl implements TagService {
     public Tag save(String name) {
         return dao.save(new Tag(name));
     }
+
+    @Autowired
+    private HistoryService historyService;
 
     @Override
     public Tag get(String name) {
@@ -54,4 +56,17 @@ public class TagServiceImpl implements TagService {
         return dao.saveAll(tags);
     }
 
+    @Override
+    public List<String> getTheMostPopularTags() {
+        final List<Integer> ids = historyService.getTheMostPopularTracks();
+
+        final int count = 20;
+        final int offset = 0;
+
+        final Map<String, Object> parameters = new HashMap<>();
+        parameters.put("ids", ids);
+        List<String> tags = dao.getAllByNamedQuery(String.class, Tag.POPULAR_TAGS_QUERY,
+                parameters, new QueryParams(count, offset));
+        return tags;
+    }
 }

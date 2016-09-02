@@ -19,4 +19,6 @@ public interface TagService {
     List<Tag> getAllTags();
 
     List<Tag> getAllLike(String tagName);
+
+    List<String> getTheMostPopularTags();
 }

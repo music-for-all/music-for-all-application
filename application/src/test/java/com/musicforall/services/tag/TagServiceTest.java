@@ -1,20 +1,22 @@
 package com.musicforall.services.tag;
 
+import com.musicforall.history.handlers.events.TrackListenedEvent;
 import com.musicforall.model.Tag;
+import com.musicforall.model.Track;
+import com.musicforall.services.track.TrackService;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -28,8 +30,16 @@ public class TagServiceTest {
 
     public static final String TAG_FOR_SAVE = "tag_for_save";
 
+    public static final String ALTERNATIVE = "alternative";
+
     @Autowired
     private TagService tagService;
+
+    @Autowired
+    private TrackService trackService;
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     @Test
     public void testSaveAllTagsGetAllTags() {
@@ -62,5 +72,23 @@ public class TagServiceTest {
         final Tag tag4 = new Tag("jazz");
         tagService.saveAll(Arrays.asList(tag1, tag2, tag3, tag4));
         assertEquals(3, tagService.getAllLike("rock").size());
+    }
+
+    @Test
+    public void testGetTheMostPopularTags() {
+
+        final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag("ROOK"), new Tag(ALTERNATIVE)));
+        final Track track = new Track("track1", "path2track1", tags);
+
+        trackService.save(track);
+        final Set<Tag> tags2 = new HashSet<>(Arrays.asList(new Tag("POP"), new Tag(ALTERNATIVE)));
+        final Track track2 = new Track("track2", "path2track2", tags2);
+
+        trackService.save(track2);
+        publisher.publishEvent(new TrackListenedEvent(track.getId(), 1));
+        publisher.publishEvent(new TrackListenedEvent(track2.getId(), 1));
+
+        final List<String> tags_result = tagService.getTheMostPopularTags();
+        assertEquals(ALTERNATIVE, tags_result.get(0));
     }
 }
