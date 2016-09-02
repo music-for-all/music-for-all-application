@@ -24,13 +24,13 @@ public class TagServiceImpl implements TagService {
     @Autowired
     private Dao dao;
 
+    @Autowired
+    private HistoryService historyService;
+
     @Override
     public Tag save(String name) {
         return dao.save(new Tag(name));
     }
-
-    @Autowired
-    private HistoryService historyService;
 
     @Override
     public Tag get(String name) {
@@ -65,7 +65,7 @@ public class TagServiceImpl implements TagService {
 
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("ids", ids);
-        List<String> tags = dao.getAllByNamedQuery(String.class, Tag.POPULAR_TAGS_QUERY,
+        final List<String> tags = dao.getAllByNamedQuery(String.class, Tag.POPULAR_TAGS_QUERY,
                 parameters, new QueryParams(count, offset));
         return tags;
     }
