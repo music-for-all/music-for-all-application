@@ -5,6 +5,17 @@ function History() {
     var self = this;
     var baseUrl = dict.contextPath + "/history";
 
+    function request(id, url) {
+        return $.when(
+            $.ajax({
+                url: baseUrl + url,
+                type: "POST",
+                data: {
+                    id: id
+                }
+            }));
+    }
+
     self.trackLiked = function (trackId) {
         return request(trackId, "/track/liked");
     };
@@ -28,15 +39,4 @@ function History() {
     self.playlistDeleted = function (playlistId) {
         return request(playlistId, "/playlist/deleted");
     };
-
-    function request(id, url) {
-        return $.when(
-            $.ajax({
-                url: baseUrl + url,
-                type: "POST",
-                data: {
-                    id: id
-                }
-            }));
-    }
 }
