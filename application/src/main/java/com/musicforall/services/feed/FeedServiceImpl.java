@@ -45,8 +45,7 @@ public class FeedServiceImpl implements FeedService {
                                 .stream()
                                 .filter(u -> u.getId().equals(p.getUserId()))
                                 .findFirst()
-                                .get()
-                        ,
+                                .get(),
                         LinkedHashMap::new,
                         Collectors.mapping(p -> p, Collectors.toList())));
     }
