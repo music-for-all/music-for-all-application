@@ -55,5 +55,4 @@ function popularTracks() {
 
 function getTracks(tag) {
     return $.when($.getJSON(baseUrl + "/api/search", {tags: tag}));
-// $.when($.get("/tracks/popular/tag=" + tag.id))
 }

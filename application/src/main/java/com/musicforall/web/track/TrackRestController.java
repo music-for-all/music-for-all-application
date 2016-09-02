@@ -15,9 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import static com.musicforall.util.SecurityUtil.currentUser;
 
@@ -90,12 +88,5 @@ public class TrackRestController {
     @RequestMapping(value = "/popular", method = RequestMethod.GET)
     public Collection<Track> getByPopularity() {
         return recommendationService.getMostPopularTracks();
-    }
-
-    @RequestMapping(value = "/popular/tag={name}",  method = RequestMethod.GET)
-    public ResponseEntity getPopularByTagDummy(@PathVariable("name") final String tag) {
-        final List<String> tags = new ArrayList<>();
-        tags.add(tag);
-        return new ResponseEntity<>(tags, HttpStatus.OK);
     }
 }
