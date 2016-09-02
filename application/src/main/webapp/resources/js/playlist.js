@@ -16,7 +16,11 @@ function Playlist() {
     };
 
     self.create = function (name) {
-        return $.when($.post(baseUrl, {"name": name}));
+        var promise = $.when($.post(baseUrl, {"name": name}));
+        promise.then(function (playlist) {
+            history.playlistAdded(playlist.id);
+        });
+        return promise;
     };
 
     self.get = function (id) {

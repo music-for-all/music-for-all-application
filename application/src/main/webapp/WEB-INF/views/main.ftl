@@ -6,10 +6,11 @@
 <@m.head>
 <title><@spring.message "mainpage.Title"/></title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-<script src="/resources/js/playlist.js"></script>
-<script src="/resources/js/track.js"></script>
-<script src="/resources/js/player.js"></script>
-<script src="/resources/js/main.js"></script>
+<script src="<@spring.url "/resources/js/playlist.js" />"></script>
+<script src="<@spring.url "/resources/js/track.js" />"></script>
+<script src="<@spring.url "/resources/js/player.js" />"></script>
+<script src="<@spring.url "/resources/js/main.js" />"></script>
+<script src="<@spring.url "/resources/js/history.js" />"></script>
 <link href="/resources/css/font-awesome.min.css" rel="stylesheet"/>
 <link href="/resources/css/mainpage.css" rel="stylesheet"/>
 </@m.head>

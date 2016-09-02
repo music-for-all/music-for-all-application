@@ -29,7 +29,7 @@ public class HistoryEventListener {
     @Async
     @EventListener
     public void handlePlaylistEvent(PlaylistEvent event) {
-
+        event.getPlaylistId();
     }
 
     private History toHistoryEntity(TrackEvent event) {
