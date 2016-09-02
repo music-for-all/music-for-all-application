@@ -36,8 +36,8 @@ public class TagRestController {
     }
 
     @RequestMapping(value = "/popular", method = RequestMethod.GET)
-    public ResponseEntity getByPopularityDummy() {
-        final List<Tag> tags = tagService.getAllTags();
+    public ResponseEntity getPopularTags() {
+        final List<String> tags = tagService.getTheMostPopularTags();
         return new ResponseEntity<>(tags, HttpStatus.OK);
     }
 }
