@@ -1,6 +1,7 @@
 package com.musicforall.history.model;
 
 
+import com.musicforall.common.Constants;
 import com.musicforall.history.handlers.events.EventType;
 
 import javax.persistence.*;
@@ -12,27 +13,53 @@ import java.util.Objects;
  */
 
 @Entity
+@NamedQueries({
+        @NamedQuery(
+                name = History.POPULAR_TRACKS_QUERY,
+                query = "select history.trackId" +
+                        " from History history" +
+                        " where history.eventType=:eventType" +
+                        " group by history.trackId" +
+                        " order by count(history.trackId) desc"
+        ),
+        @NamedQuery(
+        name = History.TRACK_LIKES_COUNT_QUERY,
+        query = "select count(*) from History history " +
+                "where history.trackId=:trackId and history.eventType=:eventType"),
+        @NamedQuery(
+                name = History.ALL_USERS_BY_TYPE_QUERY,
+                query = "select h from History h where h.eventType = :eventType and h.userId in " +
+                        "(:usersIds) order by h.date desc"
+        )
+})
 @Table(name = "history")
 public class History {
 
+    public static final String POPULAR_TRACKS_QUERY = "most_popular_tracks";
+
+    public static final String TRACK_LIKES_COUNT_QUERY = "get_likes_count";
+
+    public static final String ALL_USERS_BY_TYPE_QUERY = "all_for_users_by_type";
+
     @Id
-    @Column(name = "id")
+    @Column(name = Constants.ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "track_id")
-    private int trackId;
+    private Integer trackId;
 
     @Column(name = "user_id", nullable = false)
-    private int userId;
+    private Integer userId;
 
     @Column(name = "date", nullable = false)
     private Date date;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "event_type")
     private EventType eventType;
 
-    public History(int trackId, Date date, int userId, EventType eventType) {
+    public History(Integer trackId, Date date, Integer userId, EventType eventType) {
         this.trackId = trackId;
         this.date = date;
         this.userId = userId;
@@ -42,23 +69,23 @@ public class History {
     public History() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    private void setId(Integer id) {
         this.id = id;
     }
 
-    public int getTrackId() {
+    public Integer getTrackId() {
         return trackId;
     }
 
-    public void setTrackId(int trackId) {
+    public void setTrackId(Integer trackId) {
         this.trackId = trackId;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 

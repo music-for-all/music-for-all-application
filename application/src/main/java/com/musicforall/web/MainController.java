@@ -12,13 +12,8 @@ public class MainController {
     private static final Logger LOG = LoggerFactory.getLogger(MainController.class);
     private static final String MAIN = "main";
 
-    public MainController() {
-        LOG.debug("Main controller");
-    }
-
     @RequestMapping("/main")
     public String welcome(Model model) {
-        LOG.debug("Requested /main");
         return MAIN;
     }
 }

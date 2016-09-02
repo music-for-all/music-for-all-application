@@ -1,5 +1,6 @@
 package com.musicforall.config;
 
+import com.musicforall.config.security.SecurityConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.ServletContext;
@@ -15,7 +16,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{SpringRootConfiguration.class};
+        return new Class[]{SpringRootConfiguration.class, SecurityConfig.class, SocialConfig.class};
     }
 
     @Override

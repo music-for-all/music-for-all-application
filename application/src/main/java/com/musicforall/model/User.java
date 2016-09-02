@@ -1,13 +1,10 @@
 package com.musicforall.model;
 
-/**
- * Created by ilianik on 11.06.2016.
- */
-
+import com.musicforall.common.Constants;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.social.security.SocialUserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -16,18 +13,23 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
 
+/**
+ * Created by ilianik on 11.06.2016.
+ */
 @Entity
 @Table(name = "users")
-public class User implements UserDetails, Serializable {
+public class User implements SocialUserDetails, Serializable {
+
+    private static final long serialVersionUID = 1959293141381203004L;
 
     @Id
-    @Column(name = "id")
+    @Column(name = Constants.ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Size(min = 2, max = 16)
-    @Pattern(regexp = "^(^[a-zA-Z][a-zA-Z0-9-_\\.]+)$")
-    @Column(nullable = false, unique = true)
+    @Pattern(regexp = "^(^[a-zA-Z\\p{InCyrillic}][a-zA-Z0-9-_\\.\\p{InCyrillic}]+)$")
+    @Column(nullable = false)
     private String username;
 
     @Size(min = 4, max = 128)
@@ -35,7 +37,7 @@ public class User implements UserDetails, Serializable {
     private String password;
 
     @Email
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String email;
 
     public User() {
@@ -51,7 +53,7 @@ public class User implements UserDetails, Serializable {
         return id;
     }
 
-    public void setId(Integer id) {
+    private void setId(Integer id) {
         this.id = id;
     }
 
@@ -104,6 +106,10 @@ public class User implements UserDetails, Serializable {
         this.email = email;
     }
 
+    @Override
+    public String getUserId() {
+        return email;
+    }
 
     @Override
     public int hashCode() {

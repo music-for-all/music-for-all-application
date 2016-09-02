@@ -1,10 +1,9 @@
 package com.musicforall.model;
 
-/**
- * Created by ilianik on 11.06.2016.
- */
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.musicforall.common.Constants;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -15,25 +14,32 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Created by ilianik on 11.06.2016.
+ */
 @Entity
 @Table(name = "playlists")
 public class Playlist implements Serializable {
+
+    private static final long serialVersionUID = 3556491830874885637L;
+
     @Id
-    @Column(name = "id")
+    @Column(name = Constants.ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Size(max = 20)
-    @Column(name = "name", nullable = false)
+    @Column(name = Constants.NAME, nullable = false)
     private String name;
 
     @ManyToMany
     @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "playlists_tracks",
-            joinColumns = {@JoinColumn(name = "Playlist_id")},
-            inverseJoinColumns = {@JoinColumn(name = "tracks_id")})
+            joinColumns = {@JoinColumn(name = "playlist_id")},
+            inverseJoinColumns = {@JoinColumn(name = "track_id")})
     private Set<Track> tracks;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -58,7 +64,7 @@ public class Playlist implements Serializable {
         return id;
     }
 
-    public void setId(Integer id) {
+    private void setId(Integer id) {
         this.id = id;
     }
 

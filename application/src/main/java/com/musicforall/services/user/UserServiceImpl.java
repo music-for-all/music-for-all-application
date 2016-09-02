@@ -2,17 +2,21 @@ package com.musicforall.services.user;
 
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.User;
+import com.musicforall.common.Constants;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -43,8 +47,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer getIdByUsername(String username) {
-        final User user = getByUsername(username);
+    public Integer getIdByEmail(String email) {
+        final User user = getByEmail(email);
         if (user != null) {
             return user.getId();
         }
@@ -58,9 +62,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getByUsername(String username) {
+    public User getByEmail(String email) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
-                .add(Property.forName("username").eq(username));
+                .add(Property.forName(Constants.EMAIL).eq(email));
 
         return dao.getBy(detachedCriteria);
     }
@@ -71,13 +75,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public List<User> getUsersById(Collection<Integer> usersId) {
+        if (usersId.isEmpty()) {
+            return new ArrayList<>();
+        }
+        final Disjunction disjunction = Restrictions.disjunction();
+        for (final Integer follower : usersId) {
+            disjunction.add(Property.forName(Constants.ID).eq(follower));
+        }
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
+                .add(disjunction);
+        return dao.getAllBy(detachedCriteria);
+    }
 
-        final User user = getByUsername(username);
+    @Override
+    public User loadUserByUsername(String email) throws UsernameNotFoundException {
+        return loadUserByUserId(email);
+    }
+
+    @Override
+    public User loadUserByUserId(String email) throws UsernameNotFoundException {
+        final User user = getByEmail(email);
         if (user == null) {
-            LOG.info(String.format("User %s not found", username));
-            throw new UsernameNotFoundException("Username not found");
+            LOG.info("User {} not found", email);
+            throw new UsernameNotFoundException("Email not found");
         }
         return user;
+    }
+
+    @Override
+    public List<User> getUsersByUsername(String username) {
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
+                .add(Property.forName("username").eq(username));
+
+        return dao.getAllBy(detachedCriteria);
     }
 }

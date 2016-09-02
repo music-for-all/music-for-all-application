@@ -3,6 +3,8 @@ package com.musicforall.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -36,9 +38,22 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public FreeMarkerConfigurer velocityConfigurer() {
+    public FreeMarkerConfigurer freeMarkerConfigurer() {
         final FreeMarkerConfigurer conf = new FreeMarkerConfigurer();
-        conf.setTemplateLoaderPath("/WEB-INF/velocity/");
+        conf.setTemplateLoaderPath("/WEB-INF/views/");
+        conf.setDefaultEncoding("UTF-8");
         return conf;
+    }
+
+    @Bean
+    public MethodValidationPostProcessor getMethodValidationPostProcessor() {
+        final MethodValidationPostProcessor processor = new MethodValidationPostProcessor();
+        processor.setValidator(validator());
+        return processor;
+    }
+
+    @Bean
+    public LocalValidatorFactoryBean validator() {
+        return new LocalValidatorFactoryBean();
     }
 }

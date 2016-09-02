@@ -1,10 +1,10 @@
 package com.musicforall.common.dao;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +25,8 @@ import java.util.Map.Entry;
 @Repository
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class Dao {
+    public static final String FOUND_ENTITY = "Found entity - {}";
     private static final Logger LOG = LoggerFactory.getLogger(Dao.class);
-
     private final int batchSize = 20;
 
     @Autowired
@@ -43,7 +43,7 @@ public class Dao {
     @SuppressWarnings("unchecked")
     public <T> T get(Class<T> entityClass, Serializable id) {
         final T entity = currentSession().get(entityClass, id);
-        LOG.info("retrieved entity - {}", entity);
+        LOG.info("Retrieved entity - {}", entity);
         return entity;
     }
 
@@ -57,7 +57,7 @@ public class Dao {
     @SuppressWarnings("unchecked")
     public <T> List<T> all(Class<T> entityClass) {
         final List<T> entities = currentSession().createCriteria(entityClass).list();
-        LOG.info("retrieved entites - {}", entities);
+        LOG.info("Retrieved entites - {}", entities);
         return entities;
     }
 
@@ -68,7 +68,7 @@ public class Dao {
      * @return saved entity
      */
     public <T> T save(T entity) {
-        LOG.info("going to save entity - {}", entity);
+        LOG.info("Going to save entity - {}", entity);
         currentSession().saveOrUpdate(entity);
         return entity;
     }
@@ -79,7 +79,7 @@ public class Dao {
      * @param entities - list entities to save
      */
     public <T> Collection<T> saveAll(Collection<T> entities) {
-        LOG.info("going to save entities - {}", entities);
+        LOG.info("Going to save entities - {}", entities);
         final Session session = currentSession();
         final List<T> entitiesList = new ArrayList<>(entities);
         for (int i = 0; i < entities.size(); i++) {
@@ -99,29 +99,33 @@ public class Dao {
      */
 
     public <T> void delete(T entity) {
-        LOG.info("going to delete entity - {}", entity);
+        LOG.info("Going to delete entity - {}", entity);
         currentSession().delete(entity);
     }
 
     /**
      * Return the persistent instance of the given entity class with the given parameters,
-     * It uses HQL. If there are there several entities that meet given parameters, returns first item.
+     * with NamedQuery annotation
      *
-     * @param hql        a hql query
-     * @param parameters pairs of key/value parameters which will be added to "where" part of the query
+     * @param clazz type of return class entity
+     * @param namedQuery - name of query
+     * @param parameters - pairs of key/value parameters which will be added to "where" part of the query
+     *
      * @return a persistent instance or null
      */
-    public <T> T getBy(String hql, Map<String, String> parameters) {
-        LOG.info("going to find entity by hql - {}, with parameters - {}", hql, parameters);
-        final Query query = currentSession().createQuery(hql);
+
+    public <T> T getByNamedQuery(Class<T> clazz, String namedQuery, Map<String, Object> parameters) {
+        LOG.info("Going to find entities with class - {} by named query - {} with parameters - {}",
+                clazz, namedQuery, parameters);
+        final Query<T> query = currentSession().createNamedQuery(namedQuery, clazz);
         query.setProperties(parameters);
-        final T entity = (T) query.uniqueResult();
-        LOG.info("Found entity - {}", entity);
+        final T entity = query.uniqueResult();
+        LOG.info(FOUND_ENTITY, entity);
         return entity;
     }
 
     public void update(String sql, Map<String, List<Serializable>> parametrs) {
-        final Query query = currentSession().createSQLQuery(sql);
+        final Query query = currentSession().createQuery(sql);
         for (final Entry<String, List<Serializable>> s : parametrs.entrySet()) {
             query.setParameterList(s.getKey(), s.getValue());
         }
@@ -129,35 +133,42 @@ public class Dao {
     }
 
     /**
-     * Return the persistent instances of the given entity class which meet given parameters,
+     * Return the persistent instances of the given entity class with the given parameters,
      *
-     * @param hql        a hql query
-     * @param parameters pairs of key/value parameters which will be added to "where" part of the query
+     * @param clazz type of return class entity
+     * @param namedQuery - name of query
+     * @param parameters - pairs of key/value parameters which will be added to "where" part of the query
+     * @param queryParams - list of QueryParams parameters
+     *
      * @return list of persistent instances or null
      */
-    @SuppressWarnings("unchecked")
-    public <T> List<T> getAllBy(String hql, Map<String, String> parameters) {
-        LOG.info("going to find entities by hql - {}, with parameters - {}", hql, parameters);
-        final Query query = currentSession().createQuery(hql);
+
+    public <T> List<T> getAllByNamedQuery(Class<T> clazz, String namedQuery,
+                                          Map<String, Object> parameters, QueryParams queryParams) {
+        LOG.info("Going to find entities with class - {} by named query - {} with parameters - {}",
+                clazz, namedQuery, parameters);
+        final Query<T> query = currentSession().createNamedQuery(namedQuery, clazz);
         query.setProperties(parameters);
-        List<T> entities = (List<T>) query.list();
-        LOG.info("Found entities - {}", entities);
+        query.setMaxResults(queryParams.getMaxCount());
+        query.setFirstResult(queryParams.getOffset());
+        final List<T> entities = query.list();
+        LOG.info(FOUND_ENTITY, entities);
         return entities;
     }
 
     /**
      * Return the persistent instance of the given entity class with the given parameters,
-     * It uses Criterians. If there are there several entities that meet given parameters, returns first item.
+     * It uses Criterians. If there are there several entities that meet given parameters, exception is thrown.
      *
      * @param criteria criterion to match the search against, for creations of Criterion use
      *                 Restrictions class e.g Restrictions.eq(propertyName, value)
      * @return a persistent instance or null
      */
     public <T> T getBy(DetachedCriteria criteria) {
-        LOG.info("going to find entity by criteria - {}", criteria);
+        LOG.info("Going to find entity by criteria - {}", criteria);
         final Criteria executableCriteria = criteria.getExecutableCriteria(currentSession());
         final T entity = (T) executableCriteria.uniqueResult();
-        LOG.info("Found entity - {}", entity);
+        LOG.info(FOUND_ENTITY, entity);
         return entity;
     }
 
@@ -172,10 +183,30 @@ public class Dao {
      */
     @SuppressWarnings("unchecked")
     public <T> List<T> getAllBy(DetachedCriteria criteria) {
-        LOG.info("going to find entities by criteria - {}", criteria);
+        LOG.info("Going to find entities by criteria - {}", criteria);
         final Criteria executableCriteria = criteria.getExecutableCriteria(currentSession());
         final List<T> entities = executableCriteria.list();
-        LOG.info("Found entities - {}", entities);
+        LOG.info(FOUND_ENTITY, entities);
+        return entities;
+    }
+
+    /**
+     * Return the persistent instances of the given entity class with the given parameters,
+     *
+     * @param clazz type of return class entity
+     * @param namedQuery - name of query
+     * @param params - pairs of key/value parameters which will be added to "where" part of the query
+     *
+     * @return list of persistent instances or null
+     */
+
+    public <T> List<T> getAllByNamedQuery(Class<T> clazz, String namedQuery, Map<String, Object> params) {
+        LOG.info("Going to find entities with class - {} by named query - {} with parameters - {}",
+                clazz, namedQuery, params);
+        final Query<T> query = currentSession().createNamedQuery(namedQuery, clazz);
+        query.setProperties(params);
+        final List<T> entities = query.list();
+        LOG.info(FOUND_ENTITY, entities);
         return entities;
     }
 

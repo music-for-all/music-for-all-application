@@ -1,10 +1,9 @@
-/**
- * @author ENikolskiy on 6/24/2016.
- */
-function Playlist(contextPath) {
+"use strict";
+
+function Playlist() {
 
     var self = this;
-    var baseUrl = contextPath + "/playlists";
+    var baseUrl = dict.contextPath + "/playlists";
 
     self.remove = function (id) {
         return $.when(
@@ -24,5 +23,20 @@ function Playlist(contextPath) {
 
     self.all = function () {
         return $.when($.get(baseUrl));
+    };
+
+    self.addTrack = function (playlistId, trackId) {
+        return $.when($.ajax({
+            type: "POST",
+            url: baseUrl + "/" + playlistId + "/add/" + trackId
+        }));
+    };
+
+
+    self.removeTrack = function (playlistId, trackId) {
+        return $.when($.ajax({
+            type: "DELETE",
+            url: baseUrl + "/" + playlistId + "/remove/" + trackId,
+        }));
     };
 }

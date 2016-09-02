@@ -10,8 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -20,11 +20,10 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
@@ -45,6 +44,10 @@ public class PlaylistServiceTest {
 
     public static final String PLAYLIST_2 = "playlist2";
 
+    public static final String USER_EMAIL_1 = "user1@gmail.com";
+
+    public static final String USER_EMAIL_2 = "user2@example.com";
+
     @Autowired
     private PlaylistService playlistService;
 
@@ -55,7 +58,7 @@ public class PlaylistServiceTest {
     private TrackService trackService;
 
     @Test
-    @WithUserDetails
+    @WithUserDetails(USER_EMAIL_2)
     public void testSavePlaylist() {
         final Playlist savedPlaylist = playlistService.save(PLAYLIST_1);
 
@@ -64,21 +67,21 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    @WithUserDetails("user1")
+    @WithUserDetails(USER_EMAIL_1)
     public void testGetAllUserPlaylist() {
         final Playlist playlist1 = playlistService.save(PLAYLIST_1);
         playlistService.save(PLAYLIST_2);
 
-        final Integer userId = userService.getIdByUsername("user1");
+        final Integer userId = userService.getIdByEmail("user1@gmail.com");
 
-        final Set<Playlist> allUsersPlaylists = playlistService.getAllUserPlaylist(userId);
+        final Set<Playlist> allUsersPlaylists = playlistService.getAllUserPlaylists(userId);
 
         assertTrue(allUsersPlaylists.contains(playlistService.get(playlist1.getId())));
-        assertSame(allUsersPlaylists.size(), 2);
+        assertSame(2, allUsersPlaylists.size());
     }
 
     @Test
-    @WithUserDetails
+    @WithUserDetails(USER_EMAIL_1)
     public void testDeletePlaylist() {
         final Playlist playlist = playlistService.save(PLAYLIST_2);
         final Integer playlistId = playlist.getId();
@@ -88,7 +91,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    @WithUserDetails
+    @WithUserDetails("user@example.com")
     public void testGetTracks() {
         final Playlist playlist = playlistService.save("playlist_for_get");
         final Playlist expectedPlaylist = playlistService.get(playlist.getId());
@@ -99,21 +102,53 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    @WithUserDetails("user2")
+    @WithUserDetails(USER_EMAIL_2)
     public void testGetAllTracksInPlaylistAddTracksToPlaylist() {
         final Playlist playlist = playlistService.save(PLAYLIST_1);
         final Integer playlistId = playlist.getId();
 
-        final Track track1 = new Track("track1", "location1");
-        final Track track2 = new Track("track2", "location2");
-        playlistService.addTracks(playlistId, new HashSet<>(Arrays.asList(track1, track2)));
+        trackService.saveAll(Arrays.asList(
+                new Track("track1", "location1"),
+                new Track("track2", "location2")));
+
+        final List<Track> tracksInDb = trackService.findAll();
+
+        playlistService.addTracks(playlistId, new HashSet<>(tracksInDb));
 
         final Set<Track> tracksInPlaylist = playlistService.getAllTracksInPlaylist(playlistId);
 
         assertNotNull(tracksInPlaylist);
-        Assert.assertTrue(tracksInPlaylist.size() == 2);
-        assertTrue(tracksInPlaylist.contains(trackService.get(track1.getId())));
-        assertTrue(tracksInPlaylist.contains(trackService.get(track2.getId())));
+        Assert.assertEquals(tracksInDb.size(), tracksInPlaylist.size());
+
+        for (Track track : tracksInDb) {
+            assertTrue(tracksInPlaylist.contains(trackService.get(track.getId())));
+        }
     }
 
+    @Test
+    @WithUserDetails("user@example.com")
+    public void testAddTrack() {
+
+        final Playlist playlist = playlistService.save("testAddTrack");
+        final Integer playlistId = playlist.getId();
+        final Integer trackId = trackService.save(new Track("testAddTrack", "location")).getId();
+
+        playlistService.addTrack(playlistId, trackId);
+        assertEquals(1, playlistService.get(playlistId).getTracks().size());
+    }
+
+    @Test
+    @WithUserDetails("user@example.com")
+    public void testRemoveTrack() {
+
+        final Playlist playlist = playlistService.save("test");
+        final Integer playlistId = playlist.getId();
+        final Integer trackId = trackService.save(new Track("testTrack", "location")).getId();
+
+        playlistService.addTrack(playlistId, trackId);
+        assertEquals(1, playlistService.get(playlistId).getTracks().size());
+
+        playlistService.removeTrack(playlistId, trackId);
+        assertEquals(0, playlistService.get(playlistId).getTracks().size());
+    }
 }

@@ -1,14 +1,19 @@
 package com.musicforall.services.track;
 
 import com.musicforall.common.dao.Dao;
+import com.musicforall.common.query.QueryUtil;
+import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
+import com.musicforall.services.SearchCriteriaFactory;
+import com.musicforall.common.Constants;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Pukho on 15.06.2016.
@@ -46,5 +51,31 @@ public class TrackServiceImpl implements TrackService {
         final Track track = get(trackId);
         track.addTags(tags);
         save(track);
+    }
+
+    @Override
+    public List<Track> getAllByName(String trackName) {
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class)
+                .add(Restrictions.like(Constants.NAME, QueryUtil.like(trackName)).ignoreCase());
+        return dao.getAllBy(detachedCriteria);
+    }
+
+    @Override
+    public List<Track> getAllLike(SearchTrackRequest searchCriteria) {
+        final DetachedCriteria detachedCriteria =
+                SearchCriteriaFactory.createTrackSearchCriteria(searchCriteria);
+        return dao.getAllBy(detachedCriteria);
+    }
+
+    @Override
+    public Collection<Track> getAllById(Collection<Integer> ids) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("ids", ids);
+        return dao.getAllByNamedQuery(Track.class, Track.ALL_BY_ID_QUERY, params);
+    }
+
+    @Override
+    public List<Track> findAll() {
+        return dao.all(Track.class);
     }
 }
