@@ -22,7 +22,7 @@ function User() {
     };
 
     self.getFollowing = function () {
-        return $.when($.get(baseUrl + "/following"));
+        return $.when($.get(baseUrl + "/feed"));
     };
 
     self.search = function (username) {

@@ -1,10 +1,8 @@
 package com.musicforall.services.follower;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Followers;
-import com.musicforall.model.User;
 import com.musicforall.services.user.UserService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,15 +66,5 @@ public class FollowerServiceImp implements FollowerService {
             followers = new Followers(userId);
         }
         return followers.getFollowingId();
-    }
-
-    @Override
-    public LinkedHashMap<User, List<History>> getGroupedFollowingHistories(Integer userId) {
-        final Collection<Integer> usersIds = getFollowingId(userId);
-
-        return historyService.getUsersHistories(usersIds)
-                .stream()
-                .collect(Collectors.groupingBy(p -> userService.get(p.getUserId()), LinkedHashMap::new,
-                        Collectors.mapping(p -> p, Collectors.toList())));
     }
 }
