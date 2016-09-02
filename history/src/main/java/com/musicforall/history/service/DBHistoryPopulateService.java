@@ -49,7 +49,7 @@ public class DBHistoryPopulateService {
                         listened = rnd.nextInt(MAX);
                     }
                     return IntStream.range(0, listened)
-                            .mapToObj(i -> new History(t, new Date(), userId, eventType))
+                            .mapToObj(i -> new History(t, null, new Date(), userId, eventType))
                             .collect(Collectors.toList()).stream();
                 })
                 .forEach(historyService::record);
