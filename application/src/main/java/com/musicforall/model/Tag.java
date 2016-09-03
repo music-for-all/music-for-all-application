@@ -19,8 +19,8 @@ import java.util.Objects;
                         query = "from Tag where lower(name) like :name"
                 ),
                 @NamedQuery(
-                        name = Tag.POPULAR_TAGS_QUERY,
-                        query = "select tags.name from Track tt join tt.tags tags where tt.id in (:ids)" +
+                        name = Tag.POPULAR_TAGS_BY_TRACK_ID_QUERY,
+                        query = "select tags.name from Track track join track.tags tags where track.id in (:ids)" +
                                 " group by tags.name" +
                                 " order by count(tags.name) desc"
                 )
@@ -29,7 +29,7 @@ import java.util.Objects;
 @Table(name = "tags")
 public class Tag implements Serializable {
 
-    public static final String POPULAR_TAGS_QUERY = "most_popular_tags";
+    public static final String POPULAR_TAGS_BY_TRACK_ID_QUERY = "popular_tags_in_tracks";
 
     public static final String ALL_LIKE_NAME_QUERY = "all_like_name";
 

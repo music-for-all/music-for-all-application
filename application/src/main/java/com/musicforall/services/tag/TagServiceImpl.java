@@ -65,7 +65,7 @@ public class TagServiceImpl implements TagService {
 
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("ids", ids);
-        final List<String> tags = dao.getAllByNamedQuery(String.class, Tag.POPULAR_TAGS_QUERY,
+        final List<String> tags = dao.getAllByNamedQuery(String.class, Tag.POPULAR_TAGS_BY_TRACK_ID_QUERY,
                 parameters, new QueryParams(count, offset));
         return tags;
     }
