@@ -64,9 +64,9 @@
 
 <script type="text/template" class="tagBtnTemplate">
     <% _.each(data, function(tag){ %>
-    <label id="<%= tag %>" class="btn btn-success" name="tag" onclick="getTracksByTag(this.id)">
+    <label id="<%= tag.name %>" class="btn btn-success" name="tag" onclick="getTracksByTag(this.id)">
         <input type="radio">
-        <%= tag %>
+        <%= tag.name %>
     </label>
     <% }); %>
 </script>

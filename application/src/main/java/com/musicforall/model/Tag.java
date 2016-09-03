@@ -20,9 +20,9 @@ import java.util.Objects;
                 ),
                 @NamedQuery(
                         name = Tag.POPULAR_TAGS_BY_TRACK_ID_QUERY,
-                        query = "select tag.name from Track track join track.tags tag where track.id in (:ids)" +
-                                " group by tag.name" +
-                                " order by count(tag.name) desc"
+                        query = "select tag from Track track join track.tags tag where track.id in (:ids)" +
+                                " group by tag" +
+                                " order by count(tag) desc"
                 )
         }
 )

@@ -90,7 +90,7 @@ public class TagServiceTest {
         historyService.record(history);
         history = new History(track2.getId(), 1, new Date(), 1, EventType.TRACK_LISTENED);
         historyService.record(history);
-        final List<String> tags_result = tagService.getTheMostPopularTags();
-        assertEquals(ALTERNATIVE, tags_result.get(0));
+        final List<Tag> tags_result = tagService.getTheMostPopularTags();
+        assertEquals(ALTERNATIVE, tags_result.get(0).getName());
     }
 }
