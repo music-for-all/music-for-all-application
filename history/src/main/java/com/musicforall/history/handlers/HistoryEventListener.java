@@ -1,12 +1,12 @@
 package com.musicforall.history.handlers;
 
-import com.musicforall.history.handlers.events.EventType;
-import com.musicforall.history.handlers.events.TrackLikedEvent;
-import com.musicforall.history.handlers.events.TrackListenedEvent;
+import com.musicforall.history.handlers.events.PlaylistEvent;
+import com.musicforall.history.handlers.events.TrackEvent;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -20,28 +20,30 @@ public class HistoryEventListener {
     @Autowired
     private HistoryService service;
 
+    @Async
     @EventListener
-    public void handleTrackListened(TrackListenedEvent event) {
-        service.record(toHistoryEntity(event));
+    public void handleTrackEvent(TrackEvent event) {
+        service.record(toHistory(event));
     }
 
+    @Async
     @EventListener
-    public void handleTrackLiked(TrackLikedEvent event) {
-        service.record(toHistoryEntity(event));
+    public void handlePlaylistEvent(PlaylistEvent event) {
+        service.record(toHistory(event));
     }
 
-    private History toHistoryEntity(TrackLikedEvent event) {
+    private History toHistory(PlaylistEvent event) {
         final History history = new History();
-        history.setEventType(EventType.TRACK_LIKED);
-        history.setTrackId(event.getTrackId());
+        history.setEventType(event.getType());
+        history.setPlaylistId(event.getPlaylistId());
         history.setUserId(event.getUserId());
         history.setDate(new Date());
         return history;
     }
 
-    private History toHistoryEntity(TrackListenedEvent event) {
+    private History toHistory(TrackEvent event) {
         final History history = new History();
-        history.setEventType(EventType.TRACK_LISTENED);
+        history.setEventType(event.getType());
         history.setTrackId(event.getTrackId());
         history.setUserId(event.getUserId());
         history.setDate(new Date());
