@@ -112,7 +112,7 @@ public class HistoryServiceImplTest {
     @Test
     public void testGetUsersHistories() {
 
-        final History history = new History(TRACK_ID, new Date(), USER_ID, TRACK_LIKED);
+        final History history = new History(TRACK_ID, null, new Date(), USER_ID, TRACK_LIKED);
         service.record(history);
 
         final Collection<History> histories = service.getUsersHistories(Collections.singletonList(USER_ID));
@@ -122,7 +122,7 @@ public class HistoryServiceImplTest {
 
     @Test
     public void testGetUsersHistoriesBadDate() {
-        final History history = new History(TRACK_ID, new Date(new Date().getTime() - 2 * 24 * 3600 * 1000L), USER_ID, TRACK_LISTENED);
+        final History history = new History(TRACK_ID, null, new Date(new Date().getTime() - 2 * 24 * 3600 * 1000L), USER_ID, TRACK_LISTENED);
         service.record(history);
 
         final Collection<History> histories = service.getUsersHistories(Collections.singletonList(USER_ID));

@@ -63,9 +63,9 @@ public class FeedServiceTest {
 
         followerService.follow(user.getId(), USER1_ID);
         followerService.follow(user.getId(), USER2_ID);
-        History history1 = new History(TRACK_ID, new Date(), USER1_ID, TRACK_LISTENED);
-        History history2 = new History(TRACK_ID, new Date(new Date().getTime() + 1), USER1_ID, TRACK_LIKED);
-        History history3 = new History(TRACK_ID, new Date(new Date().getTime() + 2), USER2_ID, TRACK_LISTENED);
+        History history1 = new History(TRACK_ID, null, new Date(), USER1_ID, TRACK_LISTENED);
+        History history2 = new History(TRACK_ID, null, new Date(new Date().getTime() + 1), USER1_ID, TRACK_LIKED);
+        History history3 = new History(TRACK_ID, null, new Date(new Date().getTime() + 2), USER2_ID, TRACK_LISTENED);
 
         historyService.record(history1);
         historyService.record(history2);
