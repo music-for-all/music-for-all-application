@@ -1,7 +1,8 @@
 package com.musicforall.services.tag;
 
 import com.musicforall.history.handlers.events.EventType;
-import com.musicforall.history.handlers.events.TrackEvent;
+import com.musicforall.history.model.History;
+import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.services.track.TrackService;
@@ -9,7 +10,6 @@ import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -40,7 +40,7 @@ public class TagServiceTest {
     private TrackService trackService;
 
     @Autowired
-    private ApplicationEventPublisher publisher;
+    private HistoryService historyService;
 
     @Test
     public void testSaveAllTagsGetAllTags() {
@@ -86,9 +86,10 @@ public class TagServiceTest {
         final Track track2 = new Track("track2", "path2track2", tags2);
 
         trackService.save(track2);
-        publisher.publishEvent(new TrackEvent(track.getId(), 1, EventType.TRACK_LISTENED));
-        publisher.publishEvent(new TrackEvent(track2.getId(), 1, EventType.TRACK_LISTENED));
-
+        History history = new History(track.getId(), 1, new Date(), 1, EventType.TRACK_LISTENED);
+        historyService.record(history);
+        history = new History(track2.getId(), 1, new Date(), 1, EventType.TRACK_LISTENED);
+        historyService.record(history);
         final List<String> tags_result = tagService.getTheMostPopularTags();
         assertEquals(ALTERNATIVE, tags_result.get(0));
     }
