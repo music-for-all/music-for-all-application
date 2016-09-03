@@ -1,6 +1,7 @@
 package com.musicforall.services.tag;
 
-import com.musicforall.history.handlers.events.TrackListenedEvent;
+import com.musicforall.history.handlers.events.EventType;
+import com.musicforall.history.handlers.events.TrackEvent;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.services.track.TrackService;
@@ -85,8 +86,8 @@ public class TagServiceTest {
         final Track track2 = new Track("track2", "path2track2", tags2);
 
         trackService.save(track2);
-        publisher.publishEvent(new TrackListenedEvent(track.getId(), 1));
-        publisher.publishEvent(new TrackListenedEvent(track2.getId(), 1));
+        publisher.publishEvent(new TrackEvent(track.getId(), 1, EventType.TRACK_LISTENED));
+        publisher.publishEvent(new TrackEvent(track2.getId(), 1, EventType.TRACK_LISTENED));
 
         final List<String> tags_result = tagService.getTheMostPopularTags();
         assertEquals(ALTERNATIVE, tags_result.get(0));
