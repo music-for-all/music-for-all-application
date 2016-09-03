@@ -2,9 +2,7 @@ package com.musicforall.web.file;
 
 import com.musicforall.common.Constants;
 import com.musicforall.files.manager.FileManager;
-import com.musicforall.history.handlers.events.TrackListenedEvent;
 import com.musicforall.model.Track;
-import com.musicforall.model.User;
 import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +19,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
-
-import static com.musicforall.util.SecurityUtil.currentUser;
 
 
 /**
@@ -75,13 +71,6 @@ public class FileController {
 
         if (filePath.isPresent()) {
             try {
-                if (partId == FileManager.DEFAULT_CHUNK_ID) {
-                    final User user = currentUser();
-                    if (user != null) {
-                        publisher.publishEvent(new TrackListenedEvent(trackId, user.getId()));
-                    }
-                }
-
                 Files.copy(filePath.get(), response.getOutputStream());
             } catch (IOException e) {
                 LOG.error("Streaming failed!", e);

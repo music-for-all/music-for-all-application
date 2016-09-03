@@ -69,6 +69,10 @@ public class TrackServiceImpl implements TrackService {
 
     @Override
     public Collection<Track> getAllById(Collection<Integer> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         final Map<String, Object> params = new HashMap<>();
         params.put("ids", ids);
         return dao.getAllByNamedQuery(Track.class, Track.ALL_BY_ID_QUERY, params);

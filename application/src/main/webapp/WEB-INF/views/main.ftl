@@ -6,10 +6,11 @@
 <@m.head>
 <title><@spring.message "mainpage.Title"/></title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-<script src="/resources/js/playlist.js"></script>
-<script src="/resources/js/track.js"></script>
-<script src="/resources/js/player.js"></script>
-<script src="/resources/js/main.js"></script>
+<script src="<@spring.url "/resources/js/playlist.js" />"></script>
+<script src="<@spring.url "/resources/js/track.js" />"></script>
+<script src="<@spring.url "/resources/js/player.js" />"></script>
+<script src="<@spring.url "/resources/js/main.js" />"></script>
+<script src="<@spring.url "/resources/js/history.js" />"></script>
 <link href="/resources/css/font-awesome.min.css" rel="stylesheet"/>
 <link href="/resources/css/mainpage.css" rel="stylesheet"/>
 </@m.head>
@@ -89,6 +90,7 @@
             <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
                 <%= data.name %>
             </a>
+
             <div class="input-group-btn">
                 <button type="button" id="removePlaylistButton" class="btn btn-danger" onclick="deletePlaylist(this)">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
@@ -144,7 +146,7 @@
                     $("#tracks").find("thead").after(
                             trackRow(response.tracks)
                     );
-                    response.tracks.forEach(function(track) {
+                    response.tracks.forEach(function (track) {
                         updateLikeCount(track.id);
                     });
                 });
@@ -166,7 +168,8 @@
     $("#tracks").on("click", ".delete-song-button", function (e) {
         var row = $(this).closest("tr");
         var id = row.attr("id");
-        playlist.removeTrack(1, id)
+        var playlistToRemove = $("#playlists").find("li.active");
+        playlist.removeTrack(playlistToRemove.attr("id"), id)
                 .then(function () {
                     row.remove();
                 });
@@ -239,7 +242,7 @@
                         addPlaylist(this);
                     });
                 })
-                .done(function() {
+                .done(function () {
                     /* For testing purpose, select the first playlist (named 'Hype'). */
                     $("#playlists #1 a").trigger("click");
                 });
@@ -285,7 +288,7 @@
         });
 
         /* Event handler for the 'Return' key. */
-        $("#inputNamePlaylist").on("keydown", function(e) {
+        $("#inputNamePlaylist").on("keydown", function (e) {
 
             if (e.keyCode == 0xD) {
                 $("#acceptCreatingPlaylistButton").trigger("click");

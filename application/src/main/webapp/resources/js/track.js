@@ -4,6 +4,7 @@ function Track() {
 
     var self = this;
     var baseUrl = dict.contextPath + "/tracks";
+    var history = new History();
 
     self.createJson = function (formData) {
         return $.when(
@@ -34,6 +35,7 @@ function Track() {
     };
 
     self.like = function (id) {
+        history.trackLiked(id);
         return $.when(
             $.ajax({
                 type: "POST",
