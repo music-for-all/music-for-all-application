@@ -16,8 +16,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.util.Date;
 import java.util.List;
@@ -32,6 +34,9 @@ import static junit.framework.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
+@TestExecutionListeners({
+        DependencyInjectionTestExecutionListener.class,
+        FeedTestExecutionListener.class})
 @ActiveProfiles("dev")
 public class FeedServiceTest {
 
