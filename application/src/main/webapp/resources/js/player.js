@@ -1,26 +1,42 @@
 "use strict";
 
-jQuery(document).ready(function () {
+function playCurrentTrack(trackid) {
 
-    /* Make the play button to invoke play on the corresponding player. */
-    $("#tracks").on("click", ".play-track-button", function () {
+    if (load_track != null) {
+        player.pause();
+    }
 
-        $(this).closest("tr").find("td audio")[0].play();
-    });
+    player = new ChunksPlayer();
+    track.get(trackid)
+        .then(function (track) {
+            if (track) {
+                player.play(track);
 
-    /* Make the pause button to invoke pause on the corresponding player. */
-    $("#tracks").on("click", ".pause-track-button", function () {
-
-        $(this).closest("tr").find("td audio")[0].pause();
-    });
-
-    /* When a track is chosen to play, pause all the other tracks. */
-    document.addEventListener("play", function(e) {
-
-        $("audio").each(function(i, player) {
-            if (player !== e.target) {
-                player.pause();
+                $("#nameInFoot").html(track.name);
+                $("#artistInFoot").html(track.artist);
             }
         });
-    }, true);
+    load_track = trackid;
+    
+}
+
+jQuery(document).ready(function () {
+    
+    /* Make the play button to invoke play on the corresponding player. */
+    $("#tracks").on("click", ".play-track-button", function (e) {
+
+        var curr = $(this).closest("tr").find("td div")[0].id;
+
+        if (load_track === curr) {
+            player.resume();
+        }
+        else {
+            playCurrentTrack(curr);
+        }
+    });
+    
+    /* Make the pause button to invoke pause on the corresponding player. */
+    $("#tracks").on("click", ".pause-track-button", function () {
+        player.pause();
+    });
 });
