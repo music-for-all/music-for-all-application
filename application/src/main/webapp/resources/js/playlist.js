@@ -1,19 +1,13 @@
 "use strict";
 
-/**
- * The Playlist object encapsulates operations with the Playlist RESTful service.
- * @author ENikolskiy on 6/24/2016.
- */
 function Playlist() {
 
     var self = this;
     var baseUrl = dict.contextPath + "/playlists";
+    var history = new History();
 
-    /**
-     * Deletes a playlist with the specified id.
-     * @param id the id of the playlist to be deleted
-     */
     self.remove = function (id) {
+        history.playlistDeleted(id);
         return $.when(
             $.ajax({
                 url: baseUrl + "/" + id,
@@ -21,26 +15,36 @@ function Playlist() {
             }));
     };
 
-    /**
-     * Creates a new playlist with the given name.
-     * @param name the name of the new playlist
-     */
     self.create = function (name) {
-        return $.when($.post(baseUrl, {"name": name}));
+        var promise = $.when($.post(baseUrl, {"name": name}));
+        promise.then(function (playlist) {
+            history.playlistAdded(playlist.id);
+        });
+        return promise;
     };
 
-    /**
-     * Retrieves a playlist with the given id.
-     * @param id the id of the playlist
-     */
     self.get = function (id) {
         return $.when($.get(baseUrl + "/" + id));
     };
 
-    /**
-     * Retrieves all playlists (of the current user).
-     */
     self.all = function () {
         return $.when($.get(baseUrl));
+    };
+
+    self.addTrack = function (playlistId, trackId) {
+        history.trackAdded(trackId);
+        return $.when($.ajax({
+            type: "POST",
+            url: baseUrl + "/" + playlistId + "/add/" + trackId
+        }));
+    };
+
+
+    self.removeTrack = function (playlistId, trackId) {
+        history.trackDeleted(trackId);
+        return $.when($.ajax({
+            type: "DELETE",
+            url: baseUrl + "/" + playlistId + "/remove/" + trackId
+        }));
     };
 }

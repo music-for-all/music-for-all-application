@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,21 +23,21 @@ public class FollowerServiceImp implements FollowerService {
     private Dao dao;
 
     @Override
-    public void follow(Integer userId, Integer following_userId) {
+    public void follow(Integer userId, Integer followingUserId) {
         Followers followers = dao.get(Followers.class, userId);
         if (followers == null) {
             followers = new Followers(userId);
         }
-        if (!userId.equals(following_userId)) {
-            followers.follow(following_userId);
+        if (!userId.equals(followingUserId)) {
+            followers.follow(followingUserId);
         }
         dao.save(followers);
     }
 
     @Override
-    public void unfollow(Integer userId, Integer following_userId) {
+    public void unfollow(Integer userId, Integer followingUserId) {
         final Followers followers = dao.get(Followers.class, userId);
-        followers.unfollow(following_userId);
+        followers.unfollow(followingUserId);
         dao.save(followers);
     }
 
@@ -51,7 +52,7 @@ public class FollowerServiceImp implements FollowerService {
     }
 
     @Override
-    public List<Integer> getFollowingId(Integer userId) {
+    public Collection<Integer> getFollowingId(Integer userId) {
         Followers followers = dao.get(Followers.class, userId);
         if (followers == null) {
             followers = new Followers(userId);

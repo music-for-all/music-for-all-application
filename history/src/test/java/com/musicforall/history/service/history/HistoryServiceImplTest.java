@@ -55,7 +55,7 @@ public class HistoryServiceImplTest {
                 .eventType(TRACK_LISTENED)
                 .userId(USER_ID).trackId(TRACK_ID).get();
         int initialSize = service.getAllBy(params).size();
-        service.record(new History(TRACK_ID, new Date(), USER_ID, TRACK_LISTENED));
+        service.record(new History(TRACK_ID, null, new Date(), USER_ID, TRACK_LISTENED));
         int currentSize = service.getAllBy(params).size();
         assertEquals(currentSize - initialSize, 1);
     }
@@ -63,7 +63,7 @@ public class HistoryServiceImplTest {
     @Test
     public void testGetTheMostPopularTracks() throws Exception {
         IntStream.range(0, 100)
-                .mapToObj(i -> new History(TOP_TRACK_ID, new Date(), USER_ID, TRACK_LISTENED))
+                .mapToObj(i -> new History(TOP_TRACK_ID, null, new Date(), USER_ID, TRACK_LISTENED))
                 .forEach(service::record);
         final Collection<History> histories = service.getAllBy(SearchHistoryParams.create()
                 .eventType(TRACK_LISTENED)

@@ -1,5 +1,6 @@
 package com.musicforall.services.follower;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -7,11 +8,11 @@ import java.util.List;
  */
 public interface FollowerService {
 
-    void follow(Integer userId, Integer following_userId);
+    void follow(Integer userId, Integer followingUserId);
 
-    void unfollow(Integer userId, Integer following_userId);
+    void unfollow(Integer userId, Integer followingUserId);
 
     List<Integer> getFollowersId(Integer userId);
 
-    List<Integer> getFollowingId(Integer userId);
+    Collection<Integer> getFollowingId(Integer userId);
 }

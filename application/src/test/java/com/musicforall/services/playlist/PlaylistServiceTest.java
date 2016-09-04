@@ -44,6 +44,10 @@ public class PlaylistServiceTest {
 
     public static final String PLAYLIST_2 = "playlist2";
 
+    public static final String USER_EMAIL_1 = "user1@gmail.com";
+
+    public static final String USER_EMAIL_2 = "user2@example.com";
+
     @Autowired
     private PlaylistService playlistService;
 
@@ -54,7 +58,7 @@ public class PlaylistServiceTest {
     private TrackService trackService;
 
     @Test
-    @WithUserDetails
+    @WithUserDetails(USER_EMAIL_2)
     public void testSavePlaylist() {
         final Playlist savedPlaylist = playlistService.save(PLAYLIST_1);
 
@@ -63,21 +67,21 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    @WithUserDetails("user1")
+    @WithUserDetails(USER_EMAIL_1)
     public void testGetAllUserPlaylist() {
         final Playlist playlist1 = playlistService.save(PLAYLIST_1);
         playlistService.save(PLAYLIST_2);
 
-        final Integer userId = userService.getIdByUsername("user1");
+        final Integer userId = userService.getIdByEmail("user1@gmail.com");
 
-        final Set<Playlist> allUsersPlaylists = playlistService.getAllUserPlaylist(userId);
+        final Set<Playlist> allUsersPlaylists = playlistService.getAllUserPlaylists(userId);
 
         assertTrue(allUsersPlaylists.contains(playlistService.get(playlist1.getId())));
         assertSame(2, allUsersPlaylists.size());
     }
 
     @Test
-    @WithUserDetails
+    @WithUserDetails(USER_EMAIL_1)
     public void testDeletePlaylist() {
         final Playlist playlist = playlistService.save(PLAYLIST_2);
         final Integer playlistId = playlist.getId();
@@ -87,7 +91,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    @WithUserDetails
+    @WithUserDetails("user@example.com")
     public void testGetTracks() {
         final Playlist playlist = playlistService.save("playlist_for_get");
         final Playlist expectedPlaylist = playlistService.get(playlist.getId());
@@ -98,7 +102,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    @WithUserDetails("user2")
+    @WithUserDetails(USER_EMAIL_2)
     public void testGetAllTracksInPlaylistAddTracksToPlaylist() {
         final Playlist playlist = playlistService.save(PLAYLIST_1);
         final Integer playlistId = playlist.getId();
@@ -106,16 +110,12 @@ public class PlaylistServiceTest {
         trackService.saveAll(Arrays.asList(
                 new Track("track1", "location1"),
                 new Track("track2", "location2")));
-        System.err.println("trackService.saveAll");
 
         final List<Track> tracksInDb = trackService.findAll();
-        System.err.println("trackService.findAll");
 
         playlistService.addTracks(playlistId, new HashSet<>(tracksInDb));
-        System.err.println("playlistService.addTracks");
 
         final Set<Track> tracksInPlaylist = playlistService.getAllTracksInPlaylist(playlistId);
-        System.err.println("trackService.getAll");
 
         assertNotNull(tracksInPlaylist);
         Assert.assertEquals(tracksInDb.size(), tracksInPlaylist.size());
@@ -125,4 +125,30 @@ public class PlaylistServiceTest {
         }
     }
 
+    @Test
+    @WithUserDetails("user@example.com")
+    public void testAddTrack() {
+
+        final Playlist playlist = playlistService.save("testAddTrack");
+        final Integer playlistId = playlist.getId();
+        final Integer trackId = trackService.save(new Track("testAddTrack", "location")).getId();
+
+        playlistService.addTrack(playlistId, trackId);
+        assertEquals(1, playlistService.get(playlistId).getTracks().size());
+    }
+
+    @Test
+    @WithUserDetails("user@example.com")
+    public void testRemoveTrack() {
+
+        final Playlist playlist = playlistService.save("test");
+        final Integer playlistId = playlist.getId();
+        final Integer trackId = trackService.save(new Track("testTrack", "location")).getId();
+
+        playlistService.addTrack(playlistId, trackId);
+        assertEquals(1, playlistService.get(playlistId).getTracks().size());
+
+        playlistService.removeTrack(playlistId, trackId);
+        assertEquals(0, playlistService.get(playlistId).getTracks().size());
+    }
 }

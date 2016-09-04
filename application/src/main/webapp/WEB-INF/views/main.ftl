@@ -6,11 +6,13 @@
 <@m.head>
 <title><@spring.message "mainpage.Title"/></title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-<script src="/resources/js/playlist.js"></script>
-<script src="/resources/js/track.js"></script>
-<script src="/resources/js/chunksplayer.js"></script>
-<script src="/resources/js/player.js"></script>
-<script src="/resources/js/main.js"></script>
+<script src="<@spring.url "/resources/js/playlist.js" />"></script>
+<script src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
+<script src="<@spring.url "/resources/js/track.js" />"></script>
+<script src="<@spring.url "/resources/js/player.js" />"></script>
+<script src="<@spring.url "/resources/js/main.js" />"></script>
+<script src="<@spring.url "/resources/js/history.js" />"></script>
+
 <link href="/resources/css/font-awesome.min.css" rel="stylesheet"/>
 <link href="/resources/css/mainpage.css" rel="stylesheet"/>
 </@m.head>
@@ -23,6 +25,7 @@
     <@m.navigation m.pages.Main/>
 
 <div class="container">
+
     <section id="tracks-section" class="well col-md-9 ">
         <table id="tracks" class="table table-hover table-striped table-condensed ">
             <thead>
@@ -40,14 +43,21 @@
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
     </a>
 
-    <div class="well  col-md-2 col-md-offset-1  ">
+    <section id="playlists-section" class="well  col-md-2 col-md-offset-1  ">
         <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">
             <@spring.message "mainpage.CreatePlaylist"/></button>
         <ul id="playlists" class="nav nav-pills nav-stacked"></ul>
     </section>
+
+    <section id="recommendations-section" class="well  col-md-9 col-md-offset-0">
+        <h4><@spring.message "mainpage.YouMightAlsoLike"/></h4>
+        <ul id="recommendations" class="nav nav-pills nav-stacked">
+        </ul>
+    </section>
 </div>
+<!-- end .container -->
+
 <script type="text/template" class="trackRowTemplate">
-    <tbody>
     <% _.each(data, function(track){ %>
     <tr id="<%= track.id %>">
         <td>
@@ -74,7 +84,6 @@
         </td>
     </tr>
     <% }); %>
-    </tbody>
 </script>
 
     <@p.player_Footer/>
@@ -85,6 +94,7 @@
             <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
                 <%= data.name %>
             </a>
+
             <div class="input-group-btn">
                 <button type="button" id="removePlaylistButton" class="btn btn-danger" onclick="deletePlaylist(this)">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
@@ -94,8 +104,22 @@
     </li>
 </script>
 
+<script type="text/template" class="recommendationRowTemplate">
+    <li id="<%= data.id %>" title="<%= data.artist %> - <%= data.title %> - <%= data.album %>">
+        <div class="input-group">
+            <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
+                <%= data.name %>
+            </a>
+            <span class="col-sm-2 form-control"><%= data.artist %></span>
+            <span class="col-sm-2 form-control"><%= data.title %></span>
+            <span class="col-sm-2 form-control">Liked: <span class="glyphicon num-likes"
+                                                             aria-hidden="true"></span></span>
+        </div>
+    </li>
+</script>
 
 <script type="text/javascript">
+    "use strict";
     var playlist = new Playlist();
     var track = new Track();
 
@@ -108,10 +132,15 @@
             $("script.playlistRowTemplate").html()
     );
 
+
     var player;
     var load_track;
 
     var trackManage = new Track();
+    var recommendationRow = _.template(
+            $("script.recommendationRowTemplate").html()
+    );
+    
     /*
      * When a playlist is clicked, mark it active, then fetch tracks of the playlist,
      * then populate the tracks table.
@@ -127,7 +156,7 @@
                     $("#tracks").find("thead").after(
                             trackRow(response.tracks)
                     );
-                    response.tracks.forEach(function(track) {
+                    response.tracks.forEach(function (track) {
                         updateLikeCount(track.id);
                     });
 
@@ -172,9 +201,11 @@
     $("#tracks").on("click", ".delete-song-button", function (e) {
         var row = $(this).closest("tr");
         var id = row.attr("id");
-        track.remove(id).then(function () {
-            row.remove();
-        });
+        var playlistToRemove = $("#playlists").find("li.active");
+        playlist.removeTrack(playlistToRemove.attr("id"), id)
+                .then(function () {
+                    row.remove();
+                });
     });
 
     function deletePlaylist(e) {
@@ -184,7 +215,7 @@
     }
 
     $("#acceptRemovingPlaylistButton").on("click", function (e) {
-        var playlistToRemove = $("#playlists").find("li.active")
+        var playlistToRemove = $("#playlists").find("li.active");
         playlist.remove(playlistToRemove.attr("id"))
                 .then(function () {
                     playlistToRemove.remove();
@@ -206,6 +237,35 @@
         );
     }
 
+    function addRecommendedTrack(track) {
+        $("#recommendations").append(
+                recommendationRow(track)
+        );
+    }
+
+    function updateLikeCount(id) {
+
+        track.getLikeCount(id)
+                .then(function (likeCount) {
+                    $("#tracks #" + id + " .num-likes").text(likeCount);
+                    $("#recommendations #" + id + " .num-likes").text(likeCount);
+                });
+    }
+
+    /**
+     * Retrieves tracks recommended for the current user.
+     */
+    function displayRecommendedTracks() {
+
+        track.getRecommendedTracks()
+                .then(function (tracks) {
+                    $.each(tracks, function (i, track) {
+                        addRecommendedTrack(track);
+                        updateLikeCount(track.id);
+                    });
+                });
+    }
+
     $(document).ready(function () {
 
         /* Fetch all playlists of the current user, and populate the list of playlists with them. */
@@ -215,10 +275,44 @@
                         addPlaylist(this);
                     });
                 })
-                .done(function() {
+                .done(function () {
                     /* For testing purpose, select the first playlist (named 'Hype'). */
-                    $("#1 a").trigger("click");
+                    $("#playlists #1 a").trigger("click");
                 });
+
+        displayRecommendedTracks();
+
+        /* Handle the Like button (Ajax). */
+        $("#tracks").on("click", ".like-button", function () {
+
+            /* The id of a track is stored in the containing <tr> element. */
+            var id = $(this).closest("tr").attr("id");
+            track.like(id)
+                    .then(function () {
+                        $("#" + id + " .like-button").css("opacity", "0.5");
+                        updateLikeCount(id);
+                    });
+        });
+
+
+        /*
+         * When a recommended track is clicked, add it to the playlist,
+         */
+        $("#recommendations").on("click", "a", function (e) {
+            e.preventDefault();
+
+            var li = $(this).closest("li");
+            var trackId = li.attr("id");
+            var playlistId = $("#playlists li.active").attr("id");
+
+            playlist.addTrack(playlistId, trackId)
+                    .then(function () {
+                        /* Remove the track from the recommended section, and update the current playlist. */
+                        li.remove();
+                        $("#playlists li.active a").trigger("click");
+                    });
+        });
+
 
         /* Set focus on the name input field when the modal window has been shown. */
         $("#addPlaylistModal").on("shown.bs.modal", function () {
@@ -227,7 +321,7 @@
         });
 
         /* Event handler for the 'Return' key. */
-        $("#inputNamePlaylist").on("keydown", function(e) {
+        $("#inputNamePlaylist").on("keydown", function (e) {
 
             if (e.keyCode == 0xD) {
                 $("#acceptCreatingPlaylistButton").trigger("click");

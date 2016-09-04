@@ -1,5 +1,6 @@
 package com.musicforall.model;
 
+import com.musicforall.common.Constants;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -22,13 +23,13 @@ public class User implements SocialUserDetails, Serializable {
     private static final long serialVersionUID = 1959293141381203004L;
 
     @Id
-    @Column(name = "id")
+    @Column(name = Constants.ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Size(min = 2, max = 16)
-    @Pattern(regexp = "^(^[a-zA-Z][a-zA-Z0-9-_\\.]+)$")
-    @Column(nullable = false, unique = true)
+    @Pattern(regexp = "^(^[a-zA-Z\\p{InCyrillic}][a-zA-Z0-9-_\\.\\p{InCyrillic}]+)$")
+    @Column(nullable = false)
     private String username;
 
     @Size(min = 4, max = 128)
@@ -107,7 +108,7 @@ public class User implements SocialUserDetails, Serializable {
 
     @Override
     public String getUserId() {
-        return username;
+        return email;
     }
 
     @Override

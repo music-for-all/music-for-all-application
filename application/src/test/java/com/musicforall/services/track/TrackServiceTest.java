@@ -1,14 +1,21 @@
 package com.musicforall.services.track;
 
+import com.musicforall.history.service.DBHistoryPopulateService;
+import com.musicforall.model.Playlist;
 import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
+import com.musicforall.services.follower.FollowerService;
+import com.musicforall.services.playlist.PlaylistService;
+import com.musicforall.services.recommendation.RecommendationService;
 import com.musicforall.services.tag.TagService;
+import com.musicforall.util.SecurityUtil;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -19,15 +26,13 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.*;
 
 /**
  * Created by Pukho on 28.06.2016.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class })
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
         TrackTestExecutionListener.class,
@@ -44,6 +49,18 @@ public class TrackServiceTest {
 
     @Autowired
     private TagService tagService;
+
+    @Autowired
+    private RecommendationService recommendationService;
+
+    @Autowired
+    private FollowerService followerService;
+
+    @Autowired
+    private PlaylistService playlistService;
+
+    @Autowired
+    private DBHistoryPopulateService dbHistoryPopulateService;
 
     @Test
     public void testSaveTrackWithoutTags() {
@@ -161,10 +178,54 @@ public class TrackServiceTest {
     }
 
     @Test
+    public void testGetAllByEmptyIds() {
+        final Collection<Track> tracks = trackService.getAllById(Collections.emptyList());
+        assertTrue(tracks.isEmpty());
+    }
+
+    @Test
+    public void testGetAllByNullIds() {
+        final Collection<Track> tracks = trackService.getAllById(null);
+        assertTrue(tracks.isEmpty());
+    }
+
+    @Test
     public void testFindAll() {
         trackService.save(new Track("track3", "/track3.mp3"));
         List<Track> tracks = trackService.findAll();
         assertNotNull(tracks);
         assertTrue(tracks.size() >= 1);
+    }
+
+    @Test
+    @WithUserDetails("user@example.com")
+    public void testGetRecommendedTracks() {
+
+        final Track track1 = new Track("track", "title1", "artist1", "album1", "/root/track1.mp3", null);
+        final Track track2 = new Track("track", "title2", "artist2", "album2", "/root/track2.mp3", null);
+        final Track track3 = new Track("track", "title3", "artist3", "album3", "/root/track3.mp3", null);
+        final Track track4 = new Track("track", "title4", "artist4", "album4", "/root/track4.mp3", null);
+
+        trackService.save(track1);
+        trackService.save(track2);
+        trackService.save(track3);
+        trackService.save(track4);
+        final List<Integer> trackIds = Arrays.asList(track1.getId(), track2.getId(), track3.getId());
+        final int FOLLOWED_USER_ID = 2;
+        followerService.follow(SecurityUtil.currentUser().getId(), FOLLOWED_USER_ID);
+
+        dbHistoryPopulateService.populateTrackLikedByFollowedUsers(trackIds, FOLLOWED_USER_ID);
+
+        Collection<Track> tracks = recommendationService.getRecommendedTracks();
+        assertNotNull(tracks);
+        assertEquals(3, tracks.size());
+
+        final Playlist playlist = playlistService.save("demo");
+        playlistService.addTracks(playlist.getId(), new HashSet<Track>(trackService.findAll()));
+
+        tracks = recommendationService.getRecommendedTracks();
+        assertEquals(0, tracks.size());
+
+        playlistService.delete(playlist.getId());
     }
 }

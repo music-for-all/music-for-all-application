@@ -24,7 +24,7 @@ public class DBHistoryPopulateService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DBHistoryPopulateService.class);
 
-    private static final Integer MAX = 10;
+    private static final int MAX = 10;
 
     @Autowired
     private HistoryService historyService;
@@ -36,6 +36,10 @@ public class DBHistoryPopulateService {
         recordHistories(tracksIds, userId, EventType.TRACK_LIKED);
     }
 
+    public void populateTrackLikedByFollowedUsers(List<Integer> trackIds, Integer userId) {
+        recordHistories(trackIds, userId, EventType.TRACK_LIKED);
+    }
+
     private void recordHistories(List<Integer> tracksIds, Integer userId, EventType eventType) {
         final Random rnd = new Random();
         tracksIds.stream()
@@ -45,10 +49,9 @@ public class DBHistoryPopulateService {
                         listened = rnd.nextInt(MAX);
                     }
                     return IntStream.range(0, listened)
-                            .mapToObj(i -> new History(t, new Date(), userId, eventType))
+                            .mapToObj(i -> new History(t, null, new Date(), userId, eventType))
                             .collect(Collectors.toList()).stream();
                 })
                 .forEach(historyService::record);
     }
 }
-

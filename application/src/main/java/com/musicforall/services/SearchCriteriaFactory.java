@@ -3,6 +3,7 @@ package com.musicforall.services;
 import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Track;
+import com.musicforall.common.Constants;
 import org.hibernate.criterion.*;
 
 import java.util.List;
@@ -14,13 +15,6 @@ public final class SearchCriteriaFactory {
 
     private SearchCriteriaFactory() {
     }
-
-    /**
-     * Creates a detached criteria based on the data provided in a SearchCriteria object.
-     *
-     * @param searchCriteria an instance of the SearchCriteria class
-     * @return the detached criteria
-     */
     public static DetachedCriteria createTrackSearchCriteria(SearchTrackRequest searchCriteria) {
 
         if (searchCriteria == null) {
@@ -51,10 +45,10 @@ public final class SearchCriteriaFactory {
             final DetachedCriteria subcriteria = DetachedCriteria.forClass(Track.class)
                     .createAlias("tags", "tag")
                     .add(disjunction)
-                    .setProjection(Projections.property("id"));
+                    .setProjection(Projections.property(Constants.ID));
 
             detachedCriteria
-                    .add(Subqueries.propertyIn("id", subcriteria));
+                    .add(Subqueries.propertyIn(Constants.ID, subcriteria));
         }
         return detachedCriteria;
     }

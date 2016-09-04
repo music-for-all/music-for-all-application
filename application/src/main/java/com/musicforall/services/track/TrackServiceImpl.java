@@ -1,6 +1,8 @@
 package com.musicforall.services.track;
 
+import com.musicforall.common.Constants;
 import com.musicforall.common.dao.Dao;
+import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
@@ -54,7 +56,7 @@ public class TrackServiceImpl implements TrackService {
     @Override
     public List<Track> getAllByName(String trackName) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class)
-                .add(Restrictions.like("name", "%" + trackName + "%").ignoreCase());
+                .add(Restrictions.like(Constants.NAME, QueryUtil.like(trackName)).ignoreCase());
         return dao.getAllBy(detachedCriteria);
     }
 
@@ -67,6 +69,10 @@ public class TrackServiceImpl implements TrackService {
 
     @Override
     public Collection<Track> getAllById(Collection<Integer> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         final Map<String, Object> params = new HashMap<>();
         params.put("ids", ids);
         return dao.getAllByNamedQuery(Track.class, Track.ALL_BY_ID_QUERY, params);
