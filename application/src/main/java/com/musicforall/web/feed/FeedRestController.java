@@ -1,6 +1,6 @@
 package com.musicforall.web.feed;
 
-import com.musicforall.history.model.History;
+import com.musicforall.dto.feed.Feed;
 import com.musicforall.model.User;
 import com.musicforall.services.feed.FeedService;
 import com.musicforall.util.SecurityUtil;
@@ -26,8 +26,8 @@ public class FeedRestController {
     private FeedService feedService;
 
     @RequestMapping(value = "/histories", method = RequestMethod.GET)
-    public Map<User, List<History>> getGroupedHistories() {
+    public Map<User, List<Feed>> getGroupedHistories() {
         return feedService
-                .getGroupedFollowingHistories(SecurityUtil.currentUser().getId());
+                .getGroupedFollowingFeeds(SecurityUtil.currentUser().getId());
     }
 }

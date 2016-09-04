@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Pukho on 15.06.2016.
@@ -58,6 +55,17 @@ public class PlaylistServiceImpl implements PlaylistService {
     public Set<Track> getAllTracksInPlaylist(Integer playlistId) {
         final Playlist playlist = dao.get(Playlist.class, playlistId);
         return playlist.getTracks();
+    }
+
+    @Override
+    public Collection<Playlist> getAllById(Collection<Integer> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        final Map<String, Object> params = new HashMap<>();
+        params.put("ids", ids);
+        return dao.getAllByNamedQuery(Playlist.class, Playlist.ALL_BY_ID_QUERY, params);
     }
 
     @Override

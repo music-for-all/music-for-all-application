@@ -1,5 +1,6 @@
 package com.musicforall.services.feed;
 
+import com.musicforall.dto.feed.Feed;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.User;
@@ -71,7 +72,7 @@ public class FeedServiceTest {
         historyService.record(history2);
         historyService.record(history3);
 
-        Map<User, List<History>> followingHistories = feedService.getGroupedFollowingHistories(USER_ID);
+        Map<User, List<Feed>> followingHistories = feedService.getGroupedFollowingFeeds(USER_ID);
 
         assertTrue(followingHistories.get(user1).contains(history1));
         assertTrue(followingHistories.get(user1).contains(history2));

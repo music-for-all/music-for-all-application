@@ -1,6 +1,6 @@
 package com.musicforall.services.feed;
 
-import com.musicforall.history.model.History;
+import com.musicforall.dto.feed.Feed;
 import com.musicforall.model.User;
 
 import java.util.List;
@@ -11,5 +11,7 @@ import java.util.Map;
  */
 public interface FeedService {
 
-    Map<User, List<History>> getGroupedFollowingHistories(Integer userId);
+    Map<User, List<Feed>> getGroupedFollowingFeeds(Integer userId);
+
+
 }

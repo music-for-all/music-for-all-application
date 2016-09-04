@@ -3,6 +3,7 @@ package com.musicforall.services.playlist;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -15,6 +16,8 @@ public interface PlaylistService {
     Playlist save(Playlist playlist);
 
     Set<Track> getAllTracksInPlaylist(Integer playlistId);
+
+    Collection<Playlist> getAllById(Collection<Integer> ids);
 
     void delete(Integer playlistId);
 

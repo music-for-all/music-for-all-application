@@ -147,6 +147,10 @@ public class Track implements Serializable {
         this.location = location;
     }
 
+    public String getEntireName() {
+        return getArtist() + " - " + getTitle();
+    }
+
     @Deprecated
     public String getName() {
         return name;
