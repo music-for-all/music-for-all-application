@@ -39,6 +39,7 @@ public class FeedServiceTest {
 
     private static final int TRACK_ID = 3333;
     private static final int PLAYLIST_ID = 111;
+    public static final String LOC_1 = "loc1";
 
     @Autowired
     private UserService userService;
@@ -65,8 +66,8 @@ public class FeedServiceTest {
         final User user1 = new User("Iosiv", PASSWORD, "tribunal@example.com");
         final User user2 = new User("Winston", PASSWORD, "UK@example.com");
 
-        final Track track1 = new Track("Kanye West - All day", "All day", "Kanye West", null, null, null);
-        final Track track2 = new Track("Ray Charles – Mess around", "Mess around", "Ray Charles", null, null, null);
+        final Track track1 = new Track("Kanye West - All day", "All day", "Kanye West", null, LOC_1, null);
+        final Track track2 = new Track("Ray Charles – Mess around", "Mess around", "Ray Charles", null, LOC_1, null);
         final Playlist playlist3 = new Playlist("Jazz", null, user2);
 
         userService.save(user);
