@@ -8,6 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="/resources/js/playlist.js"></script>
 <script src="/resources/js/track.js"></script>
+<script src="/resources/js/chunksplayer.js"></script>
 <script src="/resources/js/player.js"></script>
 <script src="/resources/js/main.js"></script>
 <link href="/resources/css/font-awesome.min.css" rel="stylesheet"/>
@@ -17,6 +18,7 @@
 <@m.body>
     <@p.popUpAdd "addPlaylistModal"/>
     <@p.popUpDelete "deletePlaylistModal"/>
+
 
     <@m.navigation m.pages.Main/>
 
@@ -68,14 +70,15 @@
             <%= track.artist %>
         </td>
         <td>
-            <audio id="audio_<%= track.id %>" controls preload="none">
-                <source type="audio/mp3" src="<@spring.url "/files/<%= track.id %>/0"/>">
-            </audio>
+            <div id="<%= track.id %>"></div>
         </td>
     </tr>
     <% }); %>
     </tbody>
 </script>
+
+    <@p.player_Footer/>
+
 <script type="text/template" class="playlistRowTemplate">
     <li id="<%= data.id %>" title="<%= data.name %>">
         <div class="input-group">
@@ -90,6 +93,8 @@
         </div>
     </li>
 </script>
+
+
 <script type="text/javascript">
     var playlist = new Playlist();
     var track = new Track();
@@ -103,6 +108,10 @@
             $("script.playlistRowTemplate").html()
     );
 
+    var player;
+    var load_track;
+
+    var trackManage = new Track();
     /*
      * When a playlist is clicked, mark it active, then fetch tracks of the playlist,
      * then populate the tracks table.
@@ -112,6 +121,7 @@
         $("#playlists").find("li").removeClass("active");
         $(this).closest("li").addClass("active");
         clearTracks();
+
         playlist.get($("#playlists li.active").attr("id"))
                 .then(function (response) {
                     $("#tracks").find("thead").after(
@@ -120,8 +130,31 @@
                     response.tracks.forEach(function(track) {
                         updateLikeCount(track.id);
                     });
+
+                    $("#next").click(function () {
+                        var currIndex=0;
+                        while (currIndex < response.tracks.length) {
+                            if (load_track == response.tracks[currIndex].id) {
+                                playCurrentTrack(response.tracks[currIndex+1].id);
+                                break;
+                            }
+                            currIndex++;
+                        }
+                    });
+
+                    $("#prev").click(function () {
+                        var currIndex=response.tracks.length-1;
+                        while (currIndex > 0) {
+                            if (load_track == response.tracks[currIndex].id) {
+                                playCurrentTrack(response.tracks[currIndex-1].id);
+                                break;
+                            }
+                            currIndex--;
+                        }
+                    });
                 });
     });
+
 
     $("#createPlaylistButton").on("click", function (e) {
 
