@@ -35,7 +35,7 @@ public class ArtistRestController {
                                      @RequestParam(value = "tags", required = false) final List<String> tags) {
         final List<Artist> artists = artistService.getAllLike(artistName);
         final List<String> artistsNames = new ArrayList<>();
-        for (Artist artist : artists) {
+        for (final Artist artist : artists) {
             artistsNames.add(artist.getArtistName());
         }
         return new ResponseEntity<>(artistsNames, HttpStatus.OK);
