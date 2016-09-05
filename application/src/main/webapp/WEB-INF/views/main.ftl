@@ -155,14 +155,7 @@
         e.preventDefault();
         $("#playlists").find("li").removeClass("active");
         $(this).closest("li").addClass("active");
-        clearTracks();
-        playlist.get($("#playlists li.active").attr("id"))
-                .then(function (response) {
-                    response.tracks.forEach(function (track) {
-                        $("#tracks").append(trackRow(track));
-                        updateLikeCount(track.id);
-                    });
-                });
+        refreshTrackTable();
     });
 
     $("#add-to-playlist").hide();
@@ -176,7 +169,11 @@
 
         var playlistId = $("#playlists").find("li.active").attr("id");
 
-        playlist.addTracks()
+        playlist.addTracks(playlistId, tracksIds)
+                .then(function () {
+                    refreshTrackTable();
+                    refreshRecommendationTable();
+                });
     });
 
     $("#change-multiselect-state").on("click", "input", function (e) {
@@ -220,6 +217,18 @@
         $("#deletePlaylistModal").modal("show");
     }
 
+    function refreshTrackTable() {
+        clearTracks();
+        var id = $("#playlists").find("li.active").attr("id");
+        playlist.get(id)
+                .then(function (response) {
+                    response.tracks.forEach(function (track) {
+                        $("#tracks").append(trackRow(track));
+                        updateLikeCount(track.id);
+                    });
+                });
+    }
+
     $("#acceptRemovingPlaylistButton").on("click", function (e) {
         var playlistToRemove = $("#playlists").find("li.active");
         playlist.remove(playlistToRemove.attr("id"))
@@ -237,6 +246,10 @@
         $("#playlists").find("li").remove();
     }
 
+    function clearRecommendations() {
+        $("#recommendations").find("li").remove();
+    }
+
     function addPlaylist(playlist) {
         $("#playlists").append(
                 playlistRow(playlist)
@@ -250,7 +263,6 @@
     }
 
     function updateLikeCount(id) {
-
         track.getLikeCount(id)
                 .then(function (likeCount) {
                     $("#tracks #" + id + " .num-likes").text(likeCount);
@@ -258,11 +270,8 @@
                 });
     }
 
-    /**
-     * Retrieves tracks recommended for the current user.
-     */
-    function displayRecommendedTracks() {
-
+    function refreshRecommendationTable() {
+        clearRecommendations();
         track.getRecommendedTracks()
                 .then(function (tracks) {
                     var track = {
@@ -302,7 +311,7 @@
                     $("#playlists #1 a").trigger("click");
                 });
 
-        displayRecommendedTracks();
+        refreshRecommendationTable();
 
         /* Handle the Like button (Ajax). */
         $("#tracks").on("click", ".like-button", function () {
@@ -316,29 +325,8 @@
                     });
         });
 
-
-        /*
-         * When a recommended track is clicked, add it to the playlist,
-         */
-        $("#recommendations").on("click", "a", function (e) {
-            e.preventDefault();
-
-            var li = $(this).closest("li");
-            var trackId = li.attr("id");
-            var playlistId = $("#playlists li.active").attr("id");
-
-            playlist.addTrack(playlistId, trackId)
-                    .then(function () {
-                        /* Remove the track from the recommended section, and update the current playlist. */
-                        li.remove();
-                        $("#playlists li.active a").trigger("click");
-                    });
-        });
-
-
         /* Set focus on the name input field when the modal window has been shown. */
         $("#addPlaylistModal").on("shown.bs.modal", function () {
-
             $("#inputNamePlaylist").focus();
         });
 
@@ -352,7 +340,6 @@
 
         /* Set focus on the name input field when the modal window has been shown. */
         $("#deletePlaylistModal").on("shown.bs.modal", function () {
-
             $("#acceptRemovingPlaylistButton").focus();
         });
     });

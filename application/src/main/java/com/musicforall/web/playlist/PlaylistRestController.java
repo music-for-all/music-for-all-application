@@ -65,7 +65,8 @@ public class PlaylistRestController {
     }
 
     @RequestMapping(value = "/{id}/add/tracks", method = RequestMethod.POST)
-    public ResponseEntity addTracks(@PathVariable("id") Integer playlistId, @RequestParam Collection<Integer> tracksIds) {
+    public ResponseEntity addTracks(@PathVariable("id") Integer playlistId,
+                                    @RequestParam("tracksIds[]") Collection<Integer> tracksIds) {
         final Collection<Track> tracks = trackService.getAllById(tracksIds);
         playlistService.addTracks(playlistId, tracks);
         return new ResponseEntity(HttpStatus.OK);

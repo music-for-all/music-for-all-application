@@ -31,16 +31,14 @@ function Playlist() {
         return $.when($.get(baseUrl));
     };
 
-    self.addTrack = function (playlistId, trackId) {
-        history.trackAdded(trackId);
-        return $.when($.ajax({
-            type: "POST",
-            url: baseUrl + "/" + playlistId + "/add/" + trackId
-        }));
-    };
-
     self.addTracks = function (playlistId, tracksIds) {
-
+        tracksIds.forEach(function (trackId) {
+            history.trackAdded(trackId);
+        });
+        return $.when($.post(baseUrl + "/" + playlistId + "/add/tracks",
+            {
+                tracksIds: tracksIds
+            }));
     };
 
     self.removeTrack = function (playlistId, trackId) {
