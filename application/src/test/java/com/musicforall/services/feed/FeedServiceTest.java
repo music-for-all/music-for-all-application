@@ -63,7 +63,7 @@ public class FeedServiceTest {
 
 
     @Test
-    public void testGetGroupedFollowingHistories() {
+    public void testGetGroupedFollowingFeeds() {
         final User user = new User("Adolf", PASSWORD, "meinkampf@example.com");
         final User user1 = new User("Iosiv", PASSWORD, "tribunal@example.com");
         final User user2 = new User("Winston", PASSWORD, "UK@example.com");
