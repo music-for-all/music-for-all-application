@@ -1,14 +1,12 @@
 package com.musicforall.services.track;
 
 import com.musicforall.history.service.DBHistoryPopulateService;
-import com.musicforall.model.Playlist;
-import com.musicforall.model.SearchTrackRequest;
-import com.musicforall.model.Tag;
-import com.musicforall.model.Track;
+import com.musicforall.model.*;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.recommendation.RecommendationService;
 import com.musicforall.services.tag.TagService;
+import com.musicforall.services.user.UserService;
 import com.musicforall.util.SecurityUtil;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
@@ -61,6 +59,9 @@ public class TrackServiceTest {
 
     @Autowired
     private DBHistoryPopulateService dbHistoryPopulateService;
+
+    @Autowired
+    private UserService userService;
 
     @Test
     public void testSaveTrackWithoutTags() {
@@ -211,10 +212,13 @@ public class TrackServiceTest {
         trackService.save(track3);
         trackService.save(track4);
         final List<Integer> trackIds = Arrays.asList(track1.getId(), track2.getId(), track3.getId());
-        final int FOLLOWED_USER_ID = 2;
-        followerService.follow(SecurityUtil.currentUser().getId(), FOLLOWED_USER_ID);
 
-        dbHistoryPopulateService.populateTrackLikedByFollowedUsers(trackIds, FOLLOWED_USER_ID);
+        final User followingUser = new User("Valera", "228", "ya@gmail.com");
+        userService.save(followingUser);
+
+        followerService.follow(SecurityUtil.currentUser().getId(), followingUser.getId());
+
+        dbHistoryPopulateService.populateTrackLikedByFollowedUsers(trackIds, followingUser.getId());
 
         Collection<Track> tracks = recommendationService.getRecommendedTracks();
         assertNotNull(tracks);
