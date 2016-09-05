@@ -13,9 +13,18 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@NamedQueries(
+        {
+                @NamedQuery(
+                        name = Artist.ARTIST_LIKE_NAME_QUERY,
+                        query = "from Artist where artist_name like :artist_name"
+                )
+        }
+)
 @Table(name = "artists")
 public class Artist implements Serializable {
 
+    public static final String ARTIST_LIKE_NAME_QUERY = "artist_like_name";
     private static final long serialVersionUID = 5787383287840000175L;
     
     @Id

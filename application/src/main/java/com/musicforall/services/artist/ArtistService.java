@@ -1,6 +1,7 @@
 package com.musicforall.services.artist;
 
 import com.musicforall.model.Artist;
+import com.musicforall.model.Tag;
 
 import java.util.Collection;
 import java.util.List;
@@ -40,4 +41,5 @@ public interface ArtistService {
      */
     List<Artist> getAllArtists();
 
+    List<Artist> getAllLike(String artistName);
 }

@@ -1,6 +1,7 @@
 package com.musicforall.services.artist;
 
 import com.musicforall.common.dao.Dao;
+import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.Artist;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Pavel Podgorniy on 8/19/2016.
@@ -40,5 +43,12 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public Collection<Artist> saveAll(Collection<Artist> artists) {
         return dao.saveAll(artists);
+    }
+
+    @Override
+    public List<Artist> getAllLike(String artistName) {
+        final Map<String, Object> properties = new HashMap<>();
+        properties.put("artist_name", QueryUtil.like(artistName.toLowerCase()));
+        return dao.getAllByNamedQuery(Artist.class, Artist.ARTIST_LIKE_NAME_QUERY, properties);
     }
 }

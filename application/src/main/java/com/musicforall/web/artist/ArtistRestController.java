@@ -1,8 +1,6 @@
 package com.musicforall.web.artist;
 
 import com.musicforall.model.Artist;
-import com.musicforall.model.SearchTrackRequest;
-import com.musicforall.model.Track;
 import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.web.tag.TagRestController;
@@ -17,9 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @Validated
@@ -36,19 +33,11 @@ public class ArtistRestController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getArtists(@RequestParam("artistName") final String artistName,
                                      @RequestParam(value = "tags", required = false) final List<String> tags) {
-        final SearchTrackRequest searchQuery = new SearchTrackRequest();
-
-        final Artist searchArtist = artistService.get(artistName);
-        if (searchArtist != null) {
-            searchQuery.setArtist(searchArtist);
-        } else {
-            searchQuery.setArtist(new Artist(artistName));
+        final List<Artist> artists = artistService.getAllLike(artistName);
+        final List<String> artistsNames = new ArrayList<>();
+        for (Artist artist : artists) {
+            artistsNames.add(artist.getArtistName());
         }
-        searchQuery.setTags(tags);
-        final List<Track> tracks = trackService.getAllLike(searchQuery);
-
-        //Set String changed to Set Artists
-        final Set<Artist> artists = tracks.stream().map(Track::getArtist).collect(Collectors.toSet());
-        return new ResponseEntity<>(artists, HttpStatus.OK);
+        return new ResponseEntity<>(artistsNames, HttpStatus.OK);
     }
 }
