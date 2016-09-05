@@ -10,7 +10,6 @@ import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * Created by Andrey on 8/15/16.
@@ -40,14 +39,11 @@ public final class UsersConnectionRepositoryTable {
     }
 
     private static boolean isExist() {
-        try (Statement statement = dataSource.getConnection().createStatement()) {
-            ResultSet resultSet = statement.
-                    executeQuery("SELECT count(*) FROM INFORMATION_SCHEMA.TABLES" +
-                            " WHERE TABLE_NAME = 'UserConnection'");
-            if (resultSet.next()) {
-                if (resultSet.getInt(1) == 1) {
-                    return true;
-                }
+        final String query = "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES" +
+                " WHERE TABLE_NAME = 'UserConnection'";
+        try (final ResultSet resultSet = dataSource.getConnection().createStatement().executeQuery(query)) {
+            if (resultSet.next() && (resultSet.getInt(1) == 1)) {
+                return true;
             }
         } catch (SQLException e) {
             LOG.error(e.getMessage());
