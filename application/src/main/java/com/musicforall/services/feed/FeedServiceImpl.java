@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -44,7 +45,7 @@ public class FeedServiceImpl implements FeedService {
     @Override
     public Map<User, List<Feed>> getGroupedFollowingFeeds(Integer userId) {
         final Collection<Integer> usersIds = followerService.getFollowingId(userId);
-        final List<User> users = userService.getUsersById(usersIds);
+        Map<Integer, User> usersByIds = userService.getUsersById(usersIds).stream().collect(Collectors.toMap(User::getId, Function.identity()));
 
         final Collection<History> usersHistories = historyService.getUsersHistories(usersIds);
 
@@ -58,10 +59,11 @@ public class FeedServiceImpl implements FeedService {
                 .map(History::getPlaylistId)
                 .collect(Collectors.toList());
 
-        final List<Track> tracks = new ArrayList<>(trackService.getAllById(tracksIds));
-        final List<Playlist> playlists = new ArrayList<>(playlistService.getAllById(playlistsIds));
+        Map<Integer, Track> tracksByIds = trackService.getAllById(tracksIds).stream().collect(Collectors.toMap(Track::getId, Function.identity()));
+        Map<Integer, Playlist> playlistsByIds = playlistService.getAllById(playlistsIds).stream().collect(Collectors.toMap(Playlist::getId, Function.identity()));
 
-        return usersHistories
+        return Collections.EMPTY_MAP;
+/*        return usersHistories
                 .stream()
                 .collect(Collectors.groupingBy(h -> users
                                 .stream()
@@ -78,7 +80,7 @@ public class FeedServiceImpl implements FeedService {
                                         FeedUtil.getFilteredPlaylist(playlists, h).getName(), h.getDate());
                             }
                             return null;
-                        }, Collectors.toList())));
+                        }, Collectors.toList())));*/
     }
 }
 

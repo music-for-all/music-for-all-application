@@ -24,12 +24,6 @@ public class FollowerServiceImp implements FollowerService {
     @Autowired
     private Dao dao;
 
-    @Autowired
-    private HistoryService historyService;
-
-    @Autowired
-    private UserService userService;
-
     @Override
     public void follow(Integer userId, Integer followingUserId) {
         Followers followers = dao.get(Followers.class, userId);
