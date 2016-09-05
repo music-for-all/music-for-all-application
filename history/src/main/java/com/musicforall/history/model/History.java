@@ -23,9 +23,9 @@ import java.util.Objects;
                         " order by count(history.trackId) desc"
         ),
         @NamedQuery(
-        name = History.TRACK_LIKES_COUNT_QUERY,
-        query = "select count(*) from History history " +
-                "where history.trackId=:trackId and history.eventType=:eventType"),
+                name = History.TRACK_LIKES_COUNT_QUERY,
+                query = "select count(*) from History history " +
+                        "where history.trackId=:trackId and history.eventType=:eventType"),
         @NamedQuery(
                 name = History.ALL_USERS_BY_TYPE_QUERY,
                 query = "select h from History h where h.eventType = :eventType and h.userId in " +
@@ -49,6 +49,9 @@ public class History {
     @Column(name = "track_id")
     private Integer trackId;
 
+    @Column(name = "playlist_id")
+    private Integer playlistId;
+
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
@@ -59,8 +62,9 @@ public class History {
     @Column(name = "event_type")
     private EventType eventType;
 
-    public History(Integer trackId, Date date, Integer userId, EventType eventType) {
+    public History(Integer trackId, Integer playlistId, Date date, Integer userId, EventType eventType) {
         this.trackId = trackId;
+        this.playlistId = playlistId;
         this.date = date;
         this.userId = userId;
         this.eventType = eventType;
@@ -109,9 +113,17 @@ public class History {
         this.eventType = eventType;
     }
 
+    public void setPlaylistId(Integer playlistId) {
+        this.playlistId = playlistId;
+    }
+
+    public Integer getPlaylistId() {
+        return playlistId;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, trackId, date, eventType);
+        return Objects.hash(id, userId, trackId, date, eventType, playlistId);
     }
 
     @Override
@@ -125,6 +137,7 @@ public class History {
         final History other = (History) obj;
         return Objects.equals(this.id, other.id)
                 && Objects.equals(this.trackId, other.trackId)
+                && Objects.equals(this.playlistId, other.playlistId)
                 && Objects.equals(this.userId, other.userId)
                 && Objects.equals(this.date, other.date)
                 && Objects.equals(this.eventType, other.eventType);
@@ -135,6 +148,7 @@ public class History {
         return "UsageHistory{" +
                 "id=" + id +
                 ", track_id=" + trackId +
+                ", playlist_id=" + playlistId +
                 ", user_id=" + userId +
                 ", date='" + date + '\'' +
                 ", eventType=" + eventType +

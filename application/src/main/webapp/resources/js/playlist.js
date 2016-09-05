@@ -4,8 +4,10 @@ function Playlist() {
 
     var self = this;
     var baseUrl = dict.contextPath + "/playlists";
+    var history = new History();
 
     self.remove = function (id) {
+        history.playlistDeleted(id);
         return $.when(
             $.ajax({
                 url: baseUrl + "/" + id,
@@ -14,7 +16,11 @@ function Playlist() {
     };
 
     self.create = function (name) {
-        return $.when($.post(baseUrl, {"name": name}));
+        var promise = $.when($.post(baseUrl, {"name": name}));
+        promise.then(function (playlist) {
+            history.playlistAdded(playlist.id);
+        });
+        return promise;
     };
 
     self.get = function (id) {
@@ -26,6 +32,7 @@ function Playlist() {
     };
 
     self.addTrack = function (playlistId, trackId) {
+        history.trackAdded(trackId);
         return $.when($.ajax({
             type: "POST",
             url: baseUrl + "/" + playlistId + "/add/" + trackId
@@ -34,9 +41,10 @@ function Playlist() {
 
 
     self.removeTrack = function (playlistId, trackId) {
+        history.trackDeleted(trackId);
         return $.when($.ajax({
             type: "DELETE",
-            url: baseUrl + "/" + playlistId + "/remove/" + trackId,
+            url: baseUrl + "/" + playlistId + "/remove/" + trackId
         }));
     };
 }
