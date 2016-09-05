@@ -27,7 +27,7 @@ import java.util.Set;
 @Table(name = "playlists")
 public class Playlist implements Serializable {
 
-    public static final String ALL_BY_ID_QUERY = "all_by_id";
+    public static final String ALL_BY_ID_QUERY = "all_playlists_by_id";
     private static final long serialVersionUID = 3556491830874885637L;
 
     @Id

@@ -81,8 +81,7 @@ public class FeedServiceImpl implements FeedService {
                                         FeedUtil.getFilteredPlaylist(playlists, h).getName(), h.getDate());
                             }
                             return null;
-                        }
-                                , Collectors.toList())));
+                        }, Collectors.toList())));
     }
 }
 

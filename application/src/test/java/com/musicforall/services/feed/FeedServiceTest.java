@@ -34,8 +34,7 @@ import static junit.framework.Assert.assertTrue;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
 @TestExecutionListeners({
-        DependencyInjectionTestExecutionListener.class,
-        FeedTestExecutionListener.class})
+        DependencyInjectionTestExecutionListener.class})
 @ActiveProfiles("dev")
 public class FeedServiceTest {
 

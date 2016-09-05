@@ -2,14 +2,12 @@ package com.musicforall.services.feed;
 
 
 import com.musicforall.history.handlers.events.EventType;
-import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 /**
  * @author IliaNik on 03.09.2016.
  */
-@Component
 public class Feed {
 
     private final EventType eventType;

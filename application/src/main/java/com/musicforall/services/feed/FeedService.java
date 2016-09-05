@@ -9,8 +9,5 @@ import java.util.Map;
  * @author IliaNik on 02.09.2016.
  */
 public interface FeedService {
-
     Map<User, List<Feed>> getGroupedFollowingFeeds(Integer userId);
-
-
 }
