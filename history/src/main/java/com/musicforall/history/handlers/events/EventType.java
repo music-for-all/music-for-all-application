@@ -1,7 +1,5 @@
 package com.musicforall.history.handlers.events;
 
-import java.util.stream.Stream;
-
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -18,10 +16,13 @@ public enum EventType {
     public boolean in(final EventType... types) {
         requireNonNull(types, "Types must not be null");
 
-        return Stream.of(types)
-                .filter(t -> this == t)
-                .findFirst()
-                .isPresent();
+        for (final EventType type : types) {
+            if (this == type) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public boolean isTrackEvent() {
