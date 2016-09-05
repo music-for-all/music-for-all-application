@@ -39,6 +39,9 @@ function Playlist() {
         }));
     };
 
+    self.addTracks = function (playlistId, tracksIds) {
+
+    };
 
     self.removeTrack = function (playlistId, trackId) {
         history.trackDeleted(trackId);

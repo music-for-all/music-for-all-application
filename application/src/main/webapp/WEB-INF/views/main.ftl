@@ -48,15 +48,23 @@
 
     <section id="recommendations-section" class="well  col-md-9 col-md-offset-0">
         <h4><@spring.message "mainpage.YouMightAlsoLike"/></h4>
-        <ul id="recommendations" class="nav nav-pills nav-stacked">
+        <label class="switch" id="change-multiselect-state">
+            <input type="checkbox">
+
+            <div class="slider round"></div>
+        </label>
+        <button type="button" id="add-to-playlist" class="btn btn-lg btn-success"
+                title="<@spring.message "mainpage.AddToPlaylist"/>">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </button>
+        <ul id="recommendations" class="nav nav-pills nav-stacked no-checkbox">
         </ul>
     </section>
 </div>
 <!-- end .container -->
 
 <script type="text/template" class="trackRowTemplate">
-    <% _.each(data, function(track){ %>
-    <tr id="<%= track.id %>">
+    <tr id="<%= data.id %>">
         <td>
             <button type="button" class="btn btn-xs btn-success play-track-button">
                 <span class='glyphicon glyphicon-play' aria-hidden='true'></span>
@@ -71,18 +79,17 @@
             <span class="glyphicon num-likes" aria-hidden="true"></span>
         </td>
         <td>
-            <%= track.name %>
+            <%= data.name %>
         </td>
         <td>
-            <%= track.artist %>
+            <%= data.artist %>
         </td>
         <td>
-            <audio id="audio_<%= track.id %>" controls preload="none">
-                <source type="audio/mp3" src="<@spring.url "/files/<%= track.id %>/0"/>">
+            <audio id="audio_<%= data.id %>" controls preload="none">
+                <source type="audio/mp3" src="<@spring.url "/files/<%= data.id %>/0"/>">
             </audio>
         </td>
     </tr>
-    <% }); %>
 </script>
 <script type="text/template" class="playlistRowTemplate">
     <li id="<%= data.id %>" title="<%= data.name %>">
@@ -102,6 +109,14 @@
 
 <script type="text/template" class="recommendationRowTemplate">
     <li id="<%= data.id %>" title="<%= data.artist %> - <%= data.title %> - <%= data.album %>">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox"/>
+            </label>
+        </div>
+        <button type="button" class="btn btn-xs btn-success">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </button>
         <div class="input-group">
             <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
                 <%= data.name %>
@@ -143,17 +158,41 @@
         clearTracks();
         playlist.get($("#playlists li.active").attr("id"))
                 .then(function (response) {
-                    $("#tracks").find("thead").after(
-                            trackRow(response.tracks)
-                    );
                     response.tracks.forEach(function (track) {
+                        $("#tracks").append(trackRow(track));
                         updateLikeCount(track.id);
                     });
                 });
     });
 
-    $("#createPlaylistButton").on("click", function (e) {
+    $("#add-to-playlist").hide();
 
+    $("#add-to-playlist").on("click", function (e) {
+        var tracksIds = $("#recommendations").find("li").filter(function (row) {
+            return $(this).find("input:checkbox").is(":checked");
+        }).map(function (row) {
+            return $(this).attr("id");
+        }).toArray();
+
+        var playlistId = $("#playlists").find("li.active").attr("id");
+
+        playlist.addTracks()
+    });
+
+    $("#change-multiselect-state").on("click", "input", function (e) {
+        var recommendations = $("#recommendations");
+        recommendations.removeClass("no-checkbox");
+        recommendations.removeClass("no-plus-button");
+        if (this.checked) {
+            recommendations.addClass("no-plus-button");
+            $("#add-to-playlist").show();
+        } else {
+            recommendations.addClass("no-checkbox");
+            $("#add-to-playlist").hide();
+        }
+    });
+
+    $("#createPlaylistButton").on("click", function (e) {
         $("#addPlaylistModal").modal("show");
     });
 
@@ -226,6 +265,22 @@
 
         track.getRecommendedTracks()
                 .then(function (tracks) {
+                    var track = {
+                        id: 0,
+                        title: "Valerina Song",
+                        artist: "valera",
+                        name: "jestik"
+                    };
+                    var track1 = {
+                        id: 1,
+                        title: "Valerina Song",
+                        artist: "valera",
+                        name: "jestik"
+                    };
+                    addRecommendedTrack(track);
+                    addRecommendedTrack(track1);
+                    addRecommendedTrack(track);
+                    addRecommendedTrack(track1);
                     $.each(tracks, function (i, track) {
                         addRecommendedTrack(track);
                         updateLikeCount(track.id);

@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Pukho on 15.06.2016.
@@ -75,9 +72,9 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public void addTracks(Integer playlistId, Set<Track> tracks) {
+    public void addTracks(Integer playlistId, Collection<Track> tracks) {
         final Playlist playlist = dao.get(Playlist.class, playlistId);
-        playlist.addTracks(tracks);
+        playlist.addTracks(new HashSet<>(tracks));
         save(playlist);
     }
 

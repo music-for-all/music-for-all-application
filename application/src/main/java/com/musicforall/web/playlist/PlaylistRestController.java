@@ -1,8 +1,10 @@
 package com.musicforall.web.playlist;
 
-import com.musicforall.model.Playlist;
-import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.common.Constants;
+import com.musicforall.model.Playlist;
+import com.musicforall.model.Track;
+import com.musicforall.services.playlist.PlaylistService;
+import com.musicforall.services.track.TrackService;
 import com.musicforall.util.SecurityUtil;
 import com.musicforall.web.MainController;
 import org.slf4j.Logger;
@@ -25,6 +27,9 @@ public class PlaylistRestController {
 
     @Autowired
     private PlaylistService playlistService;
+
+    @Autowired
+    private TrackService trackService;
 
     @RequestMapping(method = RequestMethod.POST)
     public Playlist createPlaylist(@RequestParam(Constants.NAME) String name) {
@@ -56,6 +61,13 @@ public class PlaylistRestController {
     @RequestMapping(value = "/{id}/remove/{trackId}", method = RequestMethod.DELETE)
     public ResponseEntity removeTrack(@PathVariable("id") Integer playlistId, @PathVariable Integer trackId) {
         playlistService.removeTrack(playlistId, trackId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}/add/tracks", method = RequestMethod.POST)
+    public ResponseEntity addTracks(@PathVariable("id") Integer playlistId, @RequestParam Collection<Integer> tracksIds) {
+        final Collection<Track> tracks = trackService.getAllById(tracksIds);
+        playlistService.addTracks(playlistId, tracks);
         return new ResponseEntity(HttpStatus.OK);
     }
 }
