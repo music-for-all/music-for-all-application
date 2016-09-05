@@ -1,9 +1,7 @@
 package com.musicforall.services.tag;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.common.dao.QueryParams;
 import com.musicforall.common.query.QueryUtil;
-import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Tag;
 import com.musicforall.common.Constants;
 import org.hibernate.criterion.DetachedCriteria;
@@ -23,9 +21,6 @@ public class TagServiceImpl implements TagService {
 
     @Autowired
     private Dao dao;
-
-    @Autowired
-    private HistoryService historyService;
 
     @Override
     public Tag save(String name) {
@@ -54,19 +49,5 @@ public class TagServiceImpl implements TagService {
     @Override
     public Collection<Tag> saveAll(Collection<Tag> tags) {
         return dao.saveAll(tags);
-    }
-
-    @Override
-    public List<Tag> getTheMostPopularTags() {
-        final List<Integer> ids = historyService.getTheMostPopularTracks();
-
-        final int count = 20;
-        final int offset = 0;
-
-        final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("ids", ids);
-        final List<Tag> tags = dao.getAllByNamedQuery(Tag.class, Tag.POPULAR_TAGS_BY_TRACK_ID_QUERY,
-                parameters, new QueryParams(count, offset));
-        return tags;
     }
 }
