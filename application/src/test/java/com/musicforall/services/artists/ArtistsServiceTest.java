@@ -13,6 +13,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -50,5 +51,13 @@ public class ArtistsServiceTest {
         final Set<Artist> artistSet = new HashSet<>(Arrays.asList(new Artist("artist1"), new Artist("artist2")));
         final Set<Artist> savesArtists = new HashSet<>(artistService.saveAll(artistSet));
         assertEquals(artistSet, savesArtists);
+    }
+
+    @Test
+    public void testGetAllLike() {
+        final Set<Artist> artistSet = new HashSet<>(Arrays.asList(new Artist("testArtist1"), new Artist("testArtist2")));
+        artistService.saveAll(artistSet);
+        final List<Artist> queryArtists = artistService.getAllLike("testArt");
+        assertEquals(3, queryArtists.size());
     }
 }
