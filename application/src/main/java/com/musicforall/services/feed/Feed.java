@@ -4,6 +4,7 @@ package com.musicforall.services.feed;
 import com.musicforall.history.handlers.events.EventType;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author IliaNik on 03.09.2016.
@@ -47,5 +48,20 @@ public class Feed {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Feed feed = (Feed) o;
+        return Objects.equals(eventType, feed.eventType) &&
+                Objects.equals(target, feed.target) &&
+                Objects.equals(date, feed.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(eventType, target, date);
     }
 }
