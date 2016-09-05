@@ -57,7 +57,7 @@ public class ArtistsServiceTest {
     public void testGetAllLike() {
         final Set<Artist> artistSet = new HashSet<>(Arrays.asList(new Artist("testArtist1"), new Artist("testArtist2")));
         artistService.saveAll(artistSet);
-        final List<Artist> queryArtists = artistService.getAllLike("testArt");
-        assertEquals(3, queryArtists.size());
+        final List<Artist> queryArtists = artistService.getAllLike("test");
+        assertEquals(2, queryArtists.size());
     }
 }
