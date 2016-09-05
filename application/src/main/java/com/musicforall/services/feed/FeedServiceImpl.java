@@ -1,6 +1,5 @@
 package com.musicforall.services.feed;
 
-import com.musicforall.dto.feed.Feed;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Playlist;

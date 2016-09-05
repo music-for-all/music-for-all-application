@@ -1,4 +1,4 @@
-package com.musicforall.dto.feed;
+package com.musicforall.services.feed;
 
 
 import com.musicforall.history.handlers.events.EventType;

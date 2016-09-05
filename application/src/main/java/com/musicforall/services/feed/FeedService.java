@@ -1,6 +1,5 @@
 package com.musicforall.services.feed;
 
-import com.musicforall.dto.feed.Feed;
 import com.musicforall.model.User;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.musicforall.web.feed;
 
-import com.musicforall.dto.feed.Feed;
 import com.musicforall.model.User;
+import com.musicforall.services.feed.Feed;
 import com.musicforall.services.feed.FeedService;
 import com.musicforall.util.SecurityUtil;
 import org.slf4j.Logger;

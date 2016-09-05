@@ -1,6 +1,5 @@
 package com.musicforall.services.feed;
 
-import com.musicforall.dto.feed.Feed;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Playlist;
@@ -40,12 +39,10 @@ import static junit.framework.Assert.assertTrue;
 @ActiveProfiles("dev")
 public class FeedServiceTest {
 
+    public static final String LOC_1 = "loc1";
     private static final String PASSWORD = "password";
-
     private static final int TRACK_ID = 3333;
     private static final int PLAYLIST_ID = 111;
-    public static final String LOC_1 = "loc1";
-
     @Autowired
     private UserService userService;
 
@@ -110,8 +107,8 @@ public class FeedServiceTest {
 
         Map<User, List<Feed>> followingHistories = feedService.getGroupedFollowingFeeds(USER_ID);
 
-        assertTrue(followingHistories.get(user1).contains(feed1));
-        assertTrue(followingHistories.get(user1).contains(feed2));
-        assertTrue(followingHistories.get(user2).contains(feed3));
+        assertTrue(followingHistories.get(user1).stream().anyMatch(f -> f.equals(feed1)));
+        assertTrue(followingHistories.get(user1).stream().anyMatch(f -> f.equals(feed2)));
+        assertTrue(followingHistories.get(user1).stream().anyMatch(f -> f.equals(feed3)));
     }
 }
