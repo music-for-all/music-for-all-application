@@ -1,6 +1,7 @@
 package com.musicforall.web.artist;
 
 import com.musicforall.model.Artist;
+import com.musicforall.model.Tag;
 import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.web.tag.TagRestController;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @Validated
@@ -32,11 +34,13 @@ public class ArtistRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getArtists(@RequestParam("artistName") final String artistName,
-                                     @RequestParam(value = "tags", required = false) final List<String> tags) {
+                                     @RequestParam(value = "tags", required = false) final Set<Tag> tags) {
         final List<Artist> artists = artistService.getAllLike(artistName);
         final List<String> artistsNames = new ArrayList<>();
         for (final Artist artist : artists) {
-            artistsNames.add(artist.getArtistName());
+            if (tags == null || artist.getTags().containsAll(tags)) {
+                artistsNames.add(artist.getArtistName());
+            }
         }
         return new ResponseEntity<>(artistsNames, HttpStatus.OK);
     }
