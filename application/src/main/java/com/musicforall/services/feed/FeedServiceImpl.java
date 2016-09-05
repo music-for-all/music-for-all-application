@@ -45,24 +45,21 @@ public class FeedServiceImpl implements FeedService {
     public Map<User, List<Feed>> getGroupedFollowingFeeds(Integer userId) {
         final Collection<Integer> usersIds = followerService.getFollowingId(userId);
         final List<User> users = userService.getUsersById(usersIds);
-        List<Integer> track_ids = new ArrayList<>();
-        List<Integer> playlist_ids = new ArrayList<>();
 
         final Collection<History> usersHistories = historyService.getUsersHistories(usersIds);
 
-        usersHistories
-                .stream()
-                .forEach(
-                        h -> {
-                            if (h.getEventType().isTrackEvent()) {
-                                track_ids.add(h.getTrackId());
-                            } else if (h.getEventType().isPlaylistEvent()) {
-                                playlist_ids.add(h.getPlaylistId());
-                            }
-                        }
-                );
-        List<Track> tracks = new ArrayList<>(trackService.getAllById(track_ids));
-        List<Playlist> playlists = new ArrayList<>(playlistService.getAllById(playlist_ids));
+        final List<Integer> tracksIds = usersHistories.stream()
+                .filter(h -> h.getEventType().isTrackEvent())
+                .map(History::getTrackId)
+                .collect(Collectors.toList());
+
+        final List<Integer> playlistsIds = usersHistories.stream()
+                .filter(h -> h.getEventType().isPlaylistEvent())
+                .map(History::getPlaylistId)
+                .collect(Collectors.toList());
+
+        final List<Track> tracks = new ArrayList<>(trackService.getAllById(tracksIds));
+        final List<Playlist> playlists = new ArrayList<>(playlistService.getAllById(playlistsIds));
 
         return usersHistories
                 .stream()
