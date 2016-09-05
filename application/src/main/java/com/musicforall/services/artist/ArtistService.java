@@ -1,7 +1,6 @@
 package com.musicforall.services.artist;
 
 import com.musicforall.model.Artist;
-import com.musicforall.model.Tag;
 
 import java.util.Collection;
 import java.util.List;

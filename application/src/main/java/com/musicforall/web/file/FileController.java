@@ -57,7 +57,7 @@ public class FileController {
             return new ResponseEntity<>("File is empty", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         final String filename = file.getOriginalFilename();
-        if(manager.getFilePathByName(filename).isPresent()){
+        if (manager.getFilePathByName(filename).isPresent()) {
             return new ResponseEntity<>("File exist", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         final Optional<Path> saved = manager.save(file);

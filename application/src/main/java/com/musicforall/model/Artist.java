@@ -26,7 +26,7 @@ public class Artist implements Serializable {
 
     public static final String ARTIST_LIKE_NAME_QUERY = "artist_like_name";
     private static final long serialVersionUID = 5787383287840000175L;
-    
+
     @Id
     @Size(min = 2, max = 30)
     @Column(name = "artist_name")
