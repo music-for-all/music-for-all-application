@@ -274,22 +274,6 @@
         clearRecommendations();
         track.getRecommendedTracks()
                 .then(function (tracks) {
-                    var track = {
-                        id: 0,
-                        title: "Valerina Song",
-                        artist: "valera",
-                        name: "jestik"
-                    };
-                    var track1 = {
-                        id: 1,
-                        title: "Valerina Song",
-                        artist: "valera",
-                        name: "jestik"
-                    };
-                    addRecommendedTrack(track);
-                    addRecommendedTrack(track1);
-                    addRecommendedTrack(track);
-                    addRecommendedTrack(track1);
                     $.each(tracks, function (i, track) {
                         addRecommendedTrack(track);
                         updateLikeCount(track.id);
