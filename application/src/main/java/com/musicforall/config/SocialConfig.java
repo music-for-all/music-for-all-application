@@ -1,6 +1,6 @@
 package com.musicforall.config;
 
-import com.musicforall.util.DatabaseUtil;
+import com.musicforall.util.UsersConnectionRepositoryTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -65,7 +65,7 @@ public class SocialConfig implements SocialConfigurer {
 
     @Override
     public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator locator) {
-        DatabaseUtil.createUsersConnectionRepositoryTable(dataSource);
+        UsersConnectionRepositoryTable.update(dataSource);
         final JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource,
                 locator, Encryptors.noOpText());
         repository.setConnectionSignUp(connectionSignUp);

@@ -1,7 +1,7 @@
 package com.musicforall.web.tag;
 
 import com.musicforall.model.Tag;
-import com.musicforall.services.history.PopularHistoryServiceImpl;
+import com.musicforall.services.history.PopularHistoryService;
 import com.musicforall.services.tag.TagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class TagRestController {
     private TagService tagService;
 
     @Autowired
-    private PopularHistoryServiceImpl popularHistoryService;
+    private PopularHistoryService popularHistoryService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getTags(@Size(min = 2, message = "The field must be at least {min} characters")

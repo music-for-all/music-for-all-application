@@ -2,6 +2,7 @@ package com.musicforall.services.history;
 
 import com.musicforall.common.dao.Dao;
 import com.musicforall.common.dao.QueryParams;
+import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class PopularHistoryServiceImpl implements PopularHistoryService {
     private Dao dao;
 
     @Autowired
-    private com.musicforall.history.service.history.HistoryService historyService;
+    private HistoryService historyService;
 
     @Override
     public Collection<Tag> getPopularTags() {
