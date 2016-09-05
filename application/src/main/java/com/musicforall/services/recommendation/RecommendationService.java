@@ -1,12 +1,9 @@
 package com.musicforall.services.recommendation;
 
-import com.musicforall.common.dao.Dao;
-import com.musicforall.common.dao.QueryParams;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Playlist;
-import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
 import com.musicforall.services.follower.FollowerService;
@@ -15,7 +12,6 @@ import com.musicforall.services.track.TrackService;
 import com.musicforall.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.function.Function;
@@ -25,11 +21,7 @@ import java.util.stream.Collectors;
  * Created by kgavrylchenko on 16.08.16.
  */
 @Component
-@Transactional
 public class RecommendationService {
-
-    @Autowired
-    private Dao dao;
 
     @Autowired
     private HistoryService historyService;
@@ -46,19 +38,6 @@ public class RecommendationService {
     public Collection<Track> getMostPopularTracks() {
         final List<Integer> popularTracksIds = historyService.getTheMostPopularTracks();
         return trackService.getAllById(popularTracksIds);
-    }
-
-    public Collection<Tag> getPopularTags() {
-        final List<Integer> ids = historyService.getTheMostPopularTracks();
-
-        final int count = 20;
-        final int offset = 0;
-
-        final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("ids", ids);
-        final Collection<Tag> tags = dao.getAllByNamedQuery(Tag.class, Tag.POPULAR_TAGS_BY_TRACK_ID_QUERY,
-                parameters, new QueryParams(count, offset));
-        return tags;
     }
 
     public Collection<Track> getRecommendedTracks() {
