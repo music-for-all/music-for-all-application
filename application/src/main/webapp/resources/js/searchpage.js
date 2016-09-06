@@ -13,19 +13,6 @@ jQuery(document).ready(function () {
         window.scrollTo(0, 0);
         return false;
     });
-
-    var items = [];
-    items.push({
-        id: 0,
-        title: "Valera"
-    }, {
-        id: 1,
-        title: "Pes"
-    }, {
-        id: 2,
-        title: "sobaka"
-    });
-    populateResultsTable(items);
 });
 
 function search() {

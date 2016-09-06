@@ -174,8 +174,9 @@
     }
 
     function showPlaylistPopup(tracksIds) {
+        if (tracksIds.length <= 0)return;
         $("#playlistsModal").modal("show");
-        $("#playlistsModal").on("click", "li", function (e) {
+        $("#playlistsModal").off("click", "li").on("click", "li", function (e) {
             var playlistId = $(this).attr("id");
 
             playlist.addTracks(playlistId, tracksIds)

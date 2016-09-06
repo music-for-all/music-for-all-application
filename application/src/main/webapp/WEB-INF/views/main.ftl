@@ -167,6 +167,7 @@
             return $(this).attr("id");
         }).toArray();
 
+        if (tracksIds.length <= 0)return;
         var playlistId = $("#playlists").find("li.active").attr("id");
 
         playlist.addTracks(playlistId, tracksIds)
