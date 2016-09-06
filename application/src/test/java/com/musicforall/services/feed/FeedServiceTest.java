@@ -21,8 +21,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import static com.musicforall.history.handlers.events.EventType.PLAYLIST_ADDED;
@@ -94,10 +94,12 @@ public class FeedServiceTest {
         historyService.record(history1);
         historyService.record(history2);
 
-        final Feed feed1 = new Feed(history1.getEventType(), "Ray Charles – Mess around", history1.getDate());
-        final Feed feed2 = new Feed(history2.getEventType(), "Jazz", history2.getDate());
+        final Feed feed1 = new Feed("<@spring.message \"followingpage.likedTrack\"/>" + " " +
+                "Ray Charles – Mess around", history1.getDate());
+        final Feed feed2 = new Feed("<@spring.message \"followingpage.likedTrack\"/>" + " " +
+                "Jazz", history2.getDate());
 
-        final Map<User, List<Feed>> followingHistories = feedService.getGroupedFollowingFeeds(user.getId());
+        final Map<User, Collection<Feed>> followingHistories = feedService.getGroupedFollowingFeeds(user.getId());
 
         assertTrue(followingHistories.get(user1).stream().anyMatch(f -> f.equals(feed1)));
         assertTrue(followingHistories.get(user2).stream().anyMatch(f -> f.equals(feed2)));

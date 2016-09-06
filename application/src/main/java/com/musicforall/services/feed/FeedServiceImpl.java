@@ -44,7 +44,7 @@ public class FeedServiceImpl implements FeedService {
 
 
     @Override
-    public Map<User, Collection<String>> getGroupedFollowingFeeds(Integer userId) {
+    public Map<User, Collection<Feed>> getGroupedFollowingFeeds(Integer userId) {
         final Collection<Integer> usersIds = followerService.getFollowingId(userId);
 
         Map<Integer, User> usersByIds = userService.getUsersById(usersIds).stream().collect(Collectors.toMap(User::getId, Function.identity()));
@@ -85,17 +85,17 @@ public class FeedServiceImpl implements FeedService {
     private Feed generateContent(EventType eventType, String target, Date date) {
         switch (eventType) {
             case TRACK_LISTENED:
-                return new Feed("Listened the track " + target, date);
+                return new Feed("<@spring.message \"followingpage.listenedTrack\"/>" + " " + target, date);
             case TRACK_LIKED:
-                return new Feed("Liked the track " + target, date);
+                return new Feed("<@spring.message \"followingpage.likededTrack\"/>" + " " + target, date);
             case TRACK_ADDED:
-                return new Feed("Added the track " + target, date);
+                return new Feed("<@spring.message \"followingpage.addedTrack\"/>" + " " + target, date);
             case TRACK_DELETED:
-                return new Feed("Deleted the track " + target, date);
+                return new Feed("<@spring.message \"followingpage.deletedTrack\"/>" + " " + target, date);
             case PLAYLIST_ADDED:
-                return new Feed("Added the playlist " + target, date);
+                return new Feed("<@spring.message \"followingpage.addedPlaylist\"/>" + " " + target, date);
             case PLAYLIST_DELETED:
-                return new Feed("Deleted the playlist " + target, date);
+                return new Feed("<@spring.message \"followingpage.deletedPlaylist\"/>" + " " + target, date);
             default:
                 return null;
         }
