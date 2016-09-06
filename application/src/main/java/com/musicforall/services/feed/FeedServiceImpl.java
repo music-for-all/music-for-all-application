@@ -1,5 +1,7 @@
 package com.musicforall.services.feed;
 
+import com.musicforall.dto.feed.Feed;
+import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Playlist;
@@ -13,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -48,12 +47,7 @@ public class FeedServiceImpl implements FeedService {
     public Map<User, Collection<String>> getGroupedFollowingFeeds(Integer userId) {
         final Collection<Integer> usersIds = followerService.getFollowingId(userId);
 
-        Map<Integer, User> usersByIds = userService.getUsersById(usersIds).stream().collect(
-                Collectors.toMap(User::getId, Function.identity(),
-                        (u, v) -> {
-                            throw new IllegalStateException(String.format("Duplicate key %s", u));
-                        },
-                        LinkedHashMap::new));
+        Map<Integer, User> usersByIds = userService.getUsersById(usersIds).stream().collect(Collectors.toMap(User::getId, Function.identity()));
 
         final Collection<History> usersHistories = historyService.getUsersHistories(usersIds);
 
@@ -77,15 +71,34 @@ public class FeedServiceImpl implements FeedService {
                         LinkedHashMap::new,
                         Collectors.mapping(h -> {
                             if (h.getEventType().isTrackEvent()) {
-                                return new Feed(h.getEventType(),
+                                return generateContent(h.getEventType(),
                                         tracksByIds.get(h.getTrackId()).getEntireName(), h.getDate());
                             } else if (h.getEventType().isPlaylistEvent()) {
-                                return new Feed(h.getEventType(),
+                                return generateContent(h.getEventType(),
                                         playlistsByIds.get(h.getTrackId()).getName(), h.getDate());
                             }
                             return null;
                         }, Collectors.toList())));
 
+    }
+
+    private Feed generateContent(EventType eventType, String target, Date date) {
+        switch (eventType) {
+            case TRACK_LISTENED:
+                return new Feed("Listened the track " + target, date);
+            case TRACK_LIKED:
+                return new Feed("Liked the track " + target, date);
+            case TRACK_ADDED:
+                return new Feed("Added the track " + target, date);
+            case TRACK_DELETED:
+                return new Feed("Deleted the track " + target, date);
+            case PLAYLIST_ADDED:
+                return new Feed("Added the playlist " + target, date);
+            case PLAYLIST_DELETED:
+                return new Feed("Deleted the playlist " + target, date);
+            default:
+                return null;
+        }
     }
 }
 
