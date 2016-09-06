@@ -4,9 +4,7 @@ jQuery(document).ready(function () {
 
     /* Handle the search form (Ajax). */
     $("#search-form").on("submit", function () {
-
         search();
-        /* Prevent default */
         return false;
     });
 
@@ -15,6 +13,19 @@ jQuery(document).ready(function () {
         window.scrollTo(0, 0);
         return false;
     });
+
+    var items = [];
+    items.push({
+        id: 0,
+        title: "Valera"
+    }, {
+        id: 1,
+        title: "Pes"
+    }, {
+        id: 2,
+        title: "sobaka"
+    });
+    populateResultsTable(items);
 });
 
 function search() {
@@ -93,32 +104,32 @@ function populateResultsTable(items) {
 
     $.each(items, function (i, item) {
         /* Create a new row from the template row, and populate it with the current item. */
-        var $row = $("#row-template").clone().removeAttr("id").show();
+        var row = $("#row-template").clone().removeAttr("id").show();
+        row.attr("id", item.id);
 
         var tagsArray = [];
         $(item.tags).each(function (i, tag) {
             tagsArray.push(tag.name);
         });
 
-        $row.find("td:eq(0) button:eq(0)").on("click", function () {
+        row.find("td:eq(0) button:eq(0)").on("click", function () {
             playPreview(item.id)
         });
-        $row.find("td:eq(0) button:eq(1)").on("click", function () {
+        row.find("td:eq(0) button:eq(1)").on("click", function () {
             addToPlaylist(item.id)
         });
-        $row.find("td:eq(1)").text(item.artist);
-        $row.find("td:eq(2)").text(item.title);
-        $row.find("td:eq(3)").text(item.album);
-        $row.find("td:eq(4)").text(tagsArray.join(" "));
-        $("#results").append($row);
+        row.find("td:eq(1)").text(item.artist);
+        row.find("td:eq(2)").text(item.title);
+        row.find("td:eq(3)").text(item.album);
+        row.find("td:eq(4)").text(tagsArray.join(" "));
+        $("#results").append(row);
     });
 }
-
 
 function playPreview(id) {
     console.log("Play: " + id);
 }
 
 function addToPlaylist(id) {
-    console.log("Add: " + id);
+    showPlaylistPopup([id]);
 }

@@ -1,3 +1,21 @@
 body {
     padding-top: 70px;
 }
+
+#results.no-checkbox .checkbox,
+#results.no-plus-button .btn.btn-success.add-button,
+.hidden {
+    display: none;
+}
+
+.checkbox {
+    display: inline-block;
+}
+
+#playlistsModal .form-group {
+    display: inline-flex;
+}
+
+#createPlaylistButton {
+    margin-right: 1em;
+}

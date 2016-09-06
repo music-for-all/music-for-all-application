@@ -11,8 +11,8 @@
 <script src="<@spring.url "/resources/js/player.js" />"></script>
 <script src="<@spring.url "/resources/js/main.js" />"></script>
 <script src="<@spring.url "/resources/js/history.js" />"></script>
-<link href="/resources/css/font-awesome.min.css" rel="stylesheet"/>
-<link href="/resources/css/mainpage.css" rel="stylesheet"/>
+<link href="<@spring.url "/resources/css/mainpage.css" />" rel="stylesheet"/>
+<link href="<@spring.url "/resources/css/switch.css" />" rel="stylesheet"/>
 </@m.head>
 
 <@m.body>
@@ -53,8 +53,8 @@
 
             <div class="slider round"></div>
         </label>
-        <button type="button" id="add-to-playlist" class="btn btn-lg btn-success"
-                title="<@spring.message "mainpage.AddToPlaylist"/>">
+        <button type="button" id="add-many" class="btn btn-md btn-success"
+                title="<@spring.message "label.AddToPlaylist"/>">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         </button>
         <ul id="recommendations" class="nav nav-pills nav-stacked no-checkbox">
@@ -114,7 +114,7 @@
                 <input type="checkbox"/>
             </label>
         </div>
-        <button type="button" class="btn btn-xs btn-success">
+        <button type="button" class="btn btn-xs btn-success add-one">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         </button>
         <div class="input-group">
@@ -158,9 +158,9 @@
         refreshTrackTable();
     });
 
-    $("#add-to-playlist").hide();
+    $("#add-many").hide();
 
-    $("#add-to-playlist").on("click", function (e) {
+    $("#add-many").on("click", function (e) {
         var tracksIds = $("#recommendations").find("li").filter(function (row) {
             return $(this).find("input:checkbox").is(":checked");
         }).map(function (row) {
@@ -176,16 +176,27 @@
                 });
     });
 
+    $("#recommendations").on("click", ".add-one", function (e) {
+        var playlistId = $("#playlists").find("li.active").attr("id");
+        var trackId = $(this).closest("li").attr("id");
+
+        playlist.addTracks(playlistId, [trackId])
+                .then(function () {
+                    refreshTrackTable();
+                    refreshRecommendationTable();
+                });
+    });
+
     $("#change-multiselect-state").on("click", "input", function (e) {
         var recommendations = $("#recommendations");
         recommendations.removeClass("no-checkbox");
         recommendations.removeClass("no-plus-button");
         if (this.checked) {
             recommendations.addClass("no-plus-button");
-            $("#add-to-playlist").show();
+            $("#add-many").show();
         } else {
             recommendations.addClass("no-checkbox");
-            $("#add-to-playlist").hide();
+            $("#add-many").hide();
         }
     });
 

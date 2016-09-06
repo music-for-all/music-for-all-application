@@ -41,13 +41,16 @@
 
         <@popupBody>
         <div class="form-group">
-            <label for="inputNamePlaylist" class="col-sm-2 control-label"> <@spring.message "popupmacro.NameCaption"/>:</label>
-            <input type="text" class="form-control" id="inputNamePlaylist" placeholder="<@spring.message "popupmacro.NamePlaceholder"/>">
+            <label for="inputNamePlaylist" class="col-sm-2 control-label"> <@spring.message "popupmacro.NameCaption"/>
+                :</label>
+            <input type="text" class="form-control" id="inputNamePlaylist"
+                   placeholder="<@spring.message "popupmacro.NamePlaceholder"/>">
         </div>
         </@popupBody>
 
         <@popupFooter>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"> <@spring.message "popupmacro.ActionClose"/></button>
+        <button type="button" class="btn btn-secondary"
+                data-dismiss="modal"> <@spring.message "popupmacro.ActionClose"/></button>
         <button id="acceptCreatingPlaylistButton" type="button" class="btn btn-success">
             <@spring.message "popupmacro.ActionAdd"/></button>
         </@popupFooter>
@@ -67,9 +70,41 @@
         </@popupBody>
 
         <@popupFooter>
-        <button type="button" class="btn btn-success" data-dismiss="modal"><@spring.message "popupmacro.ActionNo"/></button>
+        <button type="button" class="btn btn-success"
+                data-dismiss="modal"><@spring.message "popupmacro.ActionNo"/></button>
         <button type="button" id="acceptRemovingPlaylistButton" class="btn btn-danger" data-dismiss="modal">
             <@spring.message "popupmacro.ActionYes"/>
+        </button>
+        </@popupFooter>
+    </@popUp>
+</#macro>
+
+
+<#assign playlistsPopupCaption>
+    <@spring.message "label.AddToPlaylist"/>
+</#assign>
+
+<#macro playlistsPopup id>
+    <@popUp id>
+        <@popupHead "${playlistsPopupCaption}"/>
+
+        <@popupBody>
+        <ul id="playlists" class="nav nav-pills nav-stacked"></ul>
+        <br/>
+        <div class="form-group">
+            <button id="createPlaylistButton" type="button" class="btn btn-success btn-md"
+                    title="<@spring.message "popupmacro.ActionAdd"/>">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+
+            <input type="text" class="form-control" id="inputNamePlaylist"
+                   placeholder="<@spring.message "popupmacro.NamePlaceholder"/>">
+        </div>
+        </@popupBody>
+
+        <@popupFooter>
+        <button type="button" id="closePopupButton" class="btn" data-dismiss="modal">
+            <@spring.message "popupmacro.ActionClose"/>
         </button>
         </@popupFooter>
     </@popUp>
