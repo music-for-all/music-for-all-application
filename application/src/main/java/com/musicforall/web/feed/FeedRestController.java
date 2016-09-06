@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -26,7 +26,7 @@ public class FeedRestController {
     private FeedService feedService;
 
     @RequestMapping(value = "/histories", method = RequestMethod.GET)
-    public Map<User, List<Feed>> getGroupedHistories() {
+    public Map<User, Collection<Feed>> getGroupedHistories() {
         return feedService
                 .getGroupedFollowingFeeds(SecurityUtil.currentUser().getId());
     }
