@@ -173,20 +173,20 @@ public class TrackServiceTest {
         );
         Collection<Track> savedTracks = trackService.saveAll(tracks);
         List<Integer> ids = savedTracks.stream().limit(2).map(Track::getId).collect(Collectors.toList());
-        Collection<Track> foundTracks = trackService.getAllById(ids);
+        Collection<Track> foundTracks = trackService.getAllByIds(ids);
         assertEquals(foundTracks.size(), ids.size());
         assertTrue(foundTracks.stream().allMatch(t -> ids.contains(t.getId())));
     }
 
     @Test
     public void testGetAllByEmptyIds() {
-        final Collection<Track> tracks = trackService.getAllById(Collections.emptyList());
+        final Collection<Track> tracks = trackService.getAllByIds(Collections.emptyList());
         assertTrue(tracks.isEmpty());
     }
 
     @Test
     public void testGetAllByNullIds() {
-        final Collection<Track> tracks = trackService.getAllById(null);
+        final Collection<Track> tracks = trackService.getAllByIds(null);
         assertTrue(tracks.isEmpty());
     }
 

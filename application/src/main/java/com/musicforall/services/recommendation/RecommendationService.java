@@ -37,7 +37,7 @@ public class RecommendationService {
 
     public Collection<Track> getMostPopularTracks() {
         List<Integer> popularTracksIds = historyService.getTheMostPopularTracks();
-        return trackService.getAllById(popularTracksIds);
+        return trackService.getAllByIds(popularTracksIds);
     }
 
     public Collection<Track> getRecommendedTracks() {
@@ -58,7 +58,7 @@ public class RecommendationService {
                 .sorted((k1, k2) -> likesCountsByTrackId.get(k1).compareTo(likesCountsByTrackId.get(k2)))
                 .collect(Collectors.toList());
 
-        return trackService.getAllById(tracksOrderedByLikes);
+        return trackService.getAllByIds(tracksOrderedByLikes);
     }
 
     private List<Integer> usersTracksIds(User user) {

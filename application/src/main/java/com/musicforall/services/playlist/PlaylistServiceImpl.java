@@ -58,7 +58,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public Collection<Playlist> getAllById(Collection<Integer> ids) {
+    public Collection<Playlist> getAllByIds(Collection<Integer> ids) {
         if (ids == null || ids.isEmpty()) {
             return Collections.emptyList();
         }

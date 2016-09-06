@@ -9,12 +9,14 @@ import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
-import com.musicforall.util.FeedUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -43,11 +45,18 @@ public class FeedServiceImpl implements FeedService {
 
 
     @Override
-    public Map<User, List<Feed>> getGroupedFollowingFeeds(Integer userId) {
+    public Map<User, Collection<String>> getGroupedFollowingFeeds(Integer userId) {
         final Collection<Integer> usersIds = followerService.getFollowingId(userId);
-        Map<Integer, User> usersByIds = userService.getUsersById(usersIds).stream().collect(Collectors.toMap(User::getId, Function.identity()));
+
+        Map<Integer, User> usersByIds = userService.getUsersById(usersIds).stream().collect(
+                Collectors.toMap(User::getId, Function.identity(),
+                        (u, v) -> {
+                            throw new IllegalStateException(String.format("Duplicate key %s", u));
+                        },
+                        LinkedHashMap::new));
 
         final Collection<History> usersHistories = historyService.getUsersHistories(usersIds);
+
 
         final List<Integer> tracksIds = usersHistories.stream()
                 .filter(h -> h.getEventType().isTrackEvent())
@@ -59,28 +68,24 @@ public class FeedServiceImpl implements FeedService {
                 .map(History::getPlaylistId)
                 .collect(Collectors.toList());
 
-        Map<Integer, Track> tracksByIds = trackService.getAllById(tracksIds).stream().collect(Collectors.toMap(Track::getId, Function.identity()));
-        Map<Integer, Playlist> playlistsByIds = playlistService.getAllById(playlistsIds).stream().collect(Collectors.toMap(Playlist::getId, Function.identity()));
+        Map<Integer, Track> tracksByIds = trackService.getAllByIds(tracksIds).stream().collect(Collectors.toMap(Track::getId, Function.identity()));
+        Map<Integer, Playlist> playlistsByIds = playlistService.getAllByIds(playlistsIds).stream().collect(Collectors.toMap(Playlist::getId, Function.identity()));
 
-        return Collections.EMPTY_MAP;
-/*        return usersHistories
+        return usersHistories
                 .stream()
-                .collect(Collectors.groupingBy(h -> users
-                                .stream()
-                                .filter(u -> u.getId().equals(h.getUserId()))
-                                .findFirst()
-                                .get(),
+                .collect(Collectors.groupingBy(h -> usersByIds.get(h.getUserId()),
                         LinkedHashMap::new,
                         Collectors.mapping(h -> {
                             if (h.getEventType().isTrackEvent()) {
                                 return new Feed(h.getEventType(),
-                                        FeedUtil.getFilteredTrack(tracks, h).getEntireName(), h.getDate());
+                                        tracksByIds.get(h.getTrackId()).getEntireName(), h.getDate());
                             } else if (h.getEventType().isPlaylistEvent()) {
                                 return new Feed(h.getEventType(),
-                                        FeedUtil.getFilteredPlaylist(playlists, h).getName(), h.getDate());
+                                        playlistsByIds.get(h.getTrackId()).getName(), h.getDate());
                             }
                             return null;
-                        }, Collectors.toList())));*/
+                        }, Collectors.toList())));
+
     }
 }
 
