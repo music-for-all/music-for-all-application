@@ -40,6 +40,7 @@
             <input id="artist" class="form-control" type="text" value=""
                    placeholder="<@spring.message "placeholder.Artist"/>"
                    name="artist" autofocus="autofocus"/>
+
             <div class="input-group-btn">
                 <button id="searchButton" data-style="slide-left" class="btn btn-success "
                         type="submit">
@@ -62,7 +63,7 @@
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         </button>
 
-        <table id="tracks" class="table table-hover table-striped table-condensed ">
+        <table id="tracks" class="table table-hover table-striped table-condensed no-checkbox">
             <thead>
             <tr>
                 <th><@spring.message "songTable.Actions"/></th>
@@ -71,27 +72,6 @@
                 <th><@spring.message "songTable.Duration"/></th>
             </tr>
             </thead>
-
-            <tr id="row-template" style="display: none">
-                <td>
-                    <button type="button" class="btn btn-xs btn-success">
-                        <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-                    </button>
-                    <button type="button" class="btn btn-xs btn-success add-button">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    </button>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox"/>
-                        </label>
-                    </div>
-                </td>
-                <td><@spring.message "songTable.Artist"/></td>
-                <td><@spring.message "songTable.Title"/></td>
-                <td><@spring.message "songTable.Album"/></td>
-                <td><@spring.message "songTable.Tags"/></td>
-            </tr>
-
         </table>
     </div>
     <a id="scroll-to-top" href="#top" title="Scroll to top"><@spring.message "searchpage.ScrollToTop"/></a>
@@ -129,6 +109,11 @@
             <button type="button" class="btn btn-xs btn-success add-song-button">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             </button>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox"/>
+                </label>
+            </div>
             <button class="btn btn-xs btn-primary like-button"><@spring.message "mainpage.Like" /></button>
             <span class="glyphicon num-likes" aria-hidden="true"></span>
         </td>
@@ -161,6 +146,7 @@
             $("script.tagBtnTemplate").html()
     );
 
+    var playlist = new Playlist();
     var track = new Track();
 
     $("input[name=artist]").autocomplete(artistAutocomplete(function () {
@@ -170,6 +156,7 @@
         }
         return tag;
     }));
+
     function buildTrackTable(tracks) {
         $("#tracks tr:gt(0)").remove();
         $("#tracks").find("thead").after(
@@ -180,19 +167,19 @@
         });
     }
 
-
     $("#search-form").on("submit", function () {
         search().then(function (tracks) {
             $("#status-message").text("Found: " + tracks.length);
             buildTrackTable(tracks);
         });
-        /* Prevent default */
         return false;
     });
 
     $("#tracks").on("click", ".add-song-button", function () {
-        console.log("add track");
+        var trackId = $(this).closest("tr").attr("id");
+        showPlaylistPopup([trackId]);
     });
+
     function getPopularTracks() {
         $('#status-message').text('Popular songs');
         popularTracks().then(function (response) {
@@ -217,40 +204,33 @@
 
     function updateLikeCount(id) {
         track.getLikeCount(id)
-                .then(function(likeCount) {
+                .then(function (likeCount) {
                     $("#tracks #" + id + " .num-likes").text(likeCount);
                 });
     }
 
-
     $(document).ready(function () {
-
         $("#tracks").on("click", ".like-button", function () {
-
-            /* The id of a track is stored in the containing <tr> element. */
             var id = $(this).closest("tr").attr("id");
             track.like(id)
-                    .then(function() {
+                    .then(function () {
                         $("#" + id + " .like-button").css("opacity", "0.5");
                         updateLikeCount(id);
                     });
         });
-
         getPopularTracks();
         getPopularTags();
     });
-    
-    var playlist = new Playlist();
 
     $("#change-multiselect-state").on("click", "input", function (e) {
-        var results = $("#results");
-        results.removeClass("no-checkbox");
-        results.removeClass("no-plus-button");
+        var tracks = $("#tracks");
+        tracks.removeClass("no-checkbox");
+        tracks.removeClass("no-plus-button");
         if (this.checked) {
-            results.addClass("no-plus-button");
+            tracks.addClass("no-plus-button");
             $("#add-many").removeClass("hidden");
         } else {
-            results.addClass("no-checkbox");
+            tracks.addClass("no-checkbox");
             $("#add-many").addClass("hidden");
         }
     });
@@ -281,7 +261,6 @@
     });
 
     $("#createPlaylistButton").on("click", function (e) {
-
         playlist.create($("#inputNamePlaylist").val())
                 .then(function (playlist) {
                     $("#inputNamePlaylist").val("");
@@ -291,7 +270,7 @@
     });
 
     function getSelectedTracksIds() {
-        return $("#results").find("td").filter(function (row) {
+        return $("#tracks").find("td").filter(function (row) {
             return $(this).find("input:checkbox").is(":checked");
         }).map(function (row) {
             return $(this).closest("tr").attr("id");

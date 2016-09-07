@@ -9,8 +9,9 @@ body {
 label[name = tag] {
     margin-bottom: 2px;
 }
-#results.no-checkbox .checkbox,
-#results.no-plus-button .btn.btn-success.add-button,
+
+#tracks.no-checkbox .checkbox,
+#tracks.no-plus-button .btn.btn-success.add-song-button,
 .hidden {
     display: none;
 }
