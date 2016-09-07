@@ -36,23 +36,23 @@ public class RecommendationService {
     private FollowerService followerService;
 
     public Collection<Track> getMostPopularTracks() {
-        List<Integer> popularTracksIds = historyService.getTheMostPopularTracks();
+        final List<Integer> popularTracksIds = historyService.getTheMostPopularTracks();
         return trackService.getAllById(popularTracksIds);
     }
 
     public Collection<Track> getRecommendedTracks() {
         final User user = SecurityUtil.currentUser();
 
-        Collection<Integer> ids = followerService.getFollowingId(user.getId());
-        Collection<History> histories = historyService.getAllForUsers(EventType.TRACK_LIKED, ids);
-        Collection<Integer> userTracks = usersTracksIds(user);
+        final Collection<Integer> ids = followerService.getFollowingId(user.getId());
+        final Collection<History> histories = historyService.getAllForUsers(EventType.TRACK_LIKED, ids);
+        final Collection<Integer> userTracks = usersTracksIds(user);
 
-        Map<Integer, Integer> likesCountsByTrackId = histories.stream()
+        final Map<Integer, Integer> likesCountsByTrackId = histories.stream()
                 .map(History::getTrackId)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toMap(Function.identity(), i -> 1, Integer::sum));
 
-        List<Integer> tracksOrderedByLikes = likesCountsByTrackId
+        final List<Integer> tracksOrderedByLikes = likesCountsByTrackId
                 .keySet().stream()
                 .filter(k -> !userTracks.contains(k))
                 .sorted((k1, k2) -> likesCountsByTrackId.get(k1).compareTo(likesCountsByTrackId.get(k2)))
@@ -62,7 +62,7 @@ public class RecommendationService {
     }
 
     private List<Integer> usersTracksIds(User user) {
-        Set<Playlist> allUserPlaylist = playlistService.getAllUserPlaylists(user.getId());
+        final Set<Playlist> allUserPlaylist = playlistService.getAllUserPlaylists(user.getId());
         return allUserPlaylist.stream()
                 .flatMap(p -> p.getTracks().stream())
                 .map(Track::getId)
