@@ -64,7 +64,7 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public Collection<History> getAllForUsers(EventType type, Collection<Integer> usersIds) {
-        Map<String, Object> params = new HashMap<>();
+        final Map<String, Object> params = new HashMap<>();
         params.put("usersIds", usersIds);
         params.put("eventType", type);
         return dao.getAllByNamedQuery(History.class, "all_for_users_by_type", params);
