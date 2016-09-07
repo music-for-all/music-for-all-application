@@ -17,6 +17,20 @@
         <h3><@spring.message "profilpage.Hello"/>, ${username}</h3>
         <@m.logoutForm/>
     </div>
+
+    <h3>Hello, <span>${facebookProfile.name}</span>!</h3>
+    <div class="pic">
+        <img src="http://graph.facebook.com/" +  ${facebookProfile.id}} + "/picture" alt="profile image"/>
+    </div>
+    <div class="detail">
+        <ul>
+            <li>Social ID: ${profile.id}</li>
+            <li><Name: ${profile.name}/li>
+            <li>Location: ${profile.loc}</li>
+            <li>E-mail: ${facebookProfile.email}</li>
+            <li>Profile URL: ${profile.url}</li>
+        </ul>
+    </div>
 </div>
 </@m.body>
 </html>

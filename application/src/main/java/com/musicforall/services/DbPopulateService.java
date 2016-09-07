@@ -44,14 +44,15 @@ public class DbPopulateService {
 
     private static final String USER_IS_FOLLOW = "user {} is follow {}";
 
-    static {
+    // TODO
+    /*static {
         LINKS.put("Jerry-Lee-Lewis-part-1", OPEN_SOURCE_MUSIC_HOST +
                 "/2010/04/01-Selvin-On-The-City-Jerry-Lee-Lewis-part-1.mp3");
         LINKS.put("Tom-Waits-part-1", OPEN_SOURCE_MUSIC_HOST +
                 "/2012/10/01-Tom-Waits-on-Selvin-On-The-City-part-1.mp3");
         LINKS.put("Jerry-Lee-Lewis-part-4", OPEN_SOURCE_MUSIC_HOST +
                 "/2010/04/04-Selvin-On-The-City-Jerry-Lee-Lewis-part-4.mp3");
-    }
+    }*/
 
     @Autowired
     private ExecutorService executorService;
