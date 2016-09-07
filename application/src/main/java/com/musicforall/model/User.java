@@ -40,6 +40,12 @@ public class User implements SocialUserDetails, Serializable {
     @Column(unique = true)
     private String email;
 
+    private String picture;
+
+    private String firstName;
+
+    private String lastName;
+
     public User() {
     }
 
@@ -111,6 +117,14 @@ public class User implements SocialUserDetails, Serializable {
         return email;
     }
 
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(id, username, password, email);
@@ -131,7 +145,6 @@ public class User implements SocialUserDetails, Serializable {
                 && Objects.equals(this.email, other.email);
     }
 
-
     @Override
     public String toString() {
         return "User{" +
@@ -140,5 +153,21 @@ public class User implements SocialUserDetails, Serializable {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 }
