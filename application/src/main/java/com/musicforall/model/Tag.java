@@ -17,13 +17,22 @@ import java.util.Objects;
                 @NamedQuery(
                         name = Tag.ALL_LIKE_NAME_QUERY,
                         query = "from Tag where lower(name) like :name"
+                ),
+                @NamedQuery(
+                        name = Tag.POPULAR_TAGS_BY_TRACK_ID_QUERY,
+                        query = "select tag from Track track join track.tags tag where track.id in (:ids)" +
+                                " group by tag" +
+                                " order by count(tag) desc"
                 )
         }
 )
 @Table(name = "tags")
 public class Tag implements Serializable {
 
+    public static final String POPULAR_TAGS_BY_TRACK_ID_QUERY = "popular_tags_in_tracks";
+
     public static final String ALL_LIKE_NAME_QUERY = "all_like_name";
+
     private static final long serialVersionUID = 5787383287840000175L;
     @Id
     @Size(min = 2, max = 30)
