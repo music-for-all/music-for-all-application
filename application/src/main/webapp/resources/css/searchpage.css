@@ -2,6 +2,13 @@ body {
     padding-top: 70px;
 }
 
+.btn.active span.glyphicon {
+    color: yellow;
+}
+
+label[name = tag] {
+    margin-bottom: 2px;
+}
 #results.no-checkbox .checkbox,
 #results.no-plus-button .btn.btn-success.add-button,
 .hidden {
