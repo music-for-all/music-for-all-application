@@ -78,7 +78,7 @@ public class FeedServiceImpl implements FeedService {
                                         playlistsByIds.get(h.getTrackId()).getName(), h.getDate());
                             }
                             return null;
-                        }, Collectors.toList())));
+                        }, Collectors.toCollection(ArrayList::new))));
 
     }
 
