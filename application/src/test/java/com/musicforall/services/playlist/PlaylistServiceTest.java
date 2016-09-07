@@ -19,9 +19,9 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static junit.framework.TestCase.*;
 import static org.junit.Assert.assertNull;
@@ -112,8 +112,11 @@ public class PlaylistServiceTest {
                 new Track("track2", "location2")));
 
         final List<Track> tracksInDb = trackService.findAll();
+        final Set<Integer> tracksIds = tracksInDb.stream()
+                .map(Track::getId)
+                .collect(Collectors.toSet());
 
-        playlistService.addTracks(playlistId, new HashSet<>(tracksInDb));
+        playlistService.addTracks(playlistId, tracksIds);
 
         final Set<Track> tracksInPlaylist = playlistService.getAllTracksInPlaylist(playlistId);
 
