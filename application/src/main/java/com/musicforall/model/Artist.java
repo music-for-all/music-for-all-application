@@ -29,7 +29,7 @@ public class Artist implements Serializable {
 
     @Id
     @Size(min = 2, max = 30)
-    @Column(name = "artist_name")
+    @Column(name = "artist_name", unique=true)
     private String artistName;
 
     @ManyToMany
