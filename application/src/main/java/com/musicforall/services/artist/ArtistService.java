@@ -1,6 +1,7 @@
 package com.musicforall.services.artist;
 
 import com.musicforall.model.Artist;
+import com.musicforall.model.SearchArtistRequest;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,5 +19,5 @@ public interface ArtistService {
 
     List<Artist> getAllArtists();
 
-    List<Artist> getAllLike(String artistName);
+    List<Artist> getAllLike(SearchArtistRequest searchCriteria);
 }

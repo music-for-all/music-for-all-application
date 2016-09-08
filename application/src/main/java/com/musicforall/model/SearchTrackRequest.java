@@ -8,7 +8,6 @@ public class SearchTrackRequest {
     @Size(max = 16)
     private String title;
 
-    @Size(max = 16)
     private Artist artist;
 
     @Size(max = 16)

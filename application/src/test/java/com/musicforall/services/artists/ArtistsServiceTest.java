@@ -1,6 +1,7 @@
 package com.musicforall.services.artists;
 
 import com.musicforall.model.Artist;
+import com.musicforall.model.SearchArtistRequest;
 import com.musicforall.services.artist.ArtistService;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
@@ -57,7 +58,8 @@ public class ArtistsServiceTest {
     public void testGetAllLike() {
         final Set<Artist> artistSet = new HashSet<>(Arrays.asList(new Artist("testArtist1"), new Artist("testArtist2")));
         artistService.saveAll(artistSet);
-        final List<Artist> queryArtists = artistService.getAllLike("test");
+        final SearchArtistRequest searchCriteria = new SearchArtistRequest("test", Arrays.asList());
+        final List<Artist> queryArtists = artistService.getAllLike(searchCriteria);
         assertEquals(2, queryArtists.size());
     }
 }

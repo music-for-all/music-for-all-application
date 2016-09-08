@@ -3,6 +3,8 @@ package com.musicforall.services.artist;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.Artist;
+import com.musicforall.model.SearchArtistRequest;
+import com.musicforall.services.SearchCriteriaFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +48,9 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public List<Artist> getAllLike(String artistName) {
-        final Map<String, Object> properties = new HashMap<>();
-        properties.put("artist_name", QueryUtil.like(artistName.toLowerCase()));
-        return dao.getAllByNamedQuery(Artist.class, Artist.ARTIST_LIKE_NAME_QUERY, properties);
+    public List<Artist> getAllLike(SearchArtistRequest searchCriteria) {
+        final DetachedCriteria detachedCriteria =
+                SearchCriteriaFactory.createArtistSearchCriteria(searchCriteria);
+        return dao.getAllBy(detachedCriteria);
     }
 }
