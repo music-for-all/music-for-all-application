@@ -159,28 +159,6 @@
                     response.tracks.forEach(function (track) {
                         updateLikeCount(track.id);
                     });
-
-                    $("#next").click(function () {
-                        var currIndex=0;
-                        while (currIndex < response.tracks.length) {
-                            if (load_track == response.tracks[currIndex].id) {
-                                playCurrentTrack(response.tracks[currIndex+1].id);
-                                break;
-                            }
-                            currIndex++;
-                        }
-                    });
-
-                    $("#prev").click(function () {
-                        var currIndex=response.tracks.length-1;
-                        while (currIndex > 0) {
-                            if (load_track == response.tracks[currIndex].id) {
-                                playCurrentTrack(response.tracks[currIndex-1].id);
-                                break;
-                            }
-                            currIndex--;
-                        }
-                    });
                 });
     });
 
