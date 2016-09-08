@@ -99,4 +99,13 @@ public class SearchCriteriaFactoryTest {
         assertEquals(1, artists.size());
     }
 
+    @Test
+    public void testNullSearchCriteria() throws NoSuchMethodException {
+
+        DetachedCriteria ArtistSearchFactory = SearchCriteriaFactory.createArtistSearchCriteria(null);
+        assertEquals(null,ArtistSearchFactory);
+
+        DetachedCriteria TrackSearchFactory = SearchCriteriaFactory.createTrackSearchCriteria(null);
+        assertEquals(null,TrackSearchFactory);
+    }
 }
