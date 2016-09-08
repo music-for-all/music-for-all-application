@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccountConnectionSignUpService implements ConnectionSignUp {
 
-    private final int MAX_LENGTH_NAME = 16;
+    private final int MAX_NAME_LENGTH = 16;
     @Autowired
     private UserService userService;
     @Autowired
@@ -26,17 +26,22 @@ public class AccountConnectionSignUpService implements ConnectionSignUp {
     @Autowired
     private Mails mails;
 
+    @Override
     public String execute(Connection<?> connection) {
         final UserProfile profile = connection.fetchUserProfile();
         final User user = new User();
         if ((profile.getUsername() == null) ||
                 (profile.getUsername().length() < 2) ||
-                (profile.getUsername().length() > MAX_LENGTH_NAME)) {
+                (profile.getUsername().length() > MAX_NAME_LENGTH)) {
             user.setUsername(profile.getFirstName());
         } else {
             user.setUsername(profile.getUsername());
         }
         user.setEmail(profile.getEmail());
+        user.setFirstName(profile.getFirstName());
+        user.setLastName(profile.getLastName());
+        user.setPicture(connection.getImageUrl());
+
         user.setPassword(KeyGenerators.string().generateKey());
         if (userService.getByEmail(user.getEmail()) == null) {
             userService.save(user);
