@@ -5,6 +5,7 @@ import com.musicforall.model.*;
 import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.util.ServicesTestConfig;
+import org.hibernate.criterion.DetachedCriteria;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -95,5 +96,16 @@ public class SearchCriteriaFactoryTest {
         artists = dao.getAllBy(SearchCriteriaFactory.createArtistSearchCriteria(
                 new SearchArtistRequest("Art", Collections.singletonList("tag1"))));
         assertEquals(1, artists.size());
+    }
+
+    @Test
+    public void testNullSearchCriteria(){
+        SearchCriteriaFactory SearchFactory = new SearchCriteriaFactory();
+
+        DetachedCriteria ArtistSearchFactory = SearchCriteriaFactory.createArtistSearchCriteria(null);
+        assertEquals(null,ArtistSearchFactory);
+
+        DetachedCriteria TrackSearchFactory = SearchCriteriaFactory.createTrackSearchCriteria(null);
+        assertEquals(null,TrackSearchFactory);
     }
 }

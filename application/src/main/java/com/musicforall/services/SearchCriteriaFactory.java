@@ -15,7 +15,7 @@ import java.util.List;
  */
 public final class SearchCriteriaFactory {
 
-    private SearchCriteriaFactory() {
+    public SearchCriteriaFactory() {
     }
     public static DetachedCriteria createTrackSearchCriteria(SearchTrackRequest searchCriteria) {
 
