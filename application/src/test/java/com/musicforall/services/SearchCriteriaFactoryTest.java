@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 import static junit.framework.TestCase.assertEquals;
@@ -98,14 +99,4 @@ public class SearchCriteriaFactoryTest {
         assertEquals(1, artists.size());
     }
 
-    @Test
-    public void testNullSearchCriteria(){
-        SearchCriteriaFactory SearchFactory = new SearchCriteriaFactory();
-
-        DetachedCriteria ArtistSearchFactory = SearchCriteriaFactory.createArtistSearchCriteria(null);
-        assertEquals(null,ArtistSearchFactory);
-
-        DetachedCriteria TrackSearchFactory = SearchCriteriaFactory.createTrackSearchCriteria(null);
-        assertEquals(null,TrackSearchFactory);
-    }
 }

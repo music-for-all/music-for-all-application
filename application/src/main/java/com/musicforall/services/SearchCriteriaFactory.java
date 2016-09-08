@@ -14,9 +14,7 @@ import java.util.List;
  * Contains convenience methods to work with search criteria.
  */
 public final class SearchCriteriaFactory {
-
-    public SearchCriteriaFactory() {
-    }
+    
     public static DetachedCriteria createTrackSearchCriteria(SearchTrackRequest searchCriteria) {
 
         if (searchCriteria == null) {
