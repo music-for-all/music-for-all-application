@@ -62,7 +62,7 @@ public class FileController {
             trackJson.setSize(file.getSize());
             final Artist existingArtist = artistService.get(trackJson.getArtist().getArtistName());
             if (existingArtist != null) {
-                if(trackJson.getTags()!=null) {
+                if (trackJson.getTags() != null) {
                     existingArtist.extendTags(trackJson.getTags());
                 }
                 trackJson.setArtist(existingArtist);

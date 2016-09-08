@@ -2,7 +2,6 @@ package com.musicforall.web.artist;
 
 import com.musicforall.model.Artist;
 import com.musicforall.model.SearchArtistRequest;
-import com.musicforall.model.Tag;
 import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.web.tag.TagRestController;
@@ -17,10 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
