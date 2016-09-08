@@ -11,7 +11,6 @@
 <script src="/resources/js/player.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <link href="/resources/css/welcomepage.css" rel="stylesheet">
-<link href="/resources/css/font-awesome.min.css" rel="stylesheet">
 </@m.head>
 
 <@m.body>
@@ -21,20 +20,6 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="#"><@spring.message "projectName"/></a>
         </div>
-
-        <form class="navbar-form navbar-left" id="searchForm" method="post">
-            <div class="input-group " placeholder="Search">
-                <input id="word" class="form-control" type="text" value=""
-                       placeholder="<@spring.message "welcomepage.Search"/>" name="q"/>
-
-                <div class="input-group-btn">
-                    <button id="searchButton" data-style="slide-left" class="btn btn-success " type="button">
-                        <i id="icon" class="fa fa-search"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
-
         <div id="navbar" class="navbar-right navbar-collapse collapse ">
             <ul class="nav navbar-nav">
                 <li>
@@ -49,10 +34,6 @@
                             <div class="text-success"><@spring.message "welcomepage.LogoutMessage"/></div>
                         </#if>
                     </div>
-                </li>
-                <li>
-                    <a href="#"><span class="glyphicon glyphicon-user"></span> <@spring.message "welcomepage.SignUp"/>
-                    </a>
                 </li>
                 <li>
                     <a href="#" id="popover"><span class="glyphicon glyphicon-log-in"></span>
@@ -201,7 +182,9 @@
         /* Set focus on the name input field when the pop-up window has been shown. */
         $("#popover").on("shown.bs.popover", function () {
 
-            $("#inputEmail").focus();
+            // TODO
+//            $("#inputEmail").focus();
+            $(".facebook").focus();
         });
     });
 </script>
