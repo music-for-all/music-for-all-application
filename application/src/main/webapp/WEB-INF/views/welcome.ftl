@@ -1,9 +1,13 @@
 <#import "macros/macros.ftl" as m>
+<#import "macros/popup_macros.ftl" as p>
 <#import "/spring.ftl" as spring />
 <!DOCTYPE html>
 <html lang="en">
 <@m.head>
 <title><@spring.message "welcomepage.PageTitle"/></title>
+<script src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
+<script src="<@spring.url "/resources/js/track.js" />"></script>
+<script src="<@spring.url "/resources/js/history.js" />"></script>
 <script src="/resources/js/player.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <link href="/resources/css/welcomepage.css" rel="stylesheet">
@@ -138,17 +142,14 @@
     <% _.each(data, function(track){ %>
     <tr id="<%= track.id %>">
         <td>
-            <button type="button" class="btn btn-xs btn-success" onclick="onPlay(" audio_
-            <%= track.id %>")">
-            <span class="glyphicon glyphicon-play" aria-hidden="true"/>
+            <button type="button" class="btn btn-xs btn-success play-track-button">
+                <span class='glyphicon glyphicon-play' aria-hidden='true'></span>
             </button>
-            <button type="button" class="btn btn-xs btn-warning pause-track-button"
-                    onclick="onPause(" audio_
-            <%= track.id %>")">
-            <span class="glyphicon glyphicon-pause" aria-hidden="true"/>
+            <button type="button" class="btn btn-xs btn-warning pause-track-button">
+                <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
             </button>
             <button type="button" class="btn btn-xs btn-danger delete-song-button">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"/>
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </button>
         </td>
         <td>
@@ -156,17 +157,20 @@
         </td>
         <td>
         </td>
-        <td>
-            <audio id="audio_<%= track.id %>" controls preload="none">
-                <source type="audio/mp3" src="/files/<%= track.location %>">
-            </audio>
-        </td>
     </tr>
     <% }); %>
     </tbody>
 </script>
 
+    <@p.player_Footer/>
+
 <script type="text/javascript">
+
+
+    var track = new Track();
+    var player;
+    var load_track;
+
     _.templateSettings.variable = "data";
     var trackTable = _.template(
             $("script.trackRowTemplate").html()
