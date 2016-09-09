@@ -2,15 +2,13 @@ package com.musicforall.web.file;
 
 import com.musicforall.common.Constants;
 import com.musicforall.files.manager.FileManager;
-import com.musicforall.model.Artist;
 import com.musicforall.model.Track;
-import com.musicforall.services.artist.ArtistService;
+import com.musicforall.services.file.FileService;
 import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +39,7 @@ public class FileController {
     private TrackService trackService;
 
     @Autowired
-    private ArtistService artistService;
+    private FileService fileService;
 
     @RequestMapping(value = "/files", method = RequestMethod.POST)
     @ResponseBody
@@ -49,30 +47,15 @@ public class FileController {
             @RequestPart("track") Track trackJson,
             @RequestPart("file") MultipartFile file) {
 
-        if (file.isEmpty()) {
-            return new ResponseEntity<>("File is empty", HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-        final String filename = file.getOriginalFilename();
-        if (manager.getFilePathByName(filename).isPresent()) {
-            return new ResponseEntity<>("File exist", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        final Optional<Path> saved = manager.save(file);
-        if (saved.isPresent()) {
-            trackJson.setLocation(filename);
-            trackJson.setSize(file.getSize());
-            final Artist existingArtist = artistService.get(trackJson.getArtist().getArtistName());
-            if (existingArtist != null) {
-                if (trackJson.getTags() != null) {
-                    existingArtist.extendTags(trackJson.getTags());
-                }
-                trackJson.setArtist(existingArtist);
-            }
-            trackService.save(trackJson);
-            return new ResponseEntity<>("Song successfully saved", HttpStatus.OK);
+        final ResponseEntity<String> errorStatus = fileService.checkFile(file);
+        if (errorStatus != null) {
+            return errorStatus;
         } else {
-            return new ResponseEntity<>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+            return fileService.uploadTrackFile(trackJson, file);
         }
     }
+
+    ;
 
     @RequestMapping(value = "/files/{id}/{partId}", method = RequestMethod.GET)
     public void getFileHandler(HttpServletResponse response, @PathVariable(Constants.ID) Integer trackId,
