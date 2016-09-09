@@ -19,7 +19,7 @@ import java.util.Optional;
  * Created by Pavel Podgorniy on 9/9/2016.
  */
 
-@Service("FileService")
+@Service("fileService")
 @Transactional
 public class FileServiceImpl implements FileService {
 
