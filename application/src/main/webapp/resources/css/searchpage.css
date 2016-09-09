@@ -2,7 +2,7 @@ body {
     padding-top: 70px;
 }
 
-.btn.active span.glyphicon {
+.btn.active {
     color: yellow;
 }
 
@@ -10,13 +10,13 @@ label[name = tag] {
     margin-bottom: 2px;
 }
 
-#tracks.no-checkbox .checkbox,
+#tracks.no-checkbox .check,
 #tracks.no-plus-button .btn.btn-success.add-song-button,
 .hidden {
     display: none;
 }
 
-.checkbox {
+.check {
     display: inline-block;
 }
 

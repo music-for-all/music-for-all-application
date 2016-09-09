@@ -109,9 +109,10 @@
             <button type="button" class="btn btn-xs btn-success add-song-button">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             </button>
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox"/>
+            <div class="check" data-toggle="buttons">
+                <label class="btn btn-success btn-xs">
+                    <input type="checkbox">
+                    <span class="glyphicon glyphicon-ok"></span>
                 </label>
             </div>
             <button class="btn btn-xs btn-primary like-button"><@spring.message "mainpage.Like" /></button>
@@ -169,7 +170,7 @@
 
     $("#search-form").on("submit", function () {
         search().then(function (tracks) {
-            $("#status-message").text("Found: " + tracks.length);
+            $("#status-message").text(<@spring.message "searchpage.Found"/> + " :" + tracks.length);
             buildTrackTable(tracks);
         });
         return false;
@@ -181,14 +182,14 @@
     });
 
     function getPopularTracks() {
-        $('#status-message').text('Popular songs');
+        $('#status-message').text('<@spring.message "searchpage.TopSongs"/>');
         popularTracks().then(function (response) {
             buildTrackTable(response)
         });
     }
 
     function getTracksByTag(tag) {
-        $('#status-message').text('Top songs for tag "' + tag + '":');
+        $('#status-message').text('<@spring.message "searchpage.TopSongsForTag"/> "' + tag + '":');
         getTracks(tag).then(function (tracks) {
             buildTrackTable(tracks);
         });
