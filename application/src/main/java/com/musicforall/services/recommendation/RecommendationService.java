@@ -44,6 +44,10 @@ public class RecommendationService {
         final User user = SecurityUtil.currentUser();
 
         final Collection<Integer> ids = followerService.getFollowingId(user.getId());
+        if ((ids == null) || ids.isEmpty()) {
+            return getMostPopularTracks();
+        }
+
         final Collection<History> histories = historyService.getAllForUsers(EventType.TRACK_LIKED, ids);
         final Collection<Integer> userTracks = usersTracksIds(user);
 
@@ -58,7 +62,11 @@ public class RecommendationService {
                 .sorted((k1, k2) -> likesCountsByTrackId.get(k1).compareTo(likesCountsByTrackId.get(k2)))
                 .collect(Collectors.toList());
 
-        return trackService.getAllById(tracksOrderedByLikes);
+        final Collection<Track> recommendedTracks = trackService.getAllById(tracksOrderedByLikes);
+        if ((recommendedTracks == null) || recommendedTracks.isEmpty()) {
+            return getMostPopularTracks();
+        }
+        return recommendedTracks;
     }
 
     private List<Integer> usersTracksIds(User user) {
