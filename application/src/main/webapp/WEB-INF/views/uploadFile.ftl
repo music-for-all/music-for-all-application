@@ -128,9 +128,9 @@
                         showMessage(data, "success");
                     }, function (xhr, status, error) {
                         if (xhr.responseText.length < max_length_error) {
-                            showMessage("(" + obj.artist + " - " + obj.name + ")" + ": " + xhr.responseText, "danger");
+                            showMessage("(" + obj.artist.artistName + " - " + obj.name + ")" + ": " + xhr.responseText, "danger");
                         } else {
-                            showMessage("(" + obj.artist + " - " + obj.name + ")" + ": " + error, "danger");
+                            showMessage("(" + obj.artist.artistName + " - " + obj.name + ")" + ": " + error, "danger");
                         }
                         return false;
                     });
