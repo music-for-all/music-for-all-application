@@ -28,6 +28,7 @@
 
 <#macro body>
 <body>
+    <@logoutForm/>
     <#nested>
 <script type="text/javascript">
     var header = $("meta[name='_csrf_header']").attr("content");
@@ -52,7 +53,6 @@
 
 <#macro logoutForm>
     <@form '/logout',"post", "logout-form", "application/x-www-form-urlencoded">
-    <button type="submit" class="btn btn-default"><i class="fa fa-sign-out" aria-hidden="true"></i></button>
     </@form>
 </#macro>
 
@@ -77,7 +77,7 @@
 "WithoutActivePage": {"url": ''}}>
 
 <#macro navigation activePage=pages.WithoutActivePage>
-    <#assign items = [pages.Contacts, pages.Main, pages.Search, pages.Profile]>
+    <#assign items = [pages.Contacts, pages.Main, pages.Search]>
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -89,13 +89,23 @@
                 <#list items as item>
                     <@navigationItem item activePage/>
                 </#list>
+                <li <#if pages.Profile.url == activePage.url>class="active"</#if>>
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">${profileCaption}<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href=<@spring.url '/profile'/>><@spring.message "macros.MyProfile"/></a></li>
+                        <li><a href="#" onclick="document.getElementById('logout-form').submit()">
+                            <@spring.message "macros.Logout"/></a></li>
+                    </ul>
+                </li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false"><i class="fa fa-globe" aria-hidden="true"></i><span class="caret"></span></a>
+                       aria-expanded="false"><i class="fa fa-globe" aria-hidden="true"></i><span
+                            class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="?lang=en">English</a></li>
-                        <li><a href="?lang=ru">Русский</a></li>
-                        <li><a href="?lang=ua">Українська</a></li>
+                        <li><a href=<@spring.url '?lang=en'/>>English</a></li>
+                        <li><a href=<@spring.url '?lang=ru'/>>Русский</a></li>
+                        <li><a href=<@spring.url '?lang=ua'/>>Українська</a></li>
                     </ul>
                 </li>
             </ul>
