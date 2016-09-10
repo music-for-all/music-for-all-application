@@ -62,11 +62,10 @@ public class FileServiceImpl implements FileService {
     public ResponseEntity<String> checkFile(MultipartFile file) {
         if (file.isEmpty()) {
             return new ResponseEntity<>("File is empty", HttpStatus.UNPROCESSABLE_ENTITY);
-        } else if (manager.getFilePathByName(file.getOriginalFilename()).isPresent()) {
-            return new ResponseEntity<>("File exist", HttpStatus.INTERNAL_SERVER_ERROR);
-        } else {
-            return null;
         }
-
+        if (manager.getFilePathByName(file.getOriginalFilename()).isPresent()) {
+            return new ResponseEntity<>("File exist", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>("ok", HttpStatus.ACCEPTED);
     }
 }

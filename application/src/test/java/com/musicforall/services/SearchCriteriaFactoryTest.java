@@ -85,10 +85,6 @@ public class SearchCriteriaFactoryTest {
         List<Artist> artists;
 
         artists = dao.getAllBy(SearchCriteriaFactory.createArtistSearchCriteria(
-                new SearchArtistRequest("Art", null)));
-        assertEquals(3, artists.size());
-
-        artists = dao.getAllBy(SearchCriteriaFactory.createArtistSearchCriteria(
                 new SearchArtistRequest("Art", Collections.singletonList("tag4"))));
         assertEquals(0, artists.size());
 

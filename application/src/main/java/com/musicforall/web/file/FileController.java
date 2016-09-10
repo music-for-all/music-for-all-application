@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -48,14 +49,12 @@ public class FileController {
             @RequestPart("file") MultipartFile file) {
 
         final ResponseEntity<String> errorStatus = fileService.checkFile(file);
-        if (errorStatus != null) {
+        if (!Objects.equals(errorStatus.getBody(), "ok")) {
             return errorStatus;
         } else {
             return fileService.uploadTrackFile(trackJson, file);
         }
     }
-
-    ;
 
     @RequestMapping(value = "/files/{id}/{partId}", method = RequestMethod.GET)
     public void getFileHandler(HttpServletResponse response, @PathVariable(Constants.ID) Integer trackId,
