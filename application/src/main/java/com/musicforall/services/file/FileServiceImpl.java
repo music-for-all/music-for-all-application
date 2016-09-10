@@ -35,12 +35,13 @@ public class FileServiceImpl implements FileService {
     @Override
     public ResponseEntity<String> uploadTrackFile(Track track, MultipartFile file) {
         final Optional<Path> saved = manager.save(file);
+        Track trackForSaving=track;
         if (saved.isPresent()) {
-            track.setLocation(file.getOriginalFilename());
-            track.setSize(file.getSize());
+            trackForSaving.setLocation(file.getOriginalFilename());
+            trackForSaving.setSize(file.getSize());
 
-            track = updateArtistForTrack(track);
-            trackService.save(track);
+            trackForSaving = updateArtistForTrack(track);
+            trackService.save(trackForSaving);
             return new ResponseEntity<>("Song successfully saved", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
