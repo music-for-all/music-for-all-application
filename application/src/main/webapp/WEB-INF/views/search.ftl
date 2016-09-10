@@ -50,10 +50,10 @@
         </div>
     </form>
 
-    <span id="status-message" class="well"></span>
+    <span id="status-message" class="well well-sm"></span>
 
-    <div id="tracks-results" class="well ">
-        <label class="switch" id="change-multiselect-state">
+    <div id="tracks-results" class="well">
+        <label class="switch pull-left" id="change-multiselect-state">
             <input type="checkbox">
 
             <div class="slider round"></div>
@@ -74,7 +74,9 @@
             </thead>
         </table>
     </div>
-    <a id="scroll-to-top" href="#top" title="Scroll to top"><@spring.message "searchpage.ScrollToTop"/></a>
+    <button id="scroll-to-top" class="btn btn-default" title="Scroll to top">
+        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+    </button>
 </div>
 <script type="text/template" class="playlistRowTemplate">
     <li id="<%= data.id %>" title="<%= data.name %>">
@@ -170,7 +172,7 @@
 
     $("#search-form").on("submit", function () {
         search().then(function (tracks) {
-            $("#status-message").text(<@spring.message "searchpage.Found"/> + " :" + tracks.length);
+            $("#status-message").text(<@spring.message "searchpage.Found"/>+" :" + tracks.length);
             buildTrackTable(tracks);
         });
         return false;

@@ -48,7 +48,7 @@
 
     <section id="recommendations-section" class="well  col-md-9 col-md-offset-0">
         <h4><@spring.message "mainpage.YouMightAlsoLike"/></h4>
-        <label class="switch" id="change-multiselect-state">
+        <label class="switch pull-left" id="change-multiselect-state">
             <input type="checkbox">
 
             <div class="slider round"></div>
