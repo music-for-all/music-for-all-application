@@ -7,13 +7,16 @@ body {
     margin: .5em
 }
 
-#recommendations.no-checkbox .checkbox,
-#recommendations.no-plus-button .btn.btn-success {
-    display: none;
+.btn.active {
+    color: yellow;
 }
 
-#recommendations .checkbox,
-#recommendations .btn.btn-success {
-    margin-bottom: 1em;
-    margin-top: 1em;
+.check {
+    display: inline-block;
+}
+
+.tracks-table.no-checkbox .check,
+.tracks-table.no-plus-button .btn.btn-success.add-song-button,
+.hidden {
+    display: none;
 }

@@ -134,7 +134,7 @@
 
     $("#search-form").on("submit", function () {
         search().then(function (tracks) {
-            $("#status-message").text('<@spring.message "searchpage.Found"/>'+" :" + tracks.length);
+            $("#status-message").text('<@spring.message "searchpage.Found"/>' + " :" + tracks.length);
             buildTrackTable(tracks);
         });
         return false;
