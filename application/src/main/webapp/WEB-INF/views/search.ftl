@@ -63,7 +63,7 @@
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         </button>
 
-        <table id="tracks" class="table table-hover table-striped table-condensed no-checkbox">
+        <table id="tracks" class="table table-hover table-striped table-condensed no-checkbox tracks-table">
             <thead>
             <tr>
                 <th><@spring.message "songTable.Actions"/></th>
@@ -97,48 +97,12 @@
     <% }); %>
 </script>
 
-<script type="text/template" class="trackRowTemplate">
-    <tbody>
-    <% _.each(data, function(track){ %>
-    <tr id="<%= track.id %>">
-        <td>
-            <button type="button" class="btn btn-xs btn-success play-track-button">
-                <span class='glyphicon glyphicon-play' aria-hidden='true'></span>
-            </button>
-            <button type="button" class="btn btn-xs btn-warning pause-track-button">
-                <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
-            </button>
-            <button type="button" class="btn btn-xs btn-success add-song-button">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            </button>
-            <div class="check" data-toggle="buttons">
-                <label class="btn btn-success btn-xs">
-                    <input type="checkbox">
-                    <span class="glyphicon glyphicon-ok"></span>
-                </label>
-            </div>
-            <button class="btn btn-xs btn-primary like-button"><@spring.message "mainpage.Like" /></button>
-            <span class="glyphicon num-likes" aria-hidden="true"></span>
-        </td>
-        <td>
-            <%= track.name %>
-        </td>
-        <td>
-            <%= track.artist %>
-        </td>
-        <td>
-            <audio id="audio_<%= track.id %>" controls preload="none">
-                <source type="audio/mp3" src="<@spring.url "/files/<%= track.id %>/0"/>">
-            </audio>
-        </td>
-    </tr>
-    <% }); %>
-    </tbody>
-</script>
+    <@m.addTrackRowTemplate/>
+
 <script type="text/javascript">
     _.templateSettings.variable = "data";
     var trackTable = _.template(
-            $("script.trackRowTemplate").html()
+            $("script.addTrackRowTemplate").html()
     );
 
     var playlistRow = _.template(
@@ -162,17 +126,15 @@
 
     function buildTrackTable(tracks) {
         $("#tracks tr:gt(0)").remove();
-        $("#tracks").find("thead").after(
-                trackTable(tracks)
-        );
         tracks.forEach(function (track) {
+            $("#tracks").append(trackTable(track));
             updateLikeCount(track.id);
         });
     }
 
     $("#search-form").on("submit", function () {
         search().then(function (tracks) {
-            $("#status-message").text(<@spring.message "searchpage.Found"/>+" :" + tracks.length);
+            $("#status-message").text('<@spring.message "searchpage.Found"/>'+" :" + tracks.length);
             buildTrackTable(tracks);
         });
         return false;
@@ -240,7 +202,7 @@
 
     $("#playlistsModal").on("shown.bs.modal", function () {
         playlist.all().then(function (playlists) {
-            var rows = $("#playlistsModal").find("#playlists");
+            var rows = $("#playlistsModal").find("#addToPlaylist");
             rows.find("li").remove();
             addPlaylists(playlists);
         });
@@ -263,11 +225,11 @@
         }
     });
 
-    $("#createPlaylistButton").on("click", function (e) {
-        playlist.create($("#inputNamePlaylist").val())
+    $("#createPlaylistBtn").on("click", function (e) {
+        playlist.create($("#inputNameAddPlaylist").val())
                 .then(function (playlist) {
-                    $("#inputNamePlaylist").val("");
-                    var rows = $("#playlistsModal").find("#playlists");
+                    $("#inputNameAddPlaylist").val("");
+                    var rows = $("#playlistsModal").find("#addToPlaylist");
                     rows.append(playlistRow(playlist));
                 });
     });
@@ -281,7 +243,7 @@
     }
 
     function addPlaylists(playlists) {
-        var rows = $("#playlistsModal").find("#playlists");
+        var rows = $("#playlistsModal").find("#addToPlaylist");
         playlists.forEach(function (playlist) {
             rows.append(playlistRow(playlist));
         });

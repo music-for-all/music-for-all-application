@@ -127,3 +127,40 @@
     <p><@spring.message "projectName"/> ©</p>
 </footer>
 </#macro>
+
+<#macro addTrackRowTemplate>
+<script type="text/template" class="addTrackRowTemplate">
+    <tr id="<%= data.id %>">
+        <td>
+            <button type="button" class="btn btn-xs btn-success play-track-button">
+                <span class='glyphicon glyphicon-play' aria-hidden='true'></span>
+            </button>
+            <button type="button" class="btn btn-xs btn-warning pause-track-button">
+                <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-xs btn-success add-song-button">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+            <div class="check" data-toggle="buttons">
+                <label class="btn btn-success btn-xs">
+                    <input type="checkbox"/>
+                    <span class="glyphicon glyphicon-ok"></span>
+                </label>
+            </div>
+            <button class="btn btn-xs btn-primary like-button"><@spring.message "mainpage.Like" /></button>
+            <span class="glyphicon num-likes" aria-hidden="true"></span>
+        </td>
+        <td>
+            <%= data.name %>
+        </td>
+        <td>
+            <%= data.artist %>
+        </td>
+        <td>
+            <audio id="audio_<%= track.id %>" controls preload="none">
+                <source type="audio/mp3" src="<@spring.url "/files/<%= data.id %>/0"/>">
+            </audio>
+        </td>
+    </tr>
+</script>
+</#macro>
