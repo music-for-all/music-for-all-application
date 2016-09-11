@@ -164,3 +164,15 @@
     </tr>
 </script>
 </#macro>
+
+<#macro playlistRowTemplate>
+<script type="text/template" class="playlistRowTemplate">
+    <li id="<%= data.id %>" title="<%= data.name %>">
+        <div class="input-group">
+            <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
+                <%= data.name %>
+            </a>
+        </div>
+    </li>
+</script>
+</#macro>

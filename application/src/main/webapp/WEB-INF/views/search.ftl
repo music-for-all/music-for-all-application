@@ -79,15 +79,6 @@
         <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
     </button>
 </div>
-<script type="text/template" class="playlistRowTemplate">
-    <li id="<%= data.id %>" title="<%= data.name %>">
-        <div class="input-group">
-            <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
-                <%= data.name %>
-            </a>
-        </div>
-    </li>
-</script>
 
 <script type="text/template" class="tagBtnTemplate">
     <% _.each(data, function(tag){ %>
@@ -99,6 +90,8 @@
 </script>
 
     <@m.addTrackRowTemplate/>
+
+    <@m.playlistRowTemplate/>
 
 <script type="text/javascript">
     _.templateSettings.variable = "data";

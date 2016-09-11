@@ -122,17 +122,10 @@
         </div>
     </li>
 </script>
-<script type="text/template" class="playlistRowTemplate">
-    <li id="<%= data.id %>" title="<%= data.name %>">
-        <div class="input-group">
-            <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
-                <%= data.name %>
-            </a>
-        </div>
-    </li>
-</script>
 
     <@m.addTrackRowTemplate/>
+
+    <@m.playlistRowTemplate/>
 
 <script type="text/javascript">
     "use strict";
