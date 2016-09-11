@@ -14,6 +14,7 @@
 <script src="<@spring.url "/resources/js/history.js" />"></script>
 <link href="<@spring.url "/resources/css/mainpage.css" />" rel="stylesheet"/>
 <link href="<@spring.url "/resources/css/switch.css" />" rel="stylesheet"/>
+<link href="<@spring.url "/resources/css/additionalTracksTable.css" />" rel="stylesheet">
 </@m.head>
 
 <@m.body>
@@ -105,7 +106,7 @@
         </td>
     </tr>
 </script>
-<script type="text/template" class="playlistRowTemplate">
+<script type="text/template" class="playlistButtonTemplate">
     <li id="<%= data.id %>" title="<%= data.name %>">
         <div class="input-group">
             <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
@@ -121,7 +122,7 @@
         </div>
     </li>
 </script>
-<script type="text/template" class="addToPlaylistRowTemplate">
+<script type="text/template" class="playlistRowTemplate">
     <li id="<%= data.id %>" title="<%= data.name %>">
         <div class="input-group">
             <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
@@ -143,12 +144,12 @@
             $("script.trackRowTemplate").html()
     );
 
-    var playlistRow = _.template(
-            $("script.playlistRowTemplate").html()
+    var playlistButton = _.template(
+            $("script.playlistButtonTemplate").html()
     );
 
-    var addToPlaylistRow = _.template(
-            $("script.addToPlaylistRowTemplate").html()
+    var playlistRow = _.template(
+            $("script.playlistRowTemplate").html()
     );
 
     var recommendationRow = _.template(
@@ -189,7 +190,7 @@
                 .then(function (playlist) {
                     $("#inputNameAddPlaylist").val("");
                     var rows = $("#playlistsModal").find("#addToPlaylist");
-                    rows.append(addToPlaylistRow(playlist));
+                    rows.append(playlistRow(playlist));
                 });
     });
 
@@ -204,7 +205,7 @@
     function addPlaylists(playlists) {
         var rows = $("#playlistsModal").find("#addToPlaylist");
         playlists.forEach(function (playlist) {
-            rows.append(addToPlaylistRow(playlist));
+            rows.append(playlistRow(playlist));
         });
     }
 
@@ -218,8 +219,8 @@
                     .then(function () {
                         $("#playlistsModal").modal("hide");
                         refreshRecommendationTable();
-                        refreshTrackTable();
                         refreshPlaylistTable();
+                        refreshTrackTable();
                     })
         });
     }
@@ -313,7 +314,7 @@
 
     function addPlaylist(playlist) {
         $("#playlists").append(
-                playlistRow(playlist)
+                playlistButton(playlist)
         );
     }
 

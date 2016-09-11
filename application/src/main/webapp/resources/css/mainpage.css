@@ -6,17 +6,3 @@ body {
     float: left;
     margin: .5em
 }
-
-.btn.active {
-    color: yellow;
-}
-
-.check {
-    display: inline-block;
-}
-
-.tracks-table.no-checkbox .check,
-.tracks-table.no-plus-button .btn.btn-success.add-song-button,
-.hidden {
-    display: none;
-}

@@ -9,21 +9,3 @@ body {
 label[name = tag] {
     margin-bottom: 2px;
 }
-
-#tracks.no-checkbox .check,
-#tracks.no-plus-button .btn.btn-success.add-song-button,
-.hidden {
-    display: none;
-}
-
-.check {
-    display: inline-block;
-}
-
-#playlistsModal .form-group {
-    display: inline-flex;
-}
-
-#createPlaylistButton {
-    margin-right: 1em;
-}

@@ -141,8 +141,8 @@
             <button type="button" class="btn btn-xs btn-success add-song-button">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             </button>
-            <div class="check" data-toggle="buttons">
-                <label class="btn btn-success btn-xs">
+            <div class="checkButton" data-toggle="buttons">
+                <label class="btn btn-success btn-xs check">
                     <input type="checkbox"/>
                     <span class="glyphicon glyphicon-ok"></span>
                 </label>

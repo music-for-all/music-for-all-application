@@ -1,0 +1,21 @@
+.check.active {
+    color: yellow;
+}
+
+.tracks-table.no-checkbox .checkButton,
+.tracks-table.no-plus-button .btn.btn-success.add-song-button,
+.hidden {
+    display: none;
+}
+
+.checkButton {
+    display: inline-block;
+}
+
+#playlistsModal .form-group {
+    display: inline-flex;
+}
+
+#createPlaylistButton {
+    margin-right: 1em;
+}
