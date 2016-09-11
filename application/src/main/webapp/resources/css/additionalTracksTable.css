@@ -1,5 +1,6 @@
 .check.active {
     color: yellow;
+    background-color: chocolate;
 }
 
 .tracks-table.no-checkbox .checkButton,

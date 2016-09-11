@@ -107,9 +107,9 @@
     </tr>
 </script>
 <script type="text/template" class="playlistButtonTemplate">
-    <li id="<%= data.id %>" title="<%= data.name %>">
+    <li id="<%= data.id %>" class="playlists" title="<%= data.name %>">
         <div class="input-group">
-            <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
+            <a type="button" class="btn btn-default btn-block playlist" data-value="<%= data.name %>">
                 <%= data.name %>
             </a>
 
@@ -252,6 +252,7 @@
         playlist.create($("#inputNamePlaylist").val())
                 .then(function (playlist) {
                     addPlaylist(playlist);
+                    $("#inputNamePlaylist").val("");
                     $("#addPlaylistModal").modal("hide");
                 });
     });
@@ -344,6 +345,7 @@
                 })
                 .done(function () {
                     /* For testing purpose, select the first playlist (named 'Hype'). */
+                    $("#playlists li:first").addClass("active");
                     $("#playlists li:first a").trigger("click");
                 });
     }

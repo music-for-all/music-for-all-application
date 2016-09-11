@@ -6,3 +6,11 @@ body {
     float: left;
     margin: .5em
 }
+
+.playlists.active .btn.playlist {
+    border: 1px solid blue;
+}
+
+#createPlaylistButton {
+    margin-bottom: .2em;
+}
