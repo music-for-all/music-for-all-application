@@ -40,6 +40,14 @@ public class RecommendationService {
         return trackService.getAllById(popularTracksIds);
     }
 
+    public Collection<Track> getRecommendedOrPopularTracks() {
+        final Collection<Track> tracks = getRecommendedTracks();
+        if (tracks == null || tracks.isEmpty()) {
+            return getMostPopularTracks();
+        }
+        return tracks;
+    }
+
     public Collection<Track> getRecommendedTracks() {
         final User user = SecurityUtil.currentUser();
 

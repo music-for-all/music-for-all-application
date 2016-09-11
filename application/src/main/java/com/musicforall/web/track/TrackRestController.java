@@ -75,7 +75,7 @@ public class TrackRestController {
 
     @RequestMapping(value = "/recommended", method = RequestMethod.GET)
     public ResponseEntity<Collection<Track>> getRecommendedTracks() {
-        final Collection<Track> tracks = recommendationService.getRecommendedTracks();
+        final Collection<Track> tracks = recommendationService.getRecommendedOrPopularTracks();
         return new ResponseEntity<>(tracks, HttpStatus.OK);
     }
 
