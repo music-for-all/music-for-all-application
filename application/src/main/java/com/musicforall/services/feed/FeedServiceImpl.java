@@ -12,6 +12,8 @@ import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,12 +44,16 @@ public class FeedServiceImpl implements FeedService {
     @Autowired
     private PlaylistService playlistService;
 
+    @Autowired
+    private MessageSource messageSource;
+
 
     @Override
     public Map<User, Collection<Feed>> getGroupedFollowingFeeds(Integer userId) {
         final Collection<Integer> usersIds = followerService.getFollowingId(userId);
 
-        Map<Integer, User> usersByIds = userService.getUsersById(usersIds).stream().collect(Collectors.toMap(User::getId, Function.identity()));
+        Map<Integer, User> usersByIds = userService.getUsersById(usersIds)
+                .stream().collect(Collectors.toMap(User::getId, Function.identity()));
 
         final Collection<History> usersHistories = historyService.getUsersHistories(usersIds);
 
@@ -62,8 +68,10 @@ public class FeedServiceImpl implements FeedService {
                 .map(History::getPlaylistId)
                 .collect(Collectors.toList());
 
-        Map<Integer, Track> tracksByIds = trackService.getAllByIds(tracksIds).stream().collect(Collectors.toMap(Track::getId, Function.identity()));
-        Map<Integer, Playlist> playlistsByIds = playlistService.getAllByIds(playlistsIds).stream().collect(Collectors.toMap(Playlist::getId, Function.identity()));
+        Map<Integer, Track> tracksByIds = trackService.getAllByIds(tracksIds)
+                .stream().collect(Collectors.toMap(Track::getId, Function.identity()));
+        Map<Integer, Playlist> playlistsByIds = playlistService.getAllByIds(playlistsIds)
+                .stream().collect(Collectors.toMap(Playlist::getId, Function.identity()));
 
         return usersHistories
                 .stream()
@@ -85,17 +93,23 @@ public class FeedServiceImpl implements FeedService {
     private Feed generateContent(EventType eventType, String target, Date date) {
         switch (eventType) {
             case TRACK_LISTENED:
-                return new Feed("<@spring.message \"followingpage.listenedTrack\"/>" + " " + target, date);
+                return new Feed(messageSource.getMessage("followingpage.listenedTrack", null,
+                        LocaleContextHolder.getLocale()) + target, date);
             case TRACK_LIKED:
-                return new Feed("<@spring.message \"followingpage.likededTrack\"/>" + " " + target, date);
+                return new Feed(messageSource.getMessage("followingpage.likededTrack", null,
+                        LocaleContextHolder.getLocale()) + target, date);
             case TRACK_ADDED:
-                return new Feed("<@spring.message \"followingpage.addedTrack\"/>" + " " + target, date);
+                return new Feed(messageSource.getMessage("followingpage.addedTrack", null,
+                        LocaleContextHolder.getLocale()) + target, date);
             case TRACK_DELETED:
-                return new Feed("<@spring.message \"followingpage.deletedTrack\"/>" + " " + target, date);
+                return new Feed(messageSource.getMessage("followingpage.deletedTrack", null,
+                        LocaleContextHolder.getLocale()) + target, date);
             case PLAYLIST_ADDED:
-                return new Feed("<@spring.message \"followingpage.addedPlaylist\"/>" + " " + target, date);
+                return new Feed(messageSource.getMessage("followingpage.addedPlaylist", null,
+                        LocaleContextHolder.getLocale()) + target, date);
             case PLAYLIST_DELETED:
-                return new Feed("<@spring.message \"followingpage.deletedPlaylist\"/>" + " " + target, date);
+                return new Feed(messageSource.getMessage("followingpage.deletedPlaylis", null,
+                        LocaleContextHolder.getLocale()) + target, date);
             default:
                 return null;
         }
