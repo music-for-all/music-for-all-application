@@ -216,7 +216,7 @@ public class TrackServiceTest {
 
         dbHistoryPopulateService.populateTrackLikedByFollowedUsers(trackIds, FOLLOWED_USER_ID);
 
-        Collection<Track> tracks = recommendationService.getRecommendedTracks();
+        Collection<Track> tracks = recommendationService.getFollowingsRecommendedTracks();
         assertNotNull(tracks);
         assertEquals(3, tracks.size());
 
@@ -227,7 +227,7 @@ public class TrackServiceTest {
 
         playlistService.addTracks(playlist.getId(), tracksIds);
 
-        tracks = recommendationService.getRecommendedTracks();
+        tracks = recommendationService.getFollowingsRecommendedTracks();
         assertEquals(0, tracks.size());
 
         playlistService.delete(playlist.getId());

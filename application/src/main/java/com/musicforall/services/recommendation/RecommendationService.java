@@ -40,15 +40,15 @@ public class RecommendationService {
         return trackService.getAllById(popularTracksIds);
     }
 
-    public Collection<Track> getRecommendedOrPopularTracks() {
-        final Collection<Track> tracks = getRecommendedTracks();
+    public Collection<Track> getRecommendedTracks() {
+        final Collection<Track> tracks = getFollowingsRecommendedTracks();
         if (tracks == null || tracks.isEmpty()) {
             return getMostPopularTracks();
         }
         return tracks;
     }
 
-    public Collection<Track> getRecommendedTracks() {
+    public Collection<Track> getFollowingsRecommendedTracks() {
         final User user = SecurityUtil.currentUser();
 
         final Collection<Integer> ids = followerService.getFollowingId(user.getId());
