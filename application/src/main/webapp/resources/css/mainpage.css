@@ -6,3 +6,14 @@ body {
     float: left;
     margin: .5em
 }
+
+#recommendations.no-checkbox .checkbox,
+#recommendations.no-plus-button .btn.btn-success {
+    display: none;
+}
+
+#recommendations .checkbox,
+#recommendations .btn.btn-success {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}

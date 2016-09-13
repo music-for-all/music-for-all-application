@@ -225,7 +225,11 @@ public class TrackServiceTest {
         assertEquals(3, tracks.size());
 
         final Playlist playlist = playlistService.save("demo");
-        playlistService.addTracks(playlist.getId(), new HashSet<Track>(trackService.findAll()));
+        final Set<Integer> tracksIds = trackService.findAll().stream()
+                .map(Track::getId)
+                .collect(Collectors.toSet());
+
+        playlistService.addTracks(playlist.getId(), tracksIds);
 
         tracks = recommendationService.getRecommendedTracks();
         assertEquals(0, tracks.size());

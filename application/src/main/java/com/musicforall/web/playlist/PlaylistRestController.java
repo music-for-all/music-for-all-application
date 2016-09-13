@@ -58,4 +58,11 @@ public class PlaylistRestController {
         playlistService.removeTrack(playlistId, trackId);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/{id}/add/tracks", method = RequestMethod.POST)
+    public ResponseEntity addTracks(@PathVariable("id") Integer playlistId,
+                                    @RequestParam("tracksIds[]") Collection<Integer> tracksIds) {
+        playlistService.addTracks(playlistId, tracksIds);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }
