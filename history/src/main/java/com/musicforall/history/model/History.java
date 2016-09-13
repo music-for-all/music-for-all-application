@@ -21,22 +21,22 @@ import java.util.Objects;
                         " and day(current_date()) - day(history.date) <= 1" +
                         " order by history.date desc"),
         @NamedQuery(
-                        name = History.POPULAR_TRACKS_QUERY,
-                        query = "select history.trackId" +
-                                " from History history" +
-                                " where history.eventType=:eventType" +
-                                " group by history.trackId" +
-                                " order by count(history.trackId) desc"),
-                @NamedQuery(
-                        name = History.TRACK_LIKES_COUNT_QUERY,
-                        query = "select count(*) from History history " +
-                                "where history.trackId=:trackId and history.eventType=:eventType"),
-                @NamedQuery(
-                        name = History.ALL_USERS_BY_TYPE_QUERY,
-                        query = "select h from History h where h.eventType = :eventType and h.userId in " +
-                                "(:usersIds) order by h.date desc"
-                )
-        }
+                name = History.POPULAR_TRACKS_QUERY,
+                query = "select history.trackId" +
+                        " from History history" +
+                        " where history.eventType=:eventType" +
+                        " group by history.trackId" +
+                        " order by count(history.trackId) desc"),
+        @NamedQuery(
+                name = History.TRACK_LIKES_COUNT_QUERY,
+                query = "select count(*) from History history " +
+                        "where history.trackId=:trackId and history.eventType=:eventType"),
+        @NamedQuery(
+                name = History.ALL_USERS_BY_TYPE_QUERY,
+                query = "select h from History h where h.eventType = :eventType and h.userId in " +
+                        "(:usersIds) order by h.date desc"
+        )
+}
 )
 @Table(name = "history")
 public class History {
@@ -121,12 +121,12 @@ public class History {
         this.eventType = eventType;
     }
 
-    public void setPlaylistId(Integer playlistId) {
-        this.playlistId = playlistId;
-    }
-
     public Integer getPlaylistId() {
         return playlistId;
+    }
+
+    public void setPlaylistId(Integer playlistId) {
+        this.playlistId = playlistId;
     }
 
     @Override
