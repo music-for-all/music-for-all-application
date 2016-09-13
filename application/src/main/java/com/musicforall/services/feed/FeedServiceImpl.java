@@ -108,7 +108,7 @@ public class FeedServiceImpl implements FeedService {
                 return new Feed(messageSource.getMessage("followingpage.addedPlaylist", null,
                         LocaleContextHolder.getLocale()) + target, date);
             case PLAYLIST_DELETED:
-                return new Feed(messageSource.getMessage("followingpage.deletedPlaylis", null,
+                return new Feed(messageSource.getMessage("followingpage.deletedPlaylist", null,
                         LocaleContextHolder.getLocale()) + target, date);
             default:
                 return null;

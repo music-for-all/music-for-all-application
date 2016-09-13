@@ -10,7 +10,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNull;

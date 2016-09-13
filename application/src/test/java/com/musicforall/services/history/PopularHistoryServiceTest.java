@@ -14,9 +14,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import static junit.framework.TestCase.assertEquals;
 
 import java.util.*;
+
+import static junit.framework.TestCase.assertEquals;
 
 /**
  * Created by Andrey on 9/5/16.
