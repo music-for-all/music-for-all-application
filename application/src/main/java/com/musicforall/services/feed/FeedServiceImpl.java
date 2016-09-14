@@ -12,6 +12,7 @@ import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,7 @@ public class FeedServiceImpl implements FeedService {
     private PlaylistService playlistService;
 
     @Autowired
+    @Qualifier("messageSource")
     private MessageSource messageSource;
 
 

@@ -11,11 +11,14 @@ import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import com.musicforall.util.ServicesTestConfig;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -30,6 +33,8 @@ import java.util.Map;
 import static com.musicforall.history.handlers.events.EventType.PLAYLIST_ADDED;
 import static com.musicforall.history.handlers.events.EventType.TRACK_LIKED;
 import static junit.framework.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 /**
  * @author IliaNik on 02.09.2016.
@@ -46,6 +51,7 @@ public class FeedServiceTest {
     private static final String PASSWORD = "password";
     private static final int TRACK_ID = 3333;
     private static final int PLAYLIST_ID = 111;
+    final String testMessage = "Test message";
     @Autowired
     private UserService userService;
 
@@ -56,6 +62,7 @@ public class FeedServiceTest {
     private FollowerService followerService;
 
     @Autowired
+    @InjectMocks
     private FeedService feedService;
 
     @Autowired
@@ -64,10 +71,13 @@ public class FeedServiceTest {
     @Autowired
     private PlaylistService playlistService;
 
-    @Autowired
+    @Mock
     private MessageSource messageSource;
 
-
+    @Before
+    public void before() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     public void testGetGroupedFollowingFeeds() {
@@ -100,9 +110,11 @@ public class FeedServiceTest {
         historyService.record(history1);
         historyService.record(history2);
 
-        final Feed feed1 = new Feed(messageSource.getMessage("followingpage.likedTrack", null, LocaleContextHolder.getLocale()) + " " +
+        when(messageSource.getMessage(any(), any(), any())).thenReturn(testMessage);
+
+        final Feed feed1 = new Feed(testMessage + " " +
                 "Ray Charles – Mess around", history1.getDate());
-        final Feed feed2 = new Feed(messageSource.getMessage("followingpage.likedTrack", null, LocaleContextHolder.getLocale()) + " " +
+        final Feed feed2 = new Feed(testMessage + " " +
                 "Jazz", history2.getDate());
 
         final Map<User, Collection<Feed>> followingHistories = feedService.getGroupedFollowingFeeds(user.getId());
