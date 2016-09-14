@@ -100,10 +100,10 @@ public class FeedServiceTest {
         historyService.record(history1);
         historyService.record(history2);
 
-        final Feed feed1 = new Feed(messageSource.getMessage("followingpage.likedTrack" + " " +
-                "Ray Charles – Mess around", null, LocaleContextHolder.getLocale()), history1.getDate());
-        final Feed feed2 = new Feed(messageSource.getMessage("followingpage.likedTrack" + " " +
-                "Jazz", null, LocaleContextHolder.getLocale()), history2.getDate());
+        final Feed feed1 = new Feed(messageSource.getMessage("followingpage.likedTrack", null, LocaleContextHolder.getLocale()) + " " +
+                "Ray Charles – Mess around", history1.getDate());
+        final Feed feed2 = new Feed(messageSource.getMessage("followingpage.likedTrack", null, LocaleContextHolder.getLocale()) + " " +
+                "Jazz", history2.getDate());
 
         final Map<User, Collection<Feed>> followingHistories = feedService.getGroupedFollowingFeeds(user.getId());
 

@@ -94,22 +94,22 @@ public class FeedServiceImpl implements FeedService {
         switch (eventType) {
             case TRACK_LISTENED:
                 return new Feed(messageSource.getMessage("followingpage.listenedTrack", null,
-                        LocaleContextHolder.getLocale()) + target, date);
+                        LocaleContextHolder.getLocale()) + " " + target, date);
             case TRACK_LIKED:
                 return new Feed(messageSource.getMessage("followingpage.likededTrack", null,
-                        LocaleContextHolder.getLocale()) + target, date);
+                        LocaleContextHolder.getLocale()) + " " + target, date);
             case TRACK_ADDED:
                 return new Feed(messageSource.getMessage("followingpage.addedTrack", null,
-                        LocaleContextHolder.getLocale()) + target, date);
+                        LocaleContextHolder.getLocale()) + " " + target, date);
             case TRACK_DELETED:
                 return new Feed(messageSource.getMessage("followingpage.deletedTrack", null,
-                        LocaleContextHolder.getLocale()) + target, date);
+                        LocaleContextHolder.getLocale()) + " " + target, date);
             case PLAYLIST_ADDED:
                 return new Feed(messageSource.getMessage("followingpage.addedPlaylist", null,
-                        LocaleContextHolder.getLocale()) + target, date);
+                        LocaleContextHolder.getLocale()) + " " + target, date);
             case PLAYLIST_DELETED:
                 return new Feed(messageSource.getMessage("followingpage.deletedPlaylist", null,
-                        LocaleContextHolder.getLocale()) + target, date);
+                        LocaleContextHolder.getLocale()) + " " + target, date);
             default:
                 return null;
         }
