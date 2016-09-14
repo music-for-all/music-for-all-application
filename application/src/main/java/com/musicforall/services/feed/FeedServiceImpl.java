@@ -83,7 +83,7 @@ public class FeedServiceImpl implements FeedService {
                                         tracksByIds.get(h.getTrackId()).getEntireName(), h.getDate());
                             } else if (h.getEventType().isPlaylistEvent()) {
                                 return generateContent(h.getEventType(),
-                                        playlistsByIds.get(h.getTrackId()).getName(), h.getDate());
+                                        playlistsByIds.get(h.getPlaylistId()).getName(), h.getDate());
                             }
                             return null;
                         }, Collectors.toCollection(ArrayList::new))));

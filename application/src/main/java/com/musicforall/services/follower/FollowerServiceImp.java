@@ -1,9 +1,7 @@
 package com.musicforall.services.follower;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Followers;
-import com.musicforall.services.user.UserService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
