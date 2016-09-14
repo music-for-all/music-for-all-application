@@ -88,7 +88,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public void addTracks(Integer playlistId, Collection<Integer> tracksIds) {
         final Playlist playlist = dao.get(Playlist.class, playlistId);
-        final Collection<Track> tracks = trackService.getAllById(tracksIds);
+        final Collection<Track> tracks = trackService.getAllByIds(tracksIds);
         playlist.addTracks(new HashSet<>(tracks));
         save(playlist);
     }
