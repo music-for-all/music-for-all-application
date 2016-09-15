@@ -98,7 +98,7 @@ public class FeedServiceImpl implements FeedService {
                 return new Feed(messageSource.getMessage("followingpage.listenedTrack", null,
                         LocaleContextHolder.getLocale()) + " " + target, date);
             case TRACK_LIKED:
-                return new Feed(messageSource.getMessage("followingpage.likededTrack", null,
+                return new Feed(messageSource.getMessage("followingpage.likedTrack", null,
                         LocaleContextHolder.getLocale()) + " " + target, date);
             case TRACK_ADDED:
                 return new Feed(messageSource.getMessage("followingpage.addedTrack", null,
