@@ -30,7 +30,18 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public void record(final History history) {
-        dao.save(history);
+        if (history.getEventType() == EventType.TRACK_LIKED) {
+            Collection<History> histories = getAllBy(SearchHistoryParams.create()
+                    .eventType(EventType.TRACK_LIKED)
+                    .trackId(history.getTrackId())
+                    .userId(history.getUserId())
+                    .get());
+            if (histories.isEmpty()) {
+                dao.save(history);
+            }
+        } else {
+            dao.save(history);
+        }
     }
 
     @Override
