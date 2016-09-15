@@ -2,6 +2,7 @@ package com.musicforall.services.file;
 
 import com.musicforall.files.manager.FileManager;
 import com.musicforall.services.file.utils.FileTestUtils;
+import com.musicforall.util.ServicesTestConfig;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.AfterClass;
@@ -12,13 +13,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.powermock.api.easymock.PowerMock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.File;
@@ -33,8 +35,10 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by Pavel Podgorniy on 9/11/2016.
  */
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(FileService.class)
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
+@ActiveProfiles("dev")
 public class FileServiceTest {
 
     private static final String TEST_FILE_NAME = "big_test_resource.mp3";
@@ -61,7 +65,6 @@ public class FileServiceTest {
         manager = new FileManager();
         fileService = new FileServiceImpl();
         ReflectionTestUtils.setField(manager, "workingDirectory", testDirectory.getAbsolutePath());
-        PowerMock.expectNew(FileManager.class).andReturn(manager);
     }
 
     @AfterClass
