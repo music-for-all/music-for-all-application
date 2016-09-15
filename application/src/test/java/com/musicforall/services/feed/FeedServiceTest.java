@@ -3,18 +3,13 @@ package com.musicforall.services.feed;
 import com.musicforall.dto.feed.Feed;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
-import com.musicforall.history.service.history.HistoryServiceImpl;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
 import com.musicforall.services.follower.FollowerService;
-import com.musicforall.services.follower.FollowerServiceImp;
 import com.musicforall.services.playlist.PlaylistService;
-import com.musicforall.services.playlist.PlaylistServiceImpl;
 import com.musicforall.services.track.TrackService;
-import com.musicforall.services.track.TrackServiceImpl;
 import com.musicforall.services.user.UserService;
-import com.musicforall.services.user.UserServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.MessageSource;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -43,11 +37,12 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class FeedServiceTest {
 
-    public static final String LOC_1 = "loc1";
-    private static final String PASSWORD = "password";
+    private static final String LOC_1 = "loc1";
     private static final int TRACK_ID = 3333;
     private static final int PLAYLIST_ID = 111;
-    final String testMessage = "Test message";
+    private static final int USER1_ID = 2;
+    private static final int USER_ID = 1;
+    private static final String testMessage = "Test message";
 
     @Mock
     private UserService userService;
@@ -69,6 +64,15 @@ public class FeedServiceTest {
 
     @Mock
     private MessageSource messageSource;
+
+    @Mock
+    private User user;
+
+    @Mock
+    private Track track;
+
+    @Mock
+    private Playlist playlist;
 
     @Before
     public void before() {
@@ -113,12 +117,32 @@ public class FeedServiceTest {
         final Feed feed2 = new Feed(testMessage + " " +
                 "Jazz", history2.getDate());*/
 
-        final int userId = 1;
-        when(followerService.getFollowingId(userId)).thenReturn(Arrays.asList(2,3,4));
+        final History history1 = new History(TRACK_ID, PLAYLIST_ID,
+                new Date(new Date().getTime() + 1), USER1_ID, TRACK_LIKED);
 
-        final Map<User, Collection<Feed>> followingHistories = feedService.getGroupedFollowingFeeds(userId);
+        final History history2 = new History(TRACK_ID, PLAYLIST_ID,
+                new Date(new Date().getTime() + 2), USER1_ID, PLAYLIST_ADDED);
 
-//        assertTrue(followingHistories.get(userId).stream().anyMatch(f -> f.equals(feed1)));
-//        assertTrue(followingHistories.get(user2).stream().anyMatch(f -> f.equals(feed2)));
+        when(followerService.getFollowingId(USER_ID)).thenReturn(Arrays.asList(2));
+        when(userService.getUsersById(any())).thenReturn(Arrays.asList(user));
+        when(historyService.getUsersHistories(any())).thenReturn(Arrays.asList(history1, history2));
+
+        when(trackService.getAllByIds(any())).thenReturn(Arrays.asList(new Track("Ray Charles – Mess around", "Mess around", "Ray Charles", null, LOC_1, null)));
+        when(playlistService.getAllByIds(any())).thenReturn(Arrays.asList(new Playlist("Jazz", null, user)));
+        when(track.getId()).thenReturn(TRACK_ID);
+        when(playlist.getId()).thenReturn(PLAYLIST_ID);
+        when(user.getId()).thenReturn(USER1_ID);
+        when(messageSource.getMessage(any(), any(), any())).thenReturn(testMessage);
+
+        final Map<User, Collection<Feed>> followingHistories = feedService.getGroupedFollowingFeeds(USER_ID);
+
+        final Feed feed1 = new Feed(testMessage + " " +
+                "Ray Charles – Mess around", history1.getDate());
+        final Feed feed2 = new Feed(testMessage + " " +
+                "Jazz", history2.getDate());
+
+        assertTrue(followingHistories.get(user).stream().anyMatch(f -> f.equals(feed1)));
+        assertTrue(followingHistories.get(user).stream().anyMatch(f -> f.equals(feed2)));
+
     }
 }
