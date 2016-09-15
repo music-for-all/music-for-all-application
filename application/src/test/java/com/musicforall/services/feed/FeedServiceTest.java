@@ -48,21 +48,26 @@ public class FeedServiceTest {
     private static final int PLAYLIST_ID = 111;
     final String testMessage = "Test message";
 
-    private UserService userService = new UserServiceImpl();
-
-    private HistoryService historyService = new HistoryServiceImpl();
-
-    private FollowerService followerService = new FollowerServiceImp();
-
-    @InjectMocks
-    private FeedService feedService = new FeedServiceImpl();
-
-    private TrackService trackService = new TrackServiceImpl();
-
-    private PlaylistService playlistService = new PlaylistServiceImpl();
+    @Mock
+    private UserService userService;
 
     @Mock
-    private MessageSource messageSource = new ReloadableResourceBundleMessageSource();
+    private HistoryService historyService;
+
+    @Mock
+    private FollowerService followerService;
+
+    @InjectMocks
+    private FeedServiceImpl feedService;
+
+    @Mock
+    private TrackService trackService;
+
+    @Mock
+    private PlaylistService playlistService;
+
+    @Mock
+    private MessageSource messageSource;
 
     @Before
     public void before() {
