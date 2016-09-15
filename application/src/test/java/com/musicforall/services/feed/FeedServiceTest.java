@@ -3,28 +3,27 @@ package com.musicforall.services.feed;
 import com.musicforall.dto.feed.Feed;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
+import com.musicforall.history.service.history.HistoryServiceImpl;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
 import com.musicforall.services.follower.FollowerService;
+import com.musicforall.services.follower.FollowerServiceImp;
 import com.musicforall.services.playlist.PlaylistService;
+import com.musicforall.services.playlist.PlaylistServiceImpl;
 import com.musicforall.services.track.TrackService;
+import com.musicforall.services.track.TrackServiceImpl;
 import com.musicforall.services.user.UserService;
-import com.musicforall.util.ServicesTestConfig;
+import com.musicforall.services.user.UserServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.MessageSource;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
 import java.util.Collection;
 import java.util.Date;
@@ -40,11 +39,7 @@ import static org.mockito.Mockito.when;
  * @author IliaNik on 02.09.2016.
  */
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
-@TestExecutionListeners({
-        DependencyInjectionTestExecutionListener.class})
-@ActiveProfiles("dev")
+@RunWith(MockitoJUnitRunner.class)
 public class FeedServiceTest {
 
     public static final String LOC_1 = "loc1";
@@ -52,27 +47,22 @@ public class FeedServiceTest {
     private static final int TRACK_ID = 3333;
     private static final int PLAYLIST_ID = 111;
     final String testMessage = "Test message";
-    @Autowired
-    private UserService userService;
 
-    @Autowired
-    private HistoryService historyService;
+    private UserService userService = new UserServiceImpl();
 
-    @Autowired
-    private FollowerService followerService;
+    private HistoryService historyService = new HistoryServiceImpl();
 
-    @Autowired
+    private FollowerService followerService = new FollowerServiceImp();
+
     @InjectMocks
-    private FeedService feedService;
+    private FeedService feedService = new FeedServiceImpl();
 
-    @Autowired
-    private TrackService trackService;
+    private TrackService trackService = new TrackServiceImpl();
 
-    @Autowired
-    private PlaylistService playlistService;
+    private PlaylistService playlistService = new PlaylistServiceImpl();
 
     @Mock
-    private MessageSource messageSource;
+    private MessageSource messageSource = new ReloadableResourceBundleMessageSource();
 
     @Before
     public void before() {
