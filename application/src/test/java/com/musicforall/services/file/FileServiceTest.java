@@ -97,12 +97,25 @@ public class FileServiceTest {
     }
 
     @Test
-    public void uploadFileTest() throws Exception {
+    public void uploadFileExistedArtistTest() throws Exception {
         try (InputStream inputStream = newInputStream(get(resourceUrl.toURI()))) {
             final MockMultipartFile file = new MockMultipartFile("file", "sampleFile.mp3", null, inputStream);
             final Track track = new Track("track", "title2", new Artist("artist2"), "album2", "/root/track2.mp3", null);
 
             when(artistService.get(any())).thenReturn((new Artist("artist")));
+            when(trackService.save(any())).thenReturn(track);
+
+            fileService.uploadTrackFile(track, file);
+        }
+    }
+
+    @Test
+    public void uploadFileNewArtistTest() throws Exception {
+        try (InputStream inputStream = newInputStream(get(resourceUrl.toURI()))) {
+            final MockMultipartFile file = new MockMultipartFile("file", "sampleFile.mp3", null, inputStream);
+            final Track track = new Track("track", "title2", new Artist("artist2"), "album2", "/root/track2.mp3", null);
+
+            when(artistService.get(any())).thenReturn((null));
             when(trackService.save(any())).thenReturn(track);
 
             fileService.uploadTrackFile(track, file);

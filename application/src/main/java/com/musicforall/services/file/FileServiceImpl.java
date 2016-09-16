@@ -35,7 +35,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public ResponseEntity<String> uploadTrackFile(Track track, MultipartFile file) {
         final Optional<Path> saved = manager.save(file);
-        Track trackForSaving=track;
+        Track trackForSaving = track;
         if (saved.isPresent()) {
             trackForSaving.setLocation(file.getOriginalFilename());
             trackForSaving.setSize(file.getSize());
