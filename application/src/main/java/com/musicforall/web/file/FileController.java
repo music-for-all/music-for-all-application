@@ -49,10 +49,10 @@ public class FileController {
             @RequestPart("file") MultipartFile file) {
 
         final ResponseEntity<String> errorStatus = fileService.checkFile(file);
-        if (!Objects.equals(errorStatus.getBody(), "ok")) {
-            return errorStatus;
-        } else {
+        if (Objects.equals(errorStatus.getBody(), "ok")) {
             return fileService.uploadTrackFile(trackJson, file);
+        } else {
+            return errorStatus;
         }
     }
 
