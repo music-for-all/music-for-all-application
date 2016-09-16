@@ -9,38 +9,38 @@
 <@m.body>
 
     <@m.navigation m.pages.Profile/>
-
 <div id="container" class="container">
-    <div class="well col-md-8 col-md-offset-1 text-center">
-        <h4>${user.username}</h4>
-        <h3><@spring.message "profilepage.UserInfo"/></h3>
-        <@m.logoutForm/>
-
-        <div class="profile-picture">
-            <img src="${user.picture}" alt="User picture"/>
-        </div>
-        <div class="row well">
-            <div class="col-sm-4">
-                <@spring.message "profilepage.FirstName" />
-            </div>
-            <div class="col-sm-4">
-                ${user.firstName}
-            </div>
-        </div>
-        <div class="row well">
-            <div class="col-sm-4">
-                <@spring.message "profilepage.LastName" />
-            </div>
-            <div class="col-sm-4">
-                ${user.lastName}
-            </div>
-        </div>
-        <div class="row well">
-            <div class="col-sm-4">
-                <@spring.message "profilepage.Email" />
-            </div>
-            <div class="col-sm-4">
-                ${user.email}
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">${user.username}</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3 col-lg-3 " align="center">
+                            <img src="${user.picture}" alt="User picture" class="img-circle img-responsive">
+                        </div>
+                        <div class=" col-md-9 col-lg-9 ">
+                            <table class="table table-user-information">
+                                <tbody>
+                                <tr>
+                                    <td><@spring.message "profilepage.FirstName" /></td>
+                                    <td>${user.firstName}</td>
+                                </tr>
+                                <tr>
+                                    <td><@spring.message "profilepage.LastName" /></td>
+                                    <td>${user.lastName}</td>
+                                </tr>
+                                <tr>
+                                    <td><@spring.message "profilepage.Email" /></td>
+                                    <td>${user.email}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

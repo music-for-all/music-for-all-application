@@ -40,6 +40,10 @@ public class DbPopulateService {
 
     private static final String OPEN_SOURCE_MUSIC_HOST = "http://opensourcemusic.com/files";
 
+    private static final String USER_PICTURE = "https://developers.google.com/experts/img/user/user-default.png";
+
+    private static final String DEFAULT_NAME = "Unknown";
+
     private static final String USER_IS_SAVED = "user {} is saved";
 
     private static final String USER_IS_FOLLOW = "user {} is follow {}";
@@ -95,6 +99,12 @@ public class DbPopulateService {
                 .reduce(0L, (x, y) -> x + y);
     }
 
+    private static void setDefaultValues(User user) {
+        user.setPicture(USER_PICTURE);
+        user.setLastName(DEFAULT_NAME);
+        user.setFirstName(DEFAULT_NAME);
+    }
+
     @PostConstruct
     private void populate() {
         final boolean hasUsers = !userService.findAll().isEmpty();
@@ -105,10 +115,12 @@ public class DbPopulateService {
         LOG.info("going to populate database with test data");
 
         final User user = new User("dev", "password", "dev@musicforall.com");
+        setDefaultValues(user);
         userService.save(user);
         LOG.info(USER_IS_SAVED, user);
 
-        final User user2 = new User("user2", "password2", "user1@musicforall.com");
+        final User user2 = new User("C-3PO", "password2", "dev_C-3PO@musicforall.com");
+        setDefaultValues(user2);
         userService.save(user2);
         LOG.info(USER_IS_SAVED, user2);
 
@@ -117,7 +129,8 @@ public class DbPopulateService {
         followerService.follow(user2.getId(), user.getId());
         LOG.info(USER_IS_FOLLOW, user2, user);
 
-        final User user3 = new User("user3", "password3", "user2@musicforall.com");
+        final User user3 = new User("R2-D2", "password3", "dev_R2-D2@musicforall.com");
+        setDefaultValues(user3);
         userService.save(user3);
         LOG.info(USER_IS_SAVED, user3);
 

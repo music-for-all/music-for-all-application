@@ -33,11 +33,11 @@ public class DBHistoryPopulateService {
         LOG.info("going to populate history database with test data");
 
         recordHistories(tracksIds, userId, EventType.TRACK_LISTENED);
-        recordHistories(tracksIds, userId, EventType.TRACK_LIKED);
+        recordHistoriesTracksLiked(tracksIds, userId);
     }
 
     public void populateTrackLikedByFollowedUsers(List<Integer> trackIds, Integer userId) {
-        recordHistories(trackIds, userId, EventType.TRACK_LIKED);
+        recordHistoriesTracksLiked(trackIds, userId);
     }
 
     private void recordHistories(List<Integer> tracksIds, Integer userId, EventType eventType) {
@@ -52,6 +52,12 @@ public class DBHistoryPopulateService {
                             .mapToObj(i -> new History(t, null, new Date(), userId, eventType))
                             .collect(Collectors.toList()).stream();
                 })
+                .forEach(historyService::record);
+    }
+
+    private void recordHistoriesTracksLiked(List<Integer> tracksIds, Integer userId) {
+        tracksIds.stream()
+                .map(t -> new History(t, null, new Date(), userId, EventType.TRACK_LIKED))
                 .forEach(historyService::record);
     }
 }
