@@ -101,8 +101,8 @@ public class FeedServiceTest {
 
         final Map<User, Collection<Feed>> followingHistories = feedService.getGroupedFollowingFeeds(USER_ID);
 
-        final Feed feed1 = new Feed(testMessage + " " + "Ray Charles – Mess around", history1.getDate());
-        final Feed feed2 = new Feed(testMessage + " " + "Jazz", history2.getDate());
+        final Feed feed1 = new Feed(testMessage, "Ray Charles – Mess around", history1.getDate());
+        final Feed feed2 = new Feed(testMessage, "Jazz", history2.getDate());
 
         assertTrue(followingHistories.get(user).stream().anyMatch(f -> f.equals(feed1)));
         assertTrue(followingHistories.get(user).stream().anyMatch(f -> f.equals(feed2)));
