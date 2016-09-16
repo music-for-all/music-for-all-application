@@ -37,6 +37,7 @@ import java.util.Objects;
                         "(:usersIds) order by h.date desc"
         )
 })
+
 @Table(name = "history")
 public class History {
 
