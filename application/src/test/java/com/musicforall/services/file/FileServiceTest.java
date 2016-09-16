@@ -44,9 +44,14 @@ public class FileServiceTest {
 
     private static final String TEST_FILE_NAME = "big_test_resource.mp3";
 
-    private static final URL resourceUrl = getResource(FileService.class, TEST_FILE_NAME);
+    private static final int HTTP_STATUS_OK = 200;
 
-    private static final Logger LOG = LoggerFactory.getLogger(FileServiceTest.class);
+    private static final int HTTP_STATUS_ACCEPTED = 202;
+
+    private static final int HTTP_STATUS_INTERNAL_ERROR = 500;
+
+    private static final int HTTP_STATUS_UNPROCESSABLE = 422;
+    private static final URL resourceUrl = getResource(FileService.class, TEST_FILE_NAME);
 
     private static File testDirectory;
 
@@ -84,15 +89,15 @@ public class FileServiceTest {
     public void checkFileTest() throws Exception {
         try (InputStream inputStream = newInputStream(get(resourceUrl.toURI()))) {
             final MockMultipartFile file = new MockMultipartFile("file1", "sampleFile1.mp3", null, inputStream);
-            assertEquals(202, fileService.checkFile(file).getStatusCode().value());
+            assertEquals(HTTP_STATUS_ACCEPTED, fileService.checkFile(file).getStatusCode().value());
 
             manager.save(file);
             ResponseEntity<String> answerExistedFile = fileService.checkFile(file);
-            assertEquals(500, answerExistedFile.getStatusCode().value());
+            assertEquals(HTTP_STATUS_INTERNAL_ERROR, answerExistedFile.getStatusCode().value());
 
             MockMultipartFile file2 = new MockMultipartFile("testJunit", "name", null, IOUtils.toByteArray(""));
             ResponseEntity<String> answerEmptyFile = fileService.checkFile(file2);
-            assertEquals(422, answerEmptyFile.getStatusCode().value());
+            assertEquals(HTTP_STATUS_UNPROCESSABLE, answerEmptyFile.getStatusCode().value());
         }
     }
 
@@ -105,7 +110,7 @@ public class FileServiceTest {
             when(artistService.get(any())).thenReturn((new Artist("artist")));
             when(trackService.save(any())).thenReturn(track);
 
-            fileService.uploadTrackFile(track, file);
+            assertEquals(HTTP_STATUS_OK, fileService.uploadTrackFile(track, file).getStatusCode().value());
         }
     }
 
@@ -118,7 +123,7 @@ public class FileServiceTest {
             when(artistService.get(any())).thenReturn((null));
             when(trackService.save(any())).thenReturn(track);
 
-            fileService.uploadTrackFile(track, file);
+            assertEquals(HTTP_STATUS_OK, fileService.uploadTrackFile(track, file).getStatusCode().value());
         }
     }
 
