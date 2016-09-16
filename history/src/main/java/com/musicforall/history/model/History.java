@@ -36,8 +36,7 @@ import java.util.Objects;
                 query = "select h from History h where h.eventType = :eventType and h.userId in " +
                         "(:usersIds) order by h.date desc"
         )
-}
-)
+})
 @Table(name = "history")
 public class History {
 
