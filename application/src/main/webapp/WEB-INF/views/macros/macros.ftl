@@ -28,6 +28,7 @@
 
 <#macro body>
 <body>
+    <@logoutForm/>
     <#nested>
 <script type="text/javascript">
     var header = $("meta[name='_csrf_header']").attr("content");
@@ -52,7 +53,6 @@
 
 <#macro logoutForm>
     <@form '/logout',"post", "logout-form", "application/x-www-form-urlencoded">
-    <button type="submit" class="btn btn-default"><i class="fa fa-sign-out" aria-hidden="true"></i></button>
     </@form>
 </#macro>
 
@@ -78,7 +78,7 @@
 }>
 
 <#macro navigation activePage=pages.WithoutActivePage>
-    <#assign items = [pages.Contacts, pages.Main, pages.Search, pages.Profile]>
+    <#assign items = [pages.Contacts, pages.Main, pages.Search]>
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -90,13 +90,23 @@
                 <#list items as item>
                     <@navigationItem item activePage/>
                 </#list>
+                <li <#if pages.Profile.url == activePage.url>class="active"</#if>>
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">${profileCaption}<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href=<@spring.url '/profile'/>><@spring.message "macros.MyProfile"/></a></li>
+                        <li><a href="#" onclick="document.getElementById('logout-form').submit()">
+                            <@spring.message "macros.Logout"/></a></li>
+                    </ul>
+                </li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false"><i class="fa fa-globe" aria-hidden="true"></i><span class="caret"></span></a>
+                       aria-expanded="false"><i class="fa fa-globe" aria-hidden="true"></i><span
+                            class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="?lang=en">English</a></li>
-                        <li><a href="?lang=ru">Русский</a></li>
-                        <li><a href="?lang=ua">Українська</a></li>
+                        <li><a href=<@spring.url '?lang=en'/>>English</a></li>
+                        <li><a href=<@spring.url '?lang=ru'/>>Русский</a></li>
+                        <li><a href=<@spring.url '?lang=ua'/>>Українська</a></li>
                     </ul>
                 </li>
             </ul>
@@ -117,4 +127,53 @@
 <footer class="container-fluid">
     <p><@spring.message "projectName"/> ©</p>
 </footer>
+</#macro>
+
+<#macro addTrackRowTemplate>
+<script type="text/template" class="addTrackRowTemplate">
+    <tr id="<%= data.id %>">
+        <td>
+            <button type="button" class="btn btn-xs btn-success play-track-button">
+                <span class='glyphicon glyphicon-play' aria-hidden='true'></span>
+            </button>
+            <button type="button" class="btn btn-xs btn-warning pause-track-button">
+                <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-xs btn-success add-song-button">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+            <div class="checkButton" data-toggle="buttons">
+                <label class="btn btn-success btn-xs check">
+                    <input type="checkbox"/>
+                    <span class="glyphicon glyphicon-ok"></span>
+                </label>
+            </div>
+            <button class="btn btn-xs btn-primary like-button"><@spring.message "mainpage.Like" /></button>
+            <span class="glyphicon num-likes" aria-hidden="true"></span>
+        </td>
+        <td>
+            <%= data.name %>
+        </td>
+        <td>
+            <%= data.artist %>
+        </td>
+        <td>
+            <audio id="audio_<%= track.id %>" controls preload="none">
+                <source type="audio/mp3" src="<@spring.url "/files/<%= data.id %>/0"/>">
+            </audio>
+        </td>
+    </tr>
+</script>
+</#macro>
+
+<#macro playlistRowTemplate>
+<script type="text/template" class="playlistRowTemplate">
+    <li id="<%= data.id %>" title="<%= data.name %>">
+        <div class="input-group">
+            <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
+                <%= data.name %>
+            </a>
+        </div>
+    </li>
+</script>
 </#macro>

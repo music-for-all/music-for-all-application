@@ -101,11 +101,17 @@ public class HistoryServiceImplTest {
 
     @Test
     public void testGetLikeCount() throws Exception {
-        long numLikes = service.getLikeCount(TRACK_ID);
-        assertTrue(numLikes > 0);
+        final Integer trackId = 321;
+        service.record(new History(trackId, null, new Date(), USER_ID, TRACK_LIKED));
+        long numLikes = service.getLikeCount(trackId);
+        assertTrue(numLikes == 1);
+
+        service.record(new History(trackId, null, new Date(), USER_ID, TRACK_LIKED));
+        numLikes = service.getLikeCount(trackId);
+        assertTrue(numLikes == 1);
 
         /* Try to get the like count for non-existing track. */
-        numLikes = service.getLikeCount(TRACK_ID + 1234);
+        numLikes = service.getLikeCount(trackId + 1234);
         assertEquals(0, numLikes);
     }
 

@@ -2,6 +2,7 @@
 <#import "macros/popup_macros.ftl" as p>
 <#import "/spring.ftl" as spring />
 <!DOCTYPE html>
+<!--suppress JSUnresolvedFunction -->
 <html lang="en">
 <@m.head>
 <title><@spring.message "mainpage.Title"/></title>
@@ -13,53 +14,67 @@
 <script src="<@spring.url "/resources/js/history.js" />"></script>
 <link href="<@spring.url "/resources/css/mainpage.css" />" rel="stylesheet"/>
 <link href="<@spring.url "/resources/css/switch.css" />" rel="stylesheet"/>
+<link href="<@spring.url "/resources/css/additionalTracksTable.css" />" rel="stylesheet">
 </@m.head>
 
 <@m.body>
     <@p.popUpAdd "addPlaylistModal"/>
     <@p.popUpDelete "deletePlaylistModal"/>
+    <@p.playlistsPopup "playlistsModal"/>
 
     <@m.navigation m.pages.Main/>
 
 <div class="container">
+    <div class="col-md-10">
+        <section id="tracks-section" class="well col-md-11">
+            <table id="tracks" class="table table-hover table-striped table-condensed tracks-table">
+                <thead>
+                <tr>
+                    <th><@spring.message "welcomepage.Actions"/></th>
+                    <th><@spring.message "welcomepage.Artist"/></th>
+                    <th><@spring.message "welcomepage.Title"/></th>
+                    <th><@spring.message "welcomepage.Duration"/></th>
+                </tr>
+                </thead>
+            </table>
+        </section>
 
-    <section id="tracks-section" class="well col-md-9 ">
-        <table id="tracks" class="table table-hover table-striped table-condensed ">
-            <thead>
-            <tr>
-                <th><@spring.message "welcomepage.Actions"/></th>
-                <th><@spring.message "welcomepage.Artist"/></th>
-                <th><@spring.message "welcomepage.Title"/></th>
-                <th><@spring.message "welcomepage.Duration"/></th>
-            </tr>
-            </thead>
-        </table>
-    </section>
-
-    <a class="btn btn-success" href="<@spring.url '${m.pages.Add.url}' />" title="Upload">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-    </a>
-
-    <section id="playlists-section" class="well  col-md-2 col-md-offset-1  ">
-        <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">
-            <@spring.message "mainpage.CreatePlaylist"/></button>
-        <ul id="playlists" class="nav nav-pills nav-stacked"></ul>
-    </section>
-
-    <section id="recommendations-section" class="well  col-md-9 col-md-offset-0">
-        <h4><@spring.message "mainpage.YouMightAlsoLike"/></h4>
-        <label class="switch" id="change-multiselect-state">
-            <input type="checkbox">
-
-            <div class="slider round"></div>
-        </label>
-        <button type="button" id="add-many" class="btn btn-md btn-success"
-                title="<@spring.message "label.AddToPlaylist"/>">
+        <a class="btn btn-success" href="<@spring.url '${m.pages.Add.url}' />" title="Upload">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        </button>
-        <ul id="recommendations" class="nav nav-pills nav-stacked no-checkbox">
-        </ul>
-    </section>
+        </a>
+
+        <section id="recommendations-section" class="well col-md-11 col-md-offset-0">
+            <h4><@spring.message "mainpage.YouMightAlsoLike"/></h4>
+            <label class="switch pull-left" id="change-multiselect-state">
+                <input type="checkbox">
+
+                <div class="slider round"></div>
+            </label>
+            <button type="button" id="add-many" class="btn btn-md btn-success hidden"
+                    title="<@spring.message "label.AddToPlaylist"/>">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+
+            <table id="recommendations"
+                   class="table table-hover table-striped table-condensed no-checkbox tracks-table">
+                <thead>
+                <tr>
+                    <th><@spring.message "songTable.Actions"/></th>
+                    <th><@spring.message "songTable.Artist"/></th>
+                    <th><@spring.message "songTable.Title"/></th>
+                    <th><@spring.message "songTable.Duration"/></th>
+                </tr>
+                </thead>
+            </table>
+        </section>
+    </div>
+    <div class="row">
+        <section id="playlists-section" class="well col-md-2">
+            <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">
+                <@spring.message "mainpage.CreatePlaylist"/></button>
+            <ul id="playlists" class="nav nav-pills nav-stacked"></ul>
+        </section>
+    </div>
 </div>
 <!-- end .container -->
 
@@ -91,15 +106,16 @@
         </td>
     </tr>
 </script>
-<script type="text/template" class="playlistRowTemplate">
-    <li id="<%= data.id %>" title="<%= data.name %>">
+<script type="text/template" class="playlistButtonTemplate">
+    <li id="<%= data.id %>" class="playlists" title="<%= data.name %>">
         <div class="input-group">
-            <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
+            <a type="button" class="btn btn-default btn-block playlist" data-value="<%= data.name %>">
                 <%= data.name %>
             </a>
 
             <div class="input-group-btn">
-                <button type="button" id="removePlaylistButton" class="btn btn-danger" onclick="deletePlaylist(this)">
+                <button type="button" id="removePlaylistButton" class="btn btn-danger"
+                        onclick="deletePlaylist(this)">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 </button>
             </div>
@@ -107,27 +123,9 @@
     </li>
 </script>
 
-<script type="text/template" class="recommendationRowTemplate">
-    <li id="<%= data.id %>" title="<%= data.artist %> - <%= data.title %> - <%= data.album %>">
-        <div class="checkbox">
-            <label>
-                <input type="checkbox"/>
-            </label>
-        </div>
-        <button type="button" class="btn btn-xs btn-success add-one">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        </button>
-        <div class="input-group">
-            <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
-                <%= data.name %>
-            </a>
-            <span class="col-sm-2 form-control"><%= data.artist %></span>
-            <span class="col-sm-2 form-control"><%= data.title %></span>
-            <span class="col-sm-2 form-control">Liked: <span class="glyphicon num-likes"
-                                                             aria-hidden="true"></span></span>
-        </div>
-    </li>
-</script>
+    <@m.addTrackRowTemplate/>
+
+    <@m.playlistRowTemplate/>
 
 <script type="text/javascript">
     "use strict";
@@ -139,12 +137,16 @@
             $("script.trackRowTemplate").html()
     );
 
+    var playlistButton = _.template(
+            $("script.playlistButtonTemplate").html()
+    );
+
     var playlistRow = _.template(
             $("script.playlistRowTemplate").html()
     );
 
     var recommendationRow = _.template(
-            $("script.recommendationRowTemplate").html()
+            $("script.addTrackRowTemplate").html()
     );
 
     /*
@@ -158,48 +160,89 @@
         refreshTrackTable();
     });
 
-    $("#add-many").hide();
+    $("#playlistsModal").on("shown.bs.modal", function () {
+        playlist.all().then(function (playlists) {
+            var rows = $("#playlistsModal").find("#addToPlaylist");
+            rows.find("li").remove();
+            addPlaylists(playlists);
+        });
+    });
 
-    $("#add-many").on("click", function (e) {
-        var tracksIds = $("#recommendations").find("li").filter(function (row) {
-            return $(this).find("input:checkbox").is(":checked");
-        }).map(function (row) {
-            return $(this).attr("id");
-        }).toArray();
-
-        if (tracksIds.length <= 0)return;
-        var playlistId = $("#playlists").find("li.active").attr("id");
+    $("#playlistsModal").on("click", "li", function (e) {
+        var tracksIds = getSelectedTracksIds();
+        var playlistId = $(this).attr("id");
 
         playlist.addTracks(playlistId, tracksIds)
                 .then(function () {
-                    refreshTrackTable();
-                    refreshRecommendationTable();
+                    $("#playlistsModal").modal("hide");
+                })
+    });
+
+    $("#createPlaylistBtn").on("click", function (e) {
+        playlist.create($("#inputNameAddPlaylist").val())
+                .then(function (playlist) {
+                    $("#inputNameAddPlaylist").val("");
+                    var rows = $("#playlistsModal").find("#addToPlaylist");
+                    rows.append(playlistRow(playlist));
                 });
     });
 
-    $("#recommendations").on("click", ".add-one", function (e) {
-        var playlistId = $("#playlists").find("li.active").attr("id");
-        var trackId = $(this).closest("li").attr("id");
+    function getSelectedTracksIds() {
+        return $("#recommendations").find("td").filter(function (row) {
+            return $(this).find("input:checkbox").is(":checked");
+        }).map(function (row) {
+            return $(this).closest("tr").attr("id");
+        }).toArray();
+    }
 
-        playlist.addTracks(playlistId, [trackId])
-                .then(function () {
-                    refreshTrackTable();
-                    refreshRecommendationTable();
-                });
+    function addPlaylists(playlists) {
+        var rows = $("#playlistsModal").find("#addToPlaylist");
+        playlists.forEach(function (playlist) {
+            rows.append(playlistRow(playlist));
+        });
+    }
+
+    function showPlaylistPopup(tracksIds) {
+        if (tracksIds.length <= 0)return;
+        $("#playlistsModal").modal("show");
+        $("#playlistsModal").off("click", "li").on("click", "li", function (e) {
+            var playlistId = $(this).attr("id");
+
+            playlist.addTracks(playlistId, tracksIds)
+                    .then(function () {
+                        $("#playlistsModal").modal("hide");
+                        refreshRecommendationTable();
+                        refreshPlaylistTable();
+                        refreshTrackTable();
+                    })
+        });
+    }
+
+    $("#add-many").on("click", function (e) {
+        var tracksIds = getSelectedTracksIds();
+        if (tracksIds.length > 0) {
+            showPlaylistPopup(tracksIds);
+        }
+    });
+
+    $("#recommendations").on("click", ".add-song-button", function () {
+        var trackId = $(this).closest("tr").attr("id");
+        showPlaylistPopup([trackId]);
     });
 
     $("#change-multiselect-state").on("click", "input", function (e) {
-        var recommendations = $("#recommendations");
-        recommendations.removeClass("no-checkbox");
-        recommendations.removeClass("no-plus-button");
+        var tracks = $("#recommendations");
+        tracks.removeClass("no-checkbox");
+        tracks.removeClass("no-plus-button");
         if (this.checked) {
-            recommendations.addClass("no-plus-button");
-            $("#add-many").show();
+            tracks.addClass("no-plus-button");
+            $("#add-many").removeClass("hidden");
         } else {
-            recommendations.addClass("no-checkbox");
-            $("#add-many").hide();
+            tracks.addClass("no-checkbox");
+            $("#add-many").addClass("hidden");
         }
     });
+
 
     $("#createPlaylistButton").on("click", function (e) {
         $("#addPlaylistModal").modal("show");
@@ -209,6 +252,7 @@
         playlist.create($("#inputNamePlaylist").val())
                 .then(function (playlist) {
                     addPlaylist(playlist);
+                    $("#inputNamePlaylist").val("");
                     $("#addPlaylistModal").modal("hide");
                 });
     });
@@ -255,23 +299,21 @@
     }
 
     function clearPlaylists() {
-        $("#playlists").find("li").remove();
+        $("#playlists").empty();
     }
 
     function clearRecommendations() {
-        $("#recommendations").find("li").remove();
+        $("#recommendations tr:gt(0)").remove();
     }
 
     function addPlaylist(playlist) {
         $("#playlists").append(
-                playlistRow(playlist)
+                playlistButton(playlist)
         );
     }
 
     function addRecommendedTrack(track) {
-        $("#recommendations").append(
-                recommendationRow(track)
-        );
+        $("#recommendations").append(recommendationRow(track));
     }
 
     function updateLikeCount(id) {
@@ -292,9 +334,8 @@
                     });
                 });
     }
-
-    $(document).ready(function () {
-
+    function refreshPlaylistTable() {
+        clearPlaylists();
         /* Fetch all playlists of the current user, and populate the list of playlists with them. */
         playlist.all()
                 .then(function (playlists) {
@@ -304,13 +345,19 @@
                 })
                 .done(function () {
                     /* For testing purpose, select the first playlist (named 'Hype'). */
-                    $("#playlists #1 a").trigger("click");
+                    $("#playlists li:first").addClass("active");
+                    $("#playlists li:first a").trigger("click");
                 });
+    }
+
+    $(document).ready(function () {
+
+        refreshPlaylistTable();
 
         refreshRecommendationTable();
 
         /* Handle the Like button (Ajax). */
-        $("#tracks").on("click", ".like-button", function () {
+        $(".tracks-table").on("click", ".like-button", function () {
 
             /* The id of a track is stored in the containing <tr> element. */
             var id = $(this).closest("tr").attr("id");

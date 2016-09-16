@@ -89,15 +89,15 @@
         <@popupHead "${playlistsPopupCaption}"/>
 
         <@popupBody>
-        <ul id="playlists" class="nav nav-pills nav-stacked"></ul>
+        <ul id="addToPlaylist" class="nav nav-pills nav-stacked"></ul>
         <br/>
         <div class="form-group">
-            <button id="createPlaylistButton" type="button" class="btn btn-success btn-md"
+            <button id="createPlaylistBtn" type="button" class="btn btn-success btn-md"
                     title="<@spring.message "popupmacro.ActionAdd"/>">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             </button>
 
-            <input type="text" class="form-control" id="inputNamePlaylist"
+            <input type="text" class="form-control" id="inputNameAddPlaylist"
                    placeholder="<@spring.message "popupmacro.NamePlaceholder"/>">
         </div>
         </@popupBody>
