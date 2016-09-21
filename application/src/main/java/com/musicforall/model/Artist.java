@@ -4,8 +4,6 @@ package com.musicforall.model;
  * @author IliaNik on 15.06.2016.
  */
 
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
