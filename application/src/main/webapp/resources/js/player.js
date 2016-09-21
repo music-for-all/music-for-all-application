@@ -1,60 +1,65 @@
 "use strict";
 
-function playCurrentTrack(trackid) {
-
-    if (load_track != null) {
-        player.pause();
-    }
-
-    player = new ChunksPlayer();
-    track.get(trackid)
-        .then(function (track) {
-            if (track) {
-                player.play(track);
-
-                $("#nameInFoot").html(track.name);
-                $("#artistInFoot").html(track.artist);
-            }
-        });
-    load_track = trackid
-}
 
 jQuery(document).ready(function () {
 
     var $trackHtml;
+
+    var player = new ChunksPlayer();
+
+    function playNewTrack(trackId) {
+        var check = false;
+
+        if (player.isPlaying()) {
+            player.pause();
+        }
+        if (!player.isCurrentTrack(trackId)) {
+            track.get(trackId).then(function (tr) {
+                player.play(tr);
+                writeToFoot(tr);
+            });
+            check = true;
+        }
+        return check;
+    }
+
+    function writeToFoot(tr) {
+        $("#nameInFoot").html(tr.name);
+        $("#artistInFoot").html(tr.artist);
+    }
     
     /* Make the play button to invoke play on the corresponding player. */
     $("#tracks").on("click", ".play-track-button", function () {
         $trackHtml = $(this).closest("tr");
-        var curr = $trackHtml[0].id;
-
-        if (load_track === curr) {
-            player.resume();
-        }
-        else {
-            playCurrentTrack(curr);
-        }
+        if (!playNewTrack($trackHtml[0].id)) player.resume();
     });
 
     $('#next').bind('click', function() {
         if ($trackHtml.next()[0].id) {
             $trackHtml = $trackHtml.next();
-            playCurrentTrack($trackHtml[0].id);
+            if (!playNewTrack($trackHtml[0].id)) player.resume();
         }
     });
 
     $('#prev').bind('click', function() {
         if ($trackHtml.prev()[0].id) {
             $trackHtml = $trackHtml.prev();
-            playCurrentTrack($trackHtml[0].id);
+            if (!playNewTrack($trackHtml[0].id)) player.resume();
         }
+    });
+
+    $('#playFooterBtn').bind('click', function() {
+        player.resume();
+    });
+
+    $('#pauseFooterBtn').bind('click', function() {
+        player.pause();
     });
 
     /* Make the pause button to invoke pause on the corresponding player. */
     $("#tracks").on("click", ".pause-track-button", function () {
-        if ($(this).closest("tr")[0].id == load_track){
+        if (player.isCurrentTrack($(this).closest("tr")[0].id)){
             player.pause();
         }
     });
-    
 });
