@@ -32,8 +32,7 @@ public class Artist implements Serializable {
     @Column(name = "artist_name", unique = true)
     private String artistName;
 
-    @ManyToMany
-    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = "artist_tag",
             joinColumns = {@JoinColumn(name = "artist_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_name")})
