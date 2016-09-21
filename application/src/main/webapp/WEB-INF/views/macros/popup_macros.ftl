@@ -87,10 +87,10 @@
                     <button id="prev" type="button" class="btn btn-default .btn-link">
                         <span class='glyphicon glyphicon-step-backward' aria-hidden='true'></span>
                     </button>
-                    <button id="playFooterBtn" type="button" class="btn btn-default btn-success play-track-button" onclick="player.resume()">
+                    <button id="playFooterBtn" type="button" class="btn btn-default btn-success play-track-button">
                         <span class='glyphicon glyphicon-play' aria-hidden='true'></span>
                     </button>
-                    <button type="button" id="pauseFooterBtn" class="btn btn-default btn-warning pause-track-button" onclick="player.pause()">
+                    <button type="button" id="pauseFooterBtn" class="btn btn-default btn-warning pause-track-button">
                         <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
                     </button>
                     <button id="next" type="button" class="btn btn-default .btn-link">

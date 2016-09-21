@@ -144,11 +144,6 @@
             $("script.playlistRowTemplate").html()
     );
 
-
-    var player;
-    var load_track;
-
-    var trackManage = new Track();
     var recommendationRow = _.template(
             $("script.recommendationRowTemplate").html()
     );

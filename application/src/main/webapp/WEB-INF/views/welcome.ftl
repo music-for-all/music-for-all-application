@@ -147,10 +147,7 @@
 
 <script type="text/javascript">
 
-
     var track = new Track();
-    var player;
-    var load_track;
 
     _.templateSettings.variable = "data";
     var trackTable = _.template(
