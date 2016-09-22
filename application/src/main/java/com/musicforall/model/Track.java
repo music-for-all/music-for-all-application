@@ -48,8 +48,12 @@ public class Track implements Serializable {
     @Size(min = 2, max = 30)
     private String title;
 
-    @Size(min = 2, max = 30)
-    private String artist;
+    @ManyToOne
+    @Cascade(CascadeType.SAVE_UPDATE)
+    @JoinTable(name = "artists_tracks",
+            inverseJoinColumns = {@JoinColumn(name = "artist_name")},
+            joinColumns = {@JoinColumn(name = "track_id")})
+    private Artist artist;
 
     @Size(min = 2, max = 30)
     private String album;
@@ -83,7 +87,7 @@ public class Track implements Serializable {
         this.location = location;
     }
 
-    public Track(String name, String title, String artist, String album, String location, Set<Tag> tags) {
+    public Track(String name, String title, Artist artist, String album, String location, Set<Tag> tags) {
         this.name = name;
         this.title = title;
         this.artist = artist;
@@ -123,11 +127,11 @@ public class Track implements Serializable {
         this.title = title;
     }
 
-    public String getArtist() {
+    public Artist getArtist() {
         return artist;
     }
 
-    public void setArtist(String artist) {
+    public void setArtist(Artist artist) {
         this.artist = artist;
     }
 
@@ -194,6 +198,7 @@ public class Track implements Serializable {
         return Objects.equals(this.id, other.id)
                 && Objects.equals(this.tags, other.tags)
                 && Objects.equals(this.name, other.name)
+                && Objects.equals(this.artist, other.artist)
                 && Objects.equals(this.location, other.location);
     }
 
