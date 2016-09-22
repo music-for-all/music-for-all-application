@@ -7,6 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
 <script src="<@spring.url "/resources/js/track.js"/>"></script>
+<script src="<@spring.url "/resources/js/history.js"/>"></script>
 <script src="<@spring.url "/resources/js/autocompleteConfig.js"/>"></script>
 <link href="<@spring.url "/resources/css/filespage.css" />" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
@@ -109,8 +110,11 @@
         }
         $("form[name=uploadForm]").each(function () {
             var obj = {};
+            var artist = {};
+            artist.artistName=$(this).find("input[name=artist]").val();
+            artist.tags=$(this).find("#tags").val();
             obj.name = $(this).find("input[name=name]").val() ;
-            obj.artist = $(this).find("input[name=artist]").val();
+            obj.artist = artist;
             obj.location = "unknown";
             obj.tags = $(this).find("#tags").val();
 
@@ -124,9 +128,9 @@
                         showMessage(data, "success");
                     }, function (xhr, status, error) {
                         if (xhr.responseText.length < max_length_error) {
-                            showMessage("(" + obj.artist + " - " + obj.name + ")" + ": " + xhr.responseText, "danger");
+                            showMessage("(" + obj.artist.artistName + " - " + obj.name + ")" + ": " + xhr.responseText, "danger");
                         } else {
-                            showMessage("(" + obj.artist + " - " + obj.name + ")" + ": " + error, "danger");
+                            showMessage("(" + obj.artist.artistName + " - " + obj.name + ")" + ": " + error, "danger");
                         }
                         return false;
                     });
