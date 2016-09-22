@@ -63,6 +63,7 @@ public class History {
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
+    @Temporal(TemporalType.TIME)
     @Column(name = "date", nullable = false)
     private Date date;
 
