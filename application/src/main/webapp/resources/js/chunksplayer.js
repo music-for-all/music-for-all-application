@@ -100,6 +100,9 @@ function ChunksPlayer() {
     }
 
     this.play = function (trackToPlay) {
+        if (audioContext) {
+            audioContext.close();
+        }
         paused = false;
         totalChunksLoaded = 0;
         audioBufferQueue = [];
