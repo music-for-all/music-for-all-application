@@ -18,7 +18,7 @@ function ChunksPlayer() {
 
     var audioBufferQueue;
 
-    var paused = true;
+    var paused = false;
 
     /**
      * The audio source is responsible for playing the music
@@ -103,7 +103,6 @@ function ChunksPlayer() {
         if (audioContext) {
             audioContext.close();
         }
-        paused = false;
         totalChunksLoaded = 0;
         audioBufferQueue = [];
         track = trackToPlay;
@@ -117,6 +116,7 @@ function ChunksPlayer() {
         paused = true;
     };
 
+
     this.resume = function () {
         if (totalChunksLoaded > 0 && paused) {
             if (audioContext.state === "suspended") {
@@ -125,10 +125,6 @@ function ChunksPlayer() {
             paused = false;
             loadChunk(totalChunksLoaded);
         }
-    };
-
-    this.isPlaying = function () {
-        return !paused;
     };
 
     this.isCurrentTrack = function (trackId) {

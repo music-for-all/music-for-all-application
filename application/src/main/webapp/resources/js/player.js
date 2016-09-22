@@ -7,20 +7,16 @@ jQuery(document).ready(function () {
 
     var player = new ChunksPlayer();
 
-    function playNewTrack(trackId) {
-        var check = false;
-
-        if (player.isPlaying()) {
-            player.pause();
-        }
+    function playTrack(trackId) {
         if (!player.isCurrentTrack(trackId)) {
             track.get(trackId).then(function (tr) {
                 player.play(tr);
                 writeToFoot(tr);
             });
-            check = true;
         }
-        return check;
+        else {
+            player.resume();
+        }
     }
 
     function writeToFoot(tr) {
@@ -31,20 +27,20 @@ jQuery(document).ready(function () {
     /* Make the play button to invoke play on the corresponding player. */
     $("#tracks").on("click", ".play-track-button", function () {
         $trackHtml = $(this).closest("tr");
-        if (!playNewTrack($trackHtml[0].id)) player.resume();
+        playTrack($trackHtml[0].id);
     });
 
     $('#next').bind('click', function() {
         if ($trackHtml.next()[0].id) {
             $trackHtml = $trackHtml.next();
-            if (!playNewTrack($trackHtml[0].id)) player.resume();
+            playTrack($trackHtml[0].id);
         }
     });
 
     $('#prev').bind('click', function() {
         if ($trackHtml.prev()[0].id) {
             $trackHtml = $trackHtml.prev();
-            if (!playNewTrack($trackHtml[0].id)) player.resume();
+            playTrack($trackHtml[0].id);
         }
     });
 
