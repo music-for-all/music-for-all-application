@@ -5,6 +5,7 @@ import com.musicforall.common.Constants;
 import com.musicforall.history.handlers.events.EventType;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
 
@@ -63,9 +64,8 @@ public class History {
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
-    @Temporal(TemporalType.TIME)
     @Column(name = "date", nullable = false)
-    private Date date;
+    private Timestamp date;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type")
@@ -74,7 +74,7 @@ public class History {
     public History(Integer trackId, Integer playlistId, Date date, Integer userId, EventType eventType) {
         this.trackId = trackId;
         this.playlistId = playlistId;
-        this.date = date;
+        this.date = new Timestamp(date.getTime());
         this.userId = userId;
         this.eventType = eventType;
     }
@@ -107,11 +107,11 @@ public class History {
     }
 
     public Date getDate() {
-        return date;
+        return new Date(date.getTime());
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.date = new Timestamp(date.getTime());
     }
 
     public EventType getEventType() {
@@ -148,7 +148,7 @@ public class History {
                 && Objects.equals(this.trackId, other.trackId)
                 && Objects.equals(this.playlistId, other.playlistId)
                 && Objects.equals(this.userId, other.userId)
-                && Objects.equals(this.date, other.date)
+                && Objects.equals(this.date.getTime(), other.date.getTime())
                 && Objects.equals(this.eventType, other.eventType);
     }
 
