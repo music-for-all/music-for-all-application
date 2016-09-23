@@ -5,6 +5,8 @@ jQuery(document).ready(function () {
 
     var $trackHtml;
 
+    var elemCircle = $("<td class='circle'></td>");
+
     var player = new ChunksPlayer();
 
     function playTrack(trackId) {
@@ -20,6 +22,7 @@ jQuery(document).ready(function () {
                 writeToFoot(tr);
             });
         }
+        elemCircle.removeClass('pause').addClass('play');
     }
 
     function writeToFoot(tr) {
@@ -30,8 +33,10 @@ jQuery(document).ready(function () {
     /* Make the play button to invoke play on the corresponding player. */
     $("#tracks").on("click", ".play-track-button", function () {
         $trackHtml = $(this).closest("tr");
+
         playTrack($trackHtml[0].id);
     });
+
 
     $('#nextFooterBtn').bind('click', function() {
         if ($trackHtml.next()[0].id) {
@@ -49,15 +54,18 @@ jQuery(document).ready(function () {
 
     $('#playFooterBtn').bind('click', function() {
         player.resume();
+        elemCircle.removeClass('pause').addClass('play');
     });
 
     $('#pauseFooterBtn').bind('click', function() {
         player.pause();
+        elemCircle.addClass('pause');
     });
 
     /* Make the pause button to invoke pause on the corresponding player. */
     $("#tracks").on("click", ".pause-track-button", function () {
         if (player.getTrackId() == $(this).closest("tr")[0].id) {
+            elemCircle.addClass('pause');
             player.pause();
         }
     });
