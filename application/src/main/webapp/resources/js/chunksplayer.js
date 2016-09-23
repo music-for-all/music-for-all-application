@@ -127,6 +127,12 @@ function ChunksPlayer() {
         }
     };
 
+    this.getTrackId = function () {
+        if (track) {
+            return track.id;
+        }
+    };
+
     this.isCurrentTrack = function (trackId) {
         if (track) {
             return track.id==trackId;

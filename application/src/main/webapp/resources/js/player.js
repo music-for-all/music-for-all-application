@@ -8,14 +8,17 @@ jQuery(document).ready(function () {
     var player = new ChunksPlayer();
 
     function playTrack(trackId) {
-        if (!player.isCurrentTrack(trackId)) {
+
+        if (player.getTrackId() == trackId) {
+            player.resume();
+        }
+        else {
+            elemCircle.remove();
+            $trackHtml.children().last().after().append(elemCircle);
             track.get(trackId).then(function (tr) {
                 player.play(tr);
                 writeToFoot(tr);
             });
-        }
-        else {
-            player.resume();
         }
     }
 
@@ -30,14 +33,14 @@ jQuery(document).ready(function () {
         playTrack($trackHtml[0].id);
     });
 
-    $('#next').bind('click', function() {
+    $('#nextFooterBtn').bind('click', function() {
         if ($trackHtml.next()[0].id) {
             $trackHtml = $trackHtml.next();
             playTrack($trackHtml[0].id);
         }
     });
 
-    $('#prev').bind('click', function() {
+    $('#prevFooterBtn').bind('click', function() {
         if ($trackHtml.prev()[0].id) {
             $trackHtml = $trackHtml.prev();
             playTrack($trackHtml[0].id);
@@ -54,7 +57,7 @@ jQuery(document).ready(function () {
 
     /* Make the pause button to invoke pause on the corresponding player. */
     $("#tracks").on("click", ".pause-track-button", function () {
-        if (player.isCurrentTrack($(this).closest("tr")[0].id)){
+        if (player.getTrackId() == $(this).closest("tr")[0].id) {
             player.pause();
         }
     });

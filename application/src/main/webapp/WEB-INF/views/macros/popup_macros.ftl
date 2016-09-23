@@ -82,9 +82,8 @@
 <#macro player_Footer>
     <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
         <div class="container-fluid">
-            <div class="row">
                 <div class="col-md-2">
-                    <button id="prev" type="button" class="btn btn-default .btn-link">
+                    <button id="prevFooterBtn" type="button" class="btn btn-default .btn-link">
                         <span class='glyphicon glyphicon-step-backward' aria-hidden='true'></span>
                     </button>
                     <button id="playFooterBtn" type="button" class="btn btn-default btn-success play-track-button">
@@ -93,17 +92,16 @@
                     <button type="button" id="pauseFooterBtn" class="btn btn-default btn-warning pause-track-button">
                         <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
                     </button>
-                    <button id="next" type="button" class="btn btn-default .btn-link">
+                    <button id="nextFooterBtn" type="button" class="btn btn-default .btn-link">
                         <span class='glyphicon glyphicon-step-forward' aria-hidden='true'></span>
                     </button>
                 </div>
                 <div class="col-md-4">
-                    <p id="nameInFoot"></p>
-                    <p id="artistInFoot"></p>
+                    <h5 class="text-center" id="nameInFoot"></h5>
+                    <h5 class="text-center" id="artistInFoot"></h5>
                 </div>
                 <div class="col-md-6">
                 </div>
-            </div>
         </div>
     </nav>
 </#macro>
