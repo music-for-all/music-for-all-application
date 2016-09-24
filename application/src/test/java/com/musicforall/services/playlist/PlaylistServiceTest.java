@@ -24,9 +24,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static junit.framework.TestCase.*;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 /**
  * Created by Pukho on 28.06.2016.
@@ -107,12 +105,11 @@ public class PlaylistServiceTest {
     public void testGetAllByIds() {
         final Playlist playlist1 = playlistService.save(PLAYLIST_1);
         final Playlist playlist2 = playlistService.save(PLAYLIST_2);
-        Collection<Playlist> playlists = playlistService.getAllByIds(
-                Arrays.asList(playlist1.getId(), playlist2.getId()));
+        List<Integer> ids = Arrays.asList(playlist1.getId(), playlist2.getId());
 
-        assertTrue(playlists.stream().anyMatch(p -> p.getId().equals(playlist1.getId()))
-                && playlists.stream().anyMatch(p -> p.getId().equals(playlist2.getId())));
-        assertTrue(playlists.size() == 2);
+        Collection<Playlist> foundPlaylists = playlistService.getAllByIds(ids);
+        assertEquals(foundPlaylists.size(), ids.size());
+        assertTrue(foundPlaylists.stream().allMatch(p -> ids.contains(p.getId())));
     }
 
     @Test

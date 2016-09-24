@@ -144,7 +144,7 @@ public class TrackServiceTest {
     }
 
     @Test
-    public void testGetAllLike() {
+    public void testGetAllLikes() {
 
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag("tag1"), new Tag("tag2")));
 
@@ -165,7 +165,7 @@ public class TrackServiceTest {
     }
 
     @Test
-    public void testGetAllById() {
+    public void testGetAllByIds() {
         List<Track> tracks = Arrays.asList(
                 new Track("track", "title1", new Artist("artist1"), "album1", "/root/track1.mp3", null),
                 new Track("track", "title2", new Artist("artist2"), "album2", "/root/track2.mp3", null),
