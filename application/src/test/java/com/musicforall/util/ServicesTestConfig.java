@@ -3,8 +3,8 @@ package com.musicforall.util;
 import com.musicforall.config.HibernateConfigDev;
 import com.musicforall.config.security.SecurityConfig;
 import com.musicforall.history.HistorySpringConfig;
-import com.musicforall.history.handlers.HistoryEventListener;
 import com.musicforall.services.DbPopulateService;
+import com.musicforall.services.file.FileServiceImpl;
 import org.springframework.context.annotation.*;
 
 /**
@@ -15,7 +15,8 @@ import org.springframework.context.annotation.*;
         value = {"com.musicforall.services",
                 "com.musicforall.common"},
         excludeFilters =
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = {DbPopulateService.class}))
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value =
+                {DbPopulateService.class, FileServiceImpl.class}))
 @PropertySource(value = "classpath:application.properties")
 @Import({HibernateConfigDev.class, SecurityConfig.class, HistorySpringConfig.class, TestMessageConfig.class})
 public class ServicesTestConfig {

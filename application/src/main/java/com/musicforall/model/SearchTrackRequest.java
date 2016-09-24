@@ -8,8 +8,7 @@ public class SearchTrackRequest {
     @Size(max = 16)
     private String title;
 
-    @Size(max = 16)
-    private String artist;
+    private Artist artist;
 
     @Size(max = 16)
     private String album;
@@ -19,7 +18,7 @@ public class SearchTrackRequest {
     public SearchTrackRequest() {
     }
 
-    public SearchTrackRequest(String title, String artist, String album, List<String> tags) {
+    public SearchTrackRequest(String title, Artist artist, String album, List<String> tags) {
         this.title = title;
         this.artist = artist;
         this.album = album;
@@ -34,11 +33,11 @@ public class SearchTrackRequest {
         this.title = title;
     }
 
-    public String getArtist() {
+    public Artist getArtist() {
         return artist;
     }
 
-    public void setArtist(String artist) {
+    public void setArtist(Artist artist) {
         this.artist = artist;
     }
 

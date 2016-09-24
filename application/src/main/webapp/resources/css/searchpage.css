@@ -2,28 +2,10 @@ body {
     padding-top: 70px;
 }
 
-.btn.active span.glyphicon {
+.btn.active {
     color: yellow;
 }
 
 label[name = tag] {
     margin-bottom: 2px;
-}
-
-#tracks.no-checkbox .checkbox,
-#tracks.no-plus-button .btn.btn-success.add-song-button,
-.hidden {
-    display: none;
-}
-
-.checkbox {
-    display: inline-block;
-}
-
-#playlistsModal .form-group {
-    display: inline-flex;
-}
-
-#createPlaylistButton {
-    margin-right: 1em;
 }

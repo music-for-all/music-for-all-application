@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class MainController {
-
     private static final Logger LOG = LoggerFactory.getLogger(MainController.class);
     private static final String MAIN = "main";
 

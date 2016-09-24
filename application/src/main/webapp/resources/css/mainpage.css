@@ -7,13 +7,10 @@ body {
     margin: .5em
 }
 
-#recommendations.no-checkbox .checkbox,
-#recommendations.no-plus-button .btn.btn-success {
-    display: none;
+.playlists.active .btn.playlist {
+    border: 1px solid blue;
 }
 
-#recommendations .checkbox,
-#recommendations .btn.btn-success {
-    margin-bottom: 1em;
-    margin-top: 1em;
+#createPlaylistButton {
+    margin-bottom: .2em;
 }

@@ -16,6 +16,7 @@
 <script src="<@spring.url "/resources/js/playlist.js"/>"></script>
 <link href="<@spring.url "/resources/css/searchpage.css" />" rel="stylesheet">
 <link href="<@spring.url "/resources/css/switch.css" />" rel="stylesheet">
+<link href="<@spring.url "/resources/css/additionalTracksTable.css" />" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
 </@m.head>
 <@m.body>
@@ -50,10 +51,10 @@
         </div>
     </form>
 
-    <span id="status-message" class="well"></span>
+    <span id="status-message" class="well well-sm"></span>
 
-    <div id="tracks-results" class="well ">
-        <label class="switch" id="change-multiselect-state">
+    <div id="tracks-results" class="well">
+        <label class="switch pull-left" id="change-multiselect-state">
             <input type="checkbox">
 
             <div class="slider round"></div>
@@ -63,7 +64,7 @@
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         </button>
 
-        <table id="tracks" class="table table-hover table-striped table-condensed no-checkbox">
+        <table id="tracks" class="table table-hover table-striped table-condensed no-checkbox tracks-table">
             <thead>
             <tr>
                 <th><@spring.message "songTable.Actions"/></th>
@@ -74,17 +75,10 @@
             </thead>
         </table>
     </div>
-    <a id="scroll-to-top" href="#top" title="Scroll to top"><@spring.message "searchpage.ScrollToTop"/></a>
+    <button id="scroll-to-top" class="btn btn-default" title="Scroll to top">
+        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+    </button>
 </div>
-<script type="text/template" class="playlistRowTemplate">
-    <li id="<%= data.id %>" title="<%= data.name %>">
-        <div class="input-group">
-            <a type="button" class="btn btn-default btn-block" data-value="<%= data.name %>">
-                <%= data.name %>
-            </a>
-        </div>
-    </li>
-</script>
 
 <script type="text/template" class="tagBtnTemplate">
     <% _.each(data, function(tag){ %>
@@ -95,47 +89,14 @@
     <% }); %>
 </script>
 
-<script type="text/template" class="trackRowTemplate">
-    <tbody>
-    <% _.each(data, function(track){ %>
-    <tr id="<%= track.id %>">
-        <td>
-            <button type="button" class="btn btn-xs btn-success play-track-button">
-                <span class='glyphicon glyphicon-play' aria-hidden='true'></span>
-            </button>
-            <button type="button" class="btn btn-xs btn-warning pause-track-button">
-                <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
-            </button>
-            <button type="button" class="btn btn-xs btn-success add-song-button">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            </button>
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox"/>
-                </label>
-            </div>
-            <button class="btn btn-xs btn-primary like-button"><@spring.message "mainpage.Like" /></button>
-            <span class="glyphicon num-likes" aria-hidden="true"></span>
-        </td>
-        <td>
-            <%= track.name %>
-        </td>
-        <td>
-            <%= track.artist %>
-        </td>
-        <td>
-            <audio id="audio_<%= track.id %>" controls preload="none">
-                <source type="audio/mp3" src="<@spring.url "/files/<%= track.id %>/0"/>">
-            </audio>
-        </td>
-    </tr>
-    <% }); %>
-    </tbody>
-</script>
+    <@m.addTrackRowTemplate/>
+
+    <@m.playlistRowTemplate/>
+
 <script type="text/javascript">
     _.templateSettings.variable = "data";
     var trackTable = _.template(
-            $("script.trackRowTemplate").html()
+            $("script.addTrackRowTemplate").html()
     );
 
     var playlistRow = _.template(
@@ -159,17 +120,15 @@
 
     function buildTrackTable(tracks) {
         $("#tracks tr:gt(0)").remove();
-        $("#tracks").find("thead").after(
-                trackTable(tracks)
-        );
         tracks.forEach(function (track) {
+            $("#tracks").append(trackTable(track));
             updateLikeCount(track.id);
         });
     }
 
     $("#search-form").on("submit", function () {
         search().then(function (tracks) {
-            $("#status-message").text("Found: " + tracks.length);
+            $("#status-message").text('<@spring.message "searchpage.Found"/>' + " :" + tracks.length);
             buildTrackTable(tracks);
         });
         return false;
@@ -181,14 +140,14 @@
     });
 
     function getPopularTracks() {
-        $('#status-message').text('Popular songs');
+        $('#status-message').text('<@spring.message "searchpage.TopSongs"/>');
         popularTracks().then(function (response) {
             buildTrackTable(response)
         });
     }
 
     function getTracksByTag(tag) {
-        $('#status-message').text('Top songs for tag "' + tag + '":');
+        $('#status-message').text('<@spring.message "searchpage.TopSongsForTag"/> "' + tag + '":');
         getTracks(tag).then(function (tracks) {
             buildTrackTable(tracks);
         });
@@ -237,7 +196,7 @@
 
     $("#playlistsModal").on("shown.bs.modal", function () {
         playlist.all().then(function (playlists) {
-            var rows = $("#playlistsModal").find("#playlists");
+            var rows = $("#playlistsModal").find("#addToPlaylist");
             rows.find("li").remove();
             addPlaylists(playlists);
         });
@@ -260,11 +219,11 @@
         }
     });
 
-    $("#createPlaylistButton").on("click", function (e) {
-        playlist.create($("#inputNamePlaylist").val())
+    $("#createPlaylistBtn").on("click", function (e) {
+        playlist.create($("#inputNameAddPlaylist").val())
                 .then(function (playlist) {
-                    $("#inputNamePlaylist").val("");
-                    var rows = $("#playlistsModal").find("#playlists");
+                    $("#inputNameAddPlaylist").val("");
+                    var rows = $("#playlistsModal").find("#addToPlaylist");
                     rows.append(playlistRow(playlist));
                 });
     });
@@ -278,7 +237,7 @@
     }
 
     function addPlaylists(playlists) {
-        var rows = $("#playlistsModal").find("#playlists");
+        var rows = $("#playlistsModal").find("#addToPlaylist");
         playlists.forEach(function (playlist) {
             rows.append(playlistRow(playlist));
         });

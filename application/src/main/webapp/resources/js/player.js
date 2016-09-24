@@ -31,9 +31,9 @@ jQuery(document).ready(function () {
     }
     
     /* Make the play button to invoke play on the corresponding player. */
+
     $("#tracks").on("click", ".play-track-button", function () {
         $trackHtml = $(this).closest("tr");
-
         playTrack($trackHtml[0].id);
     });
 
