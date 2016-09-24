@@ -147,7 +147,7 @@
     var recommendationRow = _.template(
             $("script.recommendationRowTemplate").html()
     );
-    
+
     /*
      * When a playlist is clicked, mark it active, then fetch tracks of the playlist,
      * then populate the tracks table.
@@ -161,10 +161,10 @@
 
         playlist.get($("#playlists li.active").attr("id"))
                 .then(function (response) {
-                    $("#tracks").find("thead").after(
-                            trackRow(response.tracks)
-                    );
                     response.tracks.forEach(function (track) {
+                        $("#tracks").find("thead").after(
+                                trackRow(track)
+                        );
                         updateLikeCount(track.id);
                     });
                 });
