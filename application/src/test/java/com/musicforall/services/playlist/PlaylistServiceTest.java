@@ -18,10 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
@@ -76,7 +73,6 @@ public class PlaylistServiceTest {
         final Set<Playlist> allUsersPlaylists = playlistService.getAllUserPlaylists(userId);
 
         assertTrue(allUsersPlaylists.contains(playlistService.get(playlist1.getId())));
-        assertSame(2, allUsersPlaylists.size());
     }
 
     @Test
@@ -105,11 +101,23 @@ public class PlaylistServiceTest {
     public void testGetAllByIds() {
         final Playlist playlist1 = playlistService.save(PLAYLIST_1);
         final Playlist playlist2 = playlistService.save(PLAYLIST_2);
-        List<Integer> ids = Arrays.asList(playlist1.getId(), playlist2.getId());
+        final List<Integer> ids = Arrays.asList(playlist1.getId(), playlist2.getId());
 
-        Collection<Playlist> foundPlaylists = playlistService.getAllByIds(ids);
+        final Collection<Playlist> foundPlaylists = playlistService.getAllByIds(ids);
         assertEquals(foundPlaylists.size(), ids.size());
         assertTrue(foundPlaylists.stream().allMatch(p -> ids.contains(p.getId())));
+    }
+
+    @Test
+    public void testGetAllByEmptyIds() {
+        final Collection<Playlist> playlist = playlistService.getAllByIds(Collections.emptyList());
+        assertTrue(playlist.isEmpty());
+    }
+
+    @Test
+    public void testGetAllByNullIds() {
+        final Collection<Playlist> playlist = playlistService.getAllByIds(null);
+        assertTrue(playlist.isEmpty());
     }
 
     @Test
