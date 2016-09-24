@@ -130,7 +130,7 @@ public class HistoryServiceImplTest {
 
     @Test
     public void testGetUsersHistoriesBadDate() {
-        final int UNIQUE_USER_ID = 3333;
+        final int UNIQUE_USER_ID = 4444;
 
         final History history = new History(TRACK_ID, null,
                 new Date(new Date().getTime() - 2 * 24 * 3600 * 1000L), UNIQUE_USER_ID, TRACK_LISTENED);

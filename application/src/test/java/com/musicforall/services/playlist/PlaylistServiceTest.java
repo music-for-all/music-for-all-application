@@ -110,8 +110,9 @@ public class PlaylistServiceTest {
         Collection<Playlist> playlists = playlistService.getAllByIds(
                 Arrays.asList(playlist1.getId(), playlist2.getId()));
 
-        assertTrue(playlists.contains(playlist1));
-        assertTrue(playlists.contains(playlist2));
+        assertTrue(playlists.stream().anyMatch(p -> p.getId().equals(playlist1.getId()))
+                && playlists.stream().anyMatch(p -> p.getId().equals(playlist2.getId())));
+        assertTrue(playlists.size() == 2);
     }
 
     @Test
