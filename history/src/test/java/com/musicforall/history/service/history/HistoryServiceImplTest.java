@@ -124,17 +124,19 @@ public class HistoryServiceImplTest {
         service.record(history);
 
         final Collection<History> histories = service.getUsersHistories(Collections.singletonList(UNIQUE_USER_ID));
-        assertTrue(histories.stream().anyMatch(h -> h.getUserId().equals(history.getUserId())));
+        assertTrue(histories.contains(history));
     }
 
 
     @Test
     public void testGetUsersHistoriesBadDate() {
+        final int UNIQUE_USER_ID = 3333;
+
         final History history = new History(TRACK_ID, null,
-                new Date(new Date().getTime() - 2 * 24 * 3600 * 1000L), USER_ID, TRACK_LISTENED);
+                new Date(new Date().getTime() - 2 * 24 * 3600 * 1000L), UNIQUE_USER_ID, TRACK_LISTENED);
         service.record(history);
 
-        final Collection<History> histories = service.getUsersHistories(Collections.singletonList(USER_ID));
+        final Collection<History> histories = service.getUsersHistories(Collections.singletonList(UNIQUE_USER_ID));
         assertFalse(histories.contains(history));
     }
 }

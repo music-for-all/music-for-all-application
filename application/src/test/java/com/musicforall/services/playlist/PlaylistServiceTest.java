@@ -19,6 +19,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -99,6 +100,18 @@ public class PlaylistServiceTest {
         assertNotNull(expectedPlaylist);
         assertEquals(expectedPlaylist.getName(), playlist.getName());
         assertEquals(expectedPlaylist.getUser(), playlist.getUser());
+    }
+
+    @Test
+    @WithUserDetails(USER_EMAIL_1)
+    public void testGetAllByIds() {
+        final Playlist playlist1 = playlistService.save(PLAYLIST_1);
+        final Playlist playlist2 = playlistService.save(PLAYLIST_2);
+        Collection<Playlist> playlists = playlistService.getAllByIds(
+                Arrays.asList(playlist1.getId(), playlist2.getId()));
+
+        assertTrue(playlists.contains(playlist1));
+        assertTrue(playlists.contains(playlist2));
     }
 
     @Test
