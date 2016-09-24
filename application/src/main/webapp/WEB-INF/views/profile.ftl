@@ -17,7 +17,32 @@
                     <h3 class="panel-title">${user.username}</h3>
                 </div>
                 <div class="panel-body">
-                    <div class="row">
+                    <div class="row" id="infoProfileTable">
+                        <div class="col-md-3 col-lg-3 " align="center">
+                            <img src="${user.picture}" alt="User picture" class="img-circle img-responsive">
+                        </div>
+                        <div class=" col-md-9 col-lg-9 ">
+                            <table class="table table-user-information">
+                                <tbody>
+                                <tr>
+                                    <td><@spring.message "profilepage.FirstName" /></td>
+                                    <td>${user.firstName}</td>
+                                </tr>
+                                <tr>
+                                    <td><@spring.message "profilepage.LastName" /></td>
+                                    <td>${user.lastName}</td>
+                                </tr>
+                                <tr>
+                                    <td><@spring.message "profilepage.Email" /></td>
+                                    <td>${user.email}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="text-success" id="status-message"></div>
+                        </div>
+                    </div>
+
+                    <div class="row" id="editProfileTable">
                         <div class="col-md-3 col-lg-3 " align="center">
                             <img src="${user.picture}" alt="User picture" class="img-circle img-responsive">
                         </div>
