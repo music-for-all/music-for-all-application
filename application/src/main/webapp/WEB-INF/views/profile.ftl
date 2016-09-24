@@ -84,5 +84,32 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $("#edit").on("click", function (e) {
+        $("#back").removeClass("hidden");
+        $("#update").removeClass("hidden");
+        $("#editProfileTable").removeClass("hidden");
+        $("#infoProfileTable").addClass("hidden");
+        $("#edit").addClass("hidden");
+    });
+
+    $("#back").on("click", function (e) {
+        showProfileTable();
+        $("#status-message").text('');
+    });
+
+    $("#update").on("click", function (e) {
+        showProfileTable();
+        $("#status-message").text('updated');
+    });
+
+    function showProfileTable() {
+        $("#back").addClass("hidden");
+        $("#update").addClass("hidden");
+        $("#editProfileTable").addClass("hidden");
+        $("#infoProfileTable").removeClass("hidden");
+        $("#edit").removeClass("hidden");
+    }
+</script>
 </@m.body>
 </html>
