@@ -42,9 +42,12 @@
                         </div>
                     </div>
 
-                    <div class="row" id="editProfileTable">
+                    <div class="row hidden" id="editProfileTable">
                         <div class="col-md-3 col-lg-3 " align="center">
                             <img src="${user.picture}" alt="User picture" class="img-circle img-responsive">
+                            <span class="btn btn-file btn-sm btn-success">
+                                 <span class="glyphicon glyphicon-open input-place"></span>Upload new picture<input
+                                    type="file" name="filedata" accept="image/*"></span>
                         </div>
                         <div class=" col-md-9 col-lg-9 ">
                             <table class="table table-user-information">
@@ -65,6 +68,17 @@
                             </table>
                         </div>
                     </div>
+                </div>
+                <div class="panel-footer">
+                    <button class="btn btn-default hidden" id="back">
+                        <span class="glyphicon glyphicon-arrow-left"></span> Back
+                    </button>
+                    <button class="btn btn-default hidden" id="update">
+                        <span class="glyphicon"></span> Update
+                    </button>
+                    <button class="btn btn-default" id="edit">
+                        <span class="glyphicon glyphicon-edit"></span> Edit profile
+                    </button>
                 </div>
             </div>
         </div>
