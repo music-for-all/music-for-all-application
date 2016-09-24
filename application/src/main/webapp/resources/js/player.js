@@ -8,6 +8,7 @@ jQuery(document).ready(function () {
     var elemCircle = $("<td class='circle'></td>");
 
     var player = new ChunksPlayer();
+    var track = new Track();
 
     function playTrack(trackId) {
 
