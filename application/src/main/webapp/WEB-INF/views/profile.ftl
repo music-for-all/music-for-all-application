@@ -36,6 +36,10 @@
                                     <td><@spring.message "profilepage.Email" /></td>
                                     <td>${user.email}</td>
                                 </tr>
+                                <tr>
+                                    <td><@spring.message "profilepage.Bio" /></td>
+                                    <td>${user.bio}</td>
+                                </tr>
                                 </tbody>
                             </table>
                             <div class="text-success" id="status-message"></div>
@@ -61,7 +65,7 @@
                                     <td>${user.lastName}</td>
                                 </tr>
                                 <tr>
-                                    <td><@spring.message "profilepage.Email" /></td>
+                                    <td><@spring.message "profilepage.Bio" /></td>
                                     <td>${user.email}</td>
                                 </tr>
                                 </tbody>

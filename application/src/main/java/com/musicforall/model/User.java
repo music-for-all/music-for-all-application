@@ -46,6 +46,9 @@ public class User implements SocialUserDetails, Serializable {
 
     private String lastName;
 
+    @Size(max = 140)
+    private String bio = "";
+
     public User() {
     }
 
@@ -169,5 +172,13 @@ public class User implements SocialUserDetails, Serializable {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 }
