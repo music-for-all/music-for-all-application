@@ -28,6 +28,6 @@ public class FeedRestController {
     @RequestMapping(value = "/histories", method = RequestMethod.GET)
     public Map<User, Collection<Feed>> getGroupedHistories() {
         return feedService
-                .getGroupedFollowingFeeds(SecurityUtil.currentUser().getId());
+                .getGroupedFollowingFeeds(SecurityUtil.currentUserId());
     }
 }
