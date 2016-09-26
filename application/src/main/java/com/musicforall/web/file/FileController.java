@@ -5,10 +5,10 @@ import com.musicforall.files.manager.FileManager;
 import com.musicforall.model.Track;
 import com.musicforall.services.file.FileService;
 import com.musicforall.services.track.TrackService;
+import com.musicforall.web.stream.RadioService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -31,10 +31,10 @@ public class FileController {
     private static final Logger LOG = LoggerFactory.getLogger(FileController.class);
 
     @Autowired
-    private ApplicationEventPublisher publisher;
+    private FileManager manager;
 
     @Autowired
-    private FileManager manager;
+    private RadioService radioService;
 
     @Autowired
     private TrackService trackService;
@@ -66,6 +66,7 @@ public class FileController {
         if (filePath.isPresent()) {
             try {
                 Files.copy(filePath.get(), response.getOutputStream());
+                radioService.stream(track, partId);
             } catch (IOException e) {
                 LOG.error("Streaming failed!", e);
             }

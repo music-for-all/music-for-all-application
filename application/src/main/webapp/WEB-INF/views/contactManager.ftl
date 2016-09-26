@@ -5,8 +5,12 @@
 <@m.head>
 <title><@spring.message "contactpage.Title"/></title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-<link href="/resources/css/contactManager.css" rel="stylesheet"/>
-<script src="/resources/js/user.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.1/sockjs.min.js"></script>
+
+<link href="<@spring.url "/resources/css/contactManager.css" />" rel="stylesheet"/>
+<script src="<@spring.url "/resources/js/user.js" />"></script>
+<script src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
 </@m.head>
 <@m.body>
 
@@ -28,6 +32,7 @@
             <form id="search-form" class="form-inline text-center ">
                 <div class="input-group">
                     <input id="name" class="form-control" type="text" value=""/>
+
                     <div class="input-group-btn">
                         <input id="searchButton" data-style="slide-left" class="btn btn-success "
                                type="submit" value="<@spring.message "contactpage.SubmitSearch"/>"/>
@@ -82,6 +87,8 @@
             <button type="button" class="btn btn-default" onclick="unsubscribe('<%= contact.id %>')">
                 <i class="fa fa-user-times" aria-hidden="true"></i>
             </button>
+            <button type="button" onclick="joinStream('<%= contact.id %>')">Subscribe</button>
+            <button type="button" onclick="leftStream('<%= contact.id %>')">Stop</button>
         </td>
     </tr>
     <% }); %>
@@ -89,6 +96,8 @@
 </script>
 <script type="text/javascript">
     var user = new User();
+    var stompClient;
+    var player = new ChunksPlayer();
 
     _.templateSettings.variable = "data";
 
@@ -99,6 +108,37 @@
     var userFollowingRow = _.template(
             $("script.followingRow").html()
     );
+
+    function connect() {
+        var socket = new SockJS("/sockjs");
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+        });
+    }
+
+    function disconnect() {
+        if (stompClient) {
+            stompClient.disconnect();
+        }
+    }
+
+    function joinStream(userId) {
+        if (stompClient) {
+            stompClient.subscribe("/radio/subscribers/" + userId, function (data) {
+                var response = JSON.parse(data.body);
+                console.log(response);
+
+                player.playFrom(response.track, response.partId);
+            });
+        }
+    }
+
+    function leftStream(userId) {
+        if (stompClient) {
+            stompClient.unsubscribe("/radio/subscribers/" + userId);
+            player.pause();
+        }
+    }
 
     function getFollowing() {
         clearContacts();
@@ -146,13 +186,18 @@
         $("#message").text("");
     }
 
-    jQuery(document).ready(function () {
+    $(document).ready(function () {
+        connect();
         getFollowing();
         $("#search-form").on("submit", function () {
             search();
             return false;
         });
     });
+
+    window.onbeforeunload = function () {
+        disconnect();
+    };
 </script>
 </@m.body>
 </html>

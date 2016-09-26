@@ -10,7 +10,9 @@ function ChunksPlayer() {
      */
     var activeBuffer;
 
-    var totalChunksLoaded = 0;
+    var lastChunkId;
+
+    var initialChunkId = 0;
 
     var track;
 
@@ -76,14 +78,14 @@ function ChunksPlayer() {
     }
 
     function onChunkLoaded() {
-        if (totalChunksLoaded === 0) {
+        if (lastChunkId === initialChunkId) {
             audioContext = new AudioContext();
             activeBuffer = request.response;
         } else {
             activeBuffer = appendBuffer(activeBuffer, request.response);
         }
 
-        const startPlaying = (totalChunksLoaded === 0);
+        const startPlaying = (lastChunkId === initialChunkId);
         audioContext.decodeAudioData(request.response, function (buf) {
             audioBufferQueue.push(buf);
             if (startPlaying) {
@@ -91,35 +93,48 @@ function ChunksPlayer() {
             }
         });
 
-        totalChunksLoaded++;
+        lastChunkId++;
         setTimeout(function () {
             if (!paused) {
-                loadChunk(totalChunksLoaded);
+                loadChunk(lastChunkId);
             }
         }, 15000);
     }
 
-    this.play = function (trackToPlay) {
-        totalChunksLoaded = 0;
+    function reset() {
+        if (audioContext && audioContext.state !== "closed") {
+            audioContext.close();
+        }
+        lastChunkId = initialChunkId;
+        paused = false;
         audioBufferQueue = [];
+    }
+
+    this.playFrom = function (trackToPlay, partId) {
+        initialChunkId = partId;
+        reset();
         track = trackToPlay;
-        loadChunk(totalChunksLoaded);
+        loadChunk(lastChunkId);
+    };
+
+    this.play = function (trackToPlay) {
+        this.playFrom(trackToPlay, 0);
     };
 
     this.pause = function () {
-        if (audioContext.state === "running") {
+        if (audioContext && audioContext.state === "running") {
             audioContext.suspend();
         }
         paused = true;
     };
 
     this.resume = function () {
-        if (totalChunksLoaded > 0 && paused) {
-            if (audioContext.state === "suspended") {
+        if (lastChunkId >= initialChunkId && paused) {
+            if (audioContext && audioContext.state === "suspended") {
                 audioContext.resume();
             }
             paused = false;
-            loadChunk(totalChunksLoaded);
+            loadChunk(lastChunkId);
         }
     };
 }
