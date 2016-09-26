@@ -19,13 +19,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.MessageSource;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
-import static com.musicforall.history.handlers.events.EventType.PLAYLIST_ADDED;
-import static com.musicforall.history.handlers.events.EventType.TRACK_LIKED;
+import static com.musicforall.history.handlers.events.EventType.*;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
@@ -83,13 +79,22 @@ public class FeedServiceTest {
     public void testGetGroupedFollowingFeeds() {
         final History history1 = new History(TRACK_ID, PLAYLIST_ID,
                 new Date(new Date().getTime() + 1), USER1_ID, TRACK_LIKED);
-
         final History history2 = new History(TRACK_ID, PLAYLIST_ID,
-                new Date(new Date().getTime() + 2), USER1_ID, PLAYLIST_ADDED);
+                new Date(new Date().getTime() + 2), USER1_ID, TRACK_LISTENED);
+        final History history3 = new History(TRACK_ID, PLAYLIST_ID,
+                new Date(new Date().getTime() + 3), USER1_ID, TRACK_ADDED);
+        final History history4 = new History(TRACK_ID, PLAYLIST_ID,
+                new Date(new Date().getTime() + 4), USER1_ID, TRACK_DELETED);
+        final History history5 = new History(TRACK_ID, PLAYLIST_ID,
+                new Date(new Date().getTime() + 5), USER1_ID, PLAYLIST_DELETED);
+        final History history6 = new History(TRACK_ID, PLAYLIST_ID,
+                new Date(new Date().getTime() + 6), USER1_ID, PLAYLIST_ADDED);
 
-        when(followerService.getFollowingId(USER_ID)).thenReturn(Arrays.asList(2));
+        List<History> histories = Arrays.asList(history1, history2, history3, history4, history5, history6);
+
+        when(followerService.getFollowingId(USER_ID)).thenReturn(Arrays.asList(histories.size()));
         when(userService.getUsersById(any())).thenReturn(Arrays.asList(user));
-        when(historyService.getUsersHistories(any())).thenReturn(Arrays.asList(history1, history2));
+        when(historyService.getUsersHistories(any())).thenReturn(histories);
         when(trackService.getAllByIds(any())).thenReturn(Arrays.asList(track));
         when(playlistService.getAllByIds(any())).thenReturn(Arrays.asList(playlist));
         when(track.getId()).thenReturn(TRACK_ID);
@@ -102,10 +107,19 @@ public class FeedServiceTest {
         final Map<User, Collection<Feed>> followingHistories = feedService.getGroupedFollowingFeeds(USER_ID);
 
         final Feed feed1 = new Feed(testMessage, "Ray Charles – Mess around", history1.getDate());
-        final Feed feed2 = new Feed(testMessage, "Jazz", history2.getDate());
+        final Feed feed2 = new Feed(testMessage, "Ray Charles – Mess around", history2.getDate());
+        final Feed feed3 = new Feed(testMessage, "Ray Charles – Mess around", history3.getDate());
+        final Feed feed4 = new Feed(testMessage, "Ray Charles – Mess around", history4.getDate());
+        final Feed feed5 = new Feed(testMessage, "Jazz", history5.getDate());
+        final Feed feed6 = new Feed(testMessage, "Jazz", history6.getDate());
 
-        assertTrue(followingHistories.get(user).stream().anyMatch(f -> f.equals(feed1)));
-        assertTrue(followingHistories.get(user).stream().anyMatch(f -> f.equals(feed2)));
+        List<Feed> feeds = Arrays.asList(feed1, feed2, feed3, feed4, feed5, feed6);
+
+        assertTrue(followingHistories.get(user).stream().allMatch(feeds::contains));
+        assertTrue(followingHistories.get(user).stream()
+                .limit(4).distinct().allMatch(f -> f.getContent().equals("Test message Ray Charles – Mess around")));
+        assertTrue(followingHistories.get(user).stream()
+                .skip(4).distinct().allMatch(f -> f.getContent().equals("Test message Jazz")));
 
     }
 }
