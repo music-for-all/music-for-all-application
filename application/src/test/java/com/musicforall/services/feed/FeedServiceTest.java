@@ -33,7 +33,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class FeedServiceTest {
 
-    private static final String LOC_1 = "loc1";
     private static final int TRACK_ID = 3333;
     private static final int PLAYLIST_ID = 111;
     private static final int USER1_ID = 2;
@@ -117,9 +116,8 @@ public class FeedServiceTest {
 
         assertTrue(followingHistories.get(user).stream().allMatch(feeds::contains));
         assertTrue(followingHistories.get(user).stream()
-                .limit(4).distinct().allMatch(f -> f.getContent().equals("Test message Ray Charles – Mess around")));
-        assertTrue(followingHistories.get(user).stream()
-                .skip(4).distinct().allMatch(f -> f.getContent().equals("Test message Jazz")));
-
+                .allMatch(f -> f.getContent().equals("Test message Ray Charles – Mess around") &&
+                                f.getContent().equals("Test message Jazz")
+                ));
     }
 }
