@@ -116,7 +116,7 @@ public class FeedServiceTest {
 
         assertTrue(followingHistories.get(user).stream().allMatch(feeds::contains));
         assertTrue(followingHistories.get(user).stream()
-                .allMatch(f -> f.getContent().equals("Test message Ray Charles – Mess around") &&
+                .allMatch(f -> f.getContent().equals("Test message Ray Charles – Mess around") ||
                                 f.getContent().equals("Test message Jazz")
                 ));
     }
