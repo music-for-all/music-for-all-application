@@ -50,23 +50,46 @@
                         <div class="col-md-3 col-lg-3 " align="center">
                             <img src="${user.picture}" alt="User picture" class="img-circle img-responsive">
                             <span class="btn btn-file btn-sm btn-success">
-                                 <span class="glyphicon glyphicon-open input-place"></span>Upload new picture<input
+                                 <span class="glyphicon glyphicon-open input-place"></span>
+                                <@spring.message "profilepage.UploadPicture" /><input
                                     type="file" name="filedata" accept="image/*"></span>
                         </div>
                         <div class=" col-md-9 col-lg-9 ">
                             <table class="table table-user-information">
                                 <tbody>
                                 <tr>
+                                    <td>Username</td>
+                                    <td><input id="username" class="form-control" type="text"
+                                               value="${user.username}"/></td>
+                                </tr>
+                                <tr>
                                     <td><@spring.message "profilepage.FirstName" /></td>
-                                    <td>${user.firstName}</td>
+                                    <td><input id="firstName" class="form-control" type="text"
+                                               value="${user.firstName}"/></td>
                                 </tr>
                                 <tr>
                                     <td><@spring.message "profilepage.LastName" /></td>
-                                    <td>${user.lastName}</td>
+                                    <td><input id="lastName" class="form-control" type="text"
+                                               value="${user.lastName}"/></td>
+                                </tr>
+                                <tr>
+                                    <td><@spring.message "profilepage.Password" /></td>
+                                    <td><input id="password" class="form-control" type="text"
+                                               placeholder="<@spring.message "profilepage.NewPassword" />"/></td>
+                                </tr>
+                                <tr>
+                                    <td><@spring.message "profilepage.ConfirmPassword" /></td>
+                                    <td><input id="confirmPassword" class="form-control" type="text"
+                                               placeholder="<@spring.message "profilepage.ConfirmPassword" />"/></td>
                                 </tr>
                                 <tr>
                                     <td><@spring.message "profilepage.Bio" /></td>
-                                    <td>${user.email}</td>
+                                    <td>                      <textarea
+                                            class="form-control" cols="30" data-bio-label="remaining"
+                                            data-max-length="140"
+                                            id="user_profile_bio" maxlength="140" rows="4"
+                                            placeholder="<@spring.message "profilepage.BioPlaceholder" />">${user.bio}</textarea>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -75,13 +98,13 @@
                 </div>
                 <div class="panel-footer">
                     <button class="btn btn-default hidden" id="back">
-                        <span class="glyphicon glyphicon-arrow-left"></span> Back
+                        <span class="glyphicon glyphicon-arrow-left"></span><@spring.message "profilepage.Back" />
                     </button>
-                    <button class="btn btn-default hidden" id="update">
-                        <span class="glyphicon"></span> Update
+                    <button class="btn btn-success hidden" id="update">
+                        <span class="glyphicon"></span><@spring.message "profilepage.Update" />
                     </button>
                     <button class="btn btn-default" id="edit">
-                        <span class="glyphicon glyphicon-edit"></span> Edit profile
+                        <span class="glyphicon glyphicon-edit"></span><@spring.message "profilepage.EditProfile" />
                     </button>
                 </div>
             </div>
