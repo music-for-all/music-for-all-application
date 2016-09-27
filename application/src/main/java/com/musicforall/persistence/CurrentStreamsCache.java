@@ -1,7 +1,7 @@
 package com.musicforall.persistence;
 
 import com.musicforall.model.Track;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,8 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author ENikolskiy.
  */
-@Repository
-public class CurrentTrackRepository implements KeyValueRepository<Integer, Track> {
+@Component
+public class CurrentStreamsCache implements KeyValueRepository<Integer, Track> {
     private final Map<Integer, Track> repo = new ConcurrentHashMap<>();
 
     @Override

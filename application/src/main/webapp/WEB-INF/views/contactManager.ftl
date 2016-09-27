@@ -122,20 +122,25 @@
         }
     }
 
+    var radioSub;
+
     function joinStream(userId) {
-        if (stompClient) {
-            stompClient.subscribe("/radio/subscribers/" + userId, function (data) {
+        if (!radioSub) {
+            radioSub = stompClient.subscribe("/radio/subscribers/" + userId, function (data) {
                 var response = JSON.parse(data.body);
                 console.log(response);
-
-                player.playFrom(response.track, response.partId);
+                var track = response.track;
+                if (track) {
+                    player.playFrom(track, response.partId);
+                }
             });
         }
     }
 
     function leftStream(userId) {
-        if (stompClient) {
-            stompClient.unsubscribe("/radio/subscribers/" + userId);
+        if (radioSub) {
+            radioSub.unsubscribe();
+            radioSub = null;
             player.pause();
         }
     }

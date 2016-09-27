@@ -20,7 +20,8 @@ import static java.util.concurrent.Executors.newFixedThreadPool;
 @Configuration
 @EnableAsync
 @ComponentScan({"com.musicforall.common",
-        "com.musicforall.services"})
+        "com.musicforall.services",
+        "com.musicforall.persistence"})
 @Import({HibernateConfiguration.class,
         HibernateConfigDev.class,
         FileApiSpringConfig.class,

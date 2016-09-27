@@ -8,13 +8,15 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.musicforall.util.SecurityUtil.currentUser;
+import static com.musicforall.util.SecurityUtil.currentUserId;
 
 /**
  * @author ENikolskiy.
  */
 @Service
 public class RadioServiceWS implements RadioService {
+
+    public static final String SUBSCRIPTION_URL = "/radio/subscribers/";
 
     @Autowired
     private SimpMessagingTemplate template;
@@ -25,6 +27,6 @@ public class RadioServiceWS implements RadioService {
         map.put("track", track);
         map.put("partId", partId);
 
-        template.convertAndSend("/radio/subscribers/" + currentUser().getId(), map);
+        template.convertAndSend(SUBSCRIPTION_URL + currentUserId(), map);
     }
 }
