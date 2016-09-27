@@ -132,11 +132,8 @@
 <script type="text/template" class="addTrackRowTemplate">
     <tr id="<%= data.id %>">
         <td>
-            <button type="button" class="btn btn-xs btn-success play-track-button">
+            <button type="button" class="btn btn-xs btn-success play-pause-button">
                 <span class='glyphicon glyphicon-play' aria-hidden='true'></span>
-            </button>
-            <button type="button" class="btn btn-xs btn-warning pause-track-button">
-                <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
             </button>
             <button type="button" class="btn btn-xs btn-success add-song-button">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -155,11 +152,6 @@
         </td>
         <td>
             <%= data.artist %>
-        </td>
-        <td>
-            <audio id="audio_<%= track.id %>" controls preload="none">
-                <source type="audio/mp3" src="<@spring.url "/files/<%= data.id %>/0"/>">
-            </audio>
         </td>
     </tr>
 </script>
