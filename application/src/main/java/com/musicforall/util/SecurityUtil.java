@@ -14,6 +14,11 @@ public final class SecurityUtil {
     }
 
     public static Integer currentUserId() {
+        final User currentUser = currentUser();
+
+        if (currentUser == null) {
+            return null;
+        }
         return currentUser().getId();
     }
 
