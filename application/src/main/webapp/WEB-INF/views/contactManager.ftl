@@ -88,7 +88,7 @@
                 <i class="fa fa-user-times" aria-hidden="true"></i>
             </button>
             <button type="button" onclick="joinStream('<%= contact.id %>')">Subscribe</button>
-            <button type="button" onclick="leftStream('<%= contact.id %>')">Stop</button>
+            <button type="button" onclick="leftCurrentStream()">Stop</button>
         </td>
     </tr>
     <% }); %>
@@ -137,7 +137,7 @@
         }
     }
 
-    function leftStream(userId) {
+    function leftCurrentStream() {
         if (radioSub) {
             radioSub.unsubscribe();
             radioSub = null;
