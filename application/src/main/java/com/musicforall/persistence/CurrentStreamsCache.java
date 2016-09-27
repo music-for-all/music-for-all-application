@@ -27,6 +27,7 @@ public class CurrentStreamsCache implements KeyValueRepository<Integer, Track> {
     }
 
     @Override
+    @Cacheable(key = "#userId")
     @CacheEvict(key = "#userId")
     public Track remove(Integer userId) {
         return null;
