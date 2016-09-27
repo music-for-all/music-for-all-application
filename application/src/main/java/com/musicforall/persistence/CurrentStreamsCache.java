@@ -1,30 +1,34 @@
 package com.musicforall.persistence;
 
 import com.musicforall.model.Track;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author ENikolskiy.
  */
 @Component
+@CacheConfig(cacheNames = {"guava"})
 public class CurrentStreamsCache implements KeyValueRepository<Integer, Track> {
-    private final Map<Integer, Track> repo = new ConcurrentHashMap<>();
 
     @Override
-    public void put(Integer userId, Track track) {
-        repo.put(userId, track);
+    @CachePut(key = "#userId")
+    public Track put(Integer userId, Track track) {
+        return track;
     }
 
     @Override
+    @Cacheable(key = "#userId")
     public Track get(Integer userId) {
-        return repo.get(userId);
+        return null;
     }
 
     @Override
+    @CacheEvict(key = "#userId")
     public Track remove(Integer userId) {
-        return repo.remove(userId);
+        return null;
     }
 }
