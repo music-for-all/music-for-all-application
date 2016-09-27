@@ -136,7 +136,7 @@
 
     _.templateSettings.variable = "data";
     var trackRow = _.template(
-            $("script.trackRowTemplate").html()
+            $("script.addTrackRowTemplate").html()
     );
 
     var playlistButton = _.template(

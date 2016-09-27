@@ -10,6 +10,7 @@
 <script src="<@spring.url "/resources/js/history.js" />"></script>
 <link href="/resources/css/player.css" rel="stylesheet">
 <script src="/resources/js/player.js"></script>
+<link href="<@spring.url "/resources/css/additionalTracksTable.css" />" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <link href="/resources/css/welcomepage.css" rel="stylesheet">
 </@m.head>
@@ -101,7 +102,7 @@
                     <h1><@spring.message "projectName"/></h1>
                     <h3><@spring.message "welcomepage.Intro"/></h3>
                     <div class="top-table well" id="tops">
-                        <table id="tracks" class="table table-hover table-striped table-condensed ">
+                        <table id="tracks" class="table table-hover table-striped table-condensed no-checkbox tracks-table ">
                             <thead>
                             <tr>
                                 <td><@spring.message "welcomepage.Actions"/></td>
@@ -119,31 +120,8 @@
     </div>
 </div>
 
-<script type="text/template" class="trackRowTemplate">
-    <tbody>
-    <% _.each(data, function(track){ %>
-    <tr id="<%= track.id %>">
-        <td>
-            <button type="button" class="btn btn-xs btn-success play-track-button">
-                <span class='glyphicon glyphicon-play' aria-hidden='true'></span>
-            </button>
-            <button type="button" class="btn btn-xs btn-warning pause-track-button">
-                <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
-            </button>
-            <button type="button" class="btn btn-xs btn-danger delete-song-button">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            </button>
-        </td>
-        <td>
-            <%= track.name %>
-        </td>
-        <td>
-        </td>
-    </tr>
-    <% }); %>
-    </tbody>
-</script>
 
+    <@m.addTrackRowTemplate/>
     <@p.player_Footer/>
 
 <script type="text/javascript">
@@ -152,14 +130,16 @@
 
     _.templateSettings.variable = "data";
     var trackTable = _.template(
-            $("script.trackRowTemplate").html()
+            $("script.addTrackRowTemplate").html()
     );
 
     $.when($.get("<@spring.url "/tracks/popular"/>"))
             .then(function (response) {
-                $("#tracks").find("thead").after(
-                        trackTable(response)
-                );
+                    response.forEach(function (track) {
+                        $("#tracks").find("thead").after(
+                                trackTable(track)
+                        );
+                    });
             });
 </script>
 <script type="text/javascript">
