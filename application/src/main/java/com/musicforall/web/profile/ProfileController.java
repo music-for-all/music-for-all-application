@@ -1,6 +1,5 @@
 package com.musicforall.web.profile;
 
-import com.musicforall.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.social.connect.ConnectionRepository;
@@ -24,9 +23,6 @@ public class ProfileController {
 
     @RequestMapping("/profile")
     public String profile(Model model) {
-
-        model.addAttribute("user", SecurityUtil.currentUser());
-
         return "profile";
     }
 }
