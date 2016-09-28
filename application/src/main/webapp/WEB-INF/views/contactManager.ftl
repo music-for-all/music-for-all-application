@@ -11,6 +11,7 @@
 <link href="<@spring.url "/resources/css/contactManager.css" />" rel="stylesheet"/>
 <script src="<@spring.url "/resources/js/user.js" />"></script>
 <script src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
+<script src="<@spring.url "/resources/js/stream.js" />"></script>
 </@m.head>
 <@m.body>
 
@@ -98,6 +99,7 @@
     var user = new User();
     var stompClient;
     var player = new ChunksPlayer();
+    var stream = new Stream();
 
     _.templateSettings.variable = "data";
 
