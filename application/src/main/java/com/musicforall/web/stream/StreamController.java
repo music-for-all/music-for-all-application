@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -60,9 +63,13 @@ public class StreamController {
         final Map<Integer, Track> userToTrack = users.stream()
                 /*.filter(u -> u.isPublicRadio)*/
                 .map(User::getId)
-                .collect(HashMap::new, ((m, id) -> m.put(id, cache.get(id))), HashMap::putAll);
+                .collect(HashMap::new, ((m, id) -> {
+                    final Track track = cache.get(id);
+                    if (track != null) {
+                        m.put(id, track);
+                    }
+                }), HashMap::putAll);
 
-        userToTrack.values().removeIf(Objects::isNull);
         return new ResponseEntity<>(userToTrack, HttpStatus.OK);
     }
 }
