@@ -8,19 +8,6 @@ import javax.validation.constraints.Size;
  */
 public class ProfileData {
 
-    public ProfileData() {
-    }
-
-    public ProfileData(String username, String password, String picture, String firstName,
-                       String lastName, String bio) {
-        this.username = username;
-        this.password = password;
-        this.picture = picture;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.bio = bio;
-    }
-
     @Pattern(regexp = "^(^[a-zA-Z\\p{InCyrillic}][a-zA-Z0-9-_\\.\\p{InCyrillic}]+)$")
     private String username;
 
@@ -35,26 +22,17 @@ public class ProfileData {
     @Size(max = 140)
     private String bio;
 
-    public User update(User currentUser){
-        if (username != null){
-            currentUser.setUsername(username);
-        }
-        if (password != null){
-            currentUser.setPassword(password);
-        }
-        if (picture != null){
-            currentUser.setPicture(picture);
-        }
-        if (firstName != null){
-            currentUser.setFirstName(firstName);
-        }
-        if (lastName != null) {
-            currentUser.setLastName(lastName);
-        }
-        if (bio != null){
-            currentUser.setBio(bio);
-        }
-        return currentUser;
+    public ProfileData() {
+    }
+
+    public ProfileData(String username, String password, String picture, String firstName,
+                       String lastName, String bio) {
+        this.username = username;
+        this.password = password;
+        this.picture = picture;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.bio = bio;
     }
 
     public String getPassword() {
@@ -103,6 +81,28 @@ public class ProfileData {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public User update(User currentUser) {
+        if (username != null) {
+            currentUser.setUsername(username);
+        }
+        if (password != null) {
+            currentUser.setPassword(password);
+        }
+        if (picture != null) {
+            currentUser.setPicture(picture);
+        }
+        if (firstName != null) {
+            currentUser.setFirstName(firstName);
+        }
+        if (lastName != null) {
+            currentUser.setLastName(lastName);
+        }
+        if (bio != null) {
+            currentUser.setBio(bio);
+        }
+        return currentUser;
     }
 
     @Override
