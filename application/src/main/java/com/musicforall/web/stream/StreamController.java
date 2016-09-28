@@ -41,7 +41,9 @@ public class StreamController {
     @RequestMapping(value = "/track/{id}", method = POST)
     public ResponseEntity startStream(@PathVariable("id") Integer trackId) {
         final Integer userId = SecurityUtil.currentUserId();
-        if (userId == null) return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        if (userId == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
 
         final Track track = trackService.get(trackId);
         cache.put(userId, track);
@@ -51,7 +53,9 @@ public class StreamController {
     @RequestMapping(value = "/stop", method = POST)
     public ResponseEntity stopStream() {
         final Integer userId = SecurityUtil.currentUserId();
-        if (userId == null) return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        if (userId == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
 
         cache.remove(userId);
         return new ResponseEntity(HttpStatus.OK);

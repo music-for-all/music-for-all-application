@@ -17,5 +17,5 @@ function Stream() {
         return $.when($.get(baseUrl, {
             ids: userIds
         }));
-    }
+    };
 }
