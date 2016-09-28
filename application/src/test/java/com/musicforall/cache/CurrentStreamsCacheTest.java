@@ -1,5 +1,6 @@
-package com.musicforall.persistence;
+package com.musicforall.cache;
 
+import com.musicforall.common.cache.KeyValueRepository;
 import com.musicforall.model.Track;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.util.ServicesTestConfig;

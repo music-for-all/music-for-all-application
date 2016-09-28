@@ -1,4 +1,4 @@
-package com.musicforall.persistence;
+package com.musicforall.common.cache;
 
 /**
  * @author ENikolskiy.
