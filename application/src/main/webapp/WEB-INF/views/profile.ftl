@@ -15,87 +15,89 @@
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h3 class="panel-title">${user.username}</h3>
+                    <h3 class="panel-title" id="panelUsername"></h3>
                 </div>
                 <div class="panel-body">
-                    <div class="row" id="infoProfileTable">
+                    <div class="row">
                         <div class="col-md-3 col-lg-3 " align="center">
-                            <img src="${user.picture}" alt="User picture" class="img-circle img-responsive">
+                            <img id="userPicture" alt="User picture" class="img-circle img-responsive">
+                            <div id="upload" class="hidden">
+                                <span class="btn btn-file btn-sm btn-success">
+                                    <span class="glyphicon glyphicon-open input-place"></span> <@spring.message "profilepage.UploadPicture" />
+                                    <input type="file" name="filedata" accept="image/*">
+                            </div>
                         </div>
-                        <div class=" col-md-9 col-lg-9 ">
-                            <table class="table table-user-information">
-                                <tbody>
-                                <tr>
-                                    <td><@spring.message "profilepage.FirstName" /></td>
-                                    <td>${user.firstName}</td>
-                                </tr>
-                                <tr>
-                                    <td><@spring.message "profilepage.LastName" /></td>
-                                    <td>${user.lastName}</td>
-                                </tr>
-                                <tr>
-                                    <td><@spring.message "profilepage.Email" /></td>
-                                    <td>${user.email}</td>
-                                </tr>
-                                <tr>
-                                    <td><@spring.message "profilepage.Bio" /></td>
-                                    <td>${user.bio}</td>
-                                </tr>
-                                </tbody>
-                            </table>
+                        <div id="infoProfileTable">
+                            <div class=" col-md-9 col-lg-9 ">
+                                <table class="table table-user-information">
+                                    <tbody>
+                                    <tr>
+                                        <td><@spring.message "profilepage.FirstName" /></td>
+                                        <td id="tdFirstName"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><@spring.message "profilepage.LastName" /></td>
+                                        <td id="tdLastName"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><@spring.message "profilepage.Email" /></td>
+                                        <td id="tdEmail"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><@spring.message "profilepage.Bio" /></td>
+                                        <td id="tdBio"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row hidden" id="editProfileTable">
-                        <div class="col-md-3 col-lg-3 " align="center">
-                            <img src="${user.picture}" alt="User picture" class="img-circle img-responsive">
-                            <span class="btn btn-file btn-sm btn-success">
-                                 <span class="glyphicon glyphicon-open input-place"></span> <@spring.message "profilepage.UploadPicture" />
-                                <input type="file" name="filedata" accept="image/*"></span>
+                        <div class="hidden" id="editProfileTable">
+                            <div class=" col-md-9 col-lg-9 ">
+                                <table class="table table-user-information">
+                                    <tbody>
+                                    <tr>
+                                        <td>Username</td>
+                                        <td><input id="username" class="form-control" type="text"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><@spring.message "profilepage.FirstName" /></td>
+                                        <td><input id="firstName" class="form-control" type="text"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><@spring.message "profilepage.LastName" /></td>
+                                        <td><input id="lastName" class="form-control" type="text"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><@spring.message "profilepage.Password" /></td>
+                                        <td><input id="password" class="form-control" type="text"
+                                                   placeholder="<@spring.message "profilepage.NewPassword" />"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><@spring.message "profilepage.ConfirmPassword" /></td>
+                                        <td><input id="confirmPassword" class="form-control" type="text"
+                                                   placeholder="<@spring.message "profilepage.ConfirmPassword" />"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><@spring.message "profilepage.Bio" /></td>
+                                        <td><textarea class="form-control" cols="30"
+                                                      data-bio-label="remaining"
+                                                      data-max-length="140"
+                                                      id="user_profile_bio" maxlength="140" rows="4"
+                                                      placeholder="<@spring.message "profilepage.BioPlaceholder" />"></textarea>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <div class=" col-md-9 col-lg-9 ">
-                            <table class="table table-user-information">
-                                <tbody>
-                                <tr>
-                                    <td>Username</td>
-                                    <td><input id="username" class="form-control" type="text"
-                                               value="${user.username}"/></td>
-                                </tr>
-                                <tr>
-                                    <td><@spring.message "profilepage.FirstName" /></td>
-                                    <td><input id="firstName" class="form-control" type="text"
-                                               value="${user.firstName}"/></td>
-                                </tr>
-                                <tr>
-                                    <td><@spring.message "profilepage.LastName" /></td>
-                                    <td><input id="lastName" class="form-control" type="text"
-                                               value="${user.lastName}"/></td>
-                                </tr>
-                                <tr>
-                                    <td><@spring.message "profilepage.Password" /></td>
-                                    <td><input id="password" class="form-control" type="text"
-                                               placeholder="<@spring.message "profilepage.NewPassword" />"/></td>
-                                </tr>
-                                <tr>
-                                    <td><@spring.message "profilepage.ConfirmPassword" /></td>
-                                    <td><input id="confirmPassword" class="form-control" type="text"
-                                               placeholder="<@spring.message "profilepage.ConfirmPassword" />"/></td>
-                                </tr>
-                                <tr>
-                                    <td><@spring.message "profilepage.Bio" /></td>
-                                    <td><textarea class="form-control" cols="30"
-                                                  data-bio-label="remaining"
-                                                  data-max-length="140"
-                                                  id="user_profile_bio" maxlength="140" rows="4"
-                                                  placeholder="<@spring.message "profilepage.BioPlaceholder" />">${user.bio}</textarea>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+
+                            <div class=" col-md-9 col-lg-9 ">
+                        <div class="text-success" id="success-message"></div>
+                        <div class="text-danger" id="fail-message"></div>
+                                </div>
                     </div>
-                    <div class="text-success" id="success-message"></div>
-                    <div class="text-danger" id="fail-message"></div>
                 </div>
                 <div class="panel-footer">
                     <button class="btn btn-default hidden" id="back">
@@ -118,9 +120,9 @@
         $("#back").removeClass("hidden");
         $("#update").removeClass("hidden");
         $("#editProfileTable").removeClass("hidden");
+        $("#upload").removeClass("hidden");
         $("#infoProfileTable").addClass("hidden");
         $("#edit").addClass("hidden");
-    <#--$("#username").val("${user.username}");-->
     });
 
     $("#back").on("click", function (e) {
@@ -133,18 +135,61 @@
         $("#back").addClass("hidden");
         $("#update").addClass("hidden");
         $("#editProfileTable").addClass("hidden");
+        $("#upload").addClass("hidden");
         $("#infoProfileTable").removeClass("hidden");
         $("#edit").removeClass("hidden");
     }
-
-    $("#update").on("click", function (e) {
-        update();
-    });
 
     function clearMessage() {
         $("#success-message").text('');
         $("#fail-message").text('');
     }
+
+    var currentUser = null;
+
+    $("#update").on("click", function (e) {
+        updateData().then(function () {
+            currentUser = null;
+            updateFields();
+            $("#success-message").text("Updated");
+            showProfileTable();
+        }, function () {
+            $("#fail-message").text("Fail");
+        });
+    });
+
+    function updateFields() {
+        if (currentUser === null) {
+            getCurrentUser().then(function (user) {
+                currentUser = user;
+                $("#panelUsername").text(user.username);
+                $("#tdFirstName").text(user.firstName);
+                $("#tdLastName").text(user.lastName);
+                $("#tdBio").text(user.bio);
+                $("#tdEmail").text(user.email);
+                document.getElementById("userPicture").src = user.picture;
+                $("#username").val(user.username);
+                $("#firstName").val(user.firstName);
+                $("#lastName").val(user.lastName);
+                $("#user_profile_bio").text(user.bio);
+            });
+        } else {
+            $("#panelUsername").text(currentUser.username);
+            $("#tdFirstName").text(currentUser.firstName);
+            $("#tdLastName").text(currentUser.lastName);
+            $("#tdBio").text(currentUser.bio);
+            $("#tdEmail").text(currentUser.email);
+            document.getElementById("userPicture").src = currentUser.picture;
+            $("#username").val(user.username);
+            $("#firstName").val(user.firstName);
+            $("#lastName").val(user.lastName);
+            $("#user_profile_bio").text(user.bio);
+        }
+    }
+
+    $(document).ready(function () {
+        updateFields();
+    });
 </script>
 </@m.body>
 </html>

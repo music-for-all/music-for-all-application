@@ -1,8 +1,8 @@
 "use strict";
 
-function update() {
+var baseUrl = dict.contextPath + "/profile";
 
-    var baseUrl = dict.contextPath + "/profile";
+function updateData() {
 
     clearMessage();
 
@@ -37,11 +37,9 @@ function update() {
         bio: $("#user_profile_bio").val()
     };
 
-    $.when($.get(baseUrl, profileData))
-        .then(function () {
-            $("#success-message").text("updated");
-        }, function () {
-            $("#fail-message").text("fail");
-        });
-    showProfileTable();
+    return $.when($.get(baseUrl + "/update", profileData));
+}
+
+function getCurrentUser() {
+    return $.when($.get(baseUrl + "/currentUser"))
 }
