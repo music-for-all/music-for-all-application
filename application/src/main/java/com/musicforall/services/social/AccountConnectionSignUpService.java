@@ -1,6 +1,7 @@
 package com.musicforall.services.social;
 
 import com.musicforall.model.user.User;
+import com.musicforall.model.user.UserConfig;
 import com.musicforall.services.mail.Mails;
 import com.musicforall.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class AccountConnectionSignUpService implements ConnectionSignUp {
         user.setEmail(profile.getEmail());
         user.setFirstName(profile.getFirstName());
         user.setLastName(profile.getLastName());
-        user.setPicture(connection.getImageUrl());
+        user.setConfig(new UserConfig(false, connection.getImageUrl()));
 
         user.setPassword(KeyGenerators.string().generateKey());
         if (userService.getByEmail(user.getEmail()) == null) {

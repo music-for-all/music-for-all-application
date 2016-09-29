@@ -101,12 +101,11 @@ public class DbPopulateService {
     }
 
     private static void setDefaultValues(User user) {
-        user.setPicture(USER_PICTURE);
         user.setLastName(DEFAULT_NAME);
         user.setFirstName(DEFAULT_NAME);
 
         final boolean isPublicRadio = true;
-        user.setConfig(new UserConfig(isPublicRadio));
+        user.setConfig(new UserConfig(isPublicRadio, USER_PICTURE));
     }
 
     @PostConstruct

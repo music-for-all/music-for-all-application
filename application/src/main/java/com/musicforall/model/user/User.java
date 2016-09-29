@@ -1,6 +1,7 @@
 package com.musicforall.model.user;
 
 import com.musicforall.common.Constants;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -12,6 +13,9 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
+
+import static org.hibernate.annotations.CascadeType.DELETE;
+import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 
 /**
  * Created by ilianik on 11.06.2016.
@@ -40,12 +44,12 @@ public class User implements SocialUserDetails, Serializable {
     @Column(unique = true)
     private String email;
 
-    private String picture;
-
     private String firstName;
 
     private String lastName;
 
+    @OneToOne
+    @Cascade({SAVE_UPDATE, DELETE})
     private UserConfig config;
 
     public User() {
@@ -67,6 +71,10 @@ public class User implements SocialUserDetails, Serializable {
 
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -94,10 +102,6 @@ public class User implements SocialUserDetails, Serializable {
         return AuthorityUtils.createAuthorityList("ROLE_USER");
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -117,14 +121,6 @@ public class User implements SocialUserDetails, Serializable {
     @Override
     public String getUserId() {
         return email;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
-    public String getPicture() {
-        return picture;
     }
 
     public UserConfig getConfig() {
@@ -165,19 +161,19 @@ public class User implements SocialUserDetails, Serializable {
                 '}';
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getFirstName() {
         return firstName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
