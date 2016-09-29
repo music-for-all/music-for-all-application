@@ -20,17 +20,17 @@ jQuery(document).ready(function () {
 
     function changeActiveTrackRow(currentRow) {
         startTrack(currentRow[0].id);
-        $(".tracks-table tr").removeClass("active");
-        $(currentRow).closest("tr").addClass("active");
+        $(".tracks-table tr").removeClass("active").removeClass("current");
+        $(currentRow).closest("tr").addClass("active").addClass("current");
     }
 
     $(".tracks-table").on("click", ".play-button", function () {
         var $trackHtml = $(this).closest("tr");
-        if (player.getTrackId() != $trackHtml.attr("id")) {
+        if ($('tr.current') != $trackHtml) {
             changeActiveTrackRow($trackHtml);
         } else {
             player.resume();
-            $trackHtml.addClass("active");
+            $(this).closest("tr").addClass("active");
         }
     });
 
@@ -40,26 +40,24 @@ jQuery(document).ready(function () {
     });
 
     $('#nextFooterBtn').bind('click', function() {
-        var rowTrackId  = '#' + player.getTrackId();
-        if ($(rowTrackId).next().attr("id")) {
-            changeActiveTrackRow($(rowTrackId).next());
+        if ($("tr.current").next().attr("id")) {
+            changeActiveTrackRow($("tr.current").next());
         }
     });
 
     $('#prevFooterBtn').bind('click', function() {
-        var rowTrackId = '#' + player.getTrackId();
-        if ($(rowTrackId).prev().attr("id")) {
-            changeActiveTrackRow($(rowTrackId).prev());
+        if ($("tr.current").prev().attr("id")) {
+            changeActiveTrackRow($("tr.current").prev());
         }
     });
 
     $('#playFooterBtn').bind('click', function() {
         player.resume();
-        $('#' + player.getTrackId()).addClass("active");
+        $("tr.current").addClass("active");
     });
 
     $('#pauseFooterBtn').bind('click', function() {
         player.pause();
-        $('#' + player.getTrackId()).removeClass("active");
+        $("tr.current").removeClass("active");
     });
 });
