@@ -3,7 +3,6 @@
 
 jQuery(document).ready(function () {
 
-    var $trackHtml;
     var player = new ChunksPlayer();
     var track = new Track();
 
@@ -26,8 +25,8 @@ jQuery(document).ready(function () {
     }
 
     $(".tracks-table").on("click", ".play-button", function () {
-        $trackHtml = $(this).closest("tr");
-        if (player.getTrackId() != $trackHtml[0].id) {
+        var $trackHtml = $(this).closest("tr");
+        if (player.getTrackId() != $trackHtml.attr("id")) {
             changeActiveTrackRow($trackHtml);
         } else {
             player.resume();
@@ -37,30 +36,30 @@ jQuery(document).ready(function () {
 
     $(".tracks-table").on("click", ".pause-button", function () {
         player.pause();
-        $(this).removeClass("active");
+        $(this).closest("tr").removeClass("active");
     });
-    
+
     $('#nextFooterBtn').bind('click', function() {
-        if ($trackHtml.next()[0].id) {
-            $trackHtml = $trackHtml.next();
-            changeActiveTrackRow($trackHtml);
+        var rowTrackId  = '#' + player.getTrackId();
+        if ($(rowTrackId).next().attr("id")) {
+            changeActiveTrackRow($(rowTrackId).next());
         }
     });
 
     $('#prevFooterBtn').bind('click', function() {
-        if ($trackHtml.prev()[0].id) {
-            $trackHtml = $trackHtml.prev();
-            changeActiveTrackRow($trackHtml);
+        var rowTrackId = '#' + player.getTrackId();
+        if ($(rowTrackId).prev().attr("id")) {
+            changeActiveTrackRow($(rowTrackId).prev());
         }
     });
 
     $('#playFooterBtn').bind('click', function() {
         player.resume();
-        $trackHtml.addClass("active");
+        $('#' + player.getTrackId()).addClass("active");
     });
 
     $('#pauseFooterBtn').bind('click', function() {
         player.pause();
-        $trackHtml.removeClass("active");
+        $('#' + player.getTrackId()).removeClass("active");
     });
 });

@@ -9,13 +9,12 @@
 <script src="/resources/js/chunksplayer.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-<script src="<@spring.url "/resources/js/player.js"/>"></script>
 <script src="<@spring.url "/resources/js/track.js"/>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
 <script src="<@spring.url "/resources/js/searchpage.js"/>"></script>
 <script src="<@spring.url "/resources/js/history.js" />"></script>
 <script src="<@spring.url "/resources/js/autocompleteConfig.js"/>"></script>
-<script src="<@spring.url "/resources/js/playlist.js"/>"></script>
+<script src="<@spring.url "/resources/js/player.js" />"></script>
 <link href="<@spring.url "/resources/css/searchpage.css" />" rel="stylesheet">
 <link href="<@spring.url "/resources/css/switch.css" />" rel="stylesheet">
 <link href="<@spring.url "/resources/css/player.css" />" rel="stylesheet">
