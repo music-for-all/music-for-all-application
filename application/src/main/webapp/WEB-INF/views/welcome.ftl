@@ -10,6 +10,7 @@
 <script src="<@spring.url "/resources/js/history.js" />"></script>
 <script src="/resources/js/player.js"></script>
 <link href="<@spring.url "/resources/css/additionalTracksTable.css" />" rel="stylesheet">
+<link href="<@spring.url "/resources/css/player.css" />" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <link href="/resources/css/welcomepage.css" rel="stylesheet">
 </@m.head>

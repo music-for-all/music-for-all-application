@@ -15,6 +15,7 @@
 <script src="<@spring.url "/resources/js/history.js" />"></script>
 <link href="<@spring.url "/resources/css/mainpage.css" />" rel="stylesheet"/>
 <link href="<@spring.url "/resources/css/switch.css" />" rel="stylesheet"/>
+<link href="<@spring.url "/resources/css/player.css" />" rel="stylesheet">
 <link href="<@spring.url "/resources/css/additionalTracksTable.css" />" rel="stylesheet">
 </@m.head>
 

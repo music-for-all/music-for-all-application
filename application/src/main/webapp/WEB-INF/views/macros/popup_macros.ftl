@@ -81,8 +81,8 @@
 
 <#macro player_Footer>
     <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
-        <div class="container-fluid">
-                <div class="col-md-2">
+        <div class="container-fluid player-content">
+                <div class="col-md-4">
                     <button id="prevFooterBtn" type="button" class="btn btn-default .btn-link">
                         <span class='glyphicon glyphicon-step-backward' aria-hidden='true'></span>
                     </button>
@@ -100,7 +100,7 @@
                     <h5 class="text-center" id="nameInFoot"></h5>
                     <h5 class="text-center" id="artistInFoot"></h5>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                 </div>
         </div>
     </nav>

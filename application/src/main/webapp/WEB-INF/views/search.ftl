@@ -18,6 +18,7 @@
 <script src="<@spring.url "/resources/js/playlist.js"/>"></script>
 <link href="<@spring.url "/resources/css/searchpage.css" />" rel="stylesheet">
 <link href="<@spring.url "/resources/css/switch.css" />" rel="stylesheet">
+<link href="<@spring.url "/resources/css/player.css" />" rel="stylesheet">
 <link href="<@spring.url "/resources/css/additionalTracksTable.css" />" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
 </@m.head>
