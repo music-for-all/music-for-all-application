@@ -8,7 +8,6 @@
 <script src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
 <script src="<@spring.url "/resources/js/track.js" />"></script>
 <script src="<@spring.url "/resources/js/history.js" />"></script>
-<link href="/resources/css/player.css" rel="stylesheet">
 <script src="/resources/js/player.js"></script>
 <link href="<@spring.url "/resources/css/additionalTracksTable.css" />" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
