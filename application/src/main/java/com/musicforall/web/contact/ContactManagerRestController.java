@@ -1,9 +1,9 @@
 package com.musicforall.web.contact;
 
-import com.musicforall.model.User;
+import com.musicforall.common.Constants;
+import com.musicforall.model.user.User;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.user.UserService;
-import com.musicforall.common.Constants;
 import com.musicforall.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

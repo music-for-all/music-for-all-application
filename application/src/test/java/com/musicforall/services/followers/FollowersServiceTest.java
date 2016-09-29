@@ -1,6 +1,6 @@
 package com.musicforall.services.followers;
 
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.user.UserService;
 import com.musicforall.util.ServicesTestConfig;
@@ -12,8 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import static org.junit.Assert.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by andrey on 8/2/16.

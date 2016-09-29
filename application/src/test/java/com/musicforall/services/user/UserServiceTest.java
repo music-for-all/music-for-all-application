@@ -1,6 +1,6 @@
 package com.musicforall.services.user;
 
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;

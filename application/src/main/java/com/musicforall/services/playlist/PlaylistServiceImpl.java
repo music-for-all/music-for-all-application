@@ -3,7 +3,7 @@ package com.musicforall.services.playlist;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.util.SecurityUtil;
 import org.hibernate.criterion.DetachedCriteria;

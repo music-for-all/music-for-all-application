@@ -1,4 +1,4 @@
-package com.musicforall.model;
+package com.musicforall.model.user;
 
 import com.musicforall.common.Constants;
 import org.hibernate.validator.constraints.Email;
@@ -45,6 +45,8 @@ public class User implements SocialUserDetails, Serializable {
     private String firstName;
 
     private String lastName;
+
+    private UserConfig config;
 
     public User() {
     }
@@ -123,6 +125,14 @@ public class User implements SocialUserDetails, Serializable {
 
     public String getPicture() {
         return picture;
+    }
+
+    public UserConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(UserConfig config) {
+        this.config = config;
     }
 
     @Override

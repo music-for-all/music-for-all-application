@@ -1,6 +1,6 @@
 package com.musicforall.services.social;
 
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import com.musicforall.services.mail.Mails;
 import com.musicforall.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

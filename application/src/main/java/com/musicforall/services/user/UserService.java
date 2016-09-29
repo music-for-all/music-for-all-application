@@ -1,6 +1,6 @@
 package com.musicforall.services.user;
 
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.social.security.SocialUserDetailsService;
 

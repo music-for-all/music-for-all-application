@@ -1,8 +1,8 @@
 package com.musicforall.services.user;
 
-import com.musicforall.common.dao.Dao;
-import com.musicforall.model.User;
 import com.musicforall.common.Constants;
+import com.musicforall.common.dao.Dao;
+import com.musicforall.model.user.User;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Property;
