@@ -128,7 +128,7 @@
                     <tr>
                         <td>
                             <div class="avatar">
-                                <img src="${usr.picture}" class="img-responsive img-circle">
+                                <img src="${usr.picture}" class="img-responsive img-rounded">
                             </div>
                         </td>
                         <td><a href="/showUser?user_id=${usr.id}">${usr.username}</a></td>

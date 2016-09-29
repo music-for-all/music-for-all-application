@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,17 +47,17 @@ public class ContactManagerController {
     @RequestMapping(value = "/showUser", method = RequestMethod.GET)
     public String userpage(@RequestParam("user_id") Integer user_id, Model model) {
 
-        LOG.info("USER = " + userService.get(user_id).toString());
         LOG.info("PLAYLISTS = " + playlistService.getAllUserPlaylists(user_id).toString());
-        LOG.info(" FOLOWERS " + followerService.getFollowersId(user_id).toString());
-        LOG.info("FOLOWING" + followerService.getFollowingId(user_id).toString());
 
         List<Integer> followersId = followerService.getFollowersId(user_id);
         List<User> followers = followersId.stream().map(i -> userService.get(i)).collect(Collectors.toList());
 
+        Collection<Integer> followingId = followerService.getFollowingId(user_id);
+        List<User> following = followingId.stream().map(i -> userService.get(i)).collect(Collectors.toList());
+
         model.addAttribute("user", userService.get(user_id));
         model.addAttribute("followers", followers);
-        model.addAttribute("followings", followerService.getFollowingId(user_id));
+        model.addAttribute("following", following);
         return "userpage";
     }
 }

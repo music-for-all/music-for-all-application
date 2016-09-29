@@ -10,7 +10,8 @@
 <@m.body>
     <@m.navigation m.pages.Profile/>
 
-    <@p.usersPopup followers "followerpopup"></@p.usersPopup>
+    <@p.usersPopup followers "followerspopup"></@p.usersPopup>
+    <@p.usersPopup following "followingpopup"></@p.usersPopup>
 <div id="container" class="container">
     <div class="row">
         <div class="col-md-2 well">
@@ -24,11 +25,11 @@
                 </div>
             </div>
             <div class="btn-group-vertical">
-                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#followerpopup">
+                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#followerspopup">
                     <@spring.message "userpage.Followers"/> <span class="badge">${followers?size}</span>
                 </button>
-                <button class="btn btn-primary" type="button">
-                    <@spring.message "userpage.Following"/> <span class="badge">${followings?size}</span>
+                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#followingpopup">
+                    <@spring.message "userpage.Following"/> <span class="badge">${following?size}</span>
                 </button>
             </div>
 
