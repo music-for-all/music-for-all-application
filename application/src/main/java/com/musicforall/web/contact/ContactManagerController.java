@@ -1,5 +1,6 @@
 package com.musicforall.web.contact;
 
+import com.musicforall.model.User;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.track.TrackService;
@@ -12,6 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ContactManagerController {
@@ -47,8 +51,11 @@ public class ContactManagerController {
         LOG.info(" FOLOWERS " + followerService.getFollowersId(user_id).toString());
         LOG.info("FOLOWING" + followerService.getFollowingId(user_id).toString());
 
+        List<Integer> followersId = followerService.getFollowersId(user_id);
+        List<User> followers = followersId.stream().map(i -> userService.get(i)).collect(Collectors.toList());
+
         model.addAttribute("user", userService.get(user_id));
-        model.addAttribute("followers", followerService.getFollowersId(user_id));
+        model.addAttribute("followers", followers);
         model.addAttribute("followings", followerService.getFollowingId(user_id));
         return "userpage";
     }

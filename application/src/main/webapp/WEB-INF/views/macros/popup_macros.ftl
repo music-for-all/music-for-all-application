@@ -109,3 +109,36 @@
         </@popupFooter>
     </@popUp>
 </#macro>
+
+<#macro usersPopup users id>
+<div id="${id}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th><@spring.message "popupmacro.UserName"/></th>
+                    <th><@spring.message "popupmacro.FirstName"/></th>
+                    <th><@spring.message "popupmacro.LastName"/></th>
+                </tr>
+                </thead>
+                <tbody>
+                    <#list users as usr>
+                    <tr>
+                        <td>
+                            <div class="avatar">
+                                <img src="${usr.picture}" class="img-responsive img-circle">
+                            </div>
+                        </td>
+                        <td><a href="/showUser?user_id=${usr.id}">${usr.username}</a></td>
+                        <td>${usr.firstName}</td>
+                        <td>${usr.lastName}</td>
+                    </tr>
+                    </#list>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</#macro>
