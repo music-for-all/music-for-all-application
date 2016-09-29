@@ -70,12 +70,12 @@
                                     </tr>
                                     <tr>
                                         <td><@spring.message "profilepage.Password" /></td>
-                                        <td><input id="password" class="form-control" type="text"
+                                        <td><input id="password" class="form-control" type="password"
                                                    placeholder="<@spring.message "profilepage.NewPassword" />"/></td>
                                     </tr>
                                     <tr>
                                         <td><@spring.message "profilepage.ConfirmPassword" /></td>
-                                        <td><input id="confirmPassword" class="form-control" type="text"
+                                        <td><input id="confirmPassword" class="form-control" type="password"
                                                    placeholder="<@spring.message "profilepage.ConfirmPassword" />"/>
                                         </td>
                                     </tr>
@@ -93,10 +93,10 @@
                             </div>
                         </div>
 
-                            <div class=" col-md-9 col-lg-9 ">
-                        <div class="text-success" id="success-message"></div>
-                        <div class="text-danger" id="fail-message"></div>
-                                </div>
+                        <div class=" col-md-9 col-lg-9 ">
+                            <div class="text-success" id="success-message"></div>
+                            <div class="text-danger" id="fail-message"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="panel-footer">
@@ -115,21 +115,6 @@
     </div>
 </div>
 <script type="text/javascript">
-    $("#edit").on("click", function (e) {
-        clearMessage();
-        $("#back").removeClass("hidden");
-        $("#update").removeClass("hidden");
-        $("#editProfileTable").removeClass("hidden");
-        $("#upload").removeClass("hidden");
-        $("#infoProfileTable").addClass("hidden");
-        $("#edit").addClass("hidden");
-    });
-
-    $("#back").on("click", function (e) {
-        showProfileTable();
-        $("#success-message").text('');
-        $("#fail-message").text('');
-    });
 
     function showProfileTable() {
         $("#back").addClass("hidden");
@@ -140,17 +125,47 @@
         $("#edit").removeClass("hidden");
     }
 
+    function hideProfileTable() {
+        $("#back").removeClass("hidden");
+        $("#update").removeClass("hidden");
+        $("#editProfileTable").removeClass("hidden");
+        $("#upload").removeClass("hidden");
+        $("#infoProfileTable").addClass("hidden");
+        $("#edit").addClass("hidden");
+    }
+
     function clearMessage() {
         $("#success-message").text('');
         $("#fail-message").text('');
     }
 
-    var currentUser = null;
+    function updateFields(user) {
+        document.getElementById("userPicture").src = user.picture;
+        $("#panelUsername").text(user.username);
+        $("#tdFirstName").text(user.firstName);
+        $("#tdLastName").text(user.lastName);
+        $("#tdBio").text(user.bio);
+        $("#tdEmail").text(user.email);
+        $("#username").val(user.username);
+        $("#firstName").val(user.firstName);
+        $("#lastName").val(user.lastName);
+        $("#user_profile_bio").text(user.bio);
+    }
 
-    $("#update").on("click", function (e) {
-        updateData().then(function () {
-            currentUser = null;
-            updateFields();
+    $("#edit").on("click", function () {
+        clearMessage();
+        hideProfileTable();
+    });
+
+    $("#back").on("click", function () {
+        showProfileTable();
+        $("#success-message").text('');
+        $("#fail-message").text('');
+    });
+
+    $("#update").on("click", function () {
+        updateData().then(function (user) {
+            updateFields(user);
             $("#success-message").text("Updated");
             showProfileTable();
         }, function () {
@@ -158,37 +173,10 @@
         });
     });
 
-    function updateFields() {
-        if (currentUser === null) {
-            getCurrentUser().then(function (user) {
-                currentUser = user;
-                $("#panelUsername").text(user.username);
-                $("#tdFirstName").text(user.firstName);
-                $("#tdLastName").text(user.lastName);
-                $("#tdBio").text(user.bio);
-                $("#tdEmail").text(user.email);
-                document.getElementById("userPicture").src = user.picture;
-                $("#username").val(user.username);
-                $("#firstName").val(user.firstName);
-                $("#lastName").val(user.lastName);
-                $("#user_profile_bio").text(user.bio);
-            });
-        } else {
-            $("#panelUsername").text(currentUser.username);
-            $("#tdFirstName").text(currentUser.firstName);
-            $("#tdLastName").text(currentUser.lastName);
-            $("#tdBio").text(currentUser.bio);
-            $("#tdEmail").text(currentUser.email);
-            document.getElementById("userPicture").src = currentUser.picture;
-            $("#username").val(user.username);
-            $("#firstName").val(user.firstName);
-            $("#lastName").val(user.lastName);
-            $("#user_profile_bio").text(user.bio);
-        }
-    }
-
     $(document).ready(function () {
-        updateFields();
+        getCurrentUser().then(function (user) {
+            updateFields(user);
+        });
     });
 </script>
 </@m.body>
