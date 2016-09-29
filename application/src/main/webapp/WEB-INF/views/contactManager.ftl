@@ -76,7 +76,7 @@
             <i class="fa fa-user" aria-hidden="true"></i>
         </td>
         <td>
-            <%= contact.username %>
+            <a href="/showUser?user_id=<%= contact.id %>"><%= contact.username %></a>
         </td>
         <td>
             <button type="button" class="btn btn-default" onclick="unsubscribe('<%= contact.id %>')">
