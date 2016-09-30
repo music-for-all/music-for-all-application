@@ -63,9 +63,9 @@ public class StreamController {
 
     @RequestMapping(method = GET)
     public ResponseEntity getStreams(@RequestParam("ids[]") Collection<Integer> userIds) {
-        final List<User> users = userService.getUsersById(userIds);
+        final List<User> users = userService.getUsersWithOptionsByIds(userIds);
         final Map<Integer, Track> userToTrack = users.stream()
-                .filter(u -> u.getConfig() != null && u.getConfig().isPublicRadio())
+                .filter(u -> u.getOptions() != null && u.getOptions().isPublicRadio())
                 .map(User::getId)
                 .collect(HashMap::new, ((m, id) -> {
                     final Track track = cache.get(id);

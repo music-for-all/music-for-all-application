@@ -20,10 +20,19 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 /**
  * Created by ilianik on 11.06.2016.
  */
+@NamedQueries(
+        {
+                @NamedQuery(
+                        name = User.USERS_BY_IDS_WITH_OPTIONS_QUERY,
+                        query = "from User u left join fetch u.options where u.id in (:ids)"
+                )
+        }
+)
 @Entity
 @Table(name = "users")
 public class User implements SocialUserDetails, Serializable {
 
+    public static final String USERS_BY_IDS_WITH_OPTIONS_QUERY = "users_by_ids_with_options";
     private static final long serialVersionUID = 1959293141381203004L;
 
     @Id
@@ -48,9 +57,9 @@ public class User implements SocialUserDetails, Serializable {
 
     private String lastName;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @Cascade({SAVE_UPDATE, DELETE})
-    private UserConfig config;
+    private UserOptions options;
 
     public User() {
     }
@@ -123,12 +132,12 @@ public class User implements SocialUserDetails, Serializable {
         return email;
     }
 
-    public UserConfig getConfig() {
-        return config;
+    public UserOptions getOptions() {
+        return options;
     }
 
-    public void setConfig(UserConfig config) {
-        this.config = config;
+    public void setOptions(UserOptions options) {
+        this.options = options;
     }
 
     @Override

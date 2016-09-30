@@ -151,10 +151,10 @@
             <span class="glyphicon num-likes" aria-hidden="true"></span>
         </td>
         <td>
-            <%= data.name %>
+            <%= data.artist.name %>
         </td>
         <td>
-            <%= data.artist %>
+            <%= data.name %>
         </td>
         <td>
             <audio id="audio_<%= track.id %>" controls preload="none">

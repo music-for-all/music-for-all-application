@@ -11,8 +11,8 @@ import java.util.Objects;
  * @author ENikolskiy.
  */
 @Entity
-@Table(name = "user_config")
-public class UserConfig implements Serializable {
+@Table(name = "user_options")
+public class UserOptions implements Serializable {
 
     @Id
     @Column(name = Constants.ID)
@@ -24,10 +24,10 @@ public class UserConfig implements Serializable {
     @Column
     private String picture;
 
-    public UserConfig() {
+    public UserOptions() {
     }
 
-    public UserConfig(boolean isPublicRadio, String picture) {
+    public UserOptions(boolean isPublicRadio, String picture) {
         this.isPublicRadio = isPublicRadio;
         this.picture = picture;
     }
@@ -61,7 +61,7 @@ public class UserConfig implements Serializable {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final UserConfig other = (UserConfig) obj;
+        final UserOptions other = (UserOptions) obj;
         return Objects.equals(this.isPublicRadio, other.isPublicRadio);
     }
 

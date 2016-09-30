@@ -15,9 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Pukho on 16.06.2016.
@@ -39,6 +37,11 @@ public class UserServiceImpl implements UserService {
         /* Encode the password before saving the user. */
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         dao.save(user);
+    }
+
+    @Override
+    public Collection<User> saveAll(Collection<User> users) {
+        return dao.saveAll(users);
     }
 
     @Override
@@ -86,6 +89,13 @@ public class UserServiceImpl implements UserService {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
                 .add(disjunction);
         return dao.getAllBy(detachedCriteria);
+    }
+
+    @Override
+    public List<User> getUsersWithOptionsByIds(Collection<Integer> ids) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("ids", ids);
+        return dao.getAllByNamedQuery(User.class, User.USERS_BY_IDS_WITH_OPTIONS_QUERY, params);
     }
 
     @Override

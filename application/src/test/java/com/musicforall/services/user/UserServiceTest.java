@@ -1,6 +1,7 @@
 package com.musicforall.services.user;
 
 import com.musicforall.model.user.User;
+import com.musicforall.model.user.UserOptions;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,10 +18,9 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
+import static org.junit.Assert.*;
 
 /**
  * Created by Pukho on 22.06.2016.
@@ -34,12 +34,10 @@ import static org.junit.Assert.assertNull;
 public class UserServiceTest {
 
     public static final String USER_EMAIL_1 = "user@example.com";
-
     public static final String USER_1 = "user";
-
     public static final String USER_NOT_EXIST = "user_not_exist";
-
     public static final String USER_EMAIL = "user1@gmail.com";
+    public static final String PASSWORD = "password";
 
     @Autowired
     private UserService userService;
@@ -106,9 +104,9 @@ public class UserServiceTest {
 
     @Test
     public void testGetUsersById() {
-        final User user1 = new User("Johnny", "password", "tests@example.com");
-        final User user2 = new User("Abc", "password", "abc@example.com");
-        final User user3 = new User("Spock", "123455", "mail2@example.com");
+        final User user1 = new User("Johnny", PASSWORD, "tests@example.com");
+        final User user2 = new User("Abc", PASSWORD, "abc@example.com");
+        final User user3 = new User("Spock", PASSWORD, "mail2@example.com");
         final List<Integer> users = new ArrayList<>();
         userService.save(user1);
         users.add(user1.getId());
@@ -125,9 +123,29 @@ public class UserServiceTest {
 
     @Test
     public void testLoadUserByUserId() {
-        final User user1 = new User("C_3PO", "password", "c_3po@example.com");
+        final User user1 = new User("C_3PO", PASSWORD, "c_3po@example.com");
         userService.save(user1);
 
         assertNotNull(userService.loadUserByUserId(user1.getEmail()));
+    }
+
+    @Test
+    public void testGetUsersWithOptions() {
+        final UserOptions defaultOptions = new UserOptions(true, "link");
+        final User user1 = new User(USER_1, PASSWORD, "mail1@example.com");
+        final User user2 = new User(USER_1, PASSWORD, "mail2@example.com");
+        final User user3 = new User(USER_1, PASSWORD, "mail3@example.com");
+
+        final List<User> users = asList(user1, user2, user3);
+        users.forEach(user -> user.setOptions(defaultOptions));
+        userService.saveAll(users);
+
+        final List<Integer> userIds = users.stream().map(User::getId).collect(toList());
+        final List<User> usersWithOptions = userService.getUsersWithOptionsByIds(userIds);
+
+        final boolean match = usersWithOptions.stream()
+                .filter(u -> defaultOptions.equals(u.getOptions()))
+                .allMatch(user -> userIds.contains(user.getId()));
+        assertTrue(match);
     }
 }

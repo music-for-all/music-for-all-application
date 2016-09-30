@@ -14,6 +14,8 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
 
     void save(User user);
 
+    Collection<User> saveAll(Collection<User> users);
+
     User get(Integer userId);
 
     Integer getIdByEmail(String email);
@@ -25,6 +27,8 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
     List<User> findAll();
 
     List<User> getUsersById(Collection<Integer> usersId);
+
+    List<User> getUsersWithOptionsByIds(Collection<Integer> ids);
 
     List<User> getUsersByUsername(String username);
 }
