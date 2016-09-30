@@ -3,6 +3,7 @@ package com.musicforall.services.feed;
 import com.musicforall.dto.feed.Feed;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
+import com.musicforall.model.Artist;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
@@ -38,6 +39,7 @@ public class FeedServiceTest {
     private static final int USER1_ID = 2;
     private static final int USER_ID = 1;
     private static final String TEST_MESSAGE = "Test message ";
+    static final String TRACKNAME_FORMAT = "{0}-{1}";
 
     @Mock
     private UserService userService;
@@ -65,6 +67,9 @@ public class FeedServiceTest {
 
     @Mock
     private Track track;
+
+    @Mock
+    private Artist artist;
 
     @Mock
     private Playlist playlist;
@@ -98,7 +103,8 @@ public class FeedServiceTest {
         when(playlistService.getAllByIds(any())).thenReturn(Arrays.asList(playlist));
         when(track.getId()).thenReturn(TRACK_ID);
         when(playlist.getId()).thenReturn(PLAYLIST_ID);
-        when(track.getEntireName()).thenReturn("Ray Charles – Mess around");
+        when(artist.getArtistName()).thenReturn("Ray Charles");
+        when(track.getTitle()).thenReturn("Mess around");
         when(playlist.getName()).thenReturn("Jazz");
         when(user.getId()).thenReturn(USER1_ID);
         when(messageSource.getMessage(any(), any(), any())).thenReturn(TEST_MESSAGE);

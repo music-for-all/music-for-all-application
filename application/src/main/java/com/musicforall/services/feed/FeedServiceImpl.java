@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 public class FeedServiceImpl implements FeedService {
 
     static final String FEED_FORMAT = "{0} {1}";
+    static final String TRACKNAME_FORMAT = "{0}-{1}";
 
     @Autowired
     private FollowerService followerService;
@@ -107,41 +108,46 @@ public class FeedServiceImpl implements FeedService {
                         Collectors.mapping(h -> {
                             if (h.getEventType().isTrackEvent()) {
                                 return generateContent(h.getEventType(),
-                                        tracksByIds.get(h.getTrackId()).getEntireName(), h.getDate());
+                                        MessageFormat.format(TRACKNAME_FORMAT,
+                                                tracksByIds.get(h.getTrackId()).getArtist().getArtistName(),
+                                                tracksByIds.get(h.getTrackId()).getTitle()),
+                                        h.getDate());
                             } else if (h.getEventType().isPlaylistEvent()) {
                                 return generateContent(h.getEventType(),
-                                        playlistsByIds.get(h.getPlaylistId()).getName(), h.getDate());
+                                        playlistsByIds.get(h.getPlaylistId()).getName(),
+                                        h.getDate());
                             }
                             return null;
                         }, Collectors.toCollection(ArrayList::new))));
     }
 
     private Feed generateContent(EventType eventType, String target, Date date) {
+        Object[] params = new Object[]{target};
         switch (eventType) {
             case TRACK_LISTENED:
-                return new Feed(MessageFormat.format(FEED_FORMAT,
-                        messageSource.getMessage("followingpage.listenedTrack", null,
-                                LocaleContextHolder.getLocale()), target), date);
+                return new Feed(
+                        messageSource.getMessage("followingpage.listenedTrack", params,
+                                LocaleContextHolder.getLocale()), date);
             case TRACK_LIKED:
-                return new Feed(MessageFormat.format(FEED_FORMAT,
-                        messageSource.getMessage("followingpage.likedTrack", null,
-                                LocaleContextHolder.getLocale()), target), date);
+                return new Feed(
+                        messageSource.getMessage("followingpage.likedTrack", params,
+                                LocaleContextHolder.getLocale()), date);
             case TRACK_ADDED:
-                return new Feed(MessageFormat.format(FEED_FORMAT,
-                        messageSource.getMessage("followingpage.addedTrack", null,
-                                LocaleContextHolder.getLocale()), target), date);
+                return new Feed(
+                        messageSource.getMessage("followingpage.addedTrack", params,
+                                LocaleContextHolder.getLocale()), date);
             case TRACK_DELETED:
-                return new Feed(MessageFormat.format(FEED_FORMAT,
-                        messageSource.getMessage("followingpage.deletedTrack", null,
-                                LocaleContextHolder.getLocale()), target), date);
+                return new Feed(
+                        messageSource.getMessage("followingpage.deletedTrack", params,
+                                LocaleContextHolder.getLocale()), date);
             case PLAYLIST_ADDED:
-                return new Feed(MessageFormat.format(FEED_FORMAT,
-                        messageSource.getMessage("followingpage.addedPlaylist", null,
-                                LocaleContextHolder.getLocale()), target), date);
+                return new Feed(
+                        messageSource.getMessage("followingpage.addedPlaylist", params,
+                                LocaleContextHolder.getLocale()), date);
             case PLAYLIST_DELETED:
-                return new Feed(MessageFormat.format(FEED_FORMAT,
-                        messageSource.getMessage("followingpage.deletedPlaylist", null,
-                                LocaleContextHolder.getLocale()), target), date);
+                return new Feed(
+                        messageSource.getMessage("followingpage.deletedPlaylist", params,
+                                LocaleContextHolder.getLocale()), date);
             default:
                 return null;
         }
