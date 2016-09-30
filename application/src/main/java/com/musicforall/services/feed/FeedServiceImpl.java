@@ -4,6 +4,7 @@ import com.musicforall.dto.feed.Feed;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
+import com.musicforall.model.Artist;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
@@ -106,10 +107,11 @@ public class FeedServiceImpl implements FeedService {
                         LinkedHashMap::new,
                         Collectors.mapping(h -> {
                             if (h.getEventType().isTrackEvent()) {
+                                Track track = tracksByIds.get(h.getTrackId());
                                 return generateContent(h.getEventType(),
-                                        MessageFormat.format(TRACKNAME_FORMAT,
-                                                tracksByIds.get(h.getTrackId()).getArtist().getArtistName(),
-                                                tracksByIds.get(h.getTrackId()).getTitle()),
+                                        formatTrack(
+                                                track.getArtist(),
+                                                track.getTitle()),
                                         h.getDate());
                             } else if (h.getEventType().isPlaylistEvent()) {
                                 return generateContent(h.getEventType(),
@@ -118,6 +120,17 @@ public class FeedServiceImpl implements FeedService {
                             }
                             return null;
                         }, Collectors.toCollection(ArrayList::new))));
+    }
+
+    private String formatTrack(Object... arguments) {
+        Artist artist = (Artist) arguments[0];
+        if (artist == null) {
+            arguments[0] = messageSource.getMessage("followingpage.unknown", null,
+                    LocaleContextHolder.getLocale());
+        } else {
+            arguments[0] = artist.getArtistName();
+        }
+        return MessageFormat.format(TRACKNAME_FORMAT, arguments);
     }
 
     private Feed generateContent(EventType eventType, String target, Date date) {
