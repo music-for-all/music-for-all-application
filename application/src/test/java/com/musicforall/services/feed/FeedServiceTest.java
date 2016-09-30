@@ -37,7 +37,7 @@ public class FeedServiceTest {
     private static final int PLAYLIST_ID = 111;
     private static final int USER1_ID = 2;
     private static final int USER_ID = 1;
-    private static final String TEST_MESSAGE = "Test message";
+    private static final String TEST_MESSAGE = "Test message ";
 
     @Mock
     private UserService userService;
