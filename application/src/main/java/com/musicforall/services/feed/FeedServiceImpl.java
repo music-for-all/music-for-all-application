@@ -31,8 +31,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class FeedServiceImpl implements FeedService {
 
-    static final String FEED_FORMAT = "{0} {1}";
-    static final String TRACKNAME_FORMAT = "{0}-{1}";
+    static final String TRACKNAME_FORMAT = "{0} - {1}";
 
     @Autowired
     private FollowerService followerService;

@@ -39,7 +39,7 @@ public class FeedServiceTest {
     private static final int USER1_ID = 2;
     private static final int USER_ID = 1;
     private static final String TEST_MESSAGE = "Test message ";
-    static final String TRACKNAME_FORMAT = "{0}-{1}";
+    static final String TRACKNAME_FORMAT = "{0} - {1}";
 
     @Mock
     private UserService userService;
