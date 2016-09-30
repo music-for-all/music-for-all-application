@@ -31,11 +31,7 @@
                                 </tr>
                                 <tr>
                                     <td><@spring.message "profilepage.LastName" /></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><@spring.message "profilepage.Email" /></td>
-                                    <td></td>
+                                    <td id="artist-bio"></td>
                                 </tr>
                                 </tbody>
                             </table>
