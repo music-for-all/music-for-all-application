@@ -12,9 +12,9 @@ public class Feed {
     private final Date date;
     private final String content;
 
-    public Feed(String message, String target, Date date) {
+    public Feed(String content, Date date) {
         this.date = date;
-        this.content = message + " " + target;
+        this.content = content;
     }
 
     public Date getDate() {

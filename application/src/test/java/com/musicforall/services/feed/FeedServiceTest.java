@@ -37,7 +37,7 @@ public class FeedServiceTest {
     private static final int PLAYLIST_ID = 111;
     private static final int USER1_ID = 2;
     private static final int USER_ID = 1;
-    private static final String testMessage = "Test message";
+    private static final String TEST_MESSAGE = "Test message";
 
     @Mock
     private UserService userService;
@@ -101,16 +101,16 @@ public class FeedServiceTest {
         when(track.getEntireName()).thenReturn("Ray Charles – Mess around");
         when(playlist.getName()).thenReturn("Jazz");
         when(user.getId()).thenReturn(USER1_ID);
-        when(messageSource.getMessage(any(), any(), any())).thenReturn(testMessage);
+        when(messageSource.getMessage(any(), any(), any())).thenReturn(TEST_MESSAGE);
 
         final Map<User, Collection<Feed>> followingHistories = feedService.getGroupedFollowingFeeds(USER_ID);
 
-        final Feed feed1 = new Feed(testMessage, "Ray Charles – Mess around", history1.getDate());
-        final Feed feed2 = new Feed(testMessage, "Ray Charles – Mess around", history2.getDate());
-        final Feed feed3 = new Feed(testMessage, "Ray Charles – Mess around", history3.getDate());
-        final Feed feed4 = new Feed(testMessage, "Ray Charles – Mess around", history4.getDate());
-        final Feed feed5 = new Feed(testMessage, "Jazz", history5.getDate());
-        final Feed feed6 = new Feed(testMessage, "Jazz", history6.getDate());
+        final Feed feed1 = new Feed(TEST_MESSAGE + "Ray Charles – Mess around", history1.getDate());
+        final Feed feed2 = new Feed(TEST_MESSAGE + "Ray Charles – Mess around", history2.getDate());
+        final Feed feed3 = new Feed(TEST_MESSAGE + "Ray Charles – Mess around", history3.getDate());
+        final Feed feed4 = new Feed(TEST_MESSAGE + "Ray Charles – Mess around", history4.getDate());
+        final Feed feed5 = new Feed(TEST_MESSAGE + "Jazz", history5.getDate());
+        final Feed feed6 = new Feed(TEST_MESSAGE + "Jazz", history6.getDate());
 
         List<Feed> feeds = Arrays.asList(feed1, feed2, feed3, feed4, feed5, feed6);
 

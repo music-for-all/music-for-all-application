@@ -18,6 +18,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -29,6 +30,8 @@ import java.util.stream.Collectors;
 @Service("feedService")
 @Transactional
 public class FeedServiceImpl implements FeedService {
+
+    static final String FEED_FORMAT = "{0} {1}";
 
     @Autowired
     private FollowerService followerService;
@@ -116,23 +119,29 @@ public class FeedServiceImpl implements FeedService {
     private Feed generateContent(EventType eventType, String target, Date date) {
         switch (eventType) {
             case TRACK_LISTENED:
-                return new Feed(messageSource.getMessage("followingpage.listenedTrack", null,
-                        LocaleContextHolder.getLocale()), target, date);
+                return new Feed(MessageFormat.format(FEED_FORMAT,
+                        messageSource.getMessage("followingpage.listenedTrack", null,
+                                LocaleContextHolder.getLocale()), target), date);
             case TRACK_LIKED:
-                return new Feed(messageSource.getMessage("followingpage.likedTrack", null,
-                        LocaleContextHolder.getLocale()), target, date);
+                return new Feed(MessageFormat.format(FEED_FORMAT,
+                        messageSource.getMessage("followingpage.likedTrack", null,
+                                LocaleContextHolder.getLocale()), target), date);
             case TRACK_ADDED:
-                return new Feed(messageSource.getMessage("followingpage.addedTrack", null,
-                        LocaleContextHolder.getLocale()), target, date);
+                return new Feed(MessageFormat.format(FEED_FORMAT,
+                        messageSource.getMessage("followingpage.addedTrack", null,
+                                LocaleContextHolder.getLocale()), target), date);
             case TRACK_DELETED:
-                return new Feed(messageSource.getMessage("followingpage.deletedTrack", null,
-                        LocaleContextHolder.getLocale()), target, date);
+                return new Feed(MessageFormat.format(FEED_FORMAT,
+                        messageSource.getMessage("followingpage.deletedTrack", null,
+                                LocaleContextHolder.getLocale()), target), date);
             case PLAYLIST_ADDED:
-                return new Feed(messageSource.getMessage("followingpage.addedPlaylist", null,
-                        LocaleContextHolder.getLocale()), target, date);
+                return new Feed(MessageFormat.format(FEED_FORMAT,
+                        messageSource.getMessage("followingpage.addedPlaylist", null,
+                                LocaleContextHolder.getLocale()), target), date);
             case PLAYLIST_DELETED:
-                return new Feed(messageSource.getMessage("followingpage.deletedPlaylist", null,
-                        LocaleContextHolder.getLocale()), target, date);
+                return new Feed(MessageFormat.format(FEED_FORMAT,
+                        messageSource.getMessage("followingpage.deletedPlaylist", null,
+                                LocaleContextHolder.getLocale()), target), date);
             default:
                 return null;
         }
