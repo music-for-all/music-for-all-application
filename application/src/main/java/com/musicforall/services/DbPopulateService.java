@@ -166,6 +166,9 @@ public class DbPopulateService {
                     })
                     .collect(toList());
 
+            final Artist artist = new Artist("The Beatles");
+            artistService.save(artist);
+
             final Playlist playlist = new Playlist("Hype", new HashSet<>(tracks), user);
             playlistService.save(playlist);
 
