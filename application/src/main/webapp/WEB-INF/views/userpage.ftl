@@ -34,17 +34,7 @@
             </div>
 
             <div class="profile-playlists">
-                <ul class="nav">
-                    <li>
-                        <a href="#">Playlist 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Playlist 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Playlist 3</a>
-                    </li>
-                </ul>
+              <@m.playlistRow playlists></@m.playlistRow>
             </div>
         </div>
         <div class="col-md-9">
@@ -54,5 +44,11 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $('li > a').click(function() {
+        $('li').removeClass();
+        $(this).parent().addClass('active');
+    });
+</script>
 </@m.body>
 </html>

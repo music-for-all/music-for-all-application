@@ -176,3 +176,15 @@
     </li>
 </script>
 </#macro>
+
+<#macro playlistRow playlists>
+<ul class="nav nav-pills nav-stacked">
+    <#list playlists as playlist>
+    <li>
+        <a href="#">
+            ${playlist.name}
+        </a>
+    </li>
+    </#list>
+</ul>
+</#macro>

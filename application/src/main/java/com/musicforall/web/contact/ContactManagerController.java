@@ -58,6 +58,7 @@ public class ContactManagerController {
         model.addAttribute("user", userService.get(user_id));
         model.addAttribute("followers", followers);
         model.addAttribute("following", following);
+        model.addAttribute("playlists", playlistService.getAllUserPlaylists(user_id));
         return "userpage";
     }
 }
