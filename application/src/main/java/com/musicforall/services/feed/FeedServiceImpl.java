@@ -58,7 +58,7 @@ public class FeedServiceImpl implements FeedService {
     public Map<User, Collection<Feed>> getGroupedFollowingFeeds(Integer userId) {
         final Collection<Integer> usersIds = followerService.getFollowingId(userId);
         final Collection<History> usersHistories = historyService.getUsersHistories(usersIds);
-        final List<Integer> tracksIds = getTrackIds(usersHistories);
+        final List<Integer> tracksIds = getTracksIds(usersHistories);
         final List<Integer> playlistsIds = getPlaylistIds(usersHistories);
 
         final Map<Integer, User> usersByIds = getUsersByIds(usersIds);
@@ -68,7 +68,7 @@ public class FeedServiceImpl implements FeedService {
         return getFeedsFromHistories(usersHistories, usersByIds, tracksByIds, playlistsByIds);
     }
 
-    private List<Integer> getTrackIds(Collection<History> usersHistories) {
+    private List<Integer> getTracksIds(Collection<History> usersHistories) {
         return usersHistories.stream()
                 .filter(h -> h.getEventType().isTrackEvent())
                 .map(History::getTrackId)
@@ -107,11 +107,8 @@ public class FeedServiceImpl implements FeedService {
                         LinkedHashMap::new,
                         Collectors.mapping(h -> {
                             if (h.getEventType().isTrackEvent()) {
-                                Track track = tracksByIds.get(h.getTrackId());
                                 return generateContent(h.getEventType(),
-                                        formatTrack(
-                                                track.getArtist(),
-                                                track.getTitle()),
+                                        formatTrack(tracksByIds.get(h.getTrackId())),
                                         h.getDate());
                             } else if (h.getEventType().isPlaylistEvent()) {
                                 return generateContent(h.getEventType(),
@@ -122,14 +119,16 @@ public class FeedServiceImpl implements FeedService {
                         }, Collectors.toCollection(ArrayList::new))));
     }
 
-    private String formatTrack(Object... arguments) {
-        Artist artist = (Artist) arguments[0];
+    private String formatTrack(Track track) {
+        Artist artist = track.getArtist();
+        List<String> arguments = new ArrayList<String>();
         if (artist == null) {
-            arguments[0] = messageSource.getMessage("followingpage.unknown", null,
-                    LocaleContextHolder.getLocale());
+            arguments.add(messageSource.getMessage("followingpage.unknown", null,
+                    LocaleContextHolder.getLocale()));
         } else {
-            arguments[0] = artist.getArtistName();
+            arguments.add(artist.getArtistName());
         }
+        arguments.add(track.getTitle());
         return MessageFormat.format(TRACKNAME_FORMAT, arguments);
     }
 

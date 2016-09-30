@@ -110,19 +110,15 @@ public class FeedServiceTest {
 
         final Map<User, Collection<Feed>> followingHistories = feedService.getGroupedFollowingFeeds(USER_ID);
 
-        final Feed feed1 = new Feed(TEST_MESSAGE + "Ray Charles – Mess around", history1.getDate());
-        final Feed feed2 = new Feed(TEST_MESSAGE + "Ray Charles – Mess around", history2.getDate());
-        final Feed feed3 = new Feed(TEST_MESSAGE + "Ray Charles – Mess around", history3.getDate());
-        final Feed feed4 = new Feed(TEST_MESSAGE + "Ray Charles – Mess around", history4.getDate());
-        final Feed feed5 = new Feed(TEST_MESSAGE + "Jazz", history5.getDate());
-        final Feed feed6 = new Feed(TEST_MESSAGE + "Jazz", history6.getDate());
+        final Feed feed1 = new Feed(TEST_MESSAGE, history1.getDate());
+        final Feed feed2 = new Feed(TEST_MESSAGE, history2.getDate());
+        final Feed feed3 = new Feed(TEST_MESSAGE, history3.getDate());
+        final Feed feed4 = new Feed(TEST_MESSAGE, history4.getDate());
+        final Feed feed5 = new Feed(TEST_MESSAGE, history5.getDate());
+        final Feed feed6 = new Feed(TEST_MESSAGE, history6.getDate());
 
         List<Feed> feeds = Arrays.asList(feed1, feed2, feed3, feed4, feed5, feed6);
 
         assertTrue(followingHistories.get(user).stream().allMatch(feeds::contains));
-        assertTrue(followingHistories.get(user).stream()
-                .allMatch(f -> f.getContent().equals("Test message Ray Charles – Mess around") ||
-                                f.getContent().equals("Test message Jazz")
-                ));
     }
 }
