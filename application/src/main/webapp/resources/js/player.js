@@ -20,44 +20,44 @@ jQuery(document).ready(function () {
 
     function changeActiveTrackRow(currentRow) {
         startTrack(currentRow[0].id);
-        $(".tracks-table tr").removeClass("active").removeClass("current");
-        $(currentRow).closest("tr").addClass("active").addClass("current");
+        $(".tracks-table tr").removeClass("playing").removeClass("active");
+        $(currentRow).closest("tr").addClass("playing").addClass("active");
     }
 
     $(".tracks-table").on("click", ".play-button", function () {
         var $trackHtml = $(this).closest("tr");
-        if ($('tr.current') != $trackHtml) {
+        if ($('tr.active') != $trackHtml) {
             changeActiveTrackRow($trackHtml);
         } else {
             player.resume();
-            $(this).closest("tr").addClass("active");
+            $(this).closest("tr").addClass("playing");
         }
     });
 
     $(".tracks-table").on("click", ".pause-button", function () {
         player.pause();
-        $(this).closest("tr").removeClass("active");
+        $(this).closest("tr").removeClass("playing");
     });
 
     $('#nextFooterBtn').bind('click', function() {
-        if ($("tr.current").next().attr("id")) {
-            changeActiveTrackRow($("tr.current").next());
+        if ($("tr.active").next().attr("id")) {
+            changeActiveTrackRow($("tr.active").next());
         }
     });
 
     $('#prevFooterBtn').bind('click', function() {
-        if ($("tr.current").prev().attr("id")) {
-            changeActiveTrackRow($("tr.current").prev());
+        if ($("tr.active").prev().attr("id")) {
+            changeActiveTrackRow($("tr.active").prev());
         }
     });
 
     $('#playFooterBtn').bind('click', function() {
         player.resume();
-        $("tr.current").addClass("active");
+        $("tr.active").addClass("playing");
     });
 
     $('#pauseFooterBtn').bind('click', function() {
         player.pause();
-        $("tr.current").removeClass("active");
+        $("tr.active").removeClass("playing");
     });
 });
