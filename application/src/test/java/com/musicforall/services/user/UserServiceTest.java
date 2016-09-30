@@ -104,9 +104,9 @@ public class UserServiceTest {
 
     @Test
     public void testGetUsersById() {
-        final User user1 = new User("Johnny", PASSWORD, "tests@example.com");
-        final User user2 = new User("Abc", PASSWORD, "abc@example.com");
-        final User user3 = new User("Spock", PASSWORD, "mail2@example.com");
+        final User user1 = new User("Johnny", PASSWORD, "testGetUsersById1@example.com");
+        final User user2 = new User("Abc", PASSWORD, "testGetUsersById2@example.com");
+        final User user3 = new User("Spock", PASSWORD, "testGetUsersById3@example.com");
         final List<Integer> users = new ArrayList<>();
         userService.save(user1);
         users.add(user1.getId());
