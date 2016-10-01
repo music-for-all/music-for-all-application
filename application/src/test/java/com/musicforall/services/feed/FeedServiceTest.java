@@ -21,6 +21,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.MessageSource;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.musicforall.history.handlers.events.EventType.*;
 import static junit.framework.Assert.assertTrue;
@@ -110,14 +111,10 @@ public class FeedServiceTest {
 
         final Map<User, Collection<Feed>> followingHistories = feedService.getGroupedFollowingFeeds(USER_ID);
 
-        final Feed feed1 = new Feed(TEST_MESSAGE, history1.getDate());
-        final Feed feed2 = new Feed(TEST_MESSAGE, history2.getDate());
-        final Feed feed3 = new Feed(TEST_MESSAGE, history3.getDate());
-        final Feed feed4 = new Feed(TEST_MESSAGE, history4.getDate());
-        final Feed feed5 = new Feed(TEST_MESSAGE, history5.getDate());
-        final Feed feed6 = new Feed(TEST_MESSAGE, history6.getDate());
-
-        List<Feed> feeds = Arrays.asList(feed1, feed2, feed3, feed4, feed5, feed6);
+        List<Feed> feeds = histories
+                .stream()
+                .map((h) -> new Feed(TEST_MESSAGE, h.getDate()))
+                .collect(Collectors.toList());
 
         assertTrue(followingHistories.get(user).stream().allMatch(feeds::contains));
     }

@@ -121,15 +121,12 @@ public class FeedServiceImpl implements FeedService {
 
     private String formatTrack(Track track) {
         final Artist artist = track.getArtist();
-        List<String> arguments = new ArrayList<>();
         if (artist == null) {
-            arguments.add(messageSource.getMessage("followingpage.unknown", null,
-                    LocaleContextHolder.getLocale()));
-        } else {
-            arguments.add(artist.getArtistName());
+            return MessageFormat.format(TRACKNAME_FORMAT,
+                    messageSource.getMessage("followingpage.unknown", null, LocaleContextHolder.getLocale()),
+                    track.getTitle());
         }
-        arguments.add(track.getTitle());
-        return MessageFormat.format(TRACKNAME_FORMAT, arguments.get(0), arguments.get(1));
+        return MessageFormat.format(TRACKNAME_FORMAT, artist.getArtistName(), track.getTitle());
     }
 
     private Feed generateContent(EventType eventType, String target, Date date) {
