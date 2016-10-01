@@ -13,8 +13,6 @@ public class ProfileData {
 
     private String password;
 
-    private String picture;
-
     private String firstName;
 
     private String lastName;
@@ -25,11 +23,10 @@ public class ProfileData {
     public ProfileData() {
     }
 
-    public ProfileData(String username, String password, String picture, String firstName,
+    public ProfileData(String username, String password, String firstName,
                        String lastName, String bio) {
         this.username = username;
         this.password = password;
-        this.picture = picture;
         this.firstName = firstName;
         this.lastName = lastName;
         this.bio = bio;
@@ -41,14 +38,6 @@ public class ProfileData {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
     }
 
     public String getFirstName() {
@@ -90,9 +79,6 @@ public class ProfileData {
         if (password != null) {
             currentUser.setPassword(password);
         }
-        if (picture != null) {
-            currentUser.setPicture(picture);
-        }
         if (firstName != null) {
             currentUser.setFirstName(firstName);
         }
@@ -110,7 +96,6 @@ public class ProfileData {
         return "ProfileData{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", picture='" + picture + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", bio='" + bio + '\'' +
