@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class FeedServiceImpl implements FeedService {
 
-    static final String TRACKNAME_FORMAT = "{0} - {1}";
+    private static final String TRACKNAME_FORMAT = "{0} - {1}";
 
     @Autowired
     private FollowerService followerService;
@@ -120,8 +120,8 @@ public class FeedServiceImpl implements FeedService {
     }
 
     private String formatTrack(Track track) {
-        Artist artist = track.getArtist();
-        List<String> arguments = new ArrayList<String>();
+        final Artist artist = track.getArtist();
+        List<String> arguments = new ArrayList<>();
         if (artist == null) {
             arguments.add(messageSource.getMessage("followingpage.unknown", null,
                     LocaleContextHolder.getLocale()));
@@ -129,11 +129,11 @@ public class FeedServiceImpl implements FeedService {
             arguments.add(artist.getArtistName());
         }
         arguments.add(track.getTitle());
-        return MessageFormat.format(TRACKNAME_FORMAT, arguments);
+        return MessageFormat.format(TRACKNAME_FORMAT, arguments.get(0), arguments.get(1));
     }
 
     private Feed generateContent(EventType eventType, String target, Date date) {
-        Object[] params = new Object[]{target};
+        final String[] params = new String[]{target};
         switch (eventType) {
             case TRACK_LISTENED:
                 return new Feed(
