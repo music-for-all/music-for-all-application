@@ -40,7 +40,9 @@ public class DbPopulateService {
 
     private static final String OPEN_SOURCE_MUSIC_HOST = "http://opensourcemusic.com/files";
 
-    private static final String USER_PICTURE = "https://developers.google.com/experts/img/user/user-default.png";
+    private static final String USER_PICTURE_LINK = "https://developers.google.com/experts/img/user/user-default.png";
+
+    private static final String USER_PICTURE = "user-default.png";
 
     private static final String DEFAULT_NAME = "Unknown";
 
@@ -141,12 +143,13 @@ public class DbPopulateService {
 
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag("Dummy"), new Tag("Classic"), new Tag("2016")));
 
+        fileManager.clearDirectory();
         final List<Callable<Path>> tasks = LINKS.values().stream().map(DbPopulateService::toURL)
                 .filter(u -> u != null)
-                .peek(u -> LOG.info("going to save file by url - {}", u))
-                .map(url -> (Callable<Path>) () -> fileManager.save(url).get())
+                .peek(u -> LOG.info("going to saveTrack file by url - {}", u))
+                .map(url -> (Callable<Path>) () -> fileManager.saveTrack(url).get())
                 .collect(toList());
-        fileManager.clearDirectory();
+        fileManager.savePicture(toURL(USER_PICTURE_LINK));
 
         try {
             final List<Future<Path>> futures = executorService.invokeAll(tasks);
