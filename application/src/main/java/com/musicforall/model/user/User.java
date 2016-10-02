@@ -1,5 +1,7 @@
 package com.musicforall.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.musicforall.common.Constants;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.Email;
@@ -25,6 +27,10 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
                 @NamedQuery(
                         name = User.USERS_BY_IDS_WITH_OPTIONS_QUERY,
                         query = "from User u left join fetch u.options where u.id in (:ids)"
+                ),
+                @NamedQuery(
+                        name = User.USER_BY_ID_WITH_OPTIONS_QUERY,
+                        query = "from User u left join fetch u.options where u.id = :id"
                 )
         }
 )
@@ -33,6 +39,7 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 public class User implements SocialUserDetails, Serializable {
 
     public static final String USERS_BY_IDS_WITH_OPTIONS_QUERY = "users_by_ids_with_options";
+    public static final String USER_BY_ID_WITH_OPTIONS_QUERY = "user_by_id_with_options";
     private static final long serialVersionUID = 1959293141381203004L;
 
     @Id
@@ -47,6 +54,7 @@ public class User implements SocialUserDetails, Serializable {
 
     @Size(min = 4, max = 128)
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Email
@@ -87,26 +95,31 @@ public class User implements SocialUserDetails, Serializable {
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return AuthorityUtils.createAuthorityList("ROLE_USER");
     }
@@ -128,6 +141,7 @@ public class User implements SocialUserDetails, Serializable {
     }
 
     @Override
+    @JsonIgnore
     public String getUserId() {
         return email;
     }

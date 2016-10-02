@@ -30,5 +30,7 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
 
     List<User> getUsersWithOptionsByIds(Collection<Integer> ids);
 
+    User getWithOptionsById(Integer id);
+
     List<User> getUsersByUsername(String username);
 }

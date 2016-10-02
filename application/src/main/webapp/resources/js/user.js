@@ -3,7 +3,7 @@
 function User() {
 
     var self = this;
-    var baseUrl = dict.contextPath + "/users";
+    var baseUrl = dict.contextPath + "/user";
 
     self.unfollow = function (id) {
         return $.when(
@@ -15,6 +15,19 @@ function User() {
 
     self.follow = function (id) {
         return $.when($.post(baseUrl + "/" + id));
+    };
+
+    self.save = function (user) {
+        return $.when(
+            $.ajax({
+                url: baseUrl,
+                type: "POST",
+                data: JSON.stringify(user),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            }));
     };
 
     self.getFollowers = function () {

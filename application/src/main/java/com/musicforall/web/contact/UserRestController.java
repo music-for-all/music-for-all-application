@@ -9,23 +9,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.List;
 
 import static com.musicforall.util.SecurityUtil.currentUser;
 import static com.musicforall.util.SecurityUtil.currentUserId;
-import static java.util.Arrays.asList;
 
 /**
  * Created by Andrey on 7/31/16.
  */
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserRestController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserRestController.class);
@@ -38,6 +33,12 @@ public class UserRestController {
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public ResponseEntity follow(@PathVariable(Constants.ID) Integer user_id) {
         followerService.follow(currentUser().getId(), user_id);
+        return new ResponseEntity(HttpStatus.ACCEPTED);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity save(@RequestBody User user) {
+        userService.get(user.getId());
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
@@ -69,12 +70,7 @@ public class UserRestController {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
 
-        final List<User> users = userService.getUsersWithOptionsByIds(asList(currentUserId));
-        final User meWithOptions = users.stream()
-                .filter(u -> currentUserId.equals(u.getId()))
-                .findFirst()
-                .get();
-
+        final User meWithOptions = userService.getWithOptionsById(currentUserId);
         return new ResponseEntity<>(meWithOptions, HttpStatus.OK);
     }
 }

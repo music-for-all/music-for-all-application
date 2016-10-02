@@ -24,13 +24,11 @@ import java.util.*;
 @Transactional
 public class UserServiceImpl implements UserService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private Dao dao;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public void save(User user) {
@@ -96,6 +94,13 @@ public class UserServiceImpl implements UserService {
         final Map<String, Object> params = new HashMap<>();
         params.put("ids", ids);
         return dao.getAllByNamedQuery(User.class, User.USERS_BY_IDS_WITH_OPTIONS_QUERY, params);
+    }
+
+    @Override
+    public User getWithOptionsById(Integer id) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        return dao.getByNamedQuery(User.class, User.USER_BY_ID_WITH_OPTIONS_QUERY, params);
     }
 
     @Override

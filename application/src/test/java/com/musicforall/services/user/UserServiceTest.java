@@ -34,7 +34,7 @@ import static org.junit.Assert.*;
 public class UserServiceTest {
 
     public static final String USER_EMAIL_1 = "user@example.com";
-    public static final String USER_1 = "user";
+    public static final String USER = "user";
     public static final String USER_NOT_EXIST = "user_not_exist";
     public static final String USER_EMAIL = "user1@gmail.com";
     public static final String PASSWORD = "password";
@@ -98,7 +98,7 @@ public class UserServiceTest {
     @Test(expected = UsernameNotFoundException.class)
     public void testLoadUserByUsername() {
         final UserDetails user = userService.loadUserByUsername(USER_EMAIL_1);
-        assertEquals(USER_1, user.getUsername());
+        assertEquals(USER, user.getUsername());
         assertNotNull(userService.loadUserByUsername(USER_NOT_EXIST));
     }
 
@@ -132,9 +132,9 @@ public class UserServiceTest {
     @Test
     public void testGetUsersWithOptions() {
         final UserOptions defaultOptions = new UserOptions(true, "link");
-        final User user1 = new User(USER_1, PASSWORD, "mail1@example.com");
-        final User user2 = new User(USER_1, PASSWORD, "mail2@example.com");
-        final User user3 = new User(USER_1, PASSWORD, "mail3@example.com");
+        final User user1 = new User(USER, PASSWORD, "mail1@example.com");
+        final User user2 = new User(USER, PASSWORD, "mail2@example.com");
+        final User user3 = new User(USER, PASSWORD, "mail3@example.com");
 
         final List<User> users = asList(user1, user2, user3);
         users.forEach(user -> user.setOptions(defaultOptions));
@@ -147,5 +147,16 @@ public class UserServiceTest {
                 .filter(u -> defaultOptions.equals(u.getOptions()))
                 .allMatch(user -> userIds.contains(user.getId()));
         assertTrue(match);
+    }
+
+    @Test
+    public void testGetUserWithOptions() {
+        final UserOptions options = new UserOptions(true, "link");
+        User user = new User(USER, PASSWORD, "testGetUserWithOptions@test.com");
+        user.setOptions(options);
+
+        userService.save(user);
+
+        assertEquals(options, userService.getWithOptionsById(user.getId()).getOptions());
     }
 }

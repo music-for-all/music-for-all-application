@@ -20,7 +20,7 @@ public class UserOptions implements Serializable {
     private Integer id;
 
     @Column(name = "public_radio")
-    private boolean isPublicRadio;
+    private boolean publicRadio;
     @Column
     private String picture;
 
@@ -28,16 +28,16 @@ public class UserOptions implements Serializable {
     }
 
     public UserOptions(boolean isPublicRadio, String picture) {
-        this.isPublicRadio = isPublicRadio;
+        this.publicRadio = isPublicRadio;
         this.picture = picture;
     }
 
     public boolean isPublicRadio() {
-        return isPublicRadio;
+        return publicRadio;
     }
 
     public void setPublicRadio(boolean isPublicRadio) {
-        this.isPublicRadio = isPublicRadio;
+        this.publicRadio = isPublicRadio;
     }
 
     public String getPicture() {
@@ -50,7 +50,7 @@ public class UserOptions implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(isPublicRadio);
+        return Objects.hash(publicRadio);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class UserOptions implements Serializable {
             return false;
         }
         final UserOptions other = (UserOptions) obj;
-        return Objects.equals(this.isPublicRadio, other.isPublicRadio);
+        return Objects.equals(this.publicRadio, other.publicRadio);
     }
 
 
@@ -70,7 +70,7 @@ public class UserOptions implements Serializable {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("id", id)
-                .add("isPublicRadio", isPublicRadio)
+                .add("publicRadio", publicRadio)
                 .add("picture", picture)
                 .toString();
     }
