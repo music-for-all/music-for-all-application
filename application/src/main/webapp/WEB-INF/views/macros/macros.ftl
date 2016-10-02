@@ -151,7 +151,7 @@
             <span class="glyphicon num-likes" aria-hidden="true"></span>
         </td>
         <td>
-            <%= data.artist.name %>
+            <% if (data.artist) data.artist.name %>
         </td>
         <td>
             <%= data.name %>

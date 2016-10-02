@@ -17,19 +17,6 @@ function User() {
         return $.when($.post(baseUrl + "/" + id));
     };
 
-    self.save = function (user) {
-        return $.when(
-            $.ajax({
-                url: baseUrl,
-                type: "POST",
-                data: JSON.stringify(user),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            }));
-    };
-
     self.getFollowers = function () {
         return $.when($.get(baseUrl + "/followers"));
     };

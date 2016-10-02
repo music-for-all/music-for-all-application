@@ -1,7 +1,7 @@
 package com.musicforall.services.user;
 
 import com.musicforall.model.user.User;
-import com.musicforall.model.user.UserOptions;
+import com.musicforall.model.user.UserSettings;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -130,33 +130,33 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testGetUsersWithOptions() {
-        final UserOptions defaultOptions = new UserOptions(true, "link");
+    public void testGetUsersWithSettings() {
+        final UserSettings defaultSettings = new UserSettings(true, "link");
         final User user1 = new User(USER, PASSWORD, "mail1@example.com");
         final User user2 = new User(USER, PASSWORD, "mail2@example.com");
         final User user3 = new User(USER, PASSWORD, "mail3@example.com");
 
         final List<User> users = asList(user1, user2, user3);
-        users.forEach(user -> user.setOptions(defaultOptions));
+        users.forEach(user -> user.setSettings(defaultSettings));
         userService.saveAll(users);
 
         final List<Integer> userIds = users.stream().map(User::getId).collect(toList());
-        final List<User> usersWithOptions = userService.getUsersWithOptionsByIds(userIds);
+        final List<User> usersWithSettings = userService.getUsersWithSettingsByIds(userIds);
 
-        final boolean match = usersWithOptions.stream()
-                .filter(u -> defaultOptions.equals(u.getOptions()))
+        final boolean match = usersWithSettings.stream()
+                .filter(u -> defaultSettings.equals(u.getSettings()))
                 .allMatch(user -> userIds.contains(user.getId()));
         assertTrue(match);
     }
 
     @Test
-    public void testGetUserWithOptions() {
-        final UserOptions options = new UserOptions(true, "link");
-        User user = new User(USER, PASSWORD, "testGetUserWithOptions@test.com");
-        user.setOptions(options);
+    public void testGetUserWithSettings() {
+        final UserSettings settings = new UserSettings(true, "link");
+        User user = new User(USER, PASSWORD, "testGetUserWithSettings@test.com");
+        user.setSettings(settings);
 
         userService.save(user);
 
-        assertEquals(options, userService.getWithOptionsById(user.getId()).getOptions());
+        assertEquals(settings, userService.getWithSettingsById(user.getId()).getSettings());
     }
 }

@@ -18,4 +18,8 @@ function Stream() {
             ids: userIds
         }));
     };
+
+    self.publish = function (toPublish) {
+        return $.when($.post(baseUrl + "/publish/" + toPublish));
+    };
 }

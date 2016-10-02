@@ -25,12 +25,12 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 @NamedQueries(
         {
                 @NamedQuery(
-                        name = User.USERS_BY_IDS_WITH_OPTIONS_QUERY,
-                        query = "from User u left join fetch u.options where u.id in (:ids)"
+                        name = User.USERS_BY_IDS_WITH_SETTINGS_QUERY,
+                        query = "from User u left join fetch u.settings where u.id in (:ids)"
                 ),
                 @NamedQuery(
-                        name = User.USER_BY_ID_WITH_OPTIONS_QUERY,
-                        query = "from User u left join fetch u.options where u.id = :id"
+                        name = User.USER_BY_ID_WITH_SETTINGS_QUERY,
+                        query = "from User u left join fetch u.settings where u.id = :id"
                 )
         }
 )
@@ -38,8 +38,8 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 @Table(name = "users")
 public class User implements SocialUserDetails, Serializable {
 
-    public static final String USERS_BY_IDS_WITH_OPTIONS_QUERY = "users_by_ids_with_options";
-    public static final String USER_BY_ID_WITH_OPTIONS_QUERY = "user_by_id_with_options";
+    public static final String USERS_BY_IDS_WITH_SETTINGS_QUERY = "users_by_ids_with_settings";
+    public static final String USER_BY_ID_WITH_SETTINGS_QUERY = "user_by_id_with_settings";
     private static final long serialVersionUID = 1959293141381203004L;
 
     @Id
@@ -67,7 +67,7 @@ public class User implements SocialUserDetails, Serializable {
 
     @OneToOne(fetch = FetchType.LAZY)
     @Cascade({SAVE_UPDATE, DELETE})
-    private UserOptions options;
+    private UserSettings settings;
 
     public User() {
     }
@@ -146,12 +146,12 @@ public class User implements SocialUserDetails, Serializable {
         return email;
     }
 
-    public UserOptions getOptions() {
-        return options;
+    public UserSettings getSettings() {
+        return settings;
     }
 
-    public void setOptions(UserOptions options) {
-        this.options = options;
+    public void setSettings(UserSettings settings) {
+        this.settings = settings;
     }
 
     @Override

@@ -5,6 +5,7 @@
 <@m.head>
 <title><@spring.message "profilepage.Title"/></title>
 <script src="<@spring.url "/resources/js/user.js" />"></script>
+<script src="<@spring.url "/resources/js/stream.js" />"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <link href="<@spring.url "/resources/css/profilepage.css" />" rel="stylesheet"/>
 <link href="<@spring.url "/resources/css/switch.css" />" rel="stylesheet"/>
@@ -24,9 +25,10 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <% if (data.options && data.options.picture) { %>
+                        <% if (data.settings && data.settings.picture) { %>
                         <div class="col-md-3 col-lg-3 " align="center">
-                            <img src="<%= data.options.picture %>" alt="User picture" class="img-circle img-responsive">
+                            <img src="<%= data.settings.picture %>" alt="User picture"
+                                 class="img-circle img-responsive">
                         </div>
                         <% } %>
                         <div class=" col-md-9 col-lg-9 ">
@@ -47,8 +49,12 @@
                                 <tr>
                                     <td><@spring.message "profilepage.Broadcasting" /></td>
                                     <td>
-                                        <label class="switch pull-left" id="broadcasting">
-                                            <input type="checkbox">
+                                        <label class="switch pull-left">
+                                            <input type="checkbox"
+                                            <% if (data.settings && data.settings.publicRadio) { %>
+                                            checked
+                                            <% } %>
+                                            >
 
                                             <div class="slider round"></div>
                                         </label>
@@ -65,17 +71,14 @@
 </script>
 <script type="text/javascript">
     var user = new User();
+    var stream = new Stream();
     _.templateSettings.variable = "data";
     var profileRow = _.template(
             $("script.profile").html()
     );
 
     $("#container").on("click", "input", function (e) {
-        const checked = this.checked;
-        user.me().then(function (me) {
-            me.options.publicRadio = checked;
-            user.save(me);
-        });
+        stream.publish(this.checked);
     });
 
     $(document).ready(function () {

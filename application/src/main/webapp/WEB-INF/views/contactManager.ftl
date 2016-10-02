@@ -85,11 +85,15 @@
             <%= contact.username %>
         </td>
         <td>
+            <button type="button" class="btn btn-xs btn-success play-button">
+                <span class='glyphicon glyphicon-play' aria-hidden='true'></span>
+            </button>
+            <button type="button" class="btn btn-xs btn-warning pause-button hidden" onclick="leftCurrentStream()">
+                <span class='glyphicon glyphicon-pause' aria-hidden='true'></span>
+            </button>
             <button type="button" class="btn btn-default" onclick="unsubscribe('<%= contact.id %>')">
                 <i class="fa fa-user-times" aria-hidden="true"></i>
             </button>
-            <button type="button" onclick="joinStream('<%= contact.id %>')">Subscribe</button>
-            <button type="button" onclick="leftCurrentStream()">Stop</button>
         </td>
     </tr>
     <% }); %>
@@ -110,6 +114,11 @@
     var userFollowingRow = _.template(
             $("script.followingRow").html()
     );
+
+    $("#results").on("click", ".play-button", function (e) {
+        var id = $(this).closest("tr").attr("id");
+        joinStream(id);
+    });
 
     function connect() {
         var socket = new SockJS("/sockjs");
@@ -150,10 +159,22 @@
     function getFollowing() {
         clearContacts();
         user.getFollowing().then(function (users) {
-            $("#results").find("thead").after(
-                    userFollowingRow(users)
-            );
-        })
+            var ids = users.map(function (user) {
+                return user.id;
+            });
+            stream.streamsByUsers(ids).then(function (userToTrack) {
+                users.forEach(function (user) {
+                    var track = userToTrack[user.id];
+                    if (track) {
+                        user.track = track;
+                    }
+                });
+
+                $("#results").find("thead").after(
+                        userFollowingRow(users)
+                );
+            });
+        });
     }
 
     function getFollowers() {
@@ -162,7 +183,7 @@
             $("#results").find("thead").after(
                     userFollowersRow(users)
             );
-        })
+        });
     }
 
     function unsubscribe(id) {

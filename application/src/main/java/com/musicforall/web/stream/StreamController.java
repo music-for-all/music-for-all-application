@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -40,32 +41,31 @@ public class StreamController {
 
     @RequestMapping(value = "/track/{id}", method = POST)
     public ResponseEntity startStream(@PathVariable("id") Integer trackId) {
-        final Integer userId = SecurityUtil.currentUserId();
-        if (userId == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-        }
-
-        final Track track = trackService.get(trackId);
-        cache.put(userId, track);
-        return new ResponseEntity(HttpStatus.OK);
+        return processWithCurrentUser(userId -> {
+            final Track track = trackService.get(trackId);
+            cache.put(userId, track);
+        });
     }
 
     @RequestMapping(value = "/stop", method = POST)
     public ResponseEntity stopStream() {
-        final Integer userId = SecurityUtil.currentUserId();
-        if (userId == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-        }
+        return processWithCurrentUser(cache::remove);
+    }
 
-        cache.remove(userId);
-        return new ResponseEntity(HttpStatus.OK);
+    @RequestMapping(value = "/publish/{toPublish}", method = POST)
+    public ResponseEntity publishStream(final @PathVariable("toPublish") boolean toPublish) {
+        return processWithCurrentUser(userId -> {
+            final User currentUser = userService.getWithSettingsById(userId);
+            currentUser.getSettings().setPublicRadio(toPublish);
+            userService.save(currentUser);
+        });
     }
 
     @RequestMapping(method = GET)
     public ResponseEntity getStreams(@RequestParam("ids[]") Collection<Integer> userIds) {
-        final List<User> users = userService.getUsersWithOptionsByIds(userIds);
+        final List<User> users = userService.getUsersWithSettingsByIds(userIds);
         final Map<Integer, Track> userToTrack = users.stream()
-                .filter(u -> u.getOptions() != null && u.getOptions().isPublicRadio())
+                .filter(u -> u.getSettings() != null && u.getSettings().isPublicRadio())
                 .map(User::getId)
                 .collect(HashMap::new, ((m, id) -> {
                     final Track track = cache.get(id);
@@ -75,5 +75,14 @@ public class StreamController {
                 }), HashMap::putAll);
 
         return new ResponseEntity<>(userToTrack, HttpStatus.OK);
+    }
+
+    private ResponseEntity processWithCurrentUser(Consumer<Integer> consumer) {
+        final Integer currentUserId = SecurityUtil.currentUserId();
+        if (currentUserId == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        consumer.accept(currentUserId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
