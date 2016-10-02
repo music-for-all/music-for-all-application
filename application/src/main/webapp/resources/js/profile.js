@@ -43,3 +43,15 @@ function updateData() {
 function getCurrentUser() {
     return $.when($.get(baseUrl + "/currentUser"))
 }
+
+function uploadFile(formData) {
+    return $.when(
+        $.ajax({
+            url: "/files/picture",
+            type: "POST",
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false
+        }));
+}

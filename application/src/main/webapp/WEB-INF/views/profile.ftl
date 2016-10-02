@@ -20,11 +20,17 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-3 col-lg-3 " align="center">
-                            <img id="userPicture" alt="User picture" class="img-circle img-responsive">
+                            <img id="userPicture"
+                                 alt="User picture"
+                                 class="img-circle img-responsive">
+                            <img id="uploadPicture"
+                                 alt="User picture"
+                                 class="img-circle img-responsive hidden">
                             <div id="upload" class="hidden">
                                 <span class="btn btn-file btn-sm btn-success">
                                     <span class="glyphicon glyphicon-open input-place"></span> <@spring.message "profilepage.UploadPicture" />
-                                    <input type="file" name="filedata" accept="image/*">
+                                    <input type="file" id="image-input" name="filedata" onchange="upload(this);"
+                                           accept="image/*">
                             </div>
                         </div>
                         <div id="infoProfileTable">
@@ -115,22 +121,27 @@
     </div>
 </div>
 <script type="text/javascript">
+    const max_length_error = 200;
 
     function showProfileTable() {
         $("#back").addClass("hidden");
+        $("#uploadPicture").addClass("hidden");
         $("#update").addClass("hidden");
         $("#editProfileTable").addClass("hidden");
         $("#upload").addClass("hidden");
         $("#infoProfileTable").removeClass("hidden");
+        $("#userPicture").removeClass("hidden");
         $("#edit").removeClass("hidden");
     }
 
     function hideProfileTable() {
         $("#back").removeClass("hidden");
+        $("#userPicture").addClass("hidden");
         $("#update").removeClass("hidden");
         $("#editProfileTable").removeClass("hidden");
         $("#upload").removeClass("hidden");
         $("#infoProfileTable").addClass("hidden");
+        $("#uploadPicture").removeClass("hidden");
         $("#edit").addClass("hidden");
     }
 
@@ -141,6 +152,7 @@
 
     function updateFields(user) {
         document.getElementById("userPicture").src = user.picture;
+        document.getElementById("uploadPicture").src = user.picture;
         $("#panelUsername").text(user.username);
         $("#tdFirstName").text(user.firstName);
         $("#tdLastName").text(user.lastName);
@@ -163,7 +175,18 @@
         $("#fail-message").text('');
     });
 
-    $("#update").on("click", function () {
+    function upload(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#uploadPicture")
+                        .attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function updateProfileData() {
         updateData().then(function (user) {
             updateFields(user);
             $("#success-message").text("Updated");
@@ -171,6 +194,24 @@
         }, function () {
             $("#fail-message").text("Fail");
         });
+    }
+
+    $("#update").on("click", function () {
+        var formData = new FormData();
+        var files = document.getElementById("image-input").files[0];
+        if (files !== undefined) {
+            formData.append("file", files);
+            uploadFile(formData)
+                    .then(updateProfileData(), function (xhr, status, error) {
+                        if (xhr.responseText.length < max_length_error) {
+                            $("#fail-message").text(xhr.responseText);
+                        } else {
+                            $("#fail-message").text(error);
+                        }
+                    });
+        } else {
+            updateProfileData();
+        }
     });
 
     $(document).ready(function () {
