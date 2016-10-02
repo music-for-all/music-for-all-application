@@ -3,9 +3,11 @@ package com.musicforall.services.file;
 import com.musicforall.files.manager.FileManager;
 import com.musicforall.model.Artist;
 import com.musicforall.model.Track;
+import com.musicforall.model.User;
 import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.file.utils.FileTestUtils;
 import com.musicforall.services.track.TrackService;
+import com.musicforall.services.user.UserService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.AfterClass;
@@ -25,6 +27,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Optional;
 
 import static com.musicforall.services.file.utils.FileTestUtils.getResource;
 import static java.nio.file.Files.newInputStream;
@@ -42,6 +45,10 @@ public class FileServiceTest {
 
     private static final String TEST_FILE_NAME = "big_test_resource.mp3";
 
+    private static final String FILE = "file";
+
+    private static final String SAMPLE_FILE = "sampleFile.mp3";
+
     private static final int HTTP_STATUS_OK = 200;
 
     private static final int HTTP_STATUS_ACCEPTED = 202;
@@ -51,7 +58,9 @@ public class FileServiceTest {
     private static final int HTTP_STATUS_UNPROCESSABLE = 422;
     private static final URL resourceUrl = getResource(FileService.class, TEST_FILE_NAME);
 
-    private static File testDirectory;
+    private static File testFileDirectory;
+
+    private static File testPictureDirectory;
 
     @Spy
     private static FileManager manager;
@@ -65,6 +74,9 @@ public class FileServiceTest {
     @Mock
     private TrackService trackService;
 
+    @Mock
+    private UserService userService;
+
     @Before
     public void before() {
         MockitoAnnotations.initMocks(this);
@@ -72,24 +84,27 @@ public class FileServiceTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        testDirectory = FileTestUtils.createTestDirectory();
+        testFileDirectory = FileTestUtils.createTestDirectory();
+        testPictureDirectory = FileTestUtils.createTestDirectory();
         manager = new FileManager();
         fileService = new FileServiceImpl();
-        ReflectionTestUtils.setField(manager, "workingDirectory", testDirectory.getAbsolutePath());
+        ReflectionTestUtils.setField(manager, "musicDirectory", testFileDirectory.getAbsolutePath());
+        ReflectionTestUtils.setField(manager, "pictureDirectory", testPictureDirectory.getAbsolutePath());
     }
 
     @AfterClass
     public static void tearDown() throws Exception {
-        FileUtils.deleteDirectory(testDirectory);
+        FileUtils.deleteDirectory(testFileDirectory);
+        FileUtils.deleteDirectory(testPictureDirectory);
     }
 
     @Test
     public void checkFileTest() throws Exception {
         try (InputStream inputStream = newInputStream(get(resourceUrl.toURI()))) {
-            final MockMultipartFile file = new MockMultipartFile("file1", "sampleFile1.mp3", null, inputStream);
+            final MockMultipartFile file = new MockMultipartFile(FILE, "sample1.mp3", null, inputStream);
             assertEquals(HTTP_STATUS_ACCEPTED, fileService.checkFile(file).getStatusCode().value());
 
-            manager.save(file);
+            manager.saveTrack(file);
             ResponseEntity<String> answerExistedFile = fileService.checkFile(file);
             assertEquals(HTTP_STATUS_INTERNAL_ERROR, answerExistedFile.getStatusCode().value());
 
@@ -102,7 +117,7 @@ public class FileServiceTest {
     @Test
     public void uploadFileExistedArtistTest() throws Exception {
         try (InputStream inputStream = newInputStream(get(resourceUrl.toURI()))) {
-            final MockMultipartFile file = new MockMultipartFile("file", "sampleFile.mp3", null, inputStream);
+            final MockMultipartFile file = new MockMultipartFile(FILE, "sample2.mp3", null, inputStream);
             final Track track = new Track("track", "title2", new Artist("artist2"), "album2", "/root/track2.mp3", null);
 
             when(artistService.get(any())).thenReturn((new Artist("artist")));
@@ -115,8 +130,8 @@ public class FileServiceTest {
     @Test
     public void uploadFileNewArtistTest() throws Exception {
         try (InputStream inputStream = newInputStream(get(resourceUrl.toURI()))) {
-            final MockMultipartFile file = new MockMultipartFile("file", "sampleFile.mp3", null, inputStream);
-            final Track track = new Track("track", "title2", new Artist("artist2"), "album2", "/root/track2.mp3", null);
+            final MockMultipartFile file = new MockMultipartFile(FILE, "sample2.mp3", null, inputStream);
+            final Track track = new Track("track3", "title3", new Artist("artist3"), "album3", "/root/track3.mp3", null);
 
             when(artistService.get(any())).thenReturn((null));
             when(trackService.save(any())).thenReturn(track);
@@ -125,4 +140,37 @@ public class FileServiceTest {
         }
     }
 
+    @Test
+    public void uploadPictureTest() throws Exception {
+        try (InputStream inputStream = newInputStream(get(resourceUrl.toURI()))) {
+            final MockMultipartFile file = new MockMultipartFile(FILE, SAMPLE_FILE, null, inputStream);
+            final User user = new User("user", "password", "email");
+
+            assertEquals(HTTP_STATUS_OK, fileService.uploadPictureFile(user, file).getStatusCode().value());
+        }
+    }
+
+    @Test
+    public void uploadNonExistingPicTest() throws Exception {
+        try (InputStream inputStream = newInputStream(get(resourceUrl.toURI()))) {
+            final MockMultipartFile file = new MockMultipartFile(FILE, SAMPLE_FILE, null, inputStream);
+            final User user = new User("user1", "pass", "email2");
+
+            when((manager.savePicture(file))).thenReturn(Optional.empty());
+
+            assertEquals(HTTP_STATUS_INTERNAL_ERROR, fileService.uploadPictureFile(user, file).getStatusCode().value());
+        }
+    }
+
+    @Test
+    public void uploadNonExistingTrackTest() throws Exception {
+        try (InputStream inputStream = newInputStream(get(resourceUrl.toURI()))) {
+            final MockMultipartFile file = new MockMultipartFile(FILE, SAMPLE_FILE, null, inputStream);
+            final Track track = new Track("track1", "title1", new Artist("artist1"), "album1", "/root/track1.mp3", null);
+
+            when((manager.saveTrack(file))).thenReturn(Optional.empty());
+
+            assertEquals(HTTP_STATUS_INTERNAL_ERROR, fileService.uploadTrackFile(track, file).getStatusCode().value());
+        }
+    }
 }
