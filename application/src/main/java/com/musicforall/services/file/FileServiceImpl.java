@@ -29,6 +29,8 @@ public class FileServiceImpl implements FileService {
 
     private static final String INTERNAL_SERVER_ERROR = "Internal server error";
 
+    private static final String DEFAULT_PICTURE_DIRECTORY = "/files/picture/";
+
     @Autowired
     private FileManager manager;
 
@@ -62,7 +64,7 @@ public class FileServiceImpl implements FileService {
         requireNonNull(user, "user must not be null");
         final Optional<Path> saved = manager.savePicture(file);
         if (saved.isPresent()) {
-            user.setPicture(file.getOriginalFilename());
+            user.setPicture(DEFAULT_PICTURE_DIRECTORY + file.getOriginalFilename());
             userService.save(user);
             return new ResponseEntity<>("Picture successfully saved", HttpStatus.OK);
         } else {

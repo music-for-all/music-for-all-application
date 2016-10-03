@@ -90,9 +90,9 @@ public class FileController {
         }
     }
 
-    @RequestMapping(value = "/{pictureName:.+}", method = RequestMethod.GET)
+    @RequestMapping(value = "/files/picture/{pictureName:.+}", method = RequestMethod.GET)
     public void getFileHandler(HttpServletResponse response, @PathVariable("pictureName") String name) {
-        LOG.info(String.format("Streaming file: %s\n", name));
+        LOG.info(String.format("Streaming picture: %s\n", name));
         final Optional<Path> filePath = manager.getPicturePathByName(name);
 
         if (filePath.isPresent()) {

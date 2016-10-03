@@ -42,7 +42,7 @@ public class DbPopulateService {
 
     private static final String USER_PICTURE_LINK = "https://developers.google.com/experts/img/user/user-default.png";
 
-    private static final String USER_PICTURE = "user-default.png";
+    private static final String USER_PICTURE = "/files/picture/user-default.png";
 
     private static final String DEFAULT_NAME = "Unknown";
 
