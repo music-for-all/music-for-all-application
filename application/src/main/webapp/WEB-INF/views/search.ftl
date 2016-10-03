@@ -5,17 +5,18 @@
 <html lang="en">
 <@m.head>
 <title><@spring.message "searchpage.Title"/></title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-<script src="<@spring.url "/resources/js/player.js"/>"></script>
 <script src="<@spring.url "/resources/js/track.js"/>"></script>
+<script src="<@spring.url "/resources/js/playlist.js"/>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
 <script src="<@spring.url "/resources/js/searchpage.js"/>"></script>
 <script src="<@spring.url "/resources/js/history.js" />"></script>
 <script src="<@spring.url "/resources/js/autocompleteConfig.js"/>"></script>
-<script src="<@spring.url "/resources/js/playlist.js"/>"></script>
+<script src="<@spring.url "/resources/js/player.js" />"></script>
 <link href="<@spring.url "/resources/css/searchpage.css" />" rel="stylesheet">
 <link href="<@spring.url "/resources/css/switch.css" />" rel="stylesheet">
+<link href="<@spring.url "/resources/css/player.css" />" rel="stylesheet">
 <link href="<@spring.url "/resources/css/additionalTracksTable.css" />" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
 </@m.head>
@@ -64,7 +65,8 @@
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         </button>
 
-        <table id="tracks" class="table table-hover table-striped table-condensed no-checkbox tracks-table">
+        <table id="tracks"
+               class="table table-hover table-striped table-condensed no-checkbox tracks-table no-delete-button">
             <thead>
             <tr>
                 <th><@spring.message "songTable.Actions"/></th>
@@ -92,6 +94,8 @@
     <@m.addTrackRowTemplate/>
 
     <@m.playlistRowTemplate/>
+
+    <@popup.player_Footer/>
 
 <script type="text/javascript">
     _.templateSettings.variable = "data";
