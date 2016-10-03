@@ -35,7 +35,7 @@ public final class SearchCriteriaFactory {
         }
         //Check correctness of using Artist entity
         if (artist != null) {
-            detachedCriteria.add(Restrictions.ilike("artist.artistName", QueryUtil.like(artist.getArtistName())));
+            detachedCriteria.add(Restrictions.ilike("artist.name", QueryUtil.like(artist.getName())));
         }
         if (album != null && !album.isEmpty()) {
             detachedCriteria.add(Restrictions.ilike("album", QueryUtil.like(album)));
@@ -68,7 +68,7 @@ public final class SearchCriteriaFactory {
         final List<String> tags = searchCriteria.getTags();
 
         if (artistName != null && !artistName.isEmpty()) {
-            detachedCriteria.add(Restrictions.ilike("artistName", QueryUtil.like(artistName)));
+            detachedCriteria.add(Restrictions.ilike("name", QueryUtil.like(artistName)));
         }
 
         if (tags != null && !tags.isEmpty()) {

@@ -1,26 +1,63 @@
 "use strict";
 
+
 jQuery(document).ready(function () {
 
-    /* Make the play button to invoke play on the corresponding player. */
-    $(".tracks-table").on("click", ".play-track-button", function () {
+    var player = new ChunksPlayer();
+    var track = new Track();
 
-        $(this).closest("tr").find("td audio")[0].play();
-    });
+    function writeToFoot(tr) {
+        $("#nameInFoot").text(tr.name);
+        $("#artistInFoot").text(tr.artist ? tr.artist.name : "Unknown");
+    }
 
-    /* Make the pause button to invoke pause on the corresponding player. */
-    $(".tracks-table").on("click", ".pause-track-button", function () {
-
-        $(this).closest("tr").find("td audio")[0].pause();
-    });
-
-    /* When a track is chosen to play, pause all the other tracks. */
-    document.addEventListener("play", function (e) {
-
-        $("audio").each(function (i, player) {
-            if (player !== e.target) {
-                player.pause();
-            }
+    function startTrack(trackId) {
+        track.get(trackId).then(function (tr) {
+            player.play(tr);
+            writeToFoot(tr);
         });
-    }, true);
+    }
+
+    function changeActiveTrackRow(currentRow) {
+        startTrack(currentRow.attr("id"));
+        $(".tracks-table tr").removeClass("playing").removeClass("active");
+        $(currentRow).closest("tr").addClass("playing").addClass("active");
+    }
+
+    $(".tracks-table").on("click", ".play-button", function () {
+        var trackRow = $(this).closest("tr");
+        if ($('tr.active') != trackRow) {
+            changeActiveTrackRow(trackRow);
+        } else {
+            player.resume();
+            $(this).closest("tr").addClass("playing");
+        }
+    });
+
+    $(".tracks-table").on("click", ".pause-button", function () {
+        player.pause();
+        $(this).closest("tr").removeClass("playing");
+    });
+
+    $('#nextFooterBtn').bind('click', function () {
+        if ($("tr.active").next().attr("id")) {
+            changeActiveTrackRow($("tr.active").next());
+        }
+    });
+
+    $('#prevFooterBtn').bind('click', function () {
+        if ($("tr.active").prev().attr("id")) {
+            changeActiveTrackRow($("tr.active").prev());
+        }
+    });
+
+    $('#playFooterBtn').bind('click', function () {
+        player.resume();
+        $("tr.active").addClass("playing");
+    });
+
+    $('#pauseFooterBtn').bind('click', function () {
+        player.pause();
+        $("tr.active").removeClass("playing");
+    });
 });

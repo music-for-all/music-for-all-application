@@ -14,9 +14,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import static junit.framework.TestCase.assertEquals;
 
 import java.util.*;
+
+import static junit.framework.TestCase.assertEquals;
 
 /**
  * Created by Andrey on 9/5/16.
@@ -45,12 +46,15 @@ public class PopularHistoryServiceTest {
         trackService.save(track);
         final Set<Tag> tags2 = new HashSet<>(Arrays.asList(new Tag("POP"), new Tag(ALTERNATIVE)));
         final Track track2 = new Track("track2", "path2track2", tags2);
-
         trackService.save(track2);
+
+        assertEquals(0, popularHistoryService.getPopularTags().size());
+
         History history = new History(track.getId(), 1, new Date(), 1, EventType.TRACK_LISTENED);
         historyService.record(history);
         history = new History(track2.getId(), 1, new Date(), 1, EventType.TRACK_LISTENED);
         historyService.record(history);
+
         final Collection<Tag> tags_result = popularHistoryService.getPopularTags();
         assertEquals(3, tags_result.size());
     }

@@ -79,6 +79,32 @@
     </@popUp>
 </#macro>
 
+<#macro player_Footer>
+    <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+        <div class="container-fluid player-content">
+                <div class="col-md-4">
+                    <button id="prevFooterBtn" type="button" class="btn btn-default .btn-link">
+                        <span class='glyphicon glyphicon-step-backward' aria-hidden='true'></span>
+                    </button>
+                    <button id="playFooterBtn" type="button" class="btn btn-default btn-success play-track-button">
+                        <span class='glyphicon glyphicon-play' aria-hidden='true'></span>
+                    </button>
+                    <button type="button" id="pauseFooterBtn" class="btn btn-default btn-warning pause-track-button">
+                        <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+                    </button>
+                    <button id="nextFooterBtn" type="button" class="btn btn-default .btn-link">
+                        <span class='glyphicon glyphicon-step-forward' aria-hidden='true'></span>
+                    </button>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="text-center" id="nameInFoot"></h5>
+                    <h5 class="text-center" id="artistInFoot"></h5>
+                </div>
+                <div class="col-md-4">
+                </div>
+        </div>
+    </nav>
+</#macro>
 
 <#assign playlistsPopupCaption>
     <@spring.message "label.AddToPlaylist"/>

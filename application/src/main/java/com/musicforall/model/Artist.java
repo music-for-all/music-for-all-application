@@ -27,8 +27,8 @@ public class Artist implements Serializable {
 
     @Id
     @Size(min = 2, max = 30)
-    @Column(name = "artist_name", unique = true)
-    private String artistName;
+    @Column(name = "name", unique = true)
+    private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = "artist_tag",
@@ -41,20 +41,20 @@ public class Artist implements Serializable {
     }
 
     public Artist(String name) {
-        this.artistName = name;
+        this.name = name;
     }
 
     public Artist(String name, Set<Tag> tags) {
-        this.artistName = name;
+        this.name = name;
         this.tags = tags;
     }
 
-    public String getArtistName() {
-        return artistName;
+    public String getName() {
+        return name;
     }
 
-    public void setArtistName(String artistName) {
-        this.artistName = artistName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Set<Tag> getTags() {
@@ -71,7 +71,7 @@ public class Artist implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(artistName, tags);
+        return Objects.hash(name, tags);
     }
 
     @Override
@@ -83,14 +83,14 @@ public class Artist implements Serializable {
             return false;
         }
         final Artist other = (Artist) obj;
-        return Objects.equals(this.artistName, other.artistName)
+        return Objects.equals(this.name, other.name)
                 && Objects.equals(this.tags, other.tags);
     }
 
     @Override
     public String toString() {
         return "Artist{" +
-                "artistName='" + artistName + '\'' +
+                "name='" + name + '\'' +
                 "tags='" + tags + '\'' +
                 '}';
     }
