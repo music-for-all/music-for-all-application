@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Andrey on 9/5/16.
@@ -29,6 +26,9 @@ public class PopularHistoryServiceImpl implements PopularHistoryService {
     @Override
     public Collection<Tag> getPopularTags() {
         final List<Integer> ids = historyService.getTheMostPopularTracks();
+        if (ids.isEmpty()) {
+            return Collections.emptyList();
+        }
 
         final int count = 20;
         final int offset = 0;

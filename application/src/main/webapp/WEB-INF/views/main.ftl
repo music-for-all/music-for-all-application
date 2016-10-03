@@ -8,12 +8,14 @@
 <title><@spring.message "mainpage.Title"/></title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="<@spring.url "/resources/js/playlist.js" />"></script>
+<script src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
 <script src="<@spring.url "/resources/js/track.js" />"></script>
 <script src="<@spring.url "/resources/js/player.js" />"></script>
 <script src="<@spring.url "/resources/js/main.js" />"></script>
 <script src="<@spring.url "/resources/js/history.js" />"></script>
 <link href="<@spring.url "/resources/css/mainpage.css" />" rel="stylesheet"/>
 <link href="<@spring.url "/resources/css/switch.css" />" rel="stylesheet"/>
+<link href="<@spring.url "/resources/css/player.css" />" rel="stylesheet">
 <link href="<@spring.url "/resources/css/additionalTracksTable.css" />" rel="stylesheet">
 </@m.head>
 
@@ -22,12 +24,14 @@
     <@p.popUpDelete "deletePlaylistModal"/>
     <@p.playlistsPopup "playlistsModal"/>
 
+
     <@m.navigation m.pages.Main/>
 
 <div class="container">
     <div class="col-md-10">
         <section id="tracks-section" class="well col-md-11">
-            <table id="tracks" class="table table-hover table-striped table-condensed tracks-table">
+            <table id="tracks"
+                   class="table table-hover table-striped table-condensed tracks-table no-checkbox no-plus-button">
                 <thead>
                 <tr>
                     <th><@spring.message "welcomepage.Actions"/></th>
@@ -56,7 +60,7 @@
             </button>
 
             <table id="recommendations"
-                   class="table table-hover table-striped table-condensed no-checkbox tracks-table">
+                   class="table table-hover table-striped table-condensed no-checkbox tracks-table no-delete-button">
                 <thead>
                 <tr>
                     <th><@spring.message "songTable.Actions"/></th>
@@ -76,36 +80,8 @@
         </section>
     </div>
 </div>
-<!-- end .container -->
+    <@p.player_Footer/>
 
-<script type="text/template" class="trackRowTemplate">
-    <tr id="<%= data.id %>">
-        <td>
-            <button type="button" class="btn btn-xs btn-success play-track-button">
-                <span class='glyphicon glyphicon-play' aria-hidden='true'></span>
-            </button>
-            <button type="button" class="btn btn-xs btn-warning pause-track-button">
-                <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
-            </button>
-            <button type="button" class="btn btn-xs btn-danger delete-song-button">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            </button>
-            <button class="btn btn-xs btn-primary like-button"><@spring.message "mainpage.Like" /></button>
-            <span class="glyphicon num-likes" aria-hidden="true"></span>
-        </td>
-        <td>
-            <%= data.name %>
-        </td>
-        <td>
-            <%= data.artist %>
-        </td>
-        <td>
-            <audio id="audio_<%= data.id %>" controls preload="none">
-                <source type="audio/mp3" src="<@spring.url "/files/<%= data.id %>/0"/>">
-            </audio>
-        </td>
-    </tr>
-</script>
 <script type="text/template" class="playlistButtonTemplate">
     <li id="<%= data.id %>" class="playlists" title="<%= data.name %>">
         <div class="input-group">
@@ -134,7 +110,7 @@
 
     _.templateSettings.variable = "data";
     var trackRow = _.template(
-            $("script.trackRowTemplate").html()
+            $("script.addTrackRowTemplate").html()
     );
 
     var playlistButton = _.template(
@@ -145,10 +121,6 @@
             $("script.playlistRowTemplate").html()
     );
 
-    var recommendationRow = _.template(
-            $("script.addTrackRowTemplate").html()
-    );
-
     /*
      * When a playlist is clicked, mark it active, then fetch tracks of the playlist,
      * then populate the tracks table.
@@ -157,6 +129,12 @@
         e.preventDefault();
         $("#playlists").find("li").removeClass("active");
         $(this).closest("li").addClass("active");
+
+        refreshTrackTable();
+    });
+
+
+    $("#createPlaylistButton").on("click", function (e) {
         refreshTrackTable();
     });
 
@@ -313,7 +291,7 @@
     }
 
     function addRecommendedTrack(track) {
-        $("#recommendations").append(recommendationRow(track));
+        $("#recommendations").append(trackRow(track));
     }
 
     function updateLikeCount(id) {

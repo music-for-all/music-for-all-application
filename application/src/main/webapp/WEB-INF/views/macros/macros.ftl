@@ -132,11 +132,11 @@
 <script type="text/template" class="addTrackRowTemplate">
     <tr id="<%= data.id %>">
         <td>
-            <button type="button" class="btn btn-xs btn-success play-track-button">
+            <button type="button" class="btn btn-xs btn-success play-button">
                 <span class='glyphicon glyphicon-play' aria-hidden='true'></span>
             </button>
-            <button type="button" class="btn btn-xs btn-warning pause-track-button">
-                <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+            <button type="button" class="btn btn-xs btn-warning pause-button">
+                <span class='glyphicon glyphicon-pause' aria-hidden='true'></span>
             </button>
             <button type="button" class="btn btn-xs btn-success add-song-button">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -147,19 +147,17 @@
                     <span class="glyphicon glyphicon-ok"></span>
                 </label>
             </div>
+            <button type="button" class="btn btn-xs btn-danger delete-song-button">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </button>
             <button class="btn btn-xs btn-primary like-button"><@spring.message "mainpage.Like" /></button>
             <span class="glyphicon num-likes" aria-hidden="true"></span>
         </td>
         <td>
-            <% if (data.artist) data.artist.name %>
+            <%= data.artist.name %>
         </td>
         <td>
             <%= data.name %>
-        </td>
-        <td>
-            <audio id="audio_<%= track.id %>" controls preload="none">
-                <source type="audio/mp3" src="<@spring.url "/files/<%= data.id %>/0"/>">
-            </audio>
         </td>
     </tr>
 </script>

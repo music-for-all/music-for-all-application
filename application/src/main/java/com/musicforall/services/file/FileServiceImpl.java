@@ -49,7 +49,7 @@ public class FileServiceImpl implements FileService {
     }
 
     private Track updateArtistForTrack(Track track) {
-        final Artist existingArtist = artistService.get(track.getArtist().getArtistName());
+        final Artist existingArtist = artistService.get(track.getArtist().getName());
         if (existingArtist != null) {
             if (track.getTags() != null) {
                 existingArtist.extendTags(track.getTags());
