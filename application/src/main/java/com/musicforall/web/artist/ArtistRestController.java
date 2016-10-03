@@ -36,7 +36,7 @@ public class ArtistRestController {
                                      @RequestParam(value = "tags", required = false) final List<String> tags) {
         final SearchArtistRequest searchCriteria = new SearchArtistRequest(artistName, tags);
         final List<Artist> artists = artistService.getAllLike(searchCriteria);
-        final List<String> artistsNames = artists.stream().map(Artist::getArtistName).collect(Collectors.toList());
+        final List<String> artistsNames = artists.stream().map(Artist::getName).collect(Collectors.toList());
 
         return new ResponseEntity<>(artistsNames, HttpStatus.OK);
     }

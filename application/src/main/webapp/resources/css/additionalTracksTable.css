@@ -3,8 +3,19 @@
     background-color: chocolate;
 }
 
+.tracks-table tr .btn.pause-button,
+.tracks-table tr.playing .btn.play-button {
+    display: none;
+}
+
+.tracks-table tr .btn.play-button,
+.tracks-table tr.playing .btn.pause-button {
+    display: inline;
+}
+
 .tracks-table.no-checkbox .checkButton,
 .tracks-table.no-plus-button .btn.btn-success.add-song-button,
+.tracks-table.no-delete-button .delete-song-button,
 .hidden {
     display: none;
 }
