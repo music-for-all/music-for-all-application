@@ -2,6 +2,11 @@ body {
     padding-top: 70px;
 }
 
-.btn.hidden {
+.stop-stream-button,
+.playing .start-stream-button {
     display: none;
+}
+
+.playing .stop-stream-button {
+    display: inline-block;
 }

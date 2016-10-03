@@ -85,10 +85,14 @@
             <%= contact.username %>
         </td>
         <td>
-            <button type="button" class="btn btn-xs btn-success play-button">
+            <img src="<@spring.url "/resources/img/indicators__icon-equalizer.gif" />" width=20% height=50%>
+            <%= contact.track ? contact.track.name : "" %>
+        </td>
+        <td>
+            <button type="button" class="btn btn-xs btn-success start-stream-button">
                 <span class='glyphicon glyphicon-play' aria-hidden='true'></span>
             </button>
-            <button type="button" class="btn btn-xs btn-warning pause-button hidden" onclick="leftCurrentStream()">
+            <button type="button" class="btn btn-xs btn-warning stop-stream-button" onclick="leftCurrentStream()">
                 <span class='glyphicon glyphicon-pause' aria-hidden='true'></span>
             </button>
             <button type="button" class="btn btn-default" onclick="unsubscribe('<%= contact.id %>')">
@@ -115,9 +119,18 @@
             $("script.followingRow").html()
     );
 
-    $("#results").on("click", ".play-button", function (e) {
-        var id = $(this).closest("tr").attr("id");
+    $("#results").on("click", ".start-stream-button", function (e) {
+        leftCurrentStream();
+        $("#results").find("tr").removeClass("playing");
+        var row = $(this).closest("tr");
+        row.addClass("playing");
+        var id = row.attr("id");
         joinStream(id);
+    });
+
+    $("#results").on("click", ".stop-stream-button", function (e) {
+        leftCurrentStream();
+        $("#results").find("tr").removeClass("playing");
     });
 
     function connect() {

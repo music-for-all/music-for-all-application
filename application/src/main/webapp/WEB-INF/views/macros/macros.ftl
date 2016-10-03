@@ -154,7 +154,7 @@
             <span class="glyphicon num-likes" aria-hidden="true"></span>
         </td>
         <td>
-            <%= data.artist.name %>
+            <%= data.artist ? data.artist.name : "Unknown" %>
         </td>
         <td>
             <%= data.name %>

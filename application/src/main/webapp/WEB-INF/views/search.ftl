@@ -6,6 +6,7 @@
 <@m.head>
 <title><@spring.message "searchpage.Title"/></title>
 <script src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
+<script src="<@spring.url "/resources/js/stream.js" />"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="<@spring.url "/resources/js/track.js"/>"></script>
 <script src="<@spring.url "/resources/js/playlist.js"/>"></script>

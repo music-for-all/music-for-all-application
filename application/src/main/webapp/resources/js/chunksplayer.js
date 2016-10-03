@@ -1,5 +1,6 @@
 "use strict";
 
+
 function ChunksPlayer() {
 
     /**
@@ -21,6 +22,8 @@ function ChunksPlayer() {
     var audioBufferQueue;
 
     var paused = false;
+
+    var stream = new Stream();
 
     /**
      * The audio source is responsible for playing the music
@@ -105,6 +108,7 @@ function ChunksPlayer() {
         if (audioContext && audioContext.state !== "closed") {
             audioContext.close();
         }
+        stream.stop();
         lastChunkId = initialChunkId;
         paused = false;
         audioBufferQueue = [];
@@ -115,6 +119,7 @@ function ChunksPlayer() {
         reset();
         track = trackToPlay;
         loadChunk(lastChunkId);
+        stream.start(track.id);
     };
 
     this.play = function (trackToPlay) {
@@ -126,6 +131,7 @@ function ChunksPlayer() {
             audioContext.suspend();
         }
         paused = true;
+        stream.stop();
     };
 
     this.resume = function () {
@@ -135,6 +141,7 @@ function ChunksPlayer() {
             }
             paused = false;
             loadChunk(lastChunkId);
+            stream.start(track.id);
         }
     };
 }

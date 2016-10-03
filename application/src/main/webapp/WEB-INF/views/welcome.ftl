@@ -6,6 +6,7 @@
 <@m.head>
 <title><@spring.message "welcomepage.PageTitle"/></title>
 <script src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
+<script src="<@spring.url "/resources/js/stream.js" />"></script>
 <script src="<@spring.url "/resources/js/track.js" />"></script>
 <script src="<@spring.url "/resources/js/history.js" />"></script>
 <script src="<@spring.url "/resources/js/player.js" />"></script>
