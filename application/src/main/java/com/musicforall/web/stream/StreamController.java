@@ -32,12 +32,12 @@ public class StreamController {
 
     @Autowired
     private KeyValueRepository<Integer, Track> cache;
-
     @Autowired
     private TrackService trackService;
-
     @Autowired
     private UserService userService;
+    @Autowired
+    private RadioService radioService;
 
     @RequestMapping(value = "/track/{id}", method = POST)
     public ResponseEntity startStream(@PathVariable("id") Integer trackId) {
@@ -49,6 +49,7 @@ public class StreamController {
 
     @RequestMapping(value = "/stop", method = POST)
     public ResponseEntity stopStream() {
+        radioService.stream(null, -1);
         return processWithCurrentUser(cache::remove);
     }
 

@@ -13,7 +13,7 @@ jQuery(document).ready(function () {
 
     function startTrack(trackId) {
         track.get(trackId).then(function (tr) {
-            player.play(tr);
+            player.play(tr, 0);
             writeToFoot(tr);
         });
     }

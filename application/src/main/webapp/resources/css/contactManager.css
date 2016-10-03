@@ -3,10 +3,11 @@ body {
 }
 
 .stop-stream-button,
-.playing .start-stream-button {
+.active .start-stream-button {
     display: none;
 }
 
-.playing .stop-stream-button {
+.active .stop-stream-button,
+.active .equalizer {
     display: inline-block;
 }

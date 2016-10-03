@@ -11,7 +11,6 @@
 <link href="<@spring.url "/resources/css/contactManager.css" />" rel="stylesheet"/>
 <script src="<@spring.url "/resources/js/user.js" />"></script>
 <script src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
-<script src="<@spring.url "/resources/js/stream.js" />"></script>
 </@m.head>
 <@m.body>
 
@@ -85,8 +84,9 @@
             <%= contact.username %>
         </td>
         <td>
-            <img src="<@spring.url "/resources/img/indicators__icon-equalizer.gif" />" width=20% height=50%>
-            <%= contact.track ? contact.track.name : "" %>
+            <div class="track-container">
+                <%= contact.track ? contact.track.name : ""%>
+            </div>
         </td>
         <td>
             <button type="button" class="btn btn-xs btn-success start-stream-button">
@@ -121,16 +121,16 @@
 
     $("#results").on("click", ".start-stream-button", function (e) {
         leftCurrentStream();
-        $("#results").find("tr").removeClass("playing");
+        $("#results").find("tr").removeClass("active");
         var row = $(this).closest("tr");
-        row.addClass("playing");
+        row.addClass("active");
         var id = row.attr("id");
         joinStream(id);
     });
 
     $("#results").on("click", ".stop-stream-button", function (e) {
         leftCurrentStream();
-        $("#results").find("tr").removeClass("playing");
+        $("#results").find("tr").removeClass("active");
     });
 
     function connect() {
@@ -146,16 +146,29 @@
         }
     }
 
+    function updateCurrentRow(track) {
+        var row = $("#results").find("tr.active .track-container");
+        if (track) {
+            row.addClass("playing");
+            $(row).text(track.name);
+        } else {
+            row.removeClass("playing");
+            $(row).text(" ");
+        }
+    }
+
     var radioSub;
 
     function joinStream(userId) {
         if (!radioSub) {
             radioSub = stompClient.subscribe("/radio/subscribers/" + userId, function (data) {
                 var response = JSON.parse(data.body);
-                console.log(response);
                 var track = response.track;
+                updateCurrentRow(track);
                 if (track) {
-                    player.playFrom(track, response.partId);
+                    player.playChunk(track, response.partId);
+                } else {
+                    player.reset();
                 }
             });
         }
@@ -165,7 +178,7 @@
         if (radioSub) {
             radioSub.unsubscribe();
             radioSub = null;
-            player.pause();
+            player.reset();
         }
     }
 
