@@ -30,7 +30,8 @@
 <div class="container">
     <div class="col-md-10">
         <section id="tracks-section" class="well col-md-11">
-            <table id="tracks" class="table table-hover table-striped table-condensed tracks-table">
+            <table id="tracks"
+                   class="table table-hover table-striped table-condensed tracks-table no-checkbox no-plus-button">
                 <thead>
                 <tr>
                     <th><@spring.message "welcomepage.Actions"/></th>
@@ -59,7 +60,7 @@
             </button>
 
             <table id="recommendations"
-                   class="table table-hover table-striped table-condensed no-checkbox tracks-table">
+                   class="table table-hover table-striped table-condensed no-checkbox tracks-table no-delete-button">
                 <thead>
                 <tr>
                     <th><@spring.message "songTable.Actions"/></th>
@@ -79,34 +80,7 @@
         </section>
     </div>
 </div>
-<!-- end .container -->
-
-<script type="text/template" class="trackRowTemplate">
-    <tr id="<%= data.id %>">
-        <td>
-            <button type="button" class="btn btn-xs btn-success play-track-button">
-                <span class='glyphicon glyphicon-play' aria-hidden='true'></span>
-            </button>
-            <button type="button" class="btn btn-xs btn-warning pause-track-button">
-                <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
-            </button>
-            <button type="button" class="btn btn-xs btn-danger delete-song-button">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            </button>
-            <button class="btn btn-xs btn-primary like-button"><@spring.message "mainpage.Like" /></button>
-            <span class="glyphicon num-likes" aria-hidden="true"></span>
-        </td>
-        <td>
-            <%= data.name %>
-        </td>
-        <td>
-            <%= data.artist %>
-        </td>
-    </tr>
-</script>
-
     <@p.player_Footer/>
-
 
 <script type="text/template" class="playlistButtonTemplate">
     <li id="<%= data.id %>" class="playlists" title="<%= data.name %>">
@@ -147,10 +121,6 @@
             $("script.playlistRowTemplate").html()
     );
 
-    var recommendationRow = _.template(
-            $("script.addTrackRowTemplate").html()
-    );
-
     /*
      * When a playlist is clicked, mark it active, then fetch tracks of the playlist,
      * then populate the tracks table.
@@ -160,17 +130,7 @@
         $("#playlists").find("li").removeClass("active");
         $(this).closest("li").addClass("active");
 
-        clearTracks();
-
-        playlist.get($("#playlists li.active").attr("id"))
-                .then(function (response) {
-                    response.tracks.forEach(function (track) {
-                        $("#tracks").find("thead").after(
-                                trackRow(track)
-                        );
-                        updateLikeCount(track.id);
-                    });
-                });
+        refreshTrackTable();
     });
 
 
@@ -331,7 +291,7 @@
     }
 
     function addRecommendedTrack(track) {
-        $("#recommendations").append(recommendationRow(track));
+        $("#recommendations").append(trackRow(track));
     }
 
     function updateLikeCount(id) {

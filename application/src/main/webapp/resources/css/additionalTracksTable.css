@@ -15,6 +15,7 @@
 
 .tracks-table.no-checkbox .checkButton,
 .tracks-table.no-plus-button .btn.btn-success.add-song-button,
+.tracks-table.no-delete-button .delete-song-button,
 .hidden {
     display: none;
 }
@@ -30,5 +31,3 @@
 #createPlaylistButton {
     margin-right: 1em;
 }
-
-.tracks-table tr .active

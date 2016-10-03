@@ -7,27 +7,27 @@ jQuery(document).ready(function () {
     var track = new Track();
 
     function writeToFoot(tr) {
-        $("#nameInFoot").html(tr.name);
-        $("#artistInFoot").html(tr.artist);
+        $("#nameInFoot").text(tr.name);
+        $("#artistInFoot").text(tr.artist ? tr.artist.name : "Unknown");
     }
 
     function startTrack(trackId) {
-            track.get(trackId).then(function (tr) {
-                player.play(tr);
-                writeToFoot(tr);
-            });
+        track.get(trackId).then(function (tr) {
+            player.play(tr);
+            writeToFoot(tr);
+        });
     }
 
     function changeActiveTrackRow(currentRow) {
-        startTrack(currentRow[0].id);
+        startTrack(currentRow.attr("id"));
         $(".tracks-table tr").removeClass("playing").removeClass("active");
         $(currentRow).closest("tr").addClass("playing").addClass("active");
     }
 
     $(".tracks-table").on("click", ".play-button", function () {
-        var $trackHtml = $(this).closest("tr");
-        if ($('tr.active') != $trackHtml) {
-            changeActiveTrackRow($trackHtml);
+        var trackRow = $(this).closest("tr");
+        if ($('tr.active') != trackRow) {
+            changeActiveTrackRow(trackRow);
         } else {
             player.resume();
             $(this).closest("tr").addClass("playing");
@@ -39,24 +39,24 @@ jQuery(document).ready(function () {
         $(this).closest("tr").removeClass("playing");
     });
 
-    $('#nextFooterBtn').bind('click', function() {
+    $('#nextFooterBtn').bind('click', function () {
         if ($("tr.active").next().attr("id")) {
             changeActiveTrackRow($("tr.active").next());
         }
     });
 
-    $('#prevFooterBtn').bind('click', function() {
+    $('#prevFooterBtn').bind('click', function () {
         if ($("tr.active").prev().attr("id")) {
             changeActiveTrackRow($("tr.active").prev());
         }
     });
 
-    $('#playFooterBtn').bind('click', function() {
+    $('#playFooterBtn').bind('click', function () {
         player.resume();
         $("tr.active").addClass("playing");
     });
 
-    $('#pauseFooterBtn').bind('click', function() {
+    $('#pauseFooterBtn').bind('click', function () {
         player.pause();
         $("tr.active").removeClass("playing");
     });

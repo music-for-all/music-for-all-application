@@ -111,7 +111,7 @@
         $("form[name=uploadForm]").each(function () {
             var obj = {};
             var artist = {};
-            artist.artistName=$(this).find("input[name=artist]").val();
+            artist.name = $(this).find("input[name=artist]").val();
             artist.tags=$(this).find("#tags").val();
             obj.name = $(this).find("input[name=name]").val() ;
             obj.artist = artist;
@@ -128,9 +128,9 @@
                         showMessage(data, "success");
                     }, function (xhr, status, error) {
                         if (xhr.responseText.length < max_length_error) {
-                            showMessage("(" + obj.artist.artistName + " - " + obj.name + ")" + ": " + xhr.responseText, "danger");
+                            showMessage("(" + obj.artist.name + " - " + obj.name + ")" + ": " + xhr.responseText, "danger");
                         } else {
-                            showMessage("(" + obj.artist.artistName + " - " + obj.name + ")" + ": " + error, "danger");
+                            showMessage("(" + obj.artist.name + " - " + obj.name + ")" + ": " + error, "danger");
                         }
                         return false;
                     });

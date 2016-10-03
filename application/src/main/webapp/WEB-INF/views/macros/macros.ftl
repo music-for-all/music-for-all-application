@@ -147,14 +147,17 @@
                     <span class="glyphicon glyphicon-ok"></span>
                 </label>
             </div>
+            <button type="button" class="btn btn-xs btn-danger delete-song-button">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </button>
             <button class="btn btn-xs btn-primary like-button"><@spring.message "mainpage.Like" /></button>
             <span class="glyphicon num-likes" aria-hidden="true"></span>
         </td>
         <td>
-            <%= data.name %>
+            <%= data.artist.name %>
         </td>
         <td>
-            <%= data.artist %>
+            <%= data.name %>
         </td>
     </tr>
 </script>
