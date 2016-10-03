@@ -55,7 +55,7 @@ public class ContactManagerController {
         Collection<Integer> followingId = followerService.getFollowingId(user_id);
         List<User> following = followingId.stream().map(i -> userService.get(i)).collect(Collectors.toList());
 
-        model.addAttribute("user", userService.get(user_id));
+        model.addAttribute("user_id",user_id);
         model.addAttribute("followers", followers);
         model.addAttribute("following", following);
         model.addAttribute("playlists", playlistService.getAllUserPlaylists(user_id));
