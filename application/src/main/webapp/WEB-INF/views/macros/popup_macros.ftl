@@ -136,35 +136,74 @@
     </@popUp>
 </#macro>
 
-<#macro usersPopup users id>
-<div id="${id}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th><@spring.message "popupmacro.UserName"/></th>
-                    <th><@spring.message "popupmacro.FirstName"/></th>
-                    <th><@spring.message "popupmacro.LastName"/></th>
-                </tr>
-                </thead>
-                <tbody>
-                    <#list users as usr>
+<#macro followersPopup id>
+<script type="text/template" class="followersPopup">
+    <div id="${id}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th><@spring.message "popupmacro.UserName"/></th>
+                        <th><@spring.message "popupmacro.FirstName"/></th>
+                        <th><@spring.message "popupmacro.LastName"/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% _.each(data, function(usr){ %>
                     <tr>
                         <td>
                             <div class="avatar">
-                                <img src="${usr.picture}" class="img-responsive img-rounded">
+                                <img src=" <%= usr.picture %>" class="img-responsive img-rounded">
                             </div>
                         </td>
-                        <td><a href="/showUser?user_id=${usr.id}">${usr.username}</a></td>
-                        <td>${usr.firstName}</td>
-                        <td>${usr.lastName}</td>
+                        <td><a href="/showUser?user_id=<%= usr.id %>"><%= usr.username %></a></td>
+                        <td><%= usr.firstName %></td>
+                        <td><%= usr.lastName %></td>
                     </tr>
-                    </#list>
-                </tbody>
-            </table>
+                    <% }); %>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
+</script>
+</#macro>
+
+<#macro followingPopup id>
+<script type="text/template" class="followingPopup">
+    <div id="${id}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th><@spring.message "popupmacro.UserName"/></th>
+                        <th><@spring.message "popupmacro.FirstName"/></th>
+                        <th><@spring.message "popupmacro.LastName"/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% _.each(data, function(usr){ %>
+                    <tr>
+                        <td>
+                            <div class="avatar">
+                                <img src=" <%= usr.picture %>" class="img-responsive img-rounded">
+                            </div>
+                        </td>
+                        <td><a href="/showUser?user_id=<%= usr.id %>"><%= usr.username %></a></td>
+                        <td><%= usr.firstName %></td>
+                        <td><%= usr.lastName %></td>
+                    </tr>
+                    <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</script>
 </#macro>

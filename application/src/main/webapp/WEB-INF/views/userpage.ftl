@@ -11,21 +11,22 @@
 </@m.head>
 <@m.body>
     <@m.navigation m.pages.Profile/>
-
-    <@p.usersPopup followers "followerspopup"></@p.usersPopup>
-    <@p.usersPopup following "followingpopup"></@p.usersPopup>
+<div id="popupBlock">
+    <@p.followersPopup "followersPopup"></@p.followersPopup>
+    <@p.followingPopup "followingPopup"></@p.followingPopup>
+</div>
 <div id="container" class="container">
     <div class="row">
         <div class="col-md-2 well">
-            <img class="img-responsive img-rounded" src="${user.picture}">
+
             <div id="userHeader" class="profile-info">
             </div>
             <div class="btn-group-vertical">
-                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#followerspopup">
-                    <@spring.message "userpage.Followers"/> <span class="badge">${followers?size}</span>
+                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#followersPopup">
+                    <@spring.message "userpage.Followers"/>
                 </button>
-                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#followingpopup">
-                    <@spring.message "userpage.Following"/> <span class="badge">${following?size}</span>
+                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#followingPopup">
+                    <@spring.message "userpage.Following"/>
                 </button>
             </div>
 
@@ -41,6 +42,7 @@
     </div>
 </div>
 <script type="text/template" class="userHeader">
+    <img class="img-responsive img-rounded" src="<%= data.picture %>">
     <div class="profile-info">
         <div class="caption">
             <h3><%= data.firstName %> <%= data.lastName %></h3>
@@ -61,6 +63,14 @@
             $("script.userHeader").html()
     );
 
+    var followersPopup = _.template(
+            $("script.followersPopup").html()
+    );
+
+    var followingPopup = _.template(
+            $("script.followingPopup").html()
+    );
+
     $('li > a').click(function () {
         $('li').removeClass();
         $(this).parent().addClass('active');
@@ -70,6 +80,18 @@
         user.getUser(${user_id}).then(function (req_user) {
             $("#userHeader").append(
                     userHeader(req_user)
+            );
+        });
+
+        user.getUserFollowers(${user_id}).then(function (ufollowers) {
+            $("#popupBlock").append(
+                    followersPopup(ufollowers)
+            );
+        });
+
+        user.getUserFollowing(${user_id}).then(function (ufollowing) {
+            $("#popupBlock").append(
+                    followingPopup(ufollowing)
             );
         });
     });
