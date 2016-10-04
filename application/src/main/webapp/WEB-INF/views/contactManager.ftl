@@ -84,7 +84,7 @@
             <%= contact.username %>
         </td>
         <td>
-            <div class="track-container">
+            <div class="track-container <%= contact.track ? 'playing' : '' %>">
                 <%= contact.track ? contact.track.name : ""%>
             </div>
         </td>

@@ -18,7 +18,7 @@ function ChunksPlayer() {
     var sequencePlay = function () {
         stream.start(track.id);
         setTimeout(function () {
-            if (self.isPlaying()) {
+            if (isPlaying()) {
                 loadChunk(lastChunkId);
             }
         }, 15000);
@@ -65,6 +65,10 @@ function ChunksPlayer() {
             play();
         };
         return audioSource;
+    }
+
+    function isPlaying() {
+        return audioContext && audioContext.state === "running";
     }
 
     function play() {
@@ -123,19 +127,15 @@ function ChunksPlayer() {
         loadChunk(lastChunkId);
     };
 
-    this.isPlaying = function () {
-        return audioContext && audioContext.state === "running";
-    };
-
     this.pause = function () {
-        if (self.isPlaying()) {
+        if (isPlaying()) {
             audioContext.suspend();
         }
         stream.stop();
     };
 
     this.resume = function () {
-        if (!self.isPlaying()) {
+        if (!isPlaying()) {
             if (audioContext && audioContext.state === "suspended") {
                 audioContext.resume();
             }
