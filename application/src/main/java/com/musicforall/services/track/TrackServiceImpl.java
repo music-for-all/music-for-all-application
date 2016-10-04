@@ -68,7 +68,7 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
-    public Collection<Track> getAllById(Collection<Integer> ids) {
+    public Collection<Track> getAllByIds(Collection<Integer> ids) {
         if (ids == null || ids.isEmpty()) {
             return Collections.emptyList();
         }

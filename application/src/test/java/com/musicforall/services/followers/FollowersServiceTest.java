@@ -12,8 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import static org.junit.Assert.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by andrey on 8/2/16.
@@ -82,4 +82,5 @@ public class FollowersServiceTest {
         followerService.unfollow(user_followers.getId(), user.getId());
         assertEquals(0, followerService.getFollowingId(user_followers.getId()).size());
     }
+
 }

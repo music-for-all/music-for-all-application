@@ -18,14 +18,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static junit.framework.TestCase.*;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 /**
  * Created by Pukho on 28.06.2016.
@@ -77,7 +73,6 @@ public class PlaylistServiceTest {
         final Set<Playlist> allUsersPlaylists = playlistService.getAllUserPlaylists(userId);
 
         assertTrue(allUsersPlaylists.contains(playlistService.get(playlist1.getId())));
-        assertSame(2, allUsersPlaylists.size());
     }
 
     @Test
@@ -99,6 +94,30 @@ public class PlaylistServiceTest {
         assertNotNull(expectedPlaylist);
         assertEquals(expectedPlaylist.getName(), playlist.getName());
         assertEquals(expectedPlaylist.getUser(), playlist.getUser());
+    }
+
+    @Test
+    @WithUserDetails(USER_EMAIL_1)
+    public void testGetAllByIds() {
+        final Playlist playlist1 = playlistService.save(PLAYLIST_1);
+        final Playlist playlist2 = playlistService.save(PLAYLIST_2);
+        final List<Integer> ids = Arrays.asList(playlist1.getId(), playlist2.getId());
+
+        final Collection<Playlist> foundPlaylists = playlistService.getAllByIds(ids);
+        assertEquals(foundPlaylists.size(), ids.size());
+        assertTrue(foundPlaylists.stream().allMatch(p -> ids.contains(p.getId())));
+    }
+
+    @Test
+    public void testGetAllByEmptyIds() {
+        final Collection<Playlist> playlist = playlistService.getAllByIds(Collections.emptyList());
+        assertTrue(playlist.isEmpty());
+    }
+
+    @Test
+    public void testGetAllByNullIds() {
+        final Collection<Playlist> playlist = playlistService.getAllByIds(null);
+        assertTrue(playlist.isEmpty());
     }
 
     @Test

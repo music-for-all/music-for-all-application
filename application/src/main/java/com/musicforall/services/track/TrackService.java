@@ -21,7 +21,7 @@ public interface TrackService {
 
     Track get(Integer id);
 
-    Collection<Track> getAllById(Collection<Integer> ids);
+    Collection<Track> getAllByIds(Collection<Integer> ids);
 
     void addTags(Integer trackId, Set<Tag> tags);
 

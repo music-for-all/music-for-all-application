@@ -61,6 +61,17 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
+    public Collection<Playlist> getAllByIds(Collection<Integer> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        final Map<String, Object> params = new HashMap<>();
+        params.put("ids", ids);
+        return dao.getAllByNamedQuery(Playlist.class, Playlist.ALL_BY_ID_QUERY, params);
+    }
+
+    @Override
     public void delete(Integer playlistId) {
         final Playlist playlist = dao.get(Playlist.class, playlistId);
         dao.delete(playlist);
@@ -77,7 +88,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public void addTracks(Integer playlistId, Collection<Integer> tracksIds) {
         final Playlist playlist = dao.get(Playlist.class, playlistId);
-        final Collection<Track> tracks = trackService.getAllById(tracksIds);
+        final Collection<Track> tracks = trackService.getAllByIds(tracksIds);
         playlist.addTracks(new HashSet<>(tracks));
         save(playlist);
     }

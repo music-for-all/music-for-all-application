@@ -17,6 +17,8 @@ public interface PlaylistService {
 
     Set<Track> getAllTracksInPlaylist(Integer playlistId);
 
+    Collection<Playlist> getAllByIds(Collection<Integer> ids);
+
     void delete(Integer playlistId);
 
     void addTracks(Integer playlistId, Collection<Integer> tracksIds);

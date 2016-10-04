@@ -94,4 +94,15 @@ public class HistoryServiceImpl implements HistoryService {
         }
         return criteria;
     }
+
+    @Override
+    public Collection<History> getUsersHistories(Collection<Integer> usersIds) {
+
+        final Map<String, Object> parameters = new HashMap<>();
+        parameters.put("usersIds", usersIds);
+
+        return dao.getAllByNamedQuery(History.class, History.USERS_HISTORIES_QUERY,
+                parameters);
+    }
+
 }

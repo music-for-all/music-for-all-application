@@ -13,6 +13,14 @@ public final class SecurityUtil {
     private SecurityUtil() {
     }
 
+    public static Integer currentUserId() {
+        final User user = currentUser();
+        if (user == null) {
+            return null;
+        }
+        return user.getId();
+    }
+
     public static User currentUser() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -21,4 +29,5 @@ public final class SecurityUtil {
         }
         return (User) authentication.getPrincipal();
     }
+
 }
