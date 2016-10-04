@@ -1,6 +1,5 @@
 "use strict";
 
-
 function ChunksPlayer() {
 
     var self = this;
@@ -141,5 +140,9 @@ function ChunksPlayer() {
             }
             loadChunk(lastChunkId);
         }
+    };
+
+    this.isCurrentTrack = function (trackToCheck) {
+        return track && trackToCheck && track.id == trackToCheck.id;
     };
 }

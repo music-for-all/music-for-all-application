@@ -161,16 +161,21 @@
 
     function joinStream(userId) {
         if (!radioSub) {
-            radioSub = stompClient.subscribe("/radio/subscribers/" + userId, function (data) {
-                var response = JSON.parse(data.body);
-                var track = response.track;
-                updateStreamRow(track);
-                if (track) {
-                    player.playChunk(track, response.partId);
-                } else {
-                    player.reset();
-                }
-            });
+            radioSub = stompClient.subscribe("/radio/subscribers/" + userId, onMessage);
+        }
+    }
+
+    function onMessage(data) {
+        var response = JSON.parse(data.body);
+        var track = response.track;
+        updateStreamRow(track);
+        if (track) {
+            if (!player.isCurrentTrack(track)) {
+                player.reset();
+            }
+            player.playChunk(track, response.partId);
+        } else {
+            player.pause();
         }
     }
 
