@@ -25,20 +25,19 @@
     <%
     _.each(data, function(feeds, user){%>
     <div id="following_user">
-        <div class="username text-center" data-toggle="collapse" data-target="#<%= user.getEmail %>"><%=
-            user.getUsername %>
+        <div class="username text-center" data-toggle="collapse" data-target="#<%= user.mail %>">
+            <%=user.username %>
         </div>
         <div class="activities">
-            <%
-            _.each(feeds, function(feed, index){
+            <%_.each(feeds, function(feed, index){
             if(index == 2 ){ %>
-            <div id="<%= user.getEmail %>" class="collapse">
+            <div id="<%= user.mail %>" class="collapse">
                 <% } %>
                 <div class="row activity">
                     <div class="col-xs-6 col-sm-9 event"><%= feed.content%></div>
-                    <% var date = new Date(feed.date);
+                    <%
+                    var date = new Date(feed.date);
                     var dateString = date.getHours() + ":" + date.getMinutes();
-
                     %>
                     <div class="col-xs-6 col-sm-3 date"><%= dateString %></div>
                 </div>
