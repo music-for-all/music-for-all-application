@@ -22,18 +22,25 @@
 <script type="text/template" class="groupedHistories">
 
 
-    <%_.each(data, function(user, feeds){%>
+    <%
+    _.each(data, function(feeds, user){%>
     <div id="following_user">
-        <div class="username text-center" data-toggle="collapse" data-target="#<%= user.email %>"><%= user.username %>
+        <div class="username text-center" data-toggle="collapse" data-target="#<%= user.getEmail %>"><%=
+            user.getUsername %>
         </div>
         <div class="activities">
-            <% _.each(feeds, function(feed, index){
+            <%
+            _.each(feeds, function(feed, index){
             if(index == 2 ){ %>
-            <div id="<%= user.email %>" class="collapse">
+            <div id="<%= user.getEmail %>" class="collapse">
                 <% } %>
                 <div class="row activity">
-                    <div class="col-xs-6 col-sm-9 event"><%feed.content%></div>
-                    <div class="col-xs-6 col-sm-3 date"><%feed.date%></div>
+                    <div class="col-xs-6 col-sm-9 event"><%= feed.content%></div>
+                    <% var date = new Date(feed.date);
+                    var dateString = date.getHours() + ":" + date.getMinutes();
+
+                    %>
+                    <div class="col-xs-6 col-sm-3 date"><%= dateString %></div>
                 </div>
                 <% });
                 if(_.size(feeds) > 2){%>
