@@ -20,7 +20,9 @@
 </div>
 
 <script type="text/template" class="groupedHistories">
-    <% _.each(data, function(user, feeds){%>
+
+
+    <%_.each(data, function(user, feeds){%>
     <div id="following_user">
         <div class="username text-center" data-toggle="collapse" data-target="#<%= user.email %>"><%= user.username %>
         </div>
@@ -34,7 +36,7 @@
                     <div class="col-xs-6 col-sm-3 date"><%feed.date%></div>
                 </div>
                 <% });
-                if(_.size(histories) > 2){%>
+                if(_.size(feeds) > 2){%>
                 </div>
             <% } %>
         </div>
@@ -43,6 +45,7 @@
 </script>
 
 <script type="text/javascript">
+    _.templateSettings.variable = "data";
 
     var userGroupedHistories = _.template(
             $("script.groupedHistories").html()
