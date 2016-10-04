@@ -146,7 +146,7 @@
         }
     }
 
-    function updateCurrentRow(track) {
+    function updateStreamRow(track) {
         var row = $("#results").find("tr.active .track-container");
         if (track) {
             row.addClass("playing");
@@ -164,7 +164,7 @@
             radioSub = stompClient.subscribe("/radio/subscribers/" + userId, function (data) {
                 var response = JSON.parse(data.body);
                 var track = response.track;
-                updateCurrentRow(track);
+                updateStreamRow(track);
                 if (track) {
                     player.playChunk(track, response.partId);
                 } else {

@@ -7,7 +7,16 @@ body {
     display: none;
 }
 
-.active .stop-stream-button,
-.active .equalizer {
+.active .stop-stream-button {
     display: inline-block;
+}
+
+.track-container.playing:before {
+    content: " ";
+    float: left;
+    position: relative;
+    background: url(/resources/img/indicators__icon-equalizer.gif);
+    display: inline;
+    height: 25px;
+    width: 25px;
 }
