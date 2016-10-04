@@ -2,6 +2,7 @@ package com.musicforall.services.track;
 
 import com.musicforall.history.service.DBHistoryPopulateService;
 import com.musicforall.model.*;
+import com.musicforall.model.user.User;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.recommendation.RecommendationService;
