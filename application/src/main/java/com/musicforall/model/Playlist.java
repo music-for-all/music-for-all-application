@@ -18,10 +18,17 @@ import java.util.Set;
 /**
  * Created by ilianik on 11.06.2016.
  */
+@NamedQueries({
+        @NamedQuery(
+                name = Playlist.ALL_BY_ID_QUERY,
+                query = "select p from Playlist p where p.id in (:ids)"
+        )})
+
 @Entity
 @Table(name = "playlists")
 public class Playlist implements Serializable {
 
+    public static final String ALL_BY_ID_QUERY = "all_playlists_by_id";
     private static final long serialVersionUID = 3556491830874885637L;
 
     @Id

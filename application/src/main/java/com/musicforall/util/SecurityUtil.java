@@ -29,4 +29,5 @@ public final class SecurityUtil {
         }
         return (User) authentication.getPrincipal();
     }
+
 }

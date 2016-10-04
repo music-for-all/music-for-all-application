@@ -82,4 +82,5 @@ public class FollowersServiceTest {
         followerService.unfollow(user_followers.getId(), user.getId());
         assertEquals(0, followerService.getFollowingId(user_followers.getId()).size());
     }
+
 }

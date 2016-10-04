@@ -6,6 +6,7 @@ import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.recommendation.RecommendationService;
 import com.musicforall.services.tag.TagService;
+import com.musicforall.services.user.UserService;
 import com.musicforall.util.SecurityUtil;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
@@ -58,6 +59,9 @@ public class TrackServiceTest {
 
     @Autowired
     private DBHistoryPopulateService dbHistoryPopulateService;
+
+    @Autowired
+    private UserService userService;
 
     @Test
     public void testSaveTrackWithoutTags() {
@@ -140,7 +144,7 @@ public class TrackServiceTest {
     }
 
     @Test
-    public void testGetAllLike() {
+    public void testGetAllLikes() {
 
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag("tag1"), new Tag("tag2")));
 
@@ -161,7 +165,7 @@ public class TrackServiceTest {
     }
 
     @Test
-    public void testGetAllById() {
+    public void testGetAllByIds() {
         List<Track> tracks = Arrays.asList(
                 new Track("track", "title1", new Artist("artist1"), "album1", "/root/track1.mp3", null),
                 new Track("track", "title2", new Artist("artist2"), "album2", "/root/track2.mp3", null),
@@ -169,20 +173,20 @@ public class TrackServiceTest {
         );
         Collection<Track> savedTracks = trackService.saveAll(tracks);
         List<Integer> ids = savedTracks.stream().limit(2).map(Track::getId).collect(Collectors.toList());
-        Collection<Track> foundTracks = trackService.getAllById(ids);
+        Collection<Track> foundTracks = trackService.getAllByIds(ids);
         assertEquals(foundTracks.size(), ids.size());
         assertTrue(foundTracks.stream().allMatch(t -> ids.contains(t.getId())));
     }
 
     @Test
     public void testGetAllByEmptyIds() {
-        final Collection<Track> tracks = trackService.getAllById(Collections.emptyList());
+        final Collection<Track> tracks = trackService.getAllByIds(Collections.emptyList());
         assertTrue(tracks.isEmpty());
     }
 
     @Test
     public void testGetAllByNullIds() {
-        final Collection<Track> tracks = trackService.getAllById(null);
+        final Collection<Track> tracks = trackService.getAllByIds(null);
         assertTrue(tracks.isEmpty());
     }
 
@@ -208,10 +212,13 @@ public class TrackServiceTest {
         trackService.save(track3);
         trackService.save(track4);
         final List<Integer> trackIds = Arrays.asList(track1.getId(), track2.getId(), track3.getId());
-        final int FOLLOWED_USER_ID = 2;
-        followerService.follow(SecurityUtil.currentUser().getId(), FOLLOWED_USER_ID);
 
-        dbHistoryPopulateService.populateTrackLikedByFollowedUsers(trackIds, FOLLOWED_USER_ID);
+        final User followingUser = new User("Valera", "228", "ya@gmail.com");
+        userService.save(followingUser);
+
+        followerService.follow(SecurityUtil.currentUser().getId(), followingUser.getId());
+
+        dbHistoryPopulateService.populateTrackLikedByFollowedUsers(trackIds, followingUser.getId());
 
         Collection<Track> tracks = recommendationService.getFollowingsRecommendedTracks();
         assertNotNull(tracks);

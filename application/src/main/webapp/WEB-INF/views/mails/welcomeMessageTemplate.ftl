@@ -1,6 +1,6 @@
 <html>
 <body>
-<div style='border:4px ridge red;text-align:center;font-family:Verdana,Arial,Helvetica,sans-serif'>
+<div style='border:4px ridge #b82aff;text-align:center;font-family:Verdana,Arial,Helvetica,sans-serif'>
     <h1 style='color:red'>Welcome, ${username}!</h1><br>
 
     <p>You have just been registered in the best music player</p>

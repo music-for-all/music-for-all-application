@@ -22,8 +22,7 @@ import org.springframework.context.annotation.*;
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value =
                 {DbPopulateService.class, FileServiceImpl.class}))
 @PropertySource(value = "classpath:application.properties")
-@Import({HibernateConfigDev.class, SecurityConfig.class,
-        HistorySpringConfig.class, TestMessageConfig.class,
-        CacheConfig.class})
+@Import({HibernateConfigDev.class, SecurityConfig.class, TestMessageConfig.class, 
+        HistorySpringConfig.class, CacheConfig.class})
 public class ServicesTestConfig {
 }

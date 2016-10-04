@@ -37,7 +37,7 @@ public class RecommendationService {
 
     public Collection<Track> getMostPopularTracks() {
         final List<Integer> popularTracksIds = historyService.getTheMostPopularTracks();
-        return trackService.getAllById(popularTracksIds);
+        return trackService.getAllByIds(popularTracksIds);
     }
 
     public Collection<Track> getRecommendedTracks() {
@@ -70,7 +70,7 @@ public class RecommendationService {
                 .sorted((k1, k2) -> likesCountsByTrackId.get(k1).compareTo(likesCountsByTrackId.get(k2)))
                 .collect(Collectors.toList());
 
-        final Collection<Track> recommendedTracks = trackService.getAllById(tracksOrderedByLikes);
+        final Collection<Track> recommendedTracks = trackService.getAllByIds(tracksOrderedByLikes);
         if (recommendedTracks == null || recommendedTracks.isEmpty()) {
             return Collections.emptyList();
         }
