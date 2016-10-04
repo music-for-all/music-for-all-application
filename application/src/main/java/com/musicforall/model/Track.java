@@ -26,7 +26,7 @@ import java.util.Set;
 @Table(name = "tracks")
 public class Track implements Serializable {
 
-    public static final String ALL_BY_ID_QUERY = "all_by_id";
+    public static final String ALL_BY_ID_QUERY = "all_tracks_by_id";
     private static final long serialVersionUID = -6851477594231058789L;
     @Id
     @Column(name = Constants.ID)
