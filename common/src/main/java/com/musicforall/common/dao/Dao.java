@@ -73,6 +73,12 @@ public class Dao {
         return entity;
     }
 
+    public <T> T update(T entity) {
+        LOG.info("Going to update entity - {}", entity);
+        currentSession().update(entity);
+        return entity;
+    }
+
     /**
      * Persists collection of entities wrapped in list
      *
@@ -107,10 +113,9 @@ public class Dao {
      * Return the persistent instance of the given entity class with the given parameters,
      * with NamedQuery annotation
      *
-     * @param clazz type of return class entity
+     * @param clazz      type of return class entity
      * @param namedQuery - name of query
      * @param parameters - pairs of key/value parameters which will be added to "where" part of the query
-     *
      * @return a persistent instance or null
      */
 
@@ -135,11 +140,10 @@ public class Dao {
     /**
      * Return the persistent instances of the given entity class with the given parameters,
      *
-     * @param clazz type of return class entity
-     * @param namedQuery - name of query
-     * @param parameters - pairs of key/value parameters which will be added to "where" part of the query
+     * @param clazz       type of return class entity
+     * @param namedQuery  - name of query
+     * @param parameters  - pairs of key/value parameters which will be added to "where" part of the query
      * @param queryParams - list of QueryParams parameters
-     *
      * @return list of persistent instances or null
      */
 
@@ -193,10 +197,9 @@ public class Dao {
     /**
      * Return the persistent instances of the given entity class with the given parameters,
      *
-     * @param clazz type of return class entity
+     * @param clazz      type of return class entity
      * @param namedQuery - name of query
-     * @param params - pairs of key/value parameters which will be added to "where" part of the query
-     *
+     * @param params     - pairs of key/value parameters which will be added to "where" part of the query
      * @return list of persistent instances or null
      */
 

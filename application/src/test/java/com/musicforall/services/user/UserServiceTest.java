@@ -1,5 +1,6 @@
 package com.musicforall.services.user;
 
+import com.musicforall.model.ProfileData;
 import com.musicforall.model.User;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
@@ -58,12 +59,13 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testSaveUserWithoutEncodePassword() {
+    public void testUpdateUser() {
         final User user = new User("Mike", "1234567890", "mike@example.com");
-        userService.save(user, false);
+        userService.save(user);
 
-        final String password = user.getPassword();
-        assertEquals(password, userService.getByEmail(user.getEmail()).getPassword());
+        final ProfileData profileData = new ProfileData().setBio("Bio");
+        userService.update(user, profileData);
+        assertEquals(profileData.getBio(), userService.getByEmail(user.getEmail()).getBio());
     }
 
     @Test

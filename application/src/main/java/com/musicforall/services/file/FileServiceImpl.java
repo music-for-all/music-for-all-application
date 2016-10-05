@@ -2,6 +2,7 @@ package com.musicforall.services.file;
 
 import com.musicforall.files.manager.FileManager;
 import com.musicforall.model.Artist;
+import com.musicforall.model.ProfileData;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
 import com.musicforall.services.artist.ArtistService;
@@ -64,8 +65,8 @@ public class FileServiceImpl implements FileService {
         requireNonNull(user, "user must not be null");
         final Optional<Path> saved = manager.savePicture(user.getId(), file);
         if (saved.isPresent()) {
-            user.setPicture(DEFAULT_PICTURE_DIRECTORY + user.getId() + "/" + file.getOriginalFilename());
-            userService.save(user, false);
+            userService.update(user, new ProfileData()
+                    .setPicture(DEFAULT_PICTURE_DIRECTORY + user.getId() + "/" + file.getOriginalFilename()));
             return new ResponseEntity<>("Picture successfully saved", HttpStatus.OK);
         } else {
             return new ResponseEntity<>(INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);

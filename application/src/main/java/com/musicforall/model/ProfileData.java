@@ -17,6 +17,8 @@ public class ProfileData {
 
     private String lastName;
 
+    private String picture;
+
     @Size(max = 140)
     private String bio;
 
@@ -24,11 +26,12 @@ public class ProfileData {
     }
 
     public ProfileData(String username, String password, String firstName,
-                       String lastName, String bio) {
+                       String lastName, String picture, String bio) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.picture = picture;
         this.bio = bio;
     }
 
@@ -36,40 +39,54 @@ public class ProfileData {
         return password;
     }
 
-    public void setPassword(String password) {
+    public ProfileData setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public ProfileData setFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public ProfileData setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
     }
 
     public String getBio() {
         return bio;
     }
 
-    public void setBio(String bio) {
+    public ProfileData setBio(String bio) {
         this.bio = bio;
+        return this;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public ProfileData setUsername(String username) {
         this.username = username;
+        return this;
+    }
+
+    public ProfileData setPicture(String picture) {
+        this.picture = picture;
+        return this;
+    }
+
+    public String getPicture() {
+        return picture;
     }
 
     public boolean encodePassword() {
@@ -94,6 +111,9 @@ public class ProfileData {
         }
         if (bio != null) {
             currentUser.setBio(bio);
+        }
+        if (picture != null) {
+            currentUser.setPicture(picture);
         }
         return currentUser;
     }

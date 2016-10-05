@@ -1,5 +1,6 @@
 package com.musicforall.services.user;
 
+import com.musicforall.model.ProfileData;
 import com.musicforall.model.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.social.security.SocialUserDetailsService;
@@ -14,7 +15,7 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
 
     void save(User user);
 
-    void save(User user, Boolean encodePassword);
+    void update(User user, ProfileData profileData);
 
     User get(Integer userId);
 
