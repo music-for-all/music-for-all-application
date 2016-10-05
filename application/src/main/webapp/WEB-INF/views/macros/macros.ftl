@@ -13,7 +13,6 @@
     <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="<@spring.url "/resources/js/stream.js" />"></script>
 
     <link rel="stylesheet"
           href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
@@ -40,10 +39,6 @@
             xhr.setRequestHeader(header, token);
         }
     });
-
-    window.onbeforeunload = function () {
-        new Stream().stop();
-    };
 </script>
 </body>
 </#macro>
@@ -73,16 +68,20 @@
 <#assign profileCaption>
     <@spring.message "macros.Profile"/>
 </#assign>
+<#assign feedCaption>
+    <@spring.message "macros.Feed"/>
+</#assign>
 
 <#assign pages = {"Main": {"url": '/main', "title": "${mainCaption}", "icon": "fa-th-list"},
 "Search": {"url": '/search', "title": "${searchCaption}", "icon": "fa-search"},
 "Add": {"url": '/uploadFile', "title": "${addCaption}", "icon": "fa-plus"},
 "Profile": {"url": '/profile', "title": "", "icon": "fa-cog"},
 "Contacts": {"url": '/contactManager', "title": "", "icon": "fa-users"},
+"Feed": {"url": '/feed', "title": "${feedCaption}", "icon": "fa-newspaper-o"},
 "WithoutActivePage": {"url": ''}}>
 
 <#macro navigation activePage=pages.WithoutActivePage>
-    <#assign items = [pages.Contacts, pages.Main, pages.Search]>
+    <#assign items = [pages.Contacts, pages.Main, pages.Search, pages.Feed]>
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
