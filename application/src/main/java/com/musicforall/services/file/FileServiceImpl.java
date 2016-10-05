@@ -65,7 +65,7 @@ public class FileServiceImpl implements FileService {
         final Optional<Path> saved = manager.savePicture(user.getId(), file);
         if (saved.isPresent()) {
             user.setPicture(DEFAULT_PICTURE_DIRECTORY + user.getId() + "/" + file.getOriginalFilename());
-            userService.save(user);
+            userService.save(user, false);
             return new ResponseEntity<>("Picture successfully saved", HttpStatus.OK);
         } else {
             return new ResponseEntity<>(INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);

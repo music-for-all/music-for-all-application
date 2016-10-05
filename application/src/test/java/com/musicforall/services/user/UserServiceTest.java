@@ -58,6 +58,15 @@ public class UserServiceTest {
     }
 
     @Test
+    public void testSaveUserWithoutEncodePassword() {
+        final User user = new User("Mike", "1234567890", "mike@example.com");
+        userService.save(user, false);
+
+        final String password = user.getPassword();
+        assertEquals(password, userService.getByEmail(user.getEmail()).getPassword());
+    }
+
+    @Test
     public void testGetIdUserByEmail() {
         final Integer userId = userService.getIdByEmail(USER_EMAIL_1);
         assertEquals(userService.get(userId).getEmail(), USER_EMAIL_1);

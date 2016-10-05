@@ -41,7 +41,7 @@ public class ProfileRestController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-        userService.save(profileData.update(SecurityUtil.currentUser()));
+        userService.save(profileData.update(SecurityUtil.currentUser()), profileData.encodePassword());
         LOG.info(SecurityUtil.currentUser().toString());
 
         return new ResponseEntity<>(SecurityUtil.currentUser(), HttpStatus.OK);

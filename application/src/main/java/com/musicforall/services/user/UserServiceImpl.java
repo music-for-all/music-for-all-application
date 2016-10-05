@@ -42,6 +42,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void save(User user, Boolean encodePassword) {
+        if (encodePassword) {
+            save(user);
+        } else {
+            dao.save(user);
+        }
+    }
+
+    @Override
     public User get(Integer id) {
         return dao.get(User.class, id);
     }

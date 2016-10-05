@@ -14,6 +14,8 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
 
     void save(User user);
 
+    void save(User user, Boolean encodePassword);
+
     User get(Integer userId);
 
     Integer getIdByEmail(String email);

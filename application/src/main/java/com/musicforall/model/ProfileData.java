@@ -72,6 +72,13 @@ public class ProfileData {
         this.username = username;
     }
 
+    public boolean encodePassword() {
+        if (password != null && !password.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
     public User update(User currentUser) {
         if (username != null) {
             currentUser.setUsername(username);
