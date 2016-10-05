@@ -10,7 +10,7 @@
 </@m.head>
 <@m.body>
 
-    <@m.navigation/>
+    <@m.navigation m.pages.Feed/>
 
 <div class="container title">
     <h2><@spring.message "followingpage.Title"/></h2>
@@ -23,18 +23,21 @@
 
 
     <%
-    _.each(data, function(feeds, user){%>
+    _.each(data, function(feeds, user){
+    var id = user.match( /id=(.+?),/ )[1];
+    var username = user.match( /username='(.+?)'/ )[1];
+    %>
     <div id="following_user">
-        <div class="username text-center" data-toggle="collapse" data-target="#<%= user.mail %>">
-            <%=user.username %>
+        <div class="username text-center" data-toggle="collapse" data-target="#<%= id %>">
+            <%= username %>
         </div>
         <div class="activities">
             <%_.each(feeds, function(feed, index){
             if(index == 2 ){ %>
-            <div id="<%= user.mail %>" class="collapse">
+            <div id="<%= id %>" class="collapse">
                 <% } %>
                 <div class="row activity">
-                    <div class="col-xs-6 col-sm-9 event"><%= feed.content%></div>
+                    <div class="col-xs-6 col-sm-9 event"><%= feed.content %></div>
                     <%
                     var date = new Date(feed.date);
                     var dateString = date.getHours() + ":" + date.getMinutes();
