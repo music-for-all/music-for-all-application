@@ -10,7 +10,7 @@ import org.springframework.cache.annotation.Cacheable;
  */
 
 @CacheConfig(cacheNames = {"guava"})
-public abstract class GuavaCache<K, V> implements KeyValueRepository<K, V> {
+public class GuavaCache<K, V> implements KeyValueRepository<K, V> {
 
     private static final String SPEL_KEY = "#key";
 

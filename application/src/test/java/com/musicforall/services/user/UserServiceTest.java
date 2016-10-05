@@ -141,7 +141,7 @@ public class UserServiceTest {
         userService.saveAll(users);
 
         final List<Integer> userIds = users.stream().map(User::getId).collect(toList());
-        final List<User> usersWithSettings = userService.getUsersWithSettingsByIds(userIds);
+        final List<User> usersWithSettings = userService.getAllWithSettingsByIds(userIds);
 
         final boolean match = usersWithSettings.stream()
                 .filter(u -> defaultSettings.equals(u.getSettings()))

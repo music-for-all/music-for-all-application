@@ -1,9 +1,12 @@
 package com.musicforall.util;
 
+import com.musicforall.common.cache.GuavaCache;
+import com.musicforall.common.cache.KeyValueRepository;
 import com.musicforall.common.cache.config.CacheConfig;
 import com.musicforall.config.HibernateConfigDev;
 import com.musicforall.config.security.SecurityConfig;
 import com.musicforall.history.HistorySpringConfig;
+import com.musicforall.model.Track;
 import com.musicforall.services.DbPopulateService;
 import com.musicforall.services.file.FileServiceImpl;
 import org.springframework.cache.annotation.EnableCaching;
@@ -22,7 +25,11 @@ import org.springframework.context.annotation.*;
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value =
                 {DbPopulateService.class, FileServiceImpl.class}))
 @PropertySource(value = "classpath:application.properties")
-@Import({HibernateConfigDev.class, SecurityConfig.class, TestMessageConfig.class, 
+@Import({HibernateConfigDev.class, SecurityConfig.class, TestMessageConfig.class,
         HistorySpringConfig.class, CacheConfig.class})
 public class ServicesTestConfig {
+    @Bean
+    public KeyValueRepository<Integer, Track> cache() {
+        return new GuavaCache<>();
+    }
 }

@@ -7,6 +7,7 @@ import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import com.musicforall.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class StreamController {
 
     @Autowired
+    @Qualifier("guava")
     private KeyValueRepository<Integer, Track> cache;
     @Autowired
     private TrackService trackService;
@@ -64,7 +66,7 @@ public class StreamController {
 
     @RequestMapping(method = GET)
     public ResponseEntity getStreams(@RequestParam("ids[]") Collection<Integer> userIds) {
-        final List<User> users = userService.getUsersWithSettingsByIds(userIds);
+        final List<User> users = userService.getAllWithSettingsByIds(userIds);
         final Map<Integer, Track> userToTrack = users.stream()
                 .filter(u -> u.getSettings() != null && u.getSettings().isPublicRadio())
                 .map(User::getId)

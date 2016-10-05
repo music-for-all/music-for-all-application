@@ -1,9 +1,12 @@
 package com.musicforall.config;
 
+import com.musicforall.common.cache.GuavaCache;
+import com.musicforall.common.cache.KeyValueRepository;
 import com.musicforall.common.cache.config.CacheConfig;
 import com.musicforall.config.security.SecurityConfig;
 import com.musicforall.files.FileApiSpringConfig;
 import com.musicforall.history.HistorySpringConfig;
+import com.musicforall.model.Track;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.*;
@@ -21,8 +24,7 @@ import static java.util.concurrent.Executors.newFixedThreadPool;
 @Configuration
 @EnableAsync
 @ComponentScan({"com.musicforall.common",
-        "com.musicforall.services",
-        "com.musicforall.cache"})
+        "com.musicforall.services"})
 @Import({HibernateConfiguration.class,
         HibernateConfigDev.class,
         FileApiSpringConfig.class,
@@ -50,5 +52,10 @@ public class SpringRootConfiguration implements AsyncConfigurer {
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
         return new SimpleAsyncUncaughtExceptionHandler();
+    }
+
+    @Bean(name = "guava")
+    public KeyValueRepository<Integer, Track> cache() {
+        return new GuavaCache<>();
     }
 }

@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUsersWithSettingsByIds(Collection<Integer> ids) {
+    public List<User> getAllWithSettingsByIds(Collection<Integer> ids) {
         final Map<String, Object> params = new HashMap<>();
         params.put("ids", ids);
         return dao.getAllByNamedQuery(User.class, User.USERS_BY_IDS_WITH_SETTINGS_QUERY, params);

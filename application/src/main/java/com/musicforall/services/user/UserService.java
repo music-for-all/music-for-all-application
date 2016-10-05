@@ -28,7 +28,7 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
 
     List<User> getUsersById(Collection<Integer> usersId);
 
-    List<User> getUsersWithSettingsByIds(Collection<Integer> ids);
+    List<User> getAllWithSettingsByIds(Collection<Integer> ids);
 
     User getWithSettingsById(Integer id);
 
