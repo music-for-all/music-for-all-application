@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface UserService extends UserDetailsService, SocialUserDetailsService {
 
-    void save(User user);
+    User save(User user);
 
     Collection<User> saveAll(Collection<User> users);
 

@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
+import static com.musicforall.common.cache.config.CacheConfig.GUAVA;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
 /**
@@ -54,7 +55,7 @@ public class SpringRootConfiguration implements AsyncConfigurer {
         return new SimpleAsyncUncaughtExceptionHandler();
     }
 
-    @Bean(name = "guava")
+    @Bean(name = GUAVA)
     public KeyValueRepository<Integer, Track> cache() {
         return new GuavaCache<>();
     }

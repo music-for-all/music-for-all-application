@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 
 import static com.musicforall.util.SecurityUtil.currentUser;
-import static com.musicforall.util.SecurityUtil.currentUserId;
 
 /**
  * Created by Andrey on 7/31/16.
@@ -62,12 +61,11 @@ public class UserRestController {
 
     @RequestMapping(value = "/me", method = RequestMethod.GET)
     public ResponseEntity me() {
-        final Integer currentUserId = currentUserId();
-        if (currentUserId == null) {
+        final User currentUser = currentUser();
+        if (currentUser == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
 
-        final User meWithSettings = userService.getWithSettingsById(currentUserId);
-        return new ResponseEntity<>(meWithSettings, HttpStatus.OK);
+        return new ResponseEntity<>(currentUser, HttpStatus.OK);
     }
 }

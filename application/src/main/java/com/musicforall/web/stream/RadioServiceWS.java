@@ -23,10 +23,15 @@ public class RadioServiceWS implements RadioService {
 
     @Override
     public void stream(Track track, int partId) {
+        stream(currentUserId(), track, partId);
+    }
+
+    @Override
+    public void stream(Integer userId, Track track, int partId) {
         final Map<String, Object> map = new HashMap<>();
         map.put("track", track);
         map.put("partId", partId);
 
-        template.convertAndSend(SUBSCRIPTION_URL + currentUserId(), map);
+        template.convertAndSend(SUBSCRIPTION_URL + userId, map);
     }
 }

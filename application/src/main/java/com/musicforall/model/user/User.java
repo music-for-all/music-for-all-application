@@ -78,6 +78,13 @@ public class User implements SocialUserDetails, Serializable {
         this.email = email;
     }
 
+    public User(String username, String password, String email, UserSettings settings) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.settings = settings;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -15,13 +15,14 @@ import java.util.concurrent.TimeUnit;
 @EnableCaching
 @Configuration
 public class CacheConfig {
+    public static final String GUAVA = "guava";
 
     @Bean
     public CacheManager cacheManager() {
         final long maxSize = 100;
         final long expirePeriod = 10;
 
-        final GuavaCacheManager cacheManager = new GuavaCacheManager("guava");
+        final GuavaCacheManager cacheManager = new GuavaCacheManager(GUAVA);
         final CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder()
                 .maximumSize(maxSize)
                 .expireAfterWrite(expirePeriod, TimeUnit.MINUTES);

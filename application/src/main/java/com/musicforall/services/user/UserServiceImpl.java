@@ -3,6 +3,7 @@ package com.musicforall.services.user;
 import com.musicforall.common.Constants;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.user.User;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Property;
@@ -31,10 +32,10 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         /* Encode the password before saving the user. */
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        dao.save(user);
+        return dao.save(user);
     }
 
     @Override
@@ -65,6 +66,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByEmail(String email) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
+                .setFetchMode("settings", FetchMode.JOIN)
                 .add(Property.forName(Constants.EMAIL).eq(email));
 
         return dao.getBy(detachedCriteria);

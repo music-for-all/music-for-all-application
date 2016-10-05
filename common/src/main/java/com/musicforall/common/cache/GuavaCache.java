@@ -5,11 +5,13 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 
+import static com.musicforall.common.cache.config.CacheConfig.GUAVA;
+
 /**
  * @author ENikolskiy.
  */
 
-@CacheConfig(cacheNames = {"guava"})
+@CacheConfig(cacheNames = {GUAVA})
 public class GuavaCache<K, V> implements KeyValueRepository<K, V> {
 
     private static final String SPEL_KEY = "#key";
