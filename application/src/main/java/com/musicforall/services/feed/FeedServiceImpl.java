@@ -5,11 +5,9 @@ import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Artist;
-import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
 import com.musicforall.model.User;
 import com.musicforall.services.follower.FollowerService;
-import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +45,6 @@ public class FeedServiceImpl implements FeedService {
     private TrackService trackService;
 
     @Autowired
-    private PlaylistService playlistService;
-
-    @Autowired
     @Qualifier("messageSource")
     private MessageSource messageSource;
 
@@ -59,13 +54,11 @@ public class FeedServiceImpl implements FeedService {
         final Collection<Integer> usersIds = followerService.getFollowingId(userId);
         final Collection<History> usersHistories = historyService.getUsersHistories(usersIds);
         final List<Integer> tracksIds = getTracksIds(usersHistories);
-        final List<Integer> playlistsIds = getPlaylistIds(usersHistories);
 
         final Map<Integer, User> usersByIds = getUsersByIds(usersIds);
         final Map<Integer, Track> tracksByIds = getTracksByIds(tracksIds);
-        final Map<Integer, Playlist> playlistsByIds = getPlaylistsByIds(playlistsIds);
 
-        return getFeedsFromHistories(usersHistories, usersByIds, tracksByIds, playlistsByIds);
+        return getFeedsFromHistories(usersHistories, usersByIds, tracksByIds);
     }
 
     private List<Integer> getTracksIds(Collection<History> usersHistories) {
@@ -92,15 +85,9 @@ public class FeedServiceImpl implements FeedService {
                 .stream().collect(Collectors.toMap(Track::getId, Function.identity()));
     }
 
-    private Map<Integer, Playlist> getPlaylistsByIds(List<Integer> playlistsIds) {
-        return playlistService.getAllByIds(playlistsIds)
-                .stream().collect(Collectors.toMap(Playlist::getId, Function.identity()));
-    }
-
     private Map<User, Collection<Feed>> getFeedsFromHistories(Collection<History> histories,
                                                               Map<Integer, User> usersByIds,
-                                                              Map<Integer, Track> tracksByIds,
-                                                              Map<Integer, Playlist> playlistsByIds) {
+                                                              Map<Integer, Track> tracksByIds) {
         return histories
                 .stream()
                 .collect(Collectors.groupingBy(h -> usersByIds.get(h.getUserId()),
@@ -112,7 +99,7 @@ public class FeedServiceImpl implements FeedService {
                                         h.getDate());
                             } else if (h.getEventType().isPlaylistEvent()) {
                                 return generateContent(h.getEventType(),
-                                        playlistsByIds.get(h.getPlaylistId()).getName(),
+                                        h.getPlaylistName(),
                                         h.getDate());
                             }
                             return null;

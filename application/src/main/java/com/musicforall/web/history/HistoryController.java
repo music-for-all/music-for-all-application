@@ -4,6 +4,8 @@ import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.handlers.events.PlaylistEvent;
 import com.musicforall.history.handlers.events.TrackEvent;
 import com.musicforall.model.User;
+import com.musicforall.services.playlist.PlaylistService;
+import com.musicforall.services.track.TrackService;
 import com.musicforall.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -21,6 +23,12 @@ public class HistoryController {
 
     @Autowired
     private ApplicationEventPublisher publisher;
+
+    @Autowired
+    private PlaylistService playlistService;
+
+    @Autowired
+    private TrackService trackService;
 
     @RequestMapping(value = "/track/liked", method = RequestMethod.POST)
     public void trackLiked(@RequestParam("id") final Integer trackId) {
@@ -57,7 +65,8 @@ public class HistoryController {
         if (user == null) {
             return;
         }
-        publisher.publishEvent(new TrackEvent(trackId, user.getId(), type));
+        final String trackName = trackService.get(trackId).getTitle();
+        publisher.publishEvent(new TrackEvent(trackId, trackName, user.getId(), type));
     }
 
     private void firePlaylistEvent(final Integer playlistId, final EventType type) {
@@ -65,6 +74,7 @@ public class HistoryController {
         if (user == null) {
             return;
         }
-        publisher.publishEvent(new PlaylistEvent(playlistId, user.getId(), type));
+        final String playlistName = playlistService.get(playlistId).getName();
+        publisher.publishEvent(new PlaylistEvent(playlistId, playlistName, user.getId(), type));
     }
 }

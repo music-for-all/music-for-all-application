@@ -15,9 +15,8 @@
 }
 
 .activity > .date {
-    text-align: right;
+    text-align: center;
     background-color: #FFD2FE;
-    margin-right: 10px;
 }
 
 .username:hover {
@@ -27,6 +26,7 @@
 
 .activity > .event {
     background-color: #FFCAF0;
+    padding-left: 100px;
 }
 
 .activity {
