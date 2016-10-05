@@ -90,10 +90,11 @@ public class FileController {
         }
     }
 
-    @RequestMapping(value = "/files/picture/{pictureName:.+}", method = RequestMethod.GET)
-    public void getFileHandler(HttpServletResponse response, @PathVariable("pictureName") String name) {
+    @RequestMapping(value = "/files/picture/{userId}/{pictureName:.+}", method = RequestMethod.GET)
+    public void getFileHandler(HttpServletResponse response, @PathVariable("pictureName") String name,
+                               @PathVariable("userId") String userId) {
         LOG.info(String.format("Streaming picture: %s\n", name));
-        final Optional<Path> filePath = manager.getPicturePathByName(name);
+        final Optional<Path> filePath = manager.getPicturePathByName(userId + "/" + name);
 
         if (filePath.isPresent()) {
             try {

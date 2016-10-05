@@ -34,6 +34,7 @@ import static java.nio.file.Files.newInputStream;
 import static java.nio.file.Paths.get;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
@@ -144,7 +145,9 @@ public class FileServiceTest {
     public void uploadPictureTest() throws Exception {
         try (InputStream inputStream = newInputStream(get(resourceUrl.toURI()))) {
             final MockMultipartFile file = new MockMultipartFile(FILE, SAMPLE_FILE, null, inputStream);
-            final User user = new User("user", "password", "email");
+            final User user = mock(User.class);
+
+            when(user.getId()).thenReturn(1);
 
             assertEquals(HTTP_STATUS_OK, fileService.uploadPictureFile(user, file).getStatusCode().value());
         }
@@ -154,9 +157,10 @@ public class FileServiceTest {
     public void uploadNonExistingPicTest() throws Exception {
         try (InputStream inputStream = newInputStream(get(resourceUrl.toURI()))) {
             final MockMultipartFile file = new MockMultipartFile(FILE, SAMPLE_FILE, null, inputStream);
-            final User user = new User("user1", "pass", "email2");
+            final User user = mock(User.class);
 
-            when((manager.savePicture(file))).thenReturn(Optional.empty());
+            when(user.getId()).thenReturn(1);
+            when(manager.savePicture(user.getId(), file)).thenReturn(Optional.empty());
 
             assertEquals(HTTP_STATUS_INTERNAL_ERROR, fileService.uploadPictureFile(user, file).getStatusCode().value());
         }
@@ -168,7 +172,7 @@ public class FileServiceTest {
             final MockMultipartFile file = new MockMultipartFile(FILE, SAMPLE_FILE, null, inputStream);
             final Track track = new Track("track1", "title1", new Artist("artist1"), "album1", "/root/track1.mp3", null);
 
-            when((manager.saveTrack(file))).thenReturn(Optional.empty());
+            when(manager.saveTrack(file)).thenReturn(Optional.empty());
 
             assertEquals(HTTP_STATUS_INTERNAL_ERROR, fileService.uploadTrackFile(track, file).getStatusCode().value());
         }

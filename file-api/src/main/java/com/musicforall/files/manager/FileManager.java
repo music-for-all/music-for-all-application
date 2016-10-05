@@ -61,11 +61,11 @@ public class FileManager {
         new File(musicDirectory).mkdirs();
     }
 
-    public Optional<Path> savePicture(final MultipartFile file) {
+    public Optional<Path> savePicture(final Integer userId, final MultipartFile file) {
         requireNonNull(file, "picture must not be null");
         LOG.info("savePicture file from multipart {}", file);
         try (InputStream in = file.getInputStream()) {
-            return Optional.of(savePicture(in, file.getOriginalFilename()));
+            return Optional.of(savePicture(userId, in, file.getOriginalFilename()));
         } catch (IOException e) {
             LOG.error(SAVE_ERROR_MSG, e);
         }
@@ -95,20 +95,25 @@ public class FileManager {
         return Optional.empty();
     }
 
-    public Optional<Path> savePicture(final URL url) {
+    public Optional<Path> savePicture(final Integer userId, final URL url) {
         requireNonNull(url, "picture url must not be null");
         LOG.info("savePicture file by url {}", url);
         final String fileName = FilenameUtils.getName(url.toString());
         try (InputStream in = url.openStream()) {
-            return Optional.of(savePicture(in, fileName));
+            return Optional.of(savePicture(userId, in, fileName));
         } catch (IOException e) {
             LOG.error(SAVE_ERROR_MSG, e);
         }
         return Optional.empty();
     }
 
-    private Path savePicture(final InputStream stream, final String fileName) throws IOException {
-        final Path path = Paths.get(pictureDirectory, fileName);
+    private Path savePicture(final Integer userId, final InputStream stream, final String fileName) throws IOException {
+        final Path userPath = Paths.get(pictureDirectory, userId.toString());
+        if (!isDirectory(userPath)) {
+            createDirectory(userPath);
+        }
+
+        final Path path = Paths.get(userPath.toString(), fileName);
         if (Files.exists(path)) {
             return path;
         }

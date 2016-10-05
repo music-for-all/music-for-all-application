@@ -62,9 +62,9 @@ public class FileServiceImpl implements FileService {
     @Override
     public ResponseEntity<String> uploadPictureFile(User user, MultipartFile file) {
         requireNonNull(user, "user must not be null");
-        final Optional<Path> saved = manager.savePicture(file);
+        final Optional<Path> saved = manager.savePicture(user.getId(), file);
         if (saved.isPresent()) {
-            user.setPicture(DEFAULT_PICTURE_DIRECTORY + file.getOriginalFilename());
+            user.setPicture(DEFAULT_PICTURE_DIRECTORY + user.getId() + "/" + file.getOriginalFilename());
             userService.save(user);
             return new ResponseEntity<>("Picture successfully saved", HttpStatus.OK);
         } else {

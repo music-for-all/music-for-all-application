@@ -42,8 +42,6 @@ public class DbPopulateService {
 
     private static final String USER_PICTURE_LINK = "https://developers.google.com/experts/img/user/user-default.png";
 
-    private static final String USER_PICTURE = "/files/picture/user-default.png";
-
     private static final String DEFAULT_NAME = "Unknown";
 
     private static final String USER_IS_SAVED = "user {} is saved";
@@ -102,7 +100,7 @@ public class DbPopulateService {
     }
 
     private static void setDefaultValues(User user) {
-        user.setPicture(USER_PICTURE);
+        user.setPicture(USER_PICTURE_LINK);
         user.setLastName(DEFAULT_NAME);
         user.setFirstName(DEFAULT_NAME);
     }
@@ -149,7 +147,6 @@ public class DbPopulateService {
                 .peek(u -> LOG.info("going to saveTrack file by url - {}", u))
                 .map(url -> (Callable<Path>) () -> fileManager.saveTrack(url).get())
                 .collect(toList());
-        fileManager.savePicture(toURL(USER_PICTURE_LINK));
 
         try {
             final List<Future<Path>> futures = executorService.invokeAll(tasks);

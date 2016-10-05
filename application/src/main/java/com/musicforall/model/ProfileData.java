@@ -76,7 +76,7 @@ public class ProfileData {
         if (username != null) {
             currentUser.setUsername(username);
         }
-        if (password != null) {
+        if (password != null && !password.isEmpty()) {
             currentUser.setPassword(password);
         }
         if (firstName != null) {

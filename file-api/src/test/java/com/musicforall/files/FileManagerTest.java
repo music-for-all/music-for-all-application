@@ -83,8 +83,8 @@ public class FileManagerTest {
     public void testSaveAlreadyExistingPicture() throws Exception {
         try (InputStream inputStream = newInputStream(get(resourceUrl.toURI()))) {
             final MockMultipartFile file = new MockMultipartFile("file2", "saveAlreadyExistedPic.jpg", null, inputStream);
-            manager.savePicture(file);
-            assertNotNull(manager.savePicture(file));
+            manager.savePicture(0, file);
+            assertNotNull(manager.savePicture(0, file));
         }
     }
 
@@ -104,7 +104,7 @@ public class FileManagerTest {
     public void testSaveByUrl() throws Exception {
         final URL url = saveByUrlResource;
         assertTrue(manager.saveTrack(url).isPresent());
-        assertTrue(manager.savePicture(url).isPresent());
+        assertTrue(manager.savePicture(0, url).isPresent());
     }
 
     @Test
@@ -151,7 +151,7 @@ public class FileManagerTest {
         final Path path = get(resourceUrl.toURI());
         try (InputStream inputStream = newInputStream(path)) {
             final MockMultipartFile file = new MockMultipartFile("file4", "test.jpg", null, inputStream);
-            assertTrue(manager.savePicture(file).isPresent());
+            assertTrue(manager.savePicture(0, file).isPresent());
 
             assertNotNull(manager.getPicturePathByName(file.getOriginalFilename()));
         }
