@@ -31,13 +31,13 @@ public class HistoryController {
     private TrackService trackService;
 
     @RequestMapping(value = "/track/liked", method = RequestMethod.POST)
-    public void trackLiked(@RequestParam("id") final Integer trackId) {
-        fireTrackEvent(trackId, EventType.TRACK_LIKED);
+    public void trackLiked(@RequestParam("trackId") final Integer trackId) {
+        fireTrackEvent(trackId, null, EventType.TRACK_LIKED);
     }
 
     @RequestMapping(value = "/track/listened", method = RequestMethod.POST)
-    public void trackListened(@RequestParam("id") final Integer trackId) {
-        fireTrackEvent(trackId, EventType.TRACK_LISTENED);
+    public void trackListened(@RequestParam("trackId") final Integer trackId) {
+        fireTrackEvent(trackId, null, EventType.TRACK_LISTENED);
     }
 
     @RequestMapping(value = "/track/added", method = RequestMethod.POST)
@@ -53,12 +53,12 @@ public class HistoryController {
     }
 
     @RequestMapping(value = "/playlist/added", method = RequestMethod.POST)
-    public void playlistAdded(@RequestParam("id") final Integer playlistId) {
+    public void playlistAdded(@RequestParam("playlistId") final Integer playlistId) {
         firePlaylistEvent(playlistId, EventType.PLAYLIST_ADDED);
     }
 
     @RequestMapping(value = "/playlist/deleted", method = RequestMethod.POST)
-    public void playlistDeleted(@RequestParam("id") final Integer playlistId) {
+    public void playlistDeleted(@RequestParam("playlistId") final Integer playlistId) {
         firePlaylistEvent(playlistId, EventType.PLAYLIST_DELETED);
     }
 
@@ -67,21 +67,10 @@ public class HistoryController {
         if (user == null) {
             return;
         }
-        final String trackName = trackService.get(trackId).getTitle();
-        final String playlistName = playlistService.get(trackId).getName();
+        final String trackName = trackService.get(trackId).getName();
+        final String playlistName = playlistService.get(playlistId).getName();
 
         publisher.publishEvent(new TrackEvent(trackId, playlistId, trackName, playlistName, user.getId(), type));
-    }
-
-    private void fireTrackEvent(final Integer trackId, final EventType type) {
-        final User user = SecurityUtil.currentUser();
-        if (user == null) {
-            return;
-        }
-        final String trackName = trackService.get(trackId).getTitle();
-        final String playlistName = playlistService.get(trackId).getName();
-
-        publisher.publishEvent(new TrackEvent(trackId, null, trackName, null, user.getId(), type));
     }
 
     private void firePlaylistEvent(final Integer playlistId, final EventType type) {

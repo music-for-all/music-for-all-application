@@ -116,7 +116,7 @@ public class FeedServiceImpl implements FeedService {
                     messageSource.getMessage("followingpage.unknown", null, LocaleContextHolder.getLocale()),
                     track.getTitle());
         }
-        return MessageFormat.format(TRACKNAME_FORMAT, artist.getName(), track.getTitle());
+        return MessageFormat.format(TRACKNAME_FORMAT, artist.getName(), track.getName());
     }
 
     private Feed generateContent(EventType eventType, Date date, List<String> params) {
