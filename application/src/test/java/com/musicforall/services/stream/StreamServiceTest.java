@@ -39,7 +39,6 @@ import static org.junit.Assert.*;
 @ActiveProfiles("dev")
 public class StreamServiceTest {
 
-    private static final Integer STUB_USER_ID = 1;
     @Autowired
     @InjectMocks
     private StreamService streamService;
