@@ -16,16 +16,28 @@ function History() {
             }));
     }
 
+    function requestTrackWithPlaylist(trackId, playlistId, url) {
+        return $.when(
+            $.ajax({
+                url: baseUrl + url,
+                type: "POST",
+                data: {
+                    trackId: trackId,
+                    playlistId: playlistId
+                }
+            }));
+    }
+
     self.trackLiked = function (trackId) {
         return request(trackId, "/track/liked");
     };
 
-    self.trackAdded = function (trackId) {
-        return request(trackId, "/track/added");
+    self.trackAdded = function (trackId, playlistId) {
+        return requestTrackWithPlaylist(trackId, playlistId, "/track/added");
     };
 
-    self.trackDeleted = function (trackId) {
-        return request(trackId, "/track/deleted");
+    self.trackDeleted = function (trackId, playlistId) {
+        return requestTrackWithPlaylist(trackId, playlistId, "/track/deleted");
     };
 
     self.trackListened = function (trackId) {

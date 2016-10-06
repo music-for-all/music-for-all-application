@@ -94,13 +94,16 @@ public class FeedServiceImpl implements FeedService {
                         LinkedHashMap::new,
                         Collectors.mapping(h -> {
                             if (h.getEventType().isTrackEvent()) {
-                                return generateContent(h.getEventType(),
-                                        formatTrack(tracksByIds.get(h.getTrackId())),
-                                        h.getDate());
+                                return generateContent(
+                                        h.getEventType(),
+                                        h.getDate(),
+                                        Arrays.asList(formatTrack(tracksByIds.get(h.getTrackId())),
+                                                h.getPlaylistName()));
                             } else if (h.getEventType().isPlaylistEvent()) {
-                                return generateContent(h.getEventType(),
-                                        h.getPlaylistName(),
-                                        h.getDate());
+                                return generateContent(
+                                        h.getEventType(),
+                                        h.getDate(),
+                                        Arrays.asList(h.getPlaylistName()));
                             }
                             return null;
                         }, Collectors.toCollection(ArrayList::new))));
@@ -116,32 +119,31 @@ public class FeedServiceImpl implements FeedService {
         return MessageFormat.format(TRACKNAME_FORMAT, artist.getName(), track.getTitle());
     }
 
-    private Feed generateContent(EventType eventType, String target, Date date) {
-        final String[] params = new String[]{target};
+    private Feed generateContent(EventType eventType, Date date, List<String> params) {
         switch (eventType) {
             case TRACK_LISTENED:
                 return new Feed(
-                        messageSource.getMessage("followingpage.listenedTrack", params,
+                        messageSource.getMessage("followingpage.listenedTrack", params.toArray(),
                                 LocaleContextHolder.getLocale()), date);
             case TRACK_LIKED:
                 return new Feed(
-                        messageSource.getMessage("followingpage.likedTrack", params,
+                        messageSource.getMessage("followingpage.likedTrack", params.toArray(),
                                 LocaleContextHolder.getLocale()), date);
             case TRACK_ADDED:
                 return new Feed(
-                        messageSource.getMessage("followingpage.addedTrack", params,
+                        messageSource.getMessage("followingpage.addedTrack", params.toArray(),
                                 LocaleContextHolder.getLocale()), date);
             case TRACK_DELETED:
                 return new Feed(
-                        messageSource.getMessage("followingpage.deletedTrack", params,
+                        messageSource.getMessage("followingpage.deletedTrack", params.toArray(),
                                 LocaleContextHolder.getLocale()), date);
             case PLAYLIST_ADDED:
                 return new Feed(
-                        messageSource.getMessage("followingpage.addedPlaylist", params,
+                        messageSource.getMessage("followingpage.addedPlaylist", params.toArray(),
                                 LocaleContextHolder.getLocale()), date);
             case PLAYLIST_DELETED:
                 return new Feed(
-                        messageSource.getMessage("followingpage.deletedPlaylist", params,
+                        messageSource.getMessage("followingpage.deletedPlaylist", params.toArray(),
                                 LocaleContextHolder.getLocale()), date);
             default:
                 return null;

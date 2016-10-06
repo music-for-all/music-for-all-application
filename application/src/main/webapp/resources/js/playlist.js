@@ -33,7 +33,7 @@ function Playlist() {
 
     self.addTracks = function (playlistId, tracksIds) {
         tracksIds.forEach(function (trackId) {
-            history.trackAdded(trackId);
+            history.trackAdded(trackId, playlistId);
         });
         return $.when($.post(baseUrl + "/" + playlistId + "/add/tracks",
             {
@@ -42,7 +42,7 @@ function Playlist() {
     };
 
     self.removeTrack = function (playlistId, trackId) {
-        history.trackDeleted(trackId);
+        history.trackDeleted(trackId, playlistId);
         return $.when($.ajax({
             type: "DELETE",
             url: baseUrl + "/" + playlistId + "/remove/" + trackId
