@@ -1,6 +1,6 @@
 package com.musicforall.services.stream;
 
-import com.musicforall.common.cache.KeyValueRepository;
+import com.musicforall.common.cache.CacheProvider;
 import com.musicforall.model.Track;
 import com.musicforall.model.user.User;
 import com.musicforall.services.track.TrackService;
@@ -25,7 +25,7 @@ public class StreamServiceImpl implements StreamService {
 
     @Autowired
     @Qualifier(GUAVA)
-    private KeyValueRepository<Integer, Track> cache;
+    private CacheProvider<Integer, Track> cache;
     @Autowired
     private TrackService trackService;
     @Autowired

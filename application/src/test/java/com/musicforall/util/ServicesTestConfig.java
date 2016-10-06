@@ -1,7 +1,7 @@
 package com.musicforall.util;
 
-import com.musicforall.common.cache.GuavaCache;
-import com.musicforall.common.cache.KeyValueRepository;
+import com.musicforall.common.cache.CacheProvider;
+import com.musicforall.common.cache.GuavaCacheProvider;
 import com.musicforall.common.cache.config.CacheConfig;
 import com.musicforall.config.HibernateConfigDev;
 import com.musicforall.config.WebSocketConfig;
@@ -32,7 +32,7 @@ import static com.musicforall.common.cache.config.CacheConfig.GUAVA;
         HistorySpringConfig.class, CacheConfig.class, WebSocketConfig.class})
 public class ServicesTestConfig {
     @Bean(name = GUAVA)
-    public KeyValueRepository<Integer, Track> cache() {
-        return new GuavaCache<>();
+    public CacheProvider<Integer, Track> cache() {
+        return new GuavaCacheProvider<>();
     }
 }
