@@ -1,5 +1,5 @@
 .username {
-    background: url("http://vismech.ru/images/00001763.jpg");
+    background: url("/resources/img/dark_purple.jpg");
     background-position: right bottom;
     font-size: 150%;
     color: #FFFFE0;
@@ -20,7 +20,7 @@
 }
 
 .username:hover {
-    background: url("http://i0.wp.com/www.wallpapersbyte.com/wp-content/uploads/2015/07/Purple-Solid-Color-Bright-Gradient-Background-WallpapersByte-com-1366x768.jpg?w=1240");
+    background: url("/resources/img/light_purple.jpg");
     background-position: right bottom;
 }
 

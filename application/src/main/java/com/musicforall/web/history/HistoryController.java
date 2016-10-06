@@ -68,7 +68,7 @@ public class HistoryController {
             return;
         }
         final String trackName = trackService.get(trackId).getName();
-        final String playlistName = playlistService.get(playlistId).getName();
+        final String playlistName = playlistId != null ? playlistService.get(playlistId).getName() : null;
 
         publisher.publishEvent(new TrackEvent(trackId, playlistId, trackName, playlistName, user.getId(), type));
     }
