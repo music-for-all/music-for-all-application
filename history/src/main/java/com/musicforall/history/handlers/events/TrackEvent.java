@@ -2,13 +2,13 @@ package com.musicforall.history.handlers.events;
 
 public class TrackEvent extends Event {
 
-    private final int trackId;
+    private final Integer trackId;
     private final String trackName;
     private final Integer playlistId;
     private final String playlistName;
 
-    public TrackEvent(int trackId, Integer playlistId, String trackName, String playlistName,
-                      int userId, EventType type) {
+    public TrackEvent(Integer trackId, Integer playlistId, String trackName, String playlistName,
+                      Integer userId, EventType type) {
         super(userId, type);
         this.trackId = trackId;
         this.trackName = trackName;

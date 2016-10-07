@@ -68,13 +68,6 @@ public class FeedServiceImpl implements FeedService {
                 .collect(Collectors.toList());
     }
 
-    private List<Integer> getPlaylistIds(Collection<History> usersHistories) {
-        return usersHistories.stream()
-                .filter(h -> h.getEventType().isPlaylistEvent())
-                .map(History::getPlaylistId)
-                .collect(Collectors.toList());
-    }
-
     private Map<Integer, User> getUsersByIds(Collection<Integer> usersIds) {
         return userService.getUsersById(usersIds)
                 .stream().collect(Collectors.toMap(User::getId, Function.identity()));
@@ -114,7 +107,7 @@ public class FeedServiceImpl implements FeedService {
         if (artist == null) {
             return MessageFormat.format(TRACKNAME_FORMAT,
                     messageSource.getMessage("followingpage.unknown", null, LocaleContextHolder.getLocale()),
-                    track.getTitle());
+                    track.getName());
         }
         return MessageFormat.format(TRACKNAME_FORMAT, artist.getName(), track.getName());
     }
