@@ -6,7 +6,7 @@ function History() {
     var baseUrl = dict.contextPath + "/history";
 
     self.trackLiked = function (trackId) {
-        return $.when($.post(baseUrl + "/track/liked"), {"trackId": trackId});
+        return $.when($.post(baseUrl + "/track/liked", {"trackId": trackId}));
     };
 
     self.trackAdded = function (trackId, playlistId) {
@@ -18,14 +18,14 @@ function History() {
     };
 
     self.trackListened = function (trackId) {
-        return $.when($.post(baseUrl + "/track/listened"), {"trackId": trackId});
+        return $.when($.post(baseUrl + "/track/listened", {"trackId": trackId}));
     };
 
     self.playlistAdded = function (playlistId) {
-        return $.when($.post(baseUrl + "/playlist/added"), {"playlistId": playlistId});
+        return $.when($.post(baseUrl + "/playlist/added", {"playlistId": playlistId}));
     };
 
     self.playlistDeleted = function (playlistId) {
-        return $.when($.post(baseUrl + "/playlist/deleted"), {"playlistId": playlistId});
+        return $.when($.post(baseUrl + "/playlist/deleted", {"playlistId": playlistId}));
     };
 }

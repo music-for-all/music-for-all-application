@@ -48,6 +48,7 @@ public class HistoryEventListener {
         history.setTrackId(event.getTrackId());
         history.setPlaylistId(event.getPlaylistId());
         history.setTrackName(event.getTrackName());
+        history.setPlaylistName(event.getPlaylistName());
         history.setUserId(event.getUserId());
         history.setDate(new Date());
         return history;
