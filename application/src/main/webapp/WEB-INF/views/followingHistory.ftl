@@ -39,8 +39,18 @@
                 <div class="row activity">
                     <div class="col-xs-6 col-sm-9 event"><%= feed.content %></div>
                     <%
-                    var date = new Date(feed.date);
-                    var dateString = date.getHours() + ":" + date.getMinutes();
+                    var feedDate = new Date(feed.date);
+                    var today = new Date();
+                    var hours = feedDate.getHours();
+                    var minutes = feedDate.getMinutes();
+                    if( feedDate.getDate() < today.getDate() ) {
+                    var day = "Yesterday";
+                    } else {
+                    var day = "Today";
+                    }
+                    hours = hours > 9 ? hours : "0" + hours;
+                    minutes = minutes > 9 ? minutes : "0" + minutes;
+                    var dateString = day + " " + hours + ":" + minutes;
                     %>
                     <div class="col-xs-6 col-sm-3 date"><%= dateString %></div>
                 </div>
