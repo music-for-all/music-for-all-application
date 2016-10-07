@@ -21,8 +21,7 @@ import static com.musicforall.history.handlers.events.EventType.TRACK_LIKED;
 import static com.musicforall.history.handlers.events.EventType.TRACK_LISTENED;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author IliaNik on 29.07.2016.
@@ -76,8 +75,8 @@ public class HistoryServiceImplTest {
                 .sorted((i1, i2) -> listenedByTrackId.get(i2).compareTo(listenedByTrackId.get(i1)))
                 .limit(10)
                 .collect(toList());
-        //compare only first top listened track
-        //because number of listenings for other tracks is generated randomly
+//compare only first top listened track 
+//because number of listenings for other tracks is generated randomly 
         assertEquals(service.getTheMostPopularTracks().get(0), TOP_TRACK_ID);
         assertEquals(service.getTheMostPopularTracks().size(), topListened.size());
     }
@@ -100,7 +99,8 @@ public class HistoryServiceImplTest {
     }
 
     @Test
-    public void testGetLikeCount() throws Exception {
+    public void
+    testGetLikeCount() throws Exception {
         final Integer trackId = 321;
         service.record(new History(trackId, null, new Date(), USER_ID, TRACK_LIKED));
         long numLikes = service.getLikeCount(trackId);
@@ -110,8 +110,33 @@ public class HistoryServiceImplTest {
         numLikes = service.getLikeCount(trackId);
         assertTrue(numLikes == 1);
 
-        /* Try to get the like count for non-existing track. */
+/* Try to get the like count for non-existing track. */
         numLikes = service.getLikeCount(trackId + 1234);
         assertEquals(0, numLikes);
+    }
+
+    @Test
+    public void testGetUsersHistories() {
+        final int UNIQUE_USER_ID = 3333;
+
+        final History history = new History(TRACK_ID, null,
+                new Date(), UNIQUE_USER_ID, TRACK_LIKED);
+        service.record(history);
+
+        final Collection<History> histories = service.getUsersHistories(Collections.singletonList(UNIQUE_USER_ID));
+        assertTrue(histories.contains(history));
+    }
+
+
+    @Test
+    public void testGetUsersHistoriesBadDate() {
+        final int UNIQUE_USER_ID = 4444;
+
+        final History history = new History(TRACK_ID, null,
+                new Date(new Date().getTime() - 2 * 24 * 3600 * 1000L), UNIQUE_USER_ID, TRACK_LISTENED);
+        service.record(history);
+
+        final Collection<History> histories = service.getUsersHistories(Collections.singletonList(UNIQUE_USER_ID));
+        assertFalse(histories.contains(history));
     }
 }
