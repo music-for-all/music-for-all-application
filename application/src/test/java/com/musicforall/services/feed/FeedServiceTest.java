@@ -6,7 +6,7 @@ import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Artist;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.track.TrackService;

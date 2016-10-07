@@ -1,6 +1,6 @@
 package com.musicforall.util;
 
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

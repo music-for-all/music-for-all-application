@@ -2,23 +2,31 @@
 
 function ChunksPlayer() {
 
-    /**
-     * The ArrayBuffer that will have the new chunks appended
-     *
-     * @private
-     * @type {ArrayBuffer}
-     */
-    var activeBuffer;
+    var self = this;
 
-    var totalChunksLoaded = 0;
+    var lastChunkId;
 
     var track;
 
     var audioContext;
 
-    var audioBufferQueue;
+    var audioBufferQueue = [];
 
-    var paused = false;
+    var stream = new Stream();
+
+    var sequencePlay = function () {
+        stream.start(track.id);
+        setTimeout(function () {
+            if (isPlaying()) {
+                loadChunk(lastChunkId);
+            }
+        }, 15000);
+    };
+
+    var singlePlay = function () {
+    };
+
+    var playingStrategy = sequencePlay;
 
     /**
      * The audio source is responsible for playing the music
@@ -58,32 +66,29 @@ function ChunksPlayer() {
         return audioSource;
     }
 
+    function isPlaying() {
+        return audioContext && audioContext.state === "running";
+    }
+
     function play() {
         audioSource = initAudioSource();
         audioSource.start();
     }
 
-    function isFullyLoaded() {
-        return activeBuffer && activeBuffer.byteLength >= track.size;
-    }
-
     function loadChunk(index) {
-        if (isFullyLoaded()) {
-            return;
-        }
         request.open("GET", dict.contextPath + "/files/" + track.id + "/" + index, true);
         request.send();
     }
 
     function onChunkLoaded() {
-        if (totalChunksLoaded === 0) {
+        const startPlaying = !audioContext;
+        if (startPlaying) {
             audioContext = new AudioContext();
-            activeBuffer = request.response;
-        } else {
-            activeBuffer = appendBuffer(activeBuffer, request.response);
         }
 
-        const startPlaying = (totalChunksLoaded === 0);
+        if (request.response.byteLength <= 0) {
+            return;
+        }
         audioContext.decodeAudioData(request.response, function (buf) {
             audioBufferQueue.push(buf);
             if (startPlaying) {
@@ -91,39 +96,53 @@ function ChunksPlayer() {
             }
         });
 
-        totalChunksLoaded++;
-        setTimeout(function () {
-            if (!paused) {
-                loadChunk(totalChunksLoaded);
-            }
-        }, 15000);
+        lastChunkId++;
+        playingStrategy();
     }
 
-    this.play = function (trackToPlay) {
-        if (audioContext) {
+    this.reset = function () {
+        if (audioContext && audioContext.state !== "closed") {
             audioContext.close();
+            audioContext = null;
         }
-        totalChunksLoaded = 0;
+        stream.stop();
         audioBufferQueue = [];
+    };
+
+    this.playChunk = function (trackToPlay, partId) {
+        if (audioContext && audioContext.state === "suspended") {
+            audioContext.resume();
+        }
+        playingStrategy = singlePlay;
         track = trackToPlay;
-        loadChunk(totalChunksLoaded);
+        loadChunk(partId);
+    };
+
+    this.play = function (trackToPlay, partId) {
+        playingStrategy = sequencePlay;
+        lastChunkId = partId;
+        self.reset();
+        track = trackToPlay;
+        loadChunk(lastChunkId);
     };
 
     this.pause = function () {
-        if (audioContext.state === "running") {
+        if (isPlaying()) {
             audioContext.suspend();
         }
-        paused = true;
+        stream.stop();
     };
 
-
     this.resume = function () {
-        if (totalChunksLoaded > 0 && paused) {
-            if (audioContext.state === "suspended") {
+        if (!isPlaying()) {
+            if (audioContext && audioContext.state === "suspended") {
                 audioContext.resume();
             }
-            paused = false;
-            loadChunk(totalChunksLoaded);
+            loadChunk(lastChunkId);
         }
+    };
+
+    this.isCurrentTrack = function (trackToCheck) {
+        return track && trackToCheck && track.id == trackToCheck.id;
     };
 }

@@ -1,6 +1,6 @@
 package com.musicforall.services.user;
 
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.social.security.SocialUserDetailsService;
 
@@ -12,7 +12,9 @@ import java.util.List;
  */
 public interface UserService extends UserDetailsService, SocialUserDetailsService {
 
-    void save(User user);
+    User save(User user);
+
+    Collection<User> saveAll(Collection<User> users);
 
     User get(Integer userId);
 
@@ -25,6 +27,10 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
     List<User> findAll();
 
     List<User> getUsersById(Collection<Integer> usersId);
+
+    List<User> getAllWithSettingsByIds(Collection<Integer> ids);
+
+    User getWithSettingsById(Integer id);
 
     List<User> getUsersByUsername(String username);
 }
