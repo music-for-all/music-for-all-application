@@ -17,4 +17,8 @@ function Social() {
         return $.when($.get(baseUrl + "/" + id));
     };
 
+    self.getUserPlaylists = function (id) {
+        return $.when($.get(baseUrl + "/playlists/"+id));
+    }
+
 }

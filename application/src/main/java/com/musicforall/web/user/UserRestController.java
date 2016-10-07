@@ -1,8 +1,10 @@
 package com.musicforall.web.user;
 
 import com.musicforall.common.Constants;
+import com.musicforall.model.Playlist;
 import com.musicforall.model.User;
 import com.musicforall.services.follower.FollowerService;
+import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/user")
@@ -19,6 +22,9 @@ public class UserRestController {
 
     @Autowired
     private FollowerService followerService;
+
+    @Autowired
+    private PlaylistService playlistService;
 
     @Autowired
     private UserService userService;
@@ -32,11 +38,18 @@ public class UserRestController {
     }
 
     @RequestMapping(value = "/following/{id}", method = RequestMethod.GET)
-    public List<User> getUserFollowings(@PathVariable(Constants.ID) Integer user_id) {
+    public List<User> getUserFollowing(@PathVariable(Constants.ID) Integer user_id) {
         Collection<Integer> followingId = followerService.getFollowingId(user_id);
         List<User> following = userService.getUsersById(followingId);
 
         return following;
+    }
+
+    @RequestMapping(value = "/playlists/{id}", method = RequestMethod.GET)
+    public Set<Playlist> getUserPlaylists(@PathVariable(Constants.ID) Integer user_id) {
+        Set<Playlist> playlists = playlistService.getAllUserPlaylists(user_id);
+
+        return playlists;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

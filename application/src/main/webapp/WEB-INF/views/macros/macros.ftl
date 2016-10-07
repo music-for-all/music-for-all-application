@@ -179,14 +179,16 @@
 </script>
 </#macro>
 
-<#macro playlistRow playlists>
+<#macro playlistRowTemplateWithoutDeleting >
+<script type="text/template" class="playlistRowTemplateWithoutDeleting">
 <ul class="nav nav-pills nav-stacked">
-    <#list playlists as playlist>
-    <li>
-        <a href="#">
-            ${playlist.name}
-        </a>
-    </li>
-    </#list>
+    <% _.each(data, function(playlist){ %>
+        <li>
+            <a href="#">
+                <%= playlist.name %>
+            </a>
+        </li>
+    <% }); %>
 </ul>
+</script>
 </#macro>

@@ -13,11 +13,11 @@
     <@m.navigation m.pages.Profile/>
 <div id="popupBlock">
     <@p.followersPopup "followersPopup"></@p.followersPopup>
-    <@p.followingPopup "followingPopup"></@p.followingPopup>
 </div>
 <div id="container" class="container">
     <div class="row">
         <div class="col-md-2 well">
+            <@p.followingPopup "followingPopup"></@p.followingPopup>
 
             <div id="userHeader" class="profile-info">
             </div>
@@ -31,7 +31,8 @@
             </div>
 
             <div class="profile-playlists">
-                <@m.playlistRow playlists></@m.playlistRow>
+                <@m.playlistRowTemplateWithoutDeleting ></@m.playlistRowTemplateWithoutDeleting>
+
             </div>
         </div>
         <div class="col-md-9">
@@ -71,6 +72,10 @@
             $("script.followingPopup").html()
     );
 
+    var playlistRowTemplate = _.template(
+            $("script.playlistRowTemplateWithoutDeleting").html()
+    );
+
     $('li > a').click(function () {
         $('li').removeClass();
         $(this).parent().addClass('active');
@@ -92,6 +97,12 @@
         social.getUserFollowing(${user_id}).then(function (ufollowing) {
             $("#popupBlock").append(
                     followingPopup(ufollowing)
+            );
+        });
+
+        social.getUserPlaylists(${user_id}).then(function (uplaylists) {
+            $(".profile-playlists").append(
+                    playlistRowTemplate(uplaylists)
             );
         });
     });
