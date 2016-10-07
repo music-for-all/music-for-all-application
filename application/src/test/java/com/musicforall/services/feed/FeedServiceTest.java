@@ -104,7 +104,7 @@ public class FeedServiceTest {
         when(track.getId()).thenReturn(TRACK_ID);
         when(playlist.getId()).thenReturn(PLAYLIST_ID);
         when(artist.getName()).thenReturn("Ray Charles");
-        when(track.getTitle()).thenReturn("Mess around");
+        when(track.getName()).thenReturn("Mess around");
         when(playlist.getName()).thenReturn("Jazz");
         when(user.getId()).thenReturn(USER1_ID);
         when(messageSource.getMessage(any(), any(), any())).thenReturn(TEST_MESSAGE);

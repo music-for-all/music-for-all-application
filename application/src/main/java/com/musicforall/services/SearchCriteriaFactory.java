@@ -25,13 +25,13 @@ public final class SearchCriteriaFactory {
         }
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class);
 
-        final String title = searchCriteria.getTitle();
+        final String name = searchCriteria.getName();
         final Artist artist = searchCriteria.getArtist();
         final String album = searchCriteria.getAlbum();
         final List<String> tags = searchCriteria.getTags();
 
-        if (title != null && !title.isEmpty()) {
-            detachedCriteria.add(Restrictions.ilike("title", QueryUtil.like(title)));
+        if (name != null && !name.isEmpty()) {
+            detachedCriteria.add(Restrictions.ilike("name", QueryUtil.like(name)));
         }
         //Check correctness of using Artist entity
         if (artist != null) {

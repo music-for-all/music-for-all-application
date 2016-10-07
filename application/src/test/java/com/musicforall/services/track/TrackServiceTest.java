@@ -149,13 +149,13 @@ public class TrackServiceTest {
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag("tag1"), new Tag("tag2")));
 
         List<Track> tracks = Arrays.asList(
-                new Track("track", "title1", new Artist("artist1"), "album1", "/root/track1.mp3", null),
-                new Track("track", "title2", new Artist("artist2"), "album2", "/root/track2.mp3", tags),
-                new Track("track", "title3", new Artist("artist3"), "album3", "/root/track3.mp3", null)
+                new Track("track1", new Artist("artist1"), "album1", "/root/track1.mp3", null),
+                new Track("track2", new Artist("artist2"), "album2", "/root/track2.mp3", tags),
+                new Track("track3", new Artist("artist3"), "album3", "/root/track3.mp3", null)
         );
         trackService.saveAll(tracks);
 
-        SearchTrackRequest searchCriteria = new SearchTrackRequest("title", new Artist("artist"), "album", Arrays.asList("tag1", "tag2"));
+        SearchTrackRequest searchCriteria = new SearchTrackRequest("track", new Artist("artist"), "album", Arrays.asList("tag1", "tag2"));
         tracks = trackService.getAllLike(searchCriteria);
         assertNotNull(tracks);
         assertEquals(1, tracks.size());
@@ -167,9 +167,9 @@ public class TrackServiceTest {
     @Test
     public void testGetAllByIds() {
         List<Track> tracks = Arrays.asList(
-                new Track("track", "title1", new Artist("artist1"), "album1", "/root/track1.mp3", null),
-                new Track("track", "title2", new Artist("artist2"), "album2", "/root/track2.mp3", null),
-                new Track("track", "title3", new Artist("artist3"), "album3", "/root/track3.mp3", null)
+                new Track("track", new Artist("artist1"), "album1", "/root/track1.mp3", null),
+                new Track("track", new Artist("artist2"), "album2", "/root/track2.mp3", null),
+                new Track("track", new Artist("artist3"), "album3", "/root/track3.mp3", null)
         );
         Collection<Track> savedTracks = trackService.saveAll(tracks);
         List<Integer> ids = savedTracks.stream().limit(2).map(Track::getId).collect(Collectors.toList());
@@ -202,10 +202,10 @@ public class TrackServiceTest {
     @WithUserDetails("user@example.com")
     public void testGetRecommendedTracks() {
 
-        final Track track1 = new Track("track", "title1", new Artist("artist1"), "album1", "/root/track1.mp3", null);
-        final Track track2 = new Track("track", "title2", new Artist("artist2"), "album2", "/root/track2.mp3", null);
-        final Track track3 = new Track("track", "title3", new Artist("artist3"), "album3", "/root/track3.mp3", null);
-        final Track track4 = new Track("track", "title4", new Artist("artist4"), "album4", "/root/track4.mp3", null);
+        final Track track1 = new Track("track", new Artist("artist1"), "album1", "/root/track1.mp3", null);
+        final Track track2 = new Track("track", new Artist("artist2"), "album2", "/root/track2.mp3", null);
+        final Track track3 = new Track("track", new Artist("artist3"), "album3", "/root/track3.mp3", null);
+        final Track track4 = new Track("track", new Artist("artist4"), "album4", "/root/track4.mp3", null);
 
         trackService.save(track1);
         trackService.save(track2);
