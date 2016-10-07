@@ -57,7 +57,7 @@
             <i class="fa fa-user" aria-hidden="true"></i>
         </td>
         <td>
-            <a id="user_link" href="/showUser?user_id=<%= contact.id %>"><%= contact.username %></a>
+            <a id="user_link" href="/user/show?user_id=<%= contact.id %>"><%= contact.username %></a>
         </td>
         <td>
             <button type="button" class="btn btn-default" onclick="follow('<%= contact.id %>')">
@@ -76,7 +76,7 @@
             <i class="fa fa-user" aria-hidden="true"></i>
         </td>
         <td>
-            <a href="/showUser?user_id=<%= contact.id %>"><%= contact.username %></a>
+            <a href="/user/show?user_id=<%= contact.id %>"><%= contact.username %></a>
         </td>
         <td>
             <button type="button" class="btn btn-default" onclick="unsubscribe('<%= contact.id %>')">

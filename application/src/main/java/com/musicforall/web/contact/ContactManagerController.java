@@ -39,7 +39,7 @@ public class ContactManagerController {
         return "contactManager";
     }
 
-    @RequestMapping(value = "/showUser", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/show", method = RequestMethod.GET)
     public String userpage(@RequestParam("user_id") Integer user_id, Model model) {
 
         model.addAttribute("user_id", user_id);

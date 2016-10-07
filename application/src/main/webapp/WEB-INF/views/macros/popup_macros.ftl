@@ -159,7 +159,7 @@
                                 <img src=" <%= usr.picture %>" class="img-responsive img-rounded">
                             </div>
                         </td>
-                        <td><a href="/showUser?user_id=<%= usr.id %>"><%= usr.username %></a></td>
+                        <td><a href="/user/show?user_id=<%= usr.id %>"><%= usr.username %></a></td>
                         <td><%= usr.firstName %></td>
                         <td><%= usr.lastName %></td>
                     </tr>
@@ -195,7 +195,7 @@
                                 <img src=" <%= usr.picture %>" class="img-responsive img-rounded">
                             </div>
                         </td>
-                        <td><a href="/showUser?user_id=<%= usr.id %>"><%= usr.username %></a></td>
+                        <td><a href="/user/show?user_id=<%= usr.id %>"><%= usr.username %></a></td>
                         <td><%= usr.firstName %></td>
                         <td><%= usr.lastName %></td>
                     </tr>

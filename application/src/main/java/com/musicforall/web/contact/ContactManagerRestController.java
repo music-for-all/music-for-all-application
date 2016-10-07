@@ -73,7 +73,7 @@ public class ContactManagerRestController {
     @RequestMapping(value = "/followers/{id}", method = RequestMethod.GET)
     public List<User> getUserFollowers(@PathVariable(Constants.ID) Integer user_id) {
         List<Integer> followersId = followerService.getFollowersId(user_id);
-        List<User> followers = followersId.stream().map(i -> userService.get(i)).collect(Collectors.toList());
+        List<User> followers = userService.getUsersById(followersId);
 
         return followers;
     }
@@ -81,7 +81,7 @@ public class ContactManagerRestController {
     @RequestMapping(value = "/following/{id}", method = RequestMethod.GET)
     public List<User> getUserFollowings(@PathVariable(Constants.ID) Integer user_id) {
         Collection<Integer> followingId = followerService.getFollowingId(user_id);
-        List<User> following = followingId.stream().map(i -> userService.get(i)).collect(Collectors.toList());
+        List<User> following = userService.getUsersById(followingId);
 
         return following;
     }
