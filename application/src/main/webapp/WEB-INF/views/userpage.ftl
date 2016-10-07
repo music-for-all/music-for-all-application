@@ -6,7 +6,7 @@
 <@m.head>
 <title><@spring.message "profilepage.Title"/></title>
 <link href="/resources/css/userpage.css" rel="stylesheet"/>
-<script src="/resources/js/user.js"></script>
+<script src="/resources/js/social.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 </@m.head>
 <@m.body>
@@ -55,7 +55,7 @@
 
 <script type="text/javascript">
 
-    var user = new User();
+    var social = new Social();
 
     _.templateSettings.variable = "data";
 
@@ -77,19 +77,19 @@
     });
 
     $(document).ready(function () {
-        user.getUser(${user_id}).then(function (req_user) {
+        social.getUser(${user_id}).then(function (req_user) {
             $("#userHeader").append(
                     userHeader(req_user)
             );
         });
 
-        user.getUserFollowers(${user_id}).then(function (ufollowers) {
+        social.getUserFollowers(${user_id}).then(function (ufollowers) {
             $("#popupBlock").append(
                     followersPopup(ufollowers)
             );
         });
 
-        user.getUserFollowing(${user_id}).then(function (ufollowing) {
+        social.getUserFollowing(${user_id}).then(function (ufollowing) {
             $("#popupBlock").append(
                     followingPopup(ufollowing)
             );

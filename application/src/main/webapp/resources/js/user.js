@@ -25,20 +25,8 @@ function User() {
         return $.when($.get(baseUrl + "/following"));
     };
 
-    self.getUserFollowers = function (id) {
-        return $.when($.get(baseUrl + "/followers/"+id));
-    };
-
-    self.getUserFollowing = function (id) {
-        return $.when($.get(baseUrl + "/following/"+id));
-    };
-
     self.search = function (username) {
         return $.when($.get(baseUrl + "/search=" + username));
-    };
-
-    self.getUser = function (id) {
-        return $.when($.get(baseUrl + "/user=" + id));
     };
   
 }

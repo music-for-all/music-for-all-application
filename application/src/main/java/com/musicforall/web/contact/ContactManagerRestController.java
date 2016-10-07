@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Andrey on 7/31/16.
@@ -65,24 +63,4 @@ public class ContactManagerRestController {
         return userService.getUsersByUsername(username);
     }
 
-    @RequestMapping(value = "/user={id}", method = RequestMethod.GET)
-    public User getUser(@PathVariable(Constants.ID) Integer user_id) {
-        return userService.get(user_id);
-    }
-
-    @RequestMapping(value = "/followers/{id}", method = RequestMethod.GET)
-    public List<User> getUserFollowers(@PathVariable(Constants.ID) Integer user_id) {
-        List<Integer> followersId = followerService.getFollowersId(user_id);
-        List<User> followers = userService.getUsersById(followersId);
-
-        return followers;
-    }
-
-    @RequestMapping(value = "/following/{id}", method = RequestMethod.GET)
-    public List<User> getUserFollowings(@PathVariable(Constants.ID) Integer user_id) {
-        Collection<Integer> followingId = followerService.getFollowingId(user_id);
-        List<User> following = userService.getUsersById(followingId);
-
-        return following;
-    }
 }
