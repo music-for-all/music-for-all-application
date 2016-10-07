@@ -11,13 +11,8 @@ public class SearchController {
 
     private static final Logger LOG = LoggerFactory.getLogger(SearchController.class);
 
-    public SearchController() {
-        LOG.debug("Search controller");
-    }
-
     @RequestMapping("/search")
     public String search(Model model) {
-        LOG.debug("Requested /search");
         return "search";
     }
 }

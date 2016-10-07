@@ -6,7 +6,7 @@ import java.util.List;
 public class SearchTrackRequest {
 
     @Size(max = 16)
-    private String name;
+    private String trackName;
 
     private Artist artist;
 
@@ -18,19 +18,19 @@ public class SearchTrackRequest {
     public SearchTrackRequest() {
     }
 
-    public SearchTrackRequest(String name, Artist artist, String album, List<String> tags) {
-        this.name = name;
+    public SearchTrackRequest(String trackName, Artist artist, String album, List<String> tags) {
+        this.trackName = trackName;
         this.artist = artist;
         this.album = album;
         this.tags = tags;
     }
 
-    public String getName() {
-        return name;
+    public String getTrackName() {
+        return trackName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTrackName(String trackName) {
+        this.trackName = trackName;
     }
 
     public Artist getArtist() {
@@ -60,7 +60,7 @@ public class SearchTrackRequest {
     @Override
     public String toString() {
         return "SearchTrackRequest{" +
-                "name='" + name + '\'' +
+                "trackName='" + trackName + '\'' +
                 ", artist='" + artist + '\'' +
                 ", album='" + album + '\'' +
                 ", tags=" + tags +

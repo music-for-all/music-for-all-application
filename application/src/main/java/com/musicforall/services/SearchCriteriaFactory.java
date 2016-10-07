@@ -25,7 +25,7 @@ public final class SearchCriteriaFactory {
         }
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class);
 
-        final String name = searchCriteria.getName();
+        final String name = searchCriteria.getTrackName();
         final Artist artist = searchCriteria.getArtist();
         final String album = searchCriteria.getAlbum();
         final List<String> tags = searchCriteria.getTags();
