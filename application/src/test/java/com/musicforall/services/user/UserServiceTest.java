@@ -61,7 +61,7 @@ public class UserServiceTest {
         final User user = new User("Mike", "1234567890", "mike@example.com");
         userService.save(user);
 
-        final ProfileData profileData = new ProfileData().setBio("Bio");
+        final ProfileData profileData = ProfileData.create().bio("Bio").get();
         userService.update(user, profileData);
         assertEquals(profileData.getBio(), userService.getByEmail(user.getEmail()).getBio());
     }
