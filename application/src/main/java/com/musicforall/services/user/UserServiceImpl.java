@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         }
         params.put("password", profileData.getPassword());
 
-        dao.update(User.SQL_UPDATE_USER_DATA, params);
+        dao.update(User.UPDATE_USER_DATA, params);
     }
 
     @Override

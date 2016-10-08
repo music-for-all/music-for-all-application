@@ -72,8 +72,8 @@ public class Dao {
         return entity;
     }
 
-    public void update(String sql, Map<String, Object> parameters) {
-        final Query query = currentSession().createQuery(sql);
+    public void update(String namedQuery, Map<String, Object> parameters) {
+        final Query query = currentSession().createNamedQuery(namedQuery);
         for (final Map.Entry<String, Object> s : parameters.entrySet()) {
             query.setParameter(s.getKey(), s.getValue());
         }

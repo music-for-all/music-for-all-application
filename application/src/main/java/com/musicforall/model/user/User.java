@@ -31,6 +31,17 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
                 @NamedQuery(
                         name = User.USER_BY_ID_WITH_SETTINGS_QUERY,
                         query = "from User u left join fetch u.settings where u.id = :id"
+                ),
+                @NamedQuery(
+                        name = User.UPDATE_USER_DATA,
+                        query = "UPDATE User user" +
+                                " SET user.username = COALESCE(:username, user.username)," +
+                                " user.password = COALESCE(:password, user.password)," +
+                                " user.firstName = COALESCE(:firstName, user.firstName)," +
+                                " user.lastName = COALESCE(:lastName, user.lastName)," +
+                                " user.picture = COALESCE(:picture, user.picture)," +
+                                " user.bio = COALESCE(:bio, user.bio)" +
+                                " where user.id = :id"
                 )
         }
 )
@@ -40,14 +51,7 @@ public class User implements SocialUserDetails, Serializable {
 
     public static final String USERS_BY_IDS_WITH_SETTINGS_QUERY = "users_by_ids_with_settings";
     public static final String USER_BY_ID_WITH_SETTINGS_QUERY = "user_by_id_with_settings";
-    public static final String SQL_UPDATE_USER_DATA = "UPDATE User user" +
-            " SET user.username = COALESCE(:username, user.username)," +
-            " user.password = COALESCE(:password, user.password)," +
-            " user.firstName = COALESCE(:firstName, user.firstName)," +
-            " user.lastName = COALESCE(:lastName, user.lastName)," +
-            " user.picture = COALESCE(:picture, user.picture)," +
-            " user.bio = COALESCE(:bio, user.bio)" +
-            " where user.id = :id";
+    public static final String UPDATE_USER_DATA = "update_user_data";
 
     private static final long serialVersionUID = 1959293141381203004L;
 
