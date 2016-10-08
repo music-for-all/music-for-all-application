@@ -4,6 +4,7 @@ package com.musicforall.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.musicforall.common.Constants;
+import com.musicforall.model.user.User;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 

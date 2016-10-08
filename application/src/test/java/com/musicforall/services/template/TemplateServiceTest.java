@@ -22,6 +22,7 @@ import java.util.Map;
 
 import static java.util.Collections.unmodifiableList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author ENikolskiy.
@@ -52,7 +53,7 @@ public class TemplateServiceTest {
         assertEquals(nodeSize, expectedHtml.childNodeSize());
 
         for (int i = 0; i < nodeSize; i++) {
-            template.childNode(i).hasSameValue(expectedHtml.childNode(i));
+            assertTrue(template.childNode(i).hasSameValue(expectedHtml.childNode(i)));
         }
     }
 }

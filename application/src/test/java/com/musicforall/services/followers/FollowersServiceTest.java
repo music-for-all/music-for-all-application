@@ -1,6 +1,6 @@
 package com.musicforall.services.followers;
 
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.user.UserService;
 import com.musicforall.util.ServicesTestConfig;

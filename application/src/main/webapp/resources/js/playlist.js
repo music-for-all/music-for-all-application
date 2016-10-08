@@ -35,10 +35,9 @@ function Playlist() {
         tracksIds.forEach(function (trackId) {
             history.trackAdded(trackId, playlistId);
         });
-        return $.when($.post(baseUrl + "/" + playlistId + "/add/tracks",
-            {
-                tracksIds: tracksIds
-            }));
+        return $.when($.post(baseUrl + "/" + playlistId + "/add/tracks", {
+            tracksIds: tracksIds
+        }));
     };
 
     self.removeTrack = function (playlistId, trackId) {
