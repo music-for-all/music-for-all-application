@@ -3,7 +3,6 @@ package com.musicforall.web.artist;
 import com.musicforall.model.Artist;
 import com.musicforall.model.SearchArtistRequest;
 import com.musicforall.services.artist.ArtistService;
-import com.musicforall.services.track.TrackService;
 import com.musicforall.web.tag.TagRestController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +23,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/artist")
 public class ArtistRestController {
     private static final Logger LOG = LoggerFactory.getLogger(TagRestController.class);
-
-    @Autowired
-    private TrackService trackService;
 
     @Autowired
     private ArtistService artistService;

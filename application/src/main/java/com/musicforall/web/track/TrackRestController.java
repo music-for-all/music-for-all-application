@@ -3,7 +3,7 @@ package com.musicforall.web.track;
 import com.musicforall.common.Constants;
 import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Track;
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import com.musicforall.services.recommendation.RecommendationService;
 import com.musicforall.services.track.TrackService;
 import org.slf4j.Logger;

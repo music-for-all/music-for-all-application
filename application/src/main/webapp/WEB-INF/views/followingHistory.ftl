@@ -10,7 +10,7 @@
 </@m.head>
 <@m.body>
 
-    <@m.navigation/>
+    <@m.navigation m.pages.Feed/>
 
 <div class="container title">
     <h2><@spring.message "followingpage.Title"/></h2>
@@ -20,21 +20,32 @@
 </div>
 
 <script type="text/template" class="groupedHistories">
-    <% _.each(data, function(user, feeds){%>
+
+
+    <%
+    _.each(data, function(feeds, user){
+    var id = user.match( /id=(.+?),/ )[1];
+    var username = user.match( /username='(.+?)'/ )[1];
+    %>
     <div id="following_user">
-        <div class="username text-center" data-toggle="collapse" data-target="#<%= user.email %>"><%= user.username %>
+        <div class="username text-center" data-toggle="collapse" data-target="#<%= id %>">
+            <%= username %>
         </div>
         <div class="activities">
-            <% _.each(feeds, function(feed, index){
+            <%_.each(feeds, function(feed, index){
             if(index == 2 ){ %>
-            <div id="<%= user.email %>" class="collapse">
+            <div id="<%= id %>" class="collapse">
                 <% } %>
                 <div class="row activity">
-                    <div class="col-xs-6 col-sm-9 event"><%feed.content%></div>
-                    <div class="col-xs-6 col-sm-3 date"><%feed.date%></div>
+                    <div class="col-xs-6 col-sm-9 event"><%= feed.content %></div>
+                    <%
+                    var date = new Date(feed.date);
+                    var dateString = date.getHours() + ":" + date.getMinutes();
+                    %>
+                    <div class="col-xs-6 col-sm-3 date"><%= dateString %></div>
                 </div>
                 <% });
-                if(_.size(histories) > 2){%>
+                if(_.size(feeds) > 2){%>
                 </div>
             <% } %>
         </div>
@@ -43,6 +54,7 @@
 </script>
 
 <script type="text/javascript">
+    _.templateSettings.variable = "data";
 
     var userGroupedHistories = _.template(
             $("script.groupedHistories").html()

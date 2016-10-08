@@ -1,6 +1,9 @@
-package com.musicforall.model;
+package com.musicforall.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.musicforall.common.Constants;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -13,13 +16,30 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
 
+import static org.hibernate.annotations.CascadeType.DELETE;
+import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
+
 /**
  * Created by ilianik on 11.06.2016.
  */
+@NamedQueries(
+        {
+                @NamedQuery(
+                        name = User.USERS_BY_IDS_WITH_SETTINGS_QUERY,
+                        query = "from User u left join fetch u.settings where u.id in (:ids)"
+                ),
+                @NamedQuery(
+                        name = User.USER_BY_ID_WITH_SETTINGS_QUERY,
+                        query = "from User u left join fetch u.settings where u.id = :id"
+                )
+        }
+)
 @Entity
 @Table(name = "users")
 public class User implements SocialUserDetails, Serializable {
 
+    public static final String USERS_BY_IDS_WITH_SETTINGS_QUERY = "users_by_ids_with_settings";
+    public static final String USER_BY_ID_WITH_SETTINGS_QUERY = "user_by_id_with_settings";
     public static final String SQL_UPDATE_USER_DATA = "UPDATE User user" +
             " SET user.username = COALESCE(:username, user.username)," +
             " user.password = COALESCE(:password, user.password)," +
@@ -43,6 +63,7 @@ public class User implements SocialUserDetails, Serializable {
 
     @Size(min = 4, max = 128)
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Email
@@ -58,6 +79,10 @@ public class User implements SocialUserDetails, Serializable {
     @Size(max = 140)
     private String bio = "";
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @Cascade({SAVE_UPDATE, DELETE})
+    private UserSettings settings;
+
     public User() {
     }
 
@@ -65,6 +90,13 @@ public class User implements SocialUserDetails, Serializable {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public User(String username, String password, String email, UserSettings settings) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.settings = settings;
     }
 
     public Integer getId() {
@@ -79,33 +111,38 @@ public class User implements SocialUserDetails, Serializable {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return AuthorityUtils.createAuthorityList("ROLE_USER");
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
@@ -125,16 +162,17 @@ public class User implements SocialUserDetails, Serializable {
     }
 
     @Override
+    @JsonIgnore
     public String getUserId() {
         return email;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public UserSettings getSettings() {
+        return settings;
     }
 
-    public String getPicture() {
-        return picture;
+    public void setSettings(UserSettings settings) {
+        this.settings = settings;
     }
 
     @Override
@@ -167,16 +205,12 @@ public class User implements SocialUserDetails, Serializable {
                 '}';
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getFirstName() {
         return firstName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
@@ -189,5 +223,9 @@ public class User implements SocialUserDetails, Serializable {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

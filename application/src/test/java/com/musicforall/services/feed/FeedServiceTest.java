@@ -6,7 +6,7 @@ import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Artist;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.track.TrackService;
@@ -104,7 +104,7 @@ public class FeedServiceTest {
         when(track.getId()).thenReturn(TRACK_ID);
         when(playlist.getId()).thenReturn(PLAYLIST_ID);
         when(artist.getName()).thenReturn("Ray Charles");
-        when(track.getTitle()).thenReturn("Mess around");
+        when(track.getName()).thenReturn("Mess around");
         when(playlist.getName()).thenReturn("Jazz");
         when(user.getId()).thenReturn(USER1_ID);
         when(messageSource.getMessage(any(), any(), any())).thenReturn(TEST_MESSAGE);

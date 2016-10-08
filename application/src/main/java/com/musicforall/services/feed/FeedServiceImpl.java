@@ -7,7 +7,7 @@ import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Artist;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.track.TrackService;
@@ -124,9 +124,9 @@ public class FeedServiceImpl implements FeedService {
         if (artist == null) {
             return MessageFormat.format(TRACKNAME_FORMAT,
                     messageSource.getMessage("followingpage.unknown", null, LocaleContextHolder.getLocale()),
-                    track.getTitle());
+                    track.getName());
         }
-        return MessageFormat.format(TRACKNAME_FORMAT, artist.getName(), track.getTitle());
+        return MessageFormat.format(TRACKNAME_FORMAT, artist.getName(), track.getName());
     }
 
     private Feed generateContent(EventType eventType, String target, Date date) {

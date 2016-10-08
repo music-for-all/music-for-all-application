@@ -1,5 +1,7 @@
 package com.musicforall.services.user;
 
+import com.musicforall.model.user.User;
+import com.musicforall.model.user.UserSettings;
 import com.musicforall.model.ProfileData;
 import com.musicforall.model.User;
 import com.musicforall.util.ServicesTestConfig;
@@ -18,10 +20,9 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
+import static org.junit.Assert.*;
 
 /**
  * Created by Pukho on 22.06.2016.
@@ -35,12 +36,10 @@ import static org.junit.Assert.assertNull;
 public class UserServiceTest {
 
     public static final String USER_EMAIL_1 = "user@example.com";
-
-    public static final String USER_1 = "user";
-
+    public static final String USER = "user";
     public static final String USER_NOT_EXIST = "user_not_exist";
-
     public static final String USER_EMAIL = "user1@gmail.com";
+    public static final String PASSWORD = "password";
 
     @Autowired
     private UserService userService;
@@ -111,15 +110,15 @@ public class UserServiceTest {
     @Test(expected = UsernameNotFoundException.class)
     public void testLoadUserByUsername() {
         final UserDetails user = userService.loadUserByUsername(USER_EMAIL_1);
-        assertEquals(USER_1, user.getUsername());
+        assertEquals(USER, user.getUsername());
         assertNotNull(userService.loadUserByUsername(USER_NOT_EXIST));
     }
 
     @Test
     public void testGetUsersById() {
-        final User user1 = new User("Johnny", "password", "tests@example.com");
-        final User user2 = new User("Abc", "password", "abc@example.com");
-        final User user3 = new User("Spock", "123455", "mail2@example.com");
+        final User user1 = new User("Johnny", PASSWORD, "testGetUsersById1@example.com");
+        final User user2 = new User("Abc", PASSWORD, "testGetUsersById2@example.com");
+        final User user3 = new User("Spock", PASSWORD, "testGetUsersById3@example.com");
         final List<Integer> users = new ArrayList<>();
         userService.save(user1);
         users.add(user1.getId());
@@ -136,9 +135,40 @@ public class UserServiceTest {
 
     @Test
     public void testLoadUserByUserId() {
-        final User user1 = new User("C_3PO", "password", "c_3po@example.com");
+        final User user1 = new User("C_3PO", PASSWORD, "c_3po@example.com");
         userService.save(user1);
 
         assertNotNull(userService.loadUserByUserId(user1.getEmail()));
+    }
+
+    @Test
+    public void testGetUsersWithSettings() {
+        final UserSettings defaultSettings = new UserSettings(true, "link");
+        final User user1 = new User(USER, PASSWORD, "mail1@example.com");
+        final User user2 = new User(USER, PASSWORD, "mail2@example.com");
+        final User user3 = new User(USER, PASSWORD, "mail3@example.com");
+
+        final List<User> users = asList(user1, user2, user3);
+        users.forEach(user -> user.setSettings(defaultSettings));
+        userService.saveAll(users);
+
+        final List<Integer> userIds = users.stream().map(User::getId).collect(toList());
+        final List<User> usersWithSettings = userService.getAllWithSettingsByIds(userIds);
+
+        final boolean match = usersWithSettings.stream()
+                .filter(u -> defaultSettings.equals(u.getSettings()))
+                .allMatch(user -> userIds.contains(user.getId()));
+        assertTrue(match);
+    }
+
+    @Test
+    public void testGetUserWithSettings() {
+        final UserSettings settings = new UserSettings(true, "link");
+        User user = new User(USER, PASSWORD, "testGetUserWithSettings@test.com");
+        user.setSettings(settings);
+
+        userService.save(user);
+
+        assertEquals(settings, userService.getWithSettingsById(user.getId()).getSettings());
     }
 }

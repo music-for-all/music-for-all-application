@@ -1,7 +1,7 @@
 package com.musicforall.services.user;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

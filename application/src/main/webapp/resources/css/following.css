@@ -11,16 +11,17 @@
 
 .title {
     margin-bottom: 60px;
+    margin-top: 70px;
 }
 
 .activity > .date {
     text-align: right;
     background-color: #FFD2FE;
-
+    margin-right: 10px;
 }
 
 .username:hover {
-    background: url("http://www.wallpapersbyte.com/wp-content/uploads/2015/07/Purple-Solid-Color-Bright-Gradient-Background-WallpapersByte-com-1920x1080.jpg");
+    background: url("http://i0.wp.com/www.wallpapersbyte.com/wp-content/uploads/2015/07/Purple-Solid-Color-Bright-Gradient-Background-WallpapersByte-com-1366x768.jpg?w=1240");
     background-position: right bottom;
 }
 

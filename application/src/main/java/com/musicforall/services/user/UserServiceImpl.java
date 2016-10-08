@@ -2,6 +2,8 @@ package com.musicforall.services.user;
 
 import com.musicforall.common.Constants;
 import com.musicforall.common.dao.Dao;
+import com.musicforall.model.user.User;
+import org.hibernate.FetchMode;
 import com.musicforall.model.ProfileData;
 import com.musicforall.model.User;
 import org.hibernate.criterion.DetachedCriteria;
@@ -25,19 +27,23 @@ import java.util.*;
 @Transactional
 public class UserServiceImpl implements UserService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private Dao dao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
-
     @Override
-    public void save(User user) {
+    public User save(User user) {
         /* Encode the password before saving the user. */
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        dao.save(user);
+        return dao.save(user);
+    }
+
+    @Override
+    public Collection<User> saveAll(Collection<User> users) {
+        return dao.saveAll(users);
     }
 
     @Override
@@ -80,6 +86,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByEmail(String email) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
+                .setFetchMode("settings", FetchMode.JOIN)
                 .add(Property.forName(Constants.EMAIL).eq(email));
 
         return dao.getBy(detachedCriteria);
@@ -102,6 +109,20 @@ public class UserServiceImpl implements UserService {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
                 .add(disjunction);
         return dao.getAllBy(detachedCriteria);
+    }
+
+    @Override
+    public List<User> getAllWithSettingsByIds(Collection<Integer> ids) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("ids", ids);
+        return dao.getAllByNamedQuery(User.class, User.USERS_BY_IDS_WITH_SETTINGS_QUERY, params);
+    }
+
+    @Override
+    public User getWithSettingsById(Integer id) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        return dao.getByNamedQuery(User.class, User.USER_BY_ID_WITH_SETTINGS_QUERY, params);
     }
 
     @Override

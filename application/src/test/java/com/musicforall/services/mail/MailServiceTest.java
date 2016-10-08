@@ -3,7 +3,7 @@ package com.musicforall.services.mail;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import com.musicforall.services.template.TemplateService;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.AfterClass;
