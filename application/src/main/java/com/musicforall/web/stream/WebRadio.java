@@ -14,7 +14,7 @@ import static com.musicforall.util.SecurityUtil.currentUserId;
  * @author ENikolskiy.
  */
 @Service
-public class RadioServiceWS implements RadioService {
+public class WebRadio implements Radio {
 
     public static final String SUBSCRIPTION_URL = "/radio/subscribers/";
 
