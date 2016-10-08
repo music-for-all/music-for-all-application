@@ -15,10 +15,14 @@ function updateData() {
 
     var confirmPassword = $("#confirmPassword").val();
 
+    var profileData = {};
+
     if (password.length > 0) {
         if (password !== confirmPassword) {
             $("#fail-message").text("Fail: passwords do not match!");
             return;
+        } else {
+            profileData.password = password;
         }
     }
 
@@ -29,13 +33,27 @@ function updateData() {
         return;
     }
 
-    var profileData = {
-        username: username,
-        password: password,
-        firstName: $("#firstName").val(),
-        lastName: $("#lastName").val(),
-        bio: $("#user_profile_bio").val()
-    };
+    if (username !== $("#panelUsername").text()) {
+        profileData.username = username;
+    }
+
+    var firstName = $("#firstName").val();
+
+    if (firstName !== $("#tdFirstName").text()) {
+        profileData.firstName = firstName;
+    }
+
+    var lastName = $("#lastName").val();
+
+    if (lastName !== $("#tdLastName").text()) {
+        profileData.lastName = lastName;
+    }
+
+    var bio = $("#user_profile_bio").val();
+
+    if (bio !== $("#tdBio").text()) {
+        profileData.bio = bio;
+    }
 
     return $.when($.get(baseUrl + "/update", profileData));
 }
