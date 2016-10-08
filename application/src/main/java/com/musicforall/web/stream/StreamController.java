@@ -26,6 +26,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class StreamController {
     @Autowired
     private StreamService streamService;
+    @Autowired
+    private Radio radio;
 
     @RequestMapping(value = "/track/{id}", method = POST)
     public ResponseEntity startStream(@PathVariable("id") Integer trackId) {
@@ -34,6 +36,7 @@ public class StreamController {
 
     @RequestMapping(value = "/stop", method = POST)
     public ResponseEntity stopStream() {
+        radio.stream(null, -1);
         return processWithCurrentUser(streamService::stop);
     }
 

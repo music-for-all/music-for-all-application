@@ -5,7 +5,7 @@ import com.musicforall.model.Track;
 /**
  * @author ENikolskiy.
  */
-public interface RadioService {
+public interface Radio {
     void stream(Track track, int partId);
 
     void stream(Integer userId, Track track, int partId);

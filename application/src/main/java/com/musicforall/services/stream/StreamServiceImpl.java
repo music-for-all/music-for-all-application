@@ -5,7 +5,6 @@ import com.musicforall.model.Track;
 import com.musicforall.model.user.User;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
-import com.musicforall.web.stream.RadioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -30,8 +29,6 @@ public class StreamServiceImpl implements StreamService {
     private TrackService trackService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private RadioService radioService;
 
     @Override
     public void start(Integer userId, Integer trackId) {
@@ -41,7 +38,6 @@ public class StreamServiceImpl implements StreamService {
 
     @Override
     public void stop(Integer userId) {
-        radioService.stream(null, -1);
         cache.remove(userId);
     }
 

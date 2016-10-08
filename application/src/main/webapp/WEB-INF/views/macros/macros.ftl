@@ -163,7 +163,7 @@
             <span class="glyphicon num-likes" aria-hidden="true"></span>
         </td>
         <td>
-            <%= data.artist ? data.artist.name : <@spring.message "followingpage.unknown" /> %>
+            <%= data.artist ? data.artist.name : "<@spring.message "followingpage.unknown" />" %>
         </td>
         <td>
             <%= data.name %>

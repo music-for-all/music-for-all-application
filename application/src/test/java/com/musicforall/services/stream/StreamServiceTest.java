@@ -6,12 +6,9 @@ import com.musicforall.model.user.UserSettings;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import com.musicforall.util.ServicesTestConfig;
-import com.musicforall.web.stream.RadioService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
@@ -40,10 +37,7 @@ import static org.junit.Assert.*;
 public class StreamServiceTest {
 
     @Autowired
-    @InjectMocks
     private StreamService streamService;
-    @Mock
-    private RadioService radioService;
     @Autowired
     private TrackService trackService;
     @Autowired
