@@ -17,6 +17,7 @@ public class UserSettings implements Serializable {
     @Id
     @Column(name = Constants.ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Access(AccessType.PROPERTY)
     private Integer id;
 
     @Column(name = "public_radio")
@@ -30,6 +31,14 @@ public class UserSettings implements Serializable {
     public UserSettings(boolean isPublicRadio, String picture) {
         this.publicRadio = isPublicRadio;
         this.picture = picture;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    private void setId(Integer id) {
+        this.id = id;
     }
 
     public boolean isPublicRadio() {
