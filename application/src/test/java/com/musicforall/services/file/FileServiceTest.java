@@ -3,7 +3,7 @@ package com.musicforall.services.file;
 import com.musicforall.files.manager.FileManager;
 import com.musicforall.model.Artist;
 import com.musicforall.model.Track;
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.file.utils.FileTestUtils;
 import com.musicforall.services.track.TrackService;
@@ -119,7 +119,7 @@ public class FileServiceTest {
     public void uploadFileExistedArtistTest() throws Exception {
         try (InputStream inputStream = newInputStream(get(resourceUrl.toURI()))) {
             final MockMultipartFile file = new MockMultipartFile(FILE, "sample2.mp3", null, inputStream);
-            final Track track = new Track("track", "title2", new Artist("artist2"), "album2", "/root/track2.mp3", null);
+            final Track track = new Track("track", new Artist("artist2"), "album2", "/root/track2.mp3", null);
 
             when(artistService.get(any())).thenReturn((new Artist("artist")));
             when(trackService.save(any())).thenReturn(track);
@@ -132,7 +132,7 @@ public class FileServiceTest {
     public void uploadFileNewArtistTest() throws Exception {
         try (InputStream inputStream = newInputStream(get(resourceUrl.toURI()))) {
             final MockMultipartFile file = new MockMultipartFile(FILE, "sample2.mp3", null, inputStream);
-            final Track track = new Track("track3", "title3", new Artist("artist3"), "album3", "/root/track3.mp3", null);
+            final Track track = new Track("track3", new Artist("artist3"), "album3", "/root/track3.mp3", null);
 
             when(artistService.get(any())).thenReturn((null));
             when(trackService.save(any())).thenReturn(track);
@@ -170,7 +170,7 @@ public class FileServiceTest {
     public void uploadNonExistingTrackTest() throws Exception {
         try (InputStream inputStream = newInputStream(get(resourceUrl.toURI()))) {
             final MockMultipartFile file = new MockMultipartFile(FILE, SAMPLE_FILE, null, inputStream);
-            final Track track = new Track("track1", "title1", new Artist("artist1"), "album1", "/root/track1.mp3", null);
+            final Track track = new Track("track1", new Artist("artist1"), "album1", "/root/track1.mp3", null);
 
             when(manager.saveTrack(file)).thenReturn(Optional.empty());
 

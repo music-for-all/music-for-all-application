@@ -4,7 +4,7 @@ import com.musicforall.files.manager.FileManager;
 import com.musicforall.model.Artist;
 import com.musicforall.model.ProfileData;
 import com.musicforall.model.Track;
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;

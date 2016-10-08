@@ -5,7 +5,6 @@ import com.musicforall.common.dao.Dao;
 import com.musicforall.model.user.User;
 import org.hibernate.FetchMode;
 import com.musicforall.model.ProfileData;
-import com.musicforall.model.User;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Property;
