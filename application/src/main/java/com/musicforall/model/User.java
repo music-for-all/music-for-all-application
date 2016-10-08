@@ -21,13 +21,13 @@ import java.util.Objects;
 public class User implements SocialUserDetails, Serializable {
 
     public static final String SQL_UPDATE_USER_DATA = "UPDATE User user" +
-                        " SET user.username = COALESCE(:username, user.username)," +
-                        " user.password = COALESCE(:password, user.password)," +
-                        " user.firstName = COALESCE(:firstName, user.firstName)," +
-                        " user.lastName = COALESCE(:lastName, user.lastName)," +
-                        " user.picture = COALESCE(:picture, user.picture)," +
-                        " user.bio = COALESCE(:bio, user.bio)" +
-                        " where user.id = :id";
+            " SET user.username = COALESCE(:username, user.username)," +
+            " user.password = COALESCE(:password, user.password)," +
+            " user.firstName = COALESCE(:firstName, user.firstName)," +
+            " user.lastName = COALESCE(:lastName, user.lastName)," +
+            " user.picture = COALESCE(:picture, user.picture)," +
+            " user.bio = COALESCE(:bio, user.bio)" +
+            " where user.id = :id";
 
     private static final long serialVersionUID = 1959293141381203004L;
 
