@@ -16,9 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Pukho on 16.06.2016.
@@ -44,11 +42,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user, ProfileData profileData) {
-        profileData.update(user);
-        if (profileData.encodePassword()) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        final Map<String, Object> params = new HashMap<>();
+        params.put("id", user.getId());
+        params.put("username", profileData.getUsername());
+        params.put("firstName", profileData.getFirstName());
+        params.put("lastName", profileData.getLastName());
+        params.put("picture", profileData.getPicture());
+        params.put("bio", profileData.getBio());
+        if (profileData.getPassword() != null) {
+            profileData.setPassword(passwordEncoder.encode(profileData.getPassword()));
         }
-        dao.update(user);
+        params.put("password", profileData.getPassword());
+
+        dao.update(User.SQL_UPDATE_USER_DATA, params);
     }
 
     @Override

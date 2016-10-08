@@ -89,35 +89,6 @@ public class ProfileData {
         return picture;
     }
 
-    public boolean encodePassword() {
-        if (password != null && !password.isEmpty()) {
-            return true;
-        }
-        return false;
-    }
-
-    public User update(User currentUser) {
-        if (username != null) {
-            currentUser.setUsername(username);
-        }
-        if (password != null && !password.isEmpty()) {
-            currentUser.setPassword(password);
-        }
-        if (firstName != null) {
-            currentUser.setFirstName(firstName);
-        }
-        if (lastName != null) {
-            currentUser.setLastName(lastName);
-        }
-        if (bio != null) {
-            currentUser.setBio(bio);
-        }
-        if (picture != null) {
-            currentUser.setPicture(picture);
-        }
-        return currentUser;
-    }
-
     @Override
     public String toString() {
         return "ProfileData{" +
@@ -126,6 +97,7 @@ public class ProfileData {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", bio='" + bio + '\'' +
+                ", picture='" + picture + '\'' +
                 '}';
     }
 }
