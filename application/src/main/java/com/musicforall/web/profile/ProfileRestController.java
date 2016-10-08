@@ -1,6 +1,6 @@
 package com.musicforall.web.profile;
 
-import com.musicforall.model.ProfileData;
+import com.musicforall.dto.profile.ProfileData;
 import com.musicforall.services.user.UserService;
 import com.musicforall.util.SecurityUtil;
 import org.slf4j.Logger;
