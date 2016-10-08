@@ -1,4 +1,9 @@
-.username {
+.title {
+    margin-bottom: 60px;
+    margin-top: 70px;
+}
+
+.following_user .username {
     background: url("/resources/img/dark_purple.jpg");
     background-position: right bottom;
     font-size: 150%;
@@ -9,30 +14,41 @@
     border-top-left-radius: 20px;
 }
 
-.title {
-    margin-bottom: 60px;
-    margin-top: 70px;
-}
-
-.activity > .date {
-    text-align: center;
-    background-color: #FFD2FE;
-}
-
-.username:hover {
+.following_user .username:hover {
     background: url("/resources/img/light_purple.jpg");
     background-position: right bottom;
 }
 
-.activity > .event {
-    background-color: #FFCAF0;
-    padding-left: 100px;
-}
-
-.activity {
+.following_user .activities .activity {
     border-bottom: solid;
     border-width: 2px;
     border-color: #000080;
-    margin: 0px;
-
+    margin: 0;
 }
+
+.following_user .activities .activity .event {
+    background-color: #e4deff;
+    padding-left: 100px;
+}
+
+.following_user .activities .activity .event .playlist-name {
+    font-weight: bold;
+    color: #AE00D4;
+}
+
+.following_user .activities .activity .event .track-name {
+    font-weight: bold;
+    color: #1707a3;
+}
+
+.following_user .activities .activity .date {
+    font-weight: bold;
+    text-align: center;
+    color: #809dc0;
+    background-color: #e9ddff;
+}
+
+
+
+
+

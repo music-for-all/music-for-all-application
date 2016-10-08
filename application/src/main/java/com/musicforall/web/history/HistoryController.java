@@ -3,7 +3,7 @@ package com.musicforall.web.history;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.handlers.events.PlaylistEvent;
 import com.musicforall.history.handlers.events.TrackEvent;
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.util.SecurityUtil;

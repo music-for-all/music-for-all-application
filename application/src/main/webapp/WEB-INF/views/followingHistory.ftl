@@ -20,14 +20,12 @@
 </div>
 
 <script type="text/template" class="groupedHistories">
-
-
     <%
     _.each(data, function(feeds, user){
     var id = user.match( /id=(.+?),/ )[1];
     var username = user.match( /username='(.+?)'/ )[1];
     %>
-    <div id="following_user">
+    <div class="following_user">
         <div class="username text-center" data-toggle="collapse" data-target="#<%= id %>">
             <%= username %>
         </div>
