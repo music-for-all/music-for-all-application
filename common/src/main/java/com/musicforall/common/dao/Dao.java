@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * Created by kgavrylchenko on 10/23/2015.
@@ -73,10 +72,12 @@ public class Dao {
         return entity;
     }
 
-    public <T> T update(T entity) {
-        LOG.info("Going to update entity - {}", entity);
-        currentSession().update(entity);
-        return entity;
+    public void update(String sql, Map<String, Object> parameters) {
+        final Query query = currentSession().createQuery(sql);
+        for (final Map.Entry<String, Object> s : parameters.entrySet()) {
+            query.setParameter(s.getKey(), s.getValue());
+        }
+        query.executeUpdate();
     }
 
     /**
@@ -127,14 +128,6 @@ public class Dao {
         final T entity = query.uniqueResult();
         LOG.info(FOUND_ENTITY, entity);
         return entity;
-    }
-
-    public void update(String sql, Map<String, List<Serializable>> parametrs) {
-        final Query query = currentSession().createQuery(sql);
-        for (final Entry<String, List<Serializable>> s : parametrs.entrySet()) {
-            query.setParameterList(s.getKey(), s.getValue());
-        }
-        query.executeUpdate();
     }
 
     /**
