@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 public class FeedServiceImpl implements FeedService {
 
     private static final String TRACKNAME_FORMAT = "<span class=\"track-name\">{0} - {1}</span>";
-    private static final String PLAYLISTNAME_FORMAT = "<span class=\"playlist-name\">{0} - {1}</span>";
+    private static final String PLAYLISTNAME_FORMAT = "<span class=\"playlist-name\">{0}</span>";
     private static final int NINE = 9;
 
     @Autowired

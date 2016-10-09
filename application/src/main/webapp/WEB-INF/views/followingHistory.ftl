@@ -30,7 +30,7 @@
         <div class="activities">
             <%_.each(feedsByUser.feeds, function(feed, index){
             if(index == 2 ){ %>
-            <div id="<%= id %>" class="collapse">
+            <div id="<%=  feedsByUser.user.id  %>" class="collapse">
                 <% } %>
                 <div class="row activity">
                     <div class="col-xs-6 col-sm-9 event"><%= feed.content %></div>

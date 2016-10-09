@@ -118,7 +118,7 @@ public class FeedServiceTest {
         when(playlist.getName()).thenReturn("Jazz");
         when(user.getId()).thenReturn(USER1_ID);
         when(messageSource.getMessage(any(), any(), any())).thenReturn(TEST_MESSAGE);
-        expectPrivate(tested, "modifyData", any()).andReturn(TEST_TIME);
+        expectPrivate(tested, "formatDate", any()).andReturn(TEST_TIME);
         replay(tested);
 
         final List<UserFeedsDTO> followingHistories = feedService.getGroupedFollowingFeeds(USER_ID);
