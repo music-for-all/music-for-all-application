@@ -18,11 +18,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.powermock.api.easymock.PowerMock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.MessageSource;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,15 +29,12 @@ import static com.musicforall.history.handlers.events.EventType.*;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.easymock.PowerMock.expectPrivate;
-import static org.powermock.api.easymock.PowerMock.replay;
 
 /**
  * @author IliaNik on 02.09.2016.
  */
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({FeedServiceImpl.class})
+@RunWith(MockitoJUnitRunner.class)
 public class FeedServiceTest {
 
     private static final int TRACK_ID = 3333;
@@ -46,8 +42,6 @@ public class FeedServiceTest {
     private static final int USER1_ID = 2;
     private static final int USER_ID = 1;
     private static final String TEST_MESSAGE = "Test message ";
-    private static final String TEST_TIME = "Test time ";
-    private static final int NINE = 9;
 
     @Mock
     private UserService userService;
@@ -88,9 +82,7 @@ public class FeedServiceTest {
     }
 
     @Test
-    public void testGetGroupedFollowingFeeds() throws Exception {
-        FeedServiceImpl tested = PowerMock.createPartialMock(FeedServiceImpl.class, "formatDate");
-
+    public void testGetGroupedFollowingFeeds() {
         final History history1 = new History(TRACK_ID, PLAYLIST_ID,
                 new Date(new Date().getTime() + 1), USER1_ID, TRACK_LIKED);
         final History history2 = new History(TRACK_ID, PLAYLIST_ID,
@@ -117,9 +109,6 @@ public class FeedServiceTest {
         when(track.getName()).thenReturn("Mess around");
         when(playlist.getName()).thenReturn("Jazz");
         when(user.getId()).thenReturn(USER1_ID);
-        when(messageSource.getMessage(any(), any(), any())).thenReturn(TEST_MESSAGE);
-        expectPrivate(tested, "formatDate", any()).andReturn(TEST_TIME);
-        replay(tested);
 
         final List<UserFeedsDTO> followingHistories = feedService.getGroupedFollowingFeeds(USER_ID);
         final Collection<Feed> feedsFromHistories = followingHistories.get(0).getFeeds();
@@ -132,18 +121,9 @@ public class FeedServiceTest {
     }
 
     private String formatDateTestCopy(Date date) {
-        final Calendar feedDate = new GregorianCalendar();
-        feedDate.setTime(date);
         final Calendar today = new GregorianCalendar();
-
-        final int hours = feedDate.get(Calendar.HOUR_OF_DAY);
-        final int minutes = feedDate.get(Calendar.MINUTE);
-        StringBuilder formattedDate = new StringBuilder();
-        String day = today.after(feedDate) ? "Yesterday" : "Today";
-        formattedDate.append(day).append(" ");
-        formattedDate.append(hours > NINE ? Integer.toString(hours) : "0" + hours).append(":");
-        formattedDate.append(minutes > NINE ? Integer.toString(minutes) : "0" + minutes);
-
-        return formattedDate.toString();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        String day = today.after(date) ? "Yesterday" : "Today";
+        return day + " " + dateFormat.format(date);
     }
 }

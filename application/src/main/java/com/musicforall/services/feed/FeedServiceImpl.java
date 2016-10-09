@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -164,19 +165,10 @@ public class FeedServiceImpl implements FeedService {
     }
 
     private String formatDate(Date date) {
-        final Calendar feedDate = new GregorianCalendar();
-        feedDate.setTime(date);
         final Calendar today = new GregorianCalendar();
-
-        final int hours = feedDate.get(Calendar.HOUR_OF_DAY);
-        final int minutes = feedDate.get(Calendar.MINUTE);
-        StringBuilder formattedDate = new StringBuilder();
-        String day = today.after(feedDate) ? "Yesterday" : "Today";
-        formattedDate.append(day).append(" ");
-        formattedDate.append(hours > NINE ? Integer.toString(hours) : "0" + hours).append(":");
-        formattedDate.append(minutes > NINE ? Integer.toString(minutes) : "0" + minutes);
-
-        return formattedDate.toString();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        String day = today.after(date) ? "Yesterday" : "Today";
+        return day + " " + dateFormat.format(date);
     }
 }
 
