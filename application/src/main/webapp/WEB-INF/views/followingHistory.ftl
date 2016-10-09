@@ -21,39 +21,23 @@
 
 <script type="text/template" class="groupedHistories">
     <%
-    _.each(data, function(feeds, user){
-    var id = user.match( /id=(.+?),/ )[1];
-    var username = user.match( /username='(.+?)'/ )[1];
+    _.each(data, function(feedsByUser){
     %>
     <div class="following_user">
-        <div class="username text-center" data-toggle="collapse" data-target="#<%= id %>">
-            <%= username %>
+        <div class="username text-center" data-toggle="collapse" data-target="#<%= feedsByUser.user.id %>">
+            <%= feedsByUser.user.username %>
         </div>
         <div class="activities">
-            <%_.each(feeds, function(feed, index){
+            <%_.each(feedsByUser.feeds, function(feed, index){
             if(index == 2 ){ %>
             <div id="<%= id %>" class="collapse">
                 <% } %>
                 <div class="row activity">
                     <div class="col-xs-6 col-sm-9 event"><%= feed.content %></div>
-                    <%
-                    var feedDate = new Date(feed.date);
-                    var today = new Date();
-                    var hours = feedDate.getHours();
-                    var minutes = feedDate.getMinutes();
-                    if( feedDate.getDate() < today.getDate() ) {
-                    var day = "Yesterday";
-                    } else {
-                    var day = "Today";
-                    }
-                    hours = hours > 9 ? hours : "0" + hours;
-                    minutes = minutes > 9 ? minutes : "0" + minutes;
-                    var dateString = day + " " + hours + ":" + minutes;
-                    %>
-                    <div class="col-xs-6 col-sm-3 date"><%= dateString %></div>
+                    <div class="col-xs-6 col-sm-3 date"><%= feed.date %></div>
                 </div>
                 <% });
-                if(_.size(feeds) > 2){%>
+                if(_.size(feedsByUser.feeds) > 2){%>
                 </div>
             <% } %>
         </div>
