@@ -1,7 +1,7 @@
 package com.musicforall.services.feed;
 
 
-import com.musicforall.dto.userFeedsDTO.UserFeedsDTO;
+import com.musicforall.dto.feeds.UserFeedsDTO;
 
 import java.util.List;
 

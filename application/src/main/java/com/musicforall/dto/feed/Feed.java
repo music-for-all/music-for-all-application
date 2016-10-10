@@ -27,9 +27,11 @@ public class Feed {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (this == o) {
+            return true;
+        }
         if (o == null || getClass() != o.getClass()) return false;
-        Feed feed = (Feed) o;
+        final Feed feed = (Feed) o;
         return Objects.equals(content, feed.content) &&
                 Objects.equals(date, feed.date);
     }

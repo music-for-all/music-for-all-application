@@ -1,4 +1,4 @@
-package com.musicforall.dto.userFeedsDTO;
+package com.musicforall.dto.feeds;
 
 import com.musicforall.dto.feed.Feed;
 import com.musicforall.model.user.User;
@@ -28,9 +28,11 @@ public class UserFeedsDTO {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (this == o) {
+            return true;
+        }
         if (!(o instanceof UserFeedsDTO)) return false;
-        UserFeedsDTO that = (UserFeedsDTO) o;
+        final UserFeedsDTO that = (UserFeedsDTO) o;
         return Objects.equals(user, that.user) &&
                 Objects.equals(feeds, that.feeds);
     }

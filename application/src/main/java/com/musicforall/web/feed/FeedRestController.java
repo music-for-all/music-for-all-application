@@ -1,6 +1,6 @@
 package com.musicforall.web.feed;
 
-import com.musicforall.dto.userFeedsDTO.UserFeedsDTO;
+import com.musicforall.dto.feeds.UserFeedsDTO;
 import com.musicforall.services.feed.FeedService;
 import com.musicforall.util.SecurityUtil;
 import org.slf4j.Logger;

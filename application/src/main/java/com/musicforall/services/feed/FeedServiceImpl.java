@@ -1,7 +1,7 @@
 package com.musicforall.services.feed;
 
 import com.musicforall.dto.feed.Feed;
-import com.musicforall.dto.userFeedsDTO.UserFeedsDTO;
+import com.musicforall.dto.feeds.UserFeedsDTO;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
@@ -34,7 +34,6 @@ public class FeedServiceImpl implements FeedService {
 
     private static final String TRACKNAME_FORMAT = "<span class=\"track-name\">{0} - {1}</span>";
     private static final String PLAYLISTNAME_FORMAT = "<span class=\"playlist-name\">{0}</span>";
-    private static final int NINE = 9;
 
     @Autowired
     private FollowerService followerService;
@@ -52,6 +51,18 @@ public class FeedServiceImpl implements FeedService {
     @Qualifier("messageSource")
     private MessageSource messageSource;
 
+    private static String formatDate(Date date) {
+        final Calendar feedDate = new GregorianCalendar();
+        feedDate.setTime(date);
+        final Calendar today = new GregorianCalendar();
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        final String day = today.after(feedDate) ? "Yesterday" : "Today";
+        return day + " " + dateFormat.format(date);
+    }
+
+    public static String getFormatDate(Date date) {
+        return formatDate(date);
+    }
 
     @Override
     public List<UserFeedsDTO> getGroupedFollowingFeeds(Integer userId) {
@@ -162,13 +173,6 @@ public class FeedServiceImpl implements FeedService {
             default:
                 return null;
         }
-    }
-
-    private String formatDate(Date date) {
-        final Calendar today = new GregorianCalendar();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-        String day = today.after(date) ? "Yesterday" : "Today";
-        return day + " " + dateFormat.format(date);
     }
 }
 
