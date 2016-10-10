@@ -7,6 +7,15 @@
 <title><@spring.message "profilepage.Title"/></title>
 <link href="/resources/css/userpage.css" rel="stylesheet"/>
 <script src="/resources/js/social.js"></script>
+<script src="/resources/js/playlist.js"></script>
+<script src="/resources/js/track.js"></script>
+<script src="/resources/js/history.js"></script>
+
+<script src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
+<script src="<@spring.url "/resources/js/player.js" />"></script>
+<link href="<@spring.url "/resources/css/additionalTracksTable.css" />" rel="stylesheet">
+<link href="<@spring.url "/resources/css/player.css" />" rel="stylesheet">
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 </@m.head>
 <@m.body>
@@ -37,7 +46,19 @@
         </div>
         <div class="col-md-9">
             <div class="tracks">
-                Tracks from playlist
+                <section id="tracks-section" class="well col-md-9">
+                    <table id="tracks"
+                           class="table table-hover table-striped table-condensed tracks-table no-checkbox no-plus-button">
+                        <thead>
+                        <tr>
+                            <th><@spring.message "welcomepage.Actions"/></th>
+                            <th><@spring.message "welcomepage.Artist"/></th>
+                            <th><@spring.message "welcomepage.Title"/></th>
+                            <th><@spring.message "welcomepage.Duration"/></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </section>
             </div>
         </div>
     </div>
@@ -54,11 +75,20 @@
     </div>
 </script>
 
+    <@p.player_Footer/>
+    <@m.addTrackRowTemplate/>
+
 <script type="text/javascript">
 
     var social = new Social();
+    var playlist = new Playlist();
+    var track = new Track();
 
     _.templateSettings.variable = "data";
+
+    var trackRow = _.template(
+            $("script.addTrackRowTemplate").html()
+    );
 
     var userHeader = _.template(
             $("script.userHeader").html()
@@ -76,10 +106,62 @@
             $("script.playlistRowTemplateWithoutDeleting").html()
     );
 
-    $('li > a').click(function () {
-        $('li').removeClass();
-        $(this).parent().addClass('active');
+
+    $(".profile-playlists").on("click", "a", function (e) {
+        e.preventDefault();
+        $(".profile-playlists").find("li").removeClass("active");
+        $(this).closest("li").addClass("active");
+
+        refreshTrackTable();
     });
+
+    $("#add-many").on("click", function (e) {
+        var tracksIds = getSelectedTracksIds();
+        if (tracksIds.length > 0) {
+            showPlaylistPopup(tracksIds);
+        }
+    });
+
+    $("#change-multiselect-state").on("click", "input", function (e) {
+        var tracks = $("#recommendations");
+        tracks.removeClass("no-checkbox");
+        tracks.removeClass("no-plus-button");
+        if (this.checked) {
+            tracks.addClass("no-plus-button");
+            $("#add-many").removeClass("hidden");
+        } else {
+            tracks.addClass("no-checkbox");
+            $("#add-many").addClass("hidden");
+        }
+    });
+
+    $("#acceptCreatingPlaylistButton").on("click", function (e) {
+        playlist.create($("#inputNamePlaylist").val())
+                .then(function (playlist) {
+                    addPlaylist(playlist);
+                    $("#inputNamePlaylist").val("");
+                    $("#addPlaylistModal").modal("hide");
+                });
+    });
+
+
+
+
+
+    function refreshTrackTable() {
+        clearTracks();
+        var id = $(".profile-playlists").find("li.active").attr("id");
+        playlist.get(id)
+                .then(function (response) {
+                    response.tracks.forEach(function (track) {
+                        $("#tracks").append(trackRow(track));
+                    });
+                });
+    }
+
+    function clearTracks() {
+        $("#tracks tr:gt(0)").remove();
+    }
 
     $(document).ready(function () {
         social.getUser(${user_id}).then(function (req_user) {
@@ -104,6 +186,30 @@
             $(".profile-playlists").append(
                     playlistRowTemplate(uplaylists)
             );
+        });
+
+        $(".tracks-table").on("click", ".like-button", function () {
+
+            /* The id of a track is stored in the containing <tr> element. */
+            var id = $(this).closest("tr").attr("id");
+            track.like(id)
+                    .then(function () {
+                        $("#" + id + " .like-button").css("opacity", "0.5");
+                        updateLikeCount(id);
+                    });
+        });
+
+        /* Set focus on the name input field when the modal window has been shown. */
+        $("#addPlaylistModal").on("shown.bs.modal", function () {
+            $("#inputNamePlaylist").focus();
+        });
+
+        /* Event handler for the 'Return' key. */
+        $("#inputNamePlaylist").on("keydown", function (e) {
+
+            if (e.keyCode == 0xD) {
+                $("#acceptCreatingPlaylistButton").trigger("click");
+            }
         });
     });
 </script>
