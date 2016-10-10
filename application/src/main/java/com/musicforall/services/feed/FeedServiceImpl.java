@@ -51,17 +51,13 @@ public class FeedServiceImpl implements FeedService {
     @Qualifier("messageSource")
     private MessageSource messageSource;
 
-    private static String formatDate(Date date) {
+    protected static String formatDate(Date date) {
         final Calendar feedDate = new GregorianCalendar();
         feedDate.setTime(date);
         final Calendar today = new GregorianCalendar();
         final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
         final String day = today.after(feedDate) ? "Yesterday" : "Today";
         return day + " " + dateFormat.format(date);
-    }
-
-    public static String getFormatDate(Date date) {
-        return formatDate(date);
     }
 
     @Override

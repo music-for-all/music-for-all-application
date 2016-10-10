@@ -119,7 +119,7 @@ public class FeedServiceTest {
         final Collection<Feed> feedsFromService = feedsByUsers.get(0).getFeeds();
         final Collection<Feed> feedsFromHistories = histories
                 .stream()
-                .map((h) -> new Feed(TEST_MESSAGE, FeedServiceImpl.getFormatDate(h.getDate())))
+                .map((h) -> new Feed(TEST_MESSAGE, FeedServiceImpl.formatDate(h.getDate())))
                 .collect(Collectors.toList());
 
         assertTrue(feedsFromService.stream().allMatch(feedsFromHistories::contains));
