@@ -113,6 +113,7 @@ public class FeedServiceTest {
         when(track.getName()).thenReturn("Mess around");
         when(playlist.getName()).thenReturn("Jazz");
         when(user.getId()).thenReturn(USER1_ID);
+        when(messageSource.getMessage(any(), any(), any())).thenReturn(TEST_MESSAGE);
 
         final List<UserFeedsDTO> feedsByUsers = feedService.getGroupedFollowingFeeds(USER_ID);
         final Collection<Feed> feedsFromService = feedsByUsers.get(0).getFeeds();
