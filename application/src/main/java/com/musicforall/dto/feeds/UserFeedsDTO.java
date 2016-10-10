@@ -31,7 +31,9 @@ public class UserFeedsDTO {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof UserFeedsDTO)) return false;
+        if (!(o instanceof UserFeedsDTO)) {
+            return false;
+        }
         final UserFeedsDTO that = (UserFeedsDTO) o;
         return Objects.equals(user, that.user) &&
                 Objects.equals(feeds, that.feeds);

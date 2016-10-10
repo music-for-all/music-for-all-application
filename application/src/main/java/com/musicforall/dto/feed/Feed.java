@@ -30,7 +30,9 @@ public class Feed {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         final Feed feed = (Feed) o;
         return Objects.equals(content, feed.content) &&
                 Objects.equals(date, feed.date);
