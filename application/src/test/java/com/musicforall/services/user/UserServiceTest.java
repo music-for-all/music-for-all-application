@@ -6,7 +6,6 @@ import com.musicforall.model.user.UserSettings;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.omg.CORBA.Object;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -163,9 +162,9 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testGetUserLike(){
+    public void testGetUserLike() {
         final UserSettings settings = new UserSettings(true, "link");
-        User user = new User(USER, PASSWORD, "testGetUserLike@test.com");
+        User user = new User("test_name", PASSWORD, "testGetUserLike@test.com");
         user.setSettings(settings);
 
         userService.save(user);
@@ -174,8 +173,8 @@ public class UserServiceTest {
         searchUserByEmail.setEmail("testGetUserLi");
         assertEquals(userService.getAllLike(searchUserByEmail).size(), 1);
 
-        SearchUserRequest searchUserByUsername = new SearchUserRequest("use");
-        assertEquals(userService.getAllLike(searchUserByEmail).size(), 1);
+        SearchUserRequest searchUserByUsername = new SearchUserRequest("test");
+        assertEquals(userService.getAllLike(searchUserByUsername).size(), 1);
 
     }
 }
