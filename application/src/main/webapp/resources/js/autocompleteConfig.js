@@ -53,3 +53,26 @@ function tagAutocomplete(placeholder) {
         tokenSeparators: [' ']
     }
 }
+
+function userAutocomplete() {
+    return {
+        source: function (request, response) {
+            var requestData = {
+                searchTerm: request.term
+            };
+            $.ajax({
+                url: dict.contextPath + "/social/search",
+                data: requestData,
+                traditional: true,
+                success: function (data) {
+                    var array = data.error ? [] : $.map(data, function (item) {
+                        return {
+                            label: item
+                        };
+                    });
+                    response(array);
+                }
+            });
+        }
+    };
+}
