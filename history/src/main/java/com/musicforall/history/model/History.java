@@ -58,8 +58,14 @@ public class History {
     @Column(name = "track_id")
     private Integer trackId;
 
+    @Column(name = "track_name")
+    private String trackName;
+
     @Column(name = "playlist_id")
     private Integer playlistId;
+
+    @Column(name = "playlist_name")
+    private String playlistName;
 
     @Column(name = "user_id", nullable = false)
     private Integer userId;
@@ -68,7 +74,7 @@ public class History {
     private Timestamp date;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "event_type")
+    @Column(name = "event_type", nullable = false)
     private EventType eventType;
 
     public History(Integer trackId, Integer playlistId, Date date, Integer userId, EventType eventType) {
@@ -128,6 +134,23 @@ public class History {
 
     public void setPlaylistId(Integer playlistId) {
         this.playlistId = playlistId;
+    }
+
+
+    public String getPlaylistName() {
+        return playlistName;
+    }
+
+    public void setPlaylistName(String playlistName) {
+        this.playlistName = playlistName;
+    }
+
+    public String getTrackName() {
+        return trackName;
+    }
+
+    public void setTrackName(String trackName) {
+        this.trackName = trackName;
     }
 
     @Override

@@ -62,7 +62,7 @@
             <i class="fa fa-user" aria-hidden="true"></i>
         </td>
         <td>
-            <%= contact.username %>
+            <a id="user_link" href="/user/show?user_id=<%= contact.id %>"><%= contact.username %></a>
         </td>
         <td>
             <button type="button" class="btn btn-default" onclick="follow('<%= contact.id %>')">
@@ -81,7 +81,7 @@
             <i class="fa fa-user" aria-hidden="true"></i>
         </td>
         <td>
-            <%= contact.username %>
+            <a href="/user/show?user_id=<%= contact.id %>"><%= contact.username %></a>
         </td>
         <td>
             <div class="track-container <%= contact.track ? 'playing' : '' %>">

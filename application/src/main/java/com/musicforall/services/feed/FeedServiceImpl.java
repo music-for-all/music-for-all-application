@@ -1,15 +1,14 @@
 package com.musicforall.services.feed;
 
 import com.musicforall.dto.feed.Feed;
+import com.musicforall.dto.feeds.UserFeedsDTO;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Artist;
-import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
 import com.musicforall.model.user.User;
 import com.musicforall.services.follower.FollowerService;
-import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -32,7 +32,8 @@ import java.util.stream.Collectors;
 @Transactional
 public class FeedServiceImpl implements FeedService {
 
-    private static final String TRACKNAME_FORMAT = "{0} - {1}";
+    private static final String TRACKNAME_FORMAT = "<span class=\"track-name\">{0} - {1}</span>";
+    private static final String PLAYLISTNAME_FORMAT = "<span class=\"playlist-name\">{0}</span>";
 
     @Autowired
     private FollowerService followerService;
@@ -47,38 +48,37 @@ public class FeedServiceImpl implements FeedService {
     private TrackService trackService;
 
     @Autowired
-    private PlaylistService playlistService;
-
-    @Autowired
     @Qualifier("messageSource")
     private MessageSource messageSource;
 
+    protected static String formatDate(Date date) {
+        final Calendar feedDate = new GregorianCalendar();
+        feedDate.setTime(date);
+        final Calendar today = new GregorianCalendar();
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+        final String day = today.get(Calendar.DATE) != feedDate.get(Calendar.DATE) ? "Yesterday" : "Today";
+        return day + " " + dateFormat.format(date);
+    }
 
     @Override
-    public Map<User, Collection<Feed>> getGroupedFollowingFeeds(Integer userId) {
+    public List<UserFeedsDTO> getGroupedFollowingFeeds(Integer userId) {
         final Collection<Integer> usersIds = followerService.getFollowingId(userId);
         final Collection<History> usersHistories = historyService.getUsersHistories(usersIds);
         final List<Integer> tracksIds = getTracksIds(usersHistories);
-        final List<Integer> playlistsIds = getPlaylistIds(usersHistories);
 
         final Map<Integer, User> usersByIds = getUsersByIds(usersIds);
         final Map<Integer, Track> tracksByIds = getTracksByIds(tracksIds);
-        final Map<Integer, Playlist> playlistsByIds = getPlaylistsByIds(playlistsIds);
 
-        return getFeedsFromHistories(usersHistories, usersByIds, tracksByIds, playlistsByIds);
+        final Map<User, Collection<Feed>> feedsByUser =
+                getFeedsFromHistories(usersHistories, usersByIds, tracksByIds);
+
+        return getUserFeedsDTO(feedsByUser);
     }
 
     private List<Integer> getTracksIds(Collection<History> usersHistories) {
         return usersHistories.stream()
                 .filter(h -> h.getEventType().isTrackEvent())
                 .map(History::getTrackId)
-                .collect(Collectors.toList());
-    }
-
-    private List<Integer> getPlaylistIds(Collection<History> usersHistories) {
-        return usersHistories.stream()
-                .filter(h -> h.getEventType().isPlaylistEvent())
-                .map(History::getPlaylistId)
                 .collect(Collectors.toList());
     }
 
@@ -92,34 +92,41 @@ public class FeedServiceImpl implements FeedService {
                 .stream().collect(Collectors.toMap(Track::getId, Function.identity()));
     }
 
-    private Map<Integer, Playlist> getPlaylistsByIds(List<Integer> playlistsIds) {
-        return playlistService.getAllByIds(playlistsIds)
-                .stream().collect(Collectors.toMap(Playlist::getId, Function.identity()));
-    }
-
     private Map<User, Collection<Feed>> getFeedsFromHistories(Collection<History> histories,
                                                               Map<Integer, User> usersByIds,
-                                                              Map<Integer, Track> tracksByIds,
-                                                              Map<Integer, Playlist> playlistsByIds) {
+                                                              Map<Integer, Track> tracksByIds) {
         return histories
                 .stream()
-                .collect(Collectors.groupingBy(h -> usersByIds.get(h.getUserId()),
+                .collect(Collectors.groupingBy(
+                        h -> usersByIds.get(h.getUserId()),
                         LinkedHashMap::new,
                         Collectors.mapping(h -> {
-                            if (h.getEventType().isTrackEvent()) {
-                                return generateContent(h.getEventType(),
-                                        formatTrack(tracksByIds.get(h.getTrackId())),
-                                        h.getDate());
-                            } else if (h.getEventType().isPlaylistEvent()) {
-                                return generateContent(h.getEventType(),
-                                        playlistsByIds.get(h.getPlaylistId()).getName(),
-                                        h.getDate());
-                            }
-                            return null;
-                        }, Collectors.toCollection(ArrayList::new))));
+                                    if (h.getEventType().isTrackEvent()) {
+                                        return generateContent(
+                                                h.getEventType(),
+                                                h.getDate(),
+                                                Arrays.asList(
+                                                        getFormattedTrack(h, tracksByIds),
+                                                        getFormattedPlaylist(h)));
+                                    } else if (h.getEventType().isPlaylistEvent()) {
+                                        return generateContent(
+                                                h.getEventType(),
+                                                h.getDate(),
+                                                Arrays.asList(getFormattedPlaylist(h)));
+                                    }
+                                    return null;
+                                },
+                                Collectors.toCollection(ArrayList::new))));
     }
 
-    private String formatTrack(Track track) {
+    private List<UserFeedsDTO> getUserFeedsDTO(Map<User, Collection<Feed>> feedsByUser) {
+        return feedsByUser.entrySet().stream()
+                .map(e -> new UserFeedsDTO(e.getKey(), e.getValue()))
+                .collect(Collectors.toList());
+    }
+
+    private String getFormattedTrack(History history, Map<Integer, Track> tracksByIds) {
+        final Track track = tracksByIds.get(history.getTrackId());
         final Artist artist = track.getArtist();
         if (artist == null) {
             return MessageFormat.format(TRACKNAME_FORMAT,
@@ -129,33 +136,36 @@ public class FeedServiceImpl implements FeedService {
         return MessageFormat.format(TRACKNAME_FORMAT, artist.getName(), track.getName());
     }
 
-    private Feed generateContent(EventType eventType, String target, Date date) {
-        final String[] params = new String[]{target};
+    private String getFormattedPlaylist(History history) {
+        return MessageFormat.format(PLAYLISTNAME_FORMAT, history.getPlaylistName());
+    }
+
+    private Feed generateContent(EventType eventType, Date date, List<String> params) {
         switch (eventType) {
             case TRACK_LISTENED:
                 return new Feed(
-                        messageSource.getMessage("followingpage.listenedTrack", params,
-                                LocaleContextHolder.getLocale()), date);
+                        messageSource.getMessage("followingpage.listenedTrack", params.toArray(),
+                                LocaleContextHolder.getLocale()), formatDate(date));
             case TRACK_LIKED:
                 return new Feed(
-                        messageSource.getMessage("followingpage.likedTrack", params,
-                                LocaleContextHolder.getLocale()), date);
+                        messageSource.getMessage("followingpage.likedTrack", params.toArray(),
+                                LocaleContextHolder.getLocale()), formatDate(date));
             case TRACK_ADDED:
                 return new Feed(
-                        messageSource.getMessage("followingpage.addedTrack", params,
-                                LocaleContextHolder.getLocale()), date);
+                        messageSource.getMessage("followingpage.addedTrack", params.toArray(),
+                                LocaleContextHolder.getLocale()), formatDate(date));
             case TRACK_DELETED:
                 return new Feed(
-                        messageSource.getMessage("followingpage.deletedTrack", params,
-                                LocaleContextHolder.getLocale()), date);
+                        messageSource.getMessage("followingpage.deletedTrack", params.toArray(),
+                                LocaleContextHolder.getLocale()), formatDate(date));
             case PLAYLIST_ADDED:
                 return new Feed(
-                        messageSource.getMessage("followingpage.addedPlaylist", params,
-                                LocaleContextHolder.getLocale()), date);
+                        messageSource.getMessage("followingpage.addedPlaylist", params.toArray(),
+                                LocaleContextHolder.getLocale()), formatDate(date));
             case PLAYLIST_DELETED:
                 return new Feed(
-                        messageSource.getMessage("followingpage.deletedPlaylist", params,
-                                LocaleContextHolder.getLocale()), date);
+                        messageSource.getMessage("followingpage.deletedPlaylist", params.toArray(),
+                                LocaleContextHolder.getLocale()), formatDate(date));
             default:
                 return null;
         }

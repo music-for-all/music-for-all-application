@@ -1,7 +1,6 @@
 package com.musicforall.dto.feed;
 
 
-import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -9,15 +8,15 @@ import java.util.Objects;
  */
 public class Feed {
 
-    private final Date date;
+    private final String date;
     private final String content;
 
-    public Feed(String content, Date date) {
+    public Feed(String content, String date) {
         this.date = date;
         this.content = content;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -28,9 +27,13 @@ public class Feed {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Feed feed = (Feed) o;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final Feed feed = (Feed) o;
         return Objects.equals(content, feed.content) &&
                 Objects.equals(date, feed.date);
     }

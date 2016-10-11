@@ -1,7 +1,6 @@
 package com.musicforall.web.feed;
 
-import com.musicforall.dto.feed.Feed;
-import com.musicforall.model.user.User;
+import com.musicforall.dto.feeds.UserFeedsDTO;
 import com.musicforall.services.feed.FeedService;
 import com.musicforall.util.SecurityUtil;
 import org.slf4j.Logger;
@@ -11,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author IliaNik on 30.08.2016.
@@ -26,7 +24,7 @@ public class FeedRestController {
     private FeedService feedService;
 
     @RequestMapping(value = "/histories", method = RequestMethod.GET)
-    public Map<User, Collection<Feed>> getGroupedHistories() {
+    public List<UserFeedsDTO> getGroupedHistories() {
         return feedService
                 .getGroupedFollowingFeeds(SecurityUtil.currentUserId());
     }
