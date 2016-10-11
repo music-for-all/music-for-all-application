@@ -56,7 +56,7 @@ public class FeedServiceImpl implements FeedService {
         feedDate.setTime(date);
         final Calendar today = new GregorianCalendar();
         final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-        final String day = today.after(feedDate) ? "Yesterday" : "Today";
+        final String day = today.get(Calendar.DATE) != feedDate.get(Calendar.DATE) ? "Yesterday" : "Today";
         return day + " " + dateFormat.format(date);
     }
 
