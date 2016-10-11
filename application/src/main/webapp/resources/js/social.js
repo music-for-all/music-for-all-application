@@ -19,6 +19,6 @@ function Social() {
 
     self.getUserPlaylists = function (id) {
         return $.when($.get(baseUrl + "/playlists/"+id));
-    }
+    };
 
 }
