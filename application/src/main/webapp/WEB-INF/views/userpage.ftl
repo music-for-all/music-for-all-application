@@ -5,11 +5,11 @@
 <html lang="en">
 <@m.head>
 <title><@spring.message "profilepage.Title"/></title>
-<link href="/resources/css/userpage.css" rel="stylesheet"/>
-<script src="/resources/js/social.js"></script>
-<script src="/resources/js/playlist.js"></script>
-<script src="/resources/js/track.js"></script>
-<script src="/resources/js/history.js"></script>
+<link href="<@spring.url "/resources/css/userpage.css" />" rel="stylesheet"/>
+<script src="<@spring.url "/resources/js/social.js" />"></script>
+<script src="<@spring.url "/resources/js/playlist.js" />"></script>
+<script src="<@spring.url "/resources/js/track.js" />"></script>
+<script src="<@spring.url "/resources/js/history.js" />"></script>
 
 <script src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
 <script src="<@spring.url "/resources/js/player.js" />"></script>
