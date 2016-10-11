@@ -55,7 +55,7 @@ public class FeedServiceImpl implements FeedService {
         final Calendar feedDate = new GregorianCalendar();
         feedDate.setTime(date);
         final Calendar today = new GregorianCalendar();
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
         final String day = today.after(feedDate) ? "Yesterday" : "Today";
         return day + " " + dateFormat.format(date);
     }
@@ -126,7 +126,7 @@ public class FeedServiceImpl implements FeedService {
     }
 
     private String getFormattedTrack(History history, Map<Integer, Track> tracksByIds) {
-        Track track = tracksByIds.get(history.getTrackId());
+        final Track track = tracksByIds.get(history.getTrackId());
         final Artist artist = track.getArtist();
         if (artist == null) {
             return MessageFormat.format(TRACKNAME_FORMAT,
