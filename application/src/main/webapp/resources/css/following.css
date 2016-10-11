@@ -1,5 +1,10 @@
-.username {
-    background: url("http://vismech.ru/images/00001763.jpg");
+.title {
+    margin-bottom: 60px;
+    margin-top: 70px;
+}
+
+.following_user .username {
+    background: url("/resources/img/dark_purple.jpg");
     background-position: right bottom;
     font-size: 150%;
     color: #FFFFE0;
@@ -9,30 +14,41 @@
     border-top-left-radius: 20px;
 }
 
-.title {
-    margin-bottom: 60px;
-    margin-top: 70px;
-}
-
-.activity > .date {
-    text-align: right;
-    background-color: #FFD2FE;
-    margin-right: 10px;
-}
-
-.username:hover {
-    background: url("http://i0.wp.com/www.wallpapersbyte.com/wp-content/uploads/2015/07/Purple-Solid-Color-Bright-Gradient-Background-WallpapersByte-com-1366x768.jpg?w=1240");
+.following_user .username:hover {
+    background: url("/resources/img/light_purple.jpg");
     background-position: right bottom;
 }
 
-.activity > .event {
-    background-color: #FFCAF0;
-}
-
-.activity {
+.following_user .activities .activity {
     border-bottom: solid;
     border-width: 2px;
     border-color: #000080;
-    margin: 0px;
-
+    margin: 0;
 }
+
+.following_user .activities .activity .event {
+    background-color: #e4deff;
+    padding-left: 100px;
+}
+
+.following_user .activities .activity .event .playlist-name {
+    font-weight: bold;
+    color: #AE00D4;
+}
+
+.following_user .activities .activity .event .track-name {
+    font-weight: bold;
+    color: #1707a3;
+}
+
+.following_user .activities .activity .date {
+    font-weight: bold;
+    text-align: center;
+    color: #809dc0;
+    background-color: #e9ddff;
+}
+
+
+
+
+
