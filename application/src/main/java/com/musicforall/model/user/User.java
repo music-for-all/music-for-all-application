@@ -74,8 +74,6 @@ public class User implements SocialUserDetails, Serializable {
     @Column(unique = true)
     private String email;
 
-    private String picture;
-
     private String firstName;
 
     private String lastName;

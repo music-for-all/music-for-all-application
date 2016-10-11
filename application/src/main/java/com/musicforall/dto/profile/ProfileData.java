@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Andrey on 9/26/16.
  */
-public class ProfileData implements Serializable {
+public final class ProfileData implements Serializable {
 
     private static final long serialVersionUID = 3819345824231058789L;
 
@@ -19,8 +19,8 @@ public class ProfileData implements Serializable {
     public ProfileData() {
     }
 
-    public ProfileData(String username, String password, String firstName,
-                       String lastName, String picture, String bio) {
+    private ProfileData(String username, String password, String firstName,
+                        String lastName, String picture, String bio) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -77,6 +77,18 @@ public class ProfileData implements Serializable {
         return picture;
     }
 
+    @Override
+    public String toString() {
+        return "ProfileData{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", bio='" + bio + '\'' +
+                ", picture='" + picture + '\'' +
+                '}';
+    }
+
     public static Builder create() {
         return new Builder();
     }
@@ -126,17 +138,5 @@ public class ProfileData implements Serializable {
         public ProfileData get() {
             return new ProfileData(username, password, firstName, lastName, picture, bio);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "ProfileData{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", bio='" + bio + '\'' +
-                ", picture='" + picture + '\'' +
-                '}';
     }
 }
