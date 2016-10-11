@@ -202,6 +202,7 @@
                 .then(function (response) {
                     response.tracks.forEach(function (track) {
                         $("#tracks").append(trackRow(track));
+                        updateLikeCount(track.id);
                     });
                 });
     }

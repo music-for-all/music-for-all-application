@@ -28,12 +28,8 @@ function User() {
     self.search = function (username) {
         return $.when($.get(baseUrl + "/search=" + username));
     };
-<<<<<<< HEAD
-  
-=======
 
     self.me = function () {
         return $.when($.get(baseUrl + "/me"));
     };
->>>>>>> origin/master
 }

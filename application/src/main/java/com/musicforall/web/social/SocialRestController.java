@@ -1,4 +1,4 @@
-package com.musicforall.web.user;
+package com.musicforall.web.social;
 
 import com.musicforall.common.Constants;
 import com.musicforall.model.Playlist;
@@ -18,7 +18,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/social")
-public class UserRestController {
+public class SocialRestController {
 
     @Autowired
     private FollowerService followerService;
