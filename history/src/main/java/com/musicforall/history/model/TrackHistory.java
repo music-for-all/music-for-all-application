@@ -16,6 +16,8 @@ public class TrackHistory extends History {
     @Column(name = "track_id")
     private Integer trackId;
 
+    @Column(name = "track_name")
+    private String trackName;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type")
@@ -27,8 +29,12 @@ public class TrackHistory extends History {
         this.trackId = trackId;
     }
 
-    public TrackHistory() {
+    public String getTrackName() {
+        return trackName;
+    }
 
+    public void setTrackName(String trackName) {
+        this.trackName = trackName;
     }
 
     @Override
@@ -40,6 +46,7 @@ public class TrackHistory extends History {
     public String toString() {
        return super.toString() +
                 ", trackId='" + trackId+ '\'' +
+               ", trackName=" + trackName +
                 ", eventType=" + eventType +
                 '}';
     }

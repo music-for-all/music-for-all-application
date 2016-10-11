@@ -15,6 +15,10 @@ public class PlaylistHistory extends History {
     @Column(name = "playlist_id")
     private Integer playlistId;
 
+
+    @Column(name = "playlist_name")
+    private String playlistName;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type")
     private PlaylistEventType eventType;
@@ -33,6 +37,14 @@ public class PlaylistHistory extends History {
 
     public void setPlaylistId(Integer playlistId) {
         this.playlistId = playlistId;
+    }
+
+    public String getPlaylistName() {
+        return playlistName;
+    }
+
+    public void setPlaylistName(String playlistName) {
+        this.playlistName = playlistName;
     }
 
     @Override
@@ -58,6 +70,7 @@ public class PlaylistHistory extends History {
     public String toString() {
         return super.toString() +
                 ", playlistId='" + playlistId + '\'' +
+                ", playlistName=" + playlistName +
                 ", eventType=" + eventType +
                 '}';
     }
