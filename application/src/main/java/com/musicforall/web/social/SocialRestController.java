@@ -68,7 +68,8 @@ public class SocialRestController {
             searchRequest.setEmail(searchTerm);
 
             final List<User> usersByEmail = userService.getAllLike(searchRequest);
-            final List<String> usersUsernameByEmail = usersByEmail.stream().map(User::getUsername).collect(Collectors.toList());
+            final List<String> usersUsernameByEmail = usersByEmail.stream()
+                    .map(User::getUsername).collect(Collectors.toList());
 
             return new ResponseEntity<>(usersUsernameByEmail, HttpStatus.OK);
         } else {

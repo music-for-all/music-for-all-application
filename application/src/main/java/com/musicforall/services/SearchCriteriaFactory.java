@@ -110,7 +110,7 @@ public final class SearchCriteriaFactory {
             detachedCriteria.add(Restrictions.ilike("firstName", QueryUtil.like(firstName)));
         }
 
-        if (lastName != null && !firstName.isEmpty()) {
+        if (lastName != null && !lastName.isEmpty()) {
             detachedCriteria.add(Restrictions.ilike("lastName", QueryUtil.like(lastName)));
         }
 
