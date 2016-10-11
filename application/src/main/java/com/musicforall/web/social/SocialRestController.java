@@ -32,7 +32,7 @@ public class SocialRestController {
     @RequestMapping(value = "/followers/{id}", method = RequestMethod.GET)
     public List<User> getUserFollowers(@PathVariable(Constants.ID) Integer user_id) {
         List<Integer> followersId = followerService.getFollowersId(user_id);
-        List<User> followers = userService.getUsersById(followersId);
+        List<User> followers = userService.getAllWithSettingsByIds(followersId);
 
         return followers;
     }
@@ -40,7 +40,7 @@ public class SocialRestController {
     @RequestMapping(value = "/following/{id}", method = RequestMethod.GET)
     public List<User> getUserFollowing(@PathVariable(Constants.ID) Integer user_id) {
         Collection<Integer> followingId = followerService.getFollowingId(user_id);
-        List<User> following = userService.getUsersById(followingId);
+        List<User> following = userService.getAllWithSettingsByIds(followingId);
 
         return following;
     }
@@ -54,7 +54,7 @@ public class SocialRestController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable(Constants.ID) Integer user_id) {
-        return userService.get(user_id);
+        return userService.getWithSettingsById(user_id);
     }
 
 }
