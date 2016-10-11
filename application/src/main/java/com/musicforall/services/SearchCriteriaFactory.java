@@ -2,10 +2,8 @@ package com.musicforall.services;
 
 import com.musicforall.common.Constants;
 import com.musicforall.common.query.QueryUtil;
-import com.musicforall.model.Artist;
-import com.musicforall.model.SearchArtistRequest;
-import com.musicforall.model.SearchTrackRequest;
-import com.musicforall.model.Track;
+import com.musicforall.model.*;
+import com.musicforall.model.user.User;
 import org.hibernate.criterion.*;
 
 import java.util.List;
@@ -85,6 +83,37 @@ public final class SearchCriteriaFactory {
             detachedCriteria
                     .add(Subqueries.propertyIn(Constants.ID, subcriteria));
         }
+        return detachedCriteria;
+    }
+
+    public static DetachedCriteria createUserSearchCriteria(SearchUserRequest searchCriteria) {
+
+        if (searchCriteria == null) {
+            return null;
+        }
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class);
+
+        final String username = searchCriteria.getUsername();
+        final String email = searchCriteria.getEmail();
+        final String firstName = searchCriteria.getFirstName();
+        final String lastName = searchCriteria.getLastName();
+
+        if (username != null && !username.isEmpty()) {
+            detachedCriteria.add(Restrictions.ilike("username", QueryUtil.like(username)));
+        }
+
+        if (email != null && !email.isEmpty()) {
+            detachedCriteria.add(Restrictions.ilike("email", QueryUtil.like(email)));
+        }
+
+        if (firstName != null && !firstName.isEmpty()) {
+            detachedCriteria.add(Restrictions.ilike("firstName", QueryUtil.like(firstName)));
+        }
+
+        if (lastName != null && !firstName.isEmpty()) {
+            detachedCriteria.add(Restrictions.ilike("lastName", QueryUtil.like(lastName)));
+        }
+
         return detachedCriteria;
     }
 }
