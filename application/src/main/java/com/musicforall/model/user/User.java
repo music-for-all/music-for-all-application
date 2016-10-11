@@ -69,6 +69,10 @@ public class User implements SocialUserDetails, Serializable {
     @Cascade({SAVE_UPDATE, DELETE})
     private UserSettings settings;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @Cascade({SAVE_UPDATE, DELETE})
+    private UserAchievements achievements;
+
     public User() {
     }
 
@@ -205,5 +209,13 @@ public class User implements SocialUserDetails, Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public UserAchievements getAchievements() {
+        return achievements;
+    }
+
+    public void setAchievements(UserAchievements achievements) {
+        this.achievements = achievements;
     }
 }
