@@ -15,4 +15,5 @@ public class ContactManagerController {
     public String friends(Model model) {
         return "contactManager";
     }
+
 }

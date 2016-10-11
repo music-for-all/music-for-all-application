@@ -36,6 +36,7 @@ public class HistoryEventListener {
         final History history = new History();
         history.setEventType(event.getType());
         history.setPlaylistId(event.getPlaylistId());
+        history.setPlaylistName(event.getPlaylistName());
         history.setUserId(event.getUserId());
         history.setDate(new Date());
         return history;
@@ -45,6 +46,9 @@ public class HistoryEventListener {
         final History history = new History();
         history.setEventType(event.getType());
         history.setTrackId(event.getTrackId());
+        history.setPlaylistId(event.getPlaylistId());
+        history.setTrackName(event.getTrackName());
+        history.setPlaylistName(event.getPlaylistName());
         history.setUserId(event.getUserId());
         history.setDate(new Date());
         return history;

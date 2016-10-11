@@ -183,3 +183,17 @@
     </li>
 </script>
 </#macro>
+
+<#macro playlistRowTemplateWithoutDeleting >
+<script type="text/template" class="playlistRowTemplateWithoutDeleting">
+<ul class="nav nav-pills nav-stacked">
+    <% _.each(data, function(playlist){ %>
+        <li id="<%= playlist.id %>">
+            <a href="#">
+                <%= playlist.name %>
+            </a>
+        </li>
+    <% }); %>
+</ul>
+</script>
+</#macro>
