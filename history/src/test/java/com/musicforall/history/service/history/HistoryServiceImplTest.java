@@ -32,7 +32,7 @@ import static org.junit.Assert.*;
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 @ActiveProfiles("dev")
 public class HistoryServiceImplTest {
-
+/*
     private static final Integer USER_ID = 1111;
     private static final Integer TRACK_ID = 2222;
     private static final Integer TOP_TRACK_ID = 2225;
@@ -54,7 +54,7 @@ public class HistoryServiceImplTest {
                 .eventType(TRACK_LISTENED)
                 .userId(USER_ID).trackId(TRACK_ID).get();
         int initialSize = service.getAllBy(params).size();
-        service.record(new History(TRACK_ID, null, new Date(), USER_ID, TRACK_LISTENED));
+    //    service.record(new History(TRACK_ID, null, new Date(), USER_ID, TRACK_LISTENED));
         int currentSize = service.getAllBy(params).size();
         assertEquals(currentSize - initialSize, 1);
     }
@@ -62,14 +62,14 @@ public class HistoryServiceImplTest {
     @Test
     public void testGetTheMostPopularTracks() throws Exception {
         IntStream.range(0, 100)
-                .mapToObj(i -> new History(TOP_TRACK_ID, null, new Date(), USER_ID, TRACK_LISTENED))
+            //    .mapToObj(i -> new History(TOP_TRACK_ID, null, new Date(), USER_ID, TRACK_LISTENED))
                 .forEach(service::record);
         final Collection<History> histories = service.getAllBy(SearchHistoryParams.create()
                 .eventType(TRACK_LISTENED)
                 .get());
 
         final Map<Integer, Integer> listenedByTrackId = histories.stream()
-                .collect(toMap(History::getTrackId, h -> 1, Integer::sum));
+              //  .collect(toMap(History::getTrackId, h -> 1, Integer::sum));
 
         final List<Integer> topListened = listenedByTrackId.keySet().stream()
                 .sorted((i1, i2) -> listenedByTrackId.get(i2).compareTo(listenedByTrackId.get(i1)))
@@ -95,22 +95,23 @@ public class HistoryServiceImplTest {
         assertTrue(histories.stream().allMatch(h -> h.getEventType() == TRACK_LISTENED && h.getUserId().equals(USER_ID)));
 
         histories = service.getAllBy(SearchHistoryParams.create().trackId(TRACK_ID).get());
-        assertTrue(histories.stream().allMatch(h -> h.getTrackId().equals(TRACK_ID)));
+      //  assertTrue(histories.stream().allMatch(h -> h.getTrackId().equals(TRACK_ID)));
     }
 
     @Test
     public void
     testGetLikeCount() throws Exception {
         final Integer trackId = 321;
-        service.record(new History(trackId, null, new Date(), USER_ID, TRACK_LIKED));
+   //     service.record(new History(trackId, null, new Date(), USER_ID, TRACK_LIKED));
         long numLikes = service.getLikeCount(trackId);
         assertTrue(numLikes == 1);
 
-        service.record(new History(trackId, null, new Date(), USER_ID, TRACK_LIKED));
+   //     service.record(new History(trackId, null, new Date(), USER_ID, TRACK_LIKED));
         numLikes = service.getLikeCount(trackId);
         assertTrue(numLikes == 1);
 
 /* Try to get the like count for non-existing track. */
+/*
         numLikes = service.getLikeCount(trackId + 1234);
         assertEquals(0, numLikes);
     }
@@ -139,4 +140,5 @@ public class HistoryServiceImplTest {
         final Collection<History> histories = service.getUsersHistories(Collections.singletonList(UNIQUE_USER_ID));
         assertFalse(histories.contains(history));
     }
+    */
 }

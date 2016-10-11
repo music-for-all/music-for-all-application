@@ -1,8 +1,12 @@
 package com.musicforall.history.handlers;
 
 import com.musicforall.history.handlers.events.PlaylistEvent;
+import com.musicforall.history.handlers.events.PlaylistEventType;
 import com.musicforall.history.handlers.events.TrackEvent;
+import com.musicforall.history.handlers.events.TrackEventType;
 import com.musicforall.history.model.History;
+import com.musicforall.history.model.PlaylistHistory;
+import com.musicforall.history.model.TrackHistory;
 import com.musicforall.history.service.history.HistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -32,18 +36,19 @@ public class HistoryEventListener {
         service.record(toHistory(event));
     }
 
+
     private History toHistory(PlaylistEvent event) {
-        final History history = new History();
-        history.setEventType(event.getType());
+        final PlaylistHistory history = new PlaylistHistory();
+        history.setEventType((PlaylistEventType) event.getType());
         history.setPlaylistId(event.getPlaylistId());
         history.setUserId(event.getUserId());
         history.setDate(new Date());
         return history;
     }
 
-    private History toHistory(TrackEvent event) {
-        final History history = new History();
-        history.setEventType(event.getType());
+    private TrackHistory toHistory(TrackEvent event) {
+        final TrackHistory history = new TrackHistory();
+        history.setEventType((TrackEventType) event.getType());
         history.setTrackId(event.getTrackId());
         history.setUserId(event.getUserId());
         history.setDate(new Date());
