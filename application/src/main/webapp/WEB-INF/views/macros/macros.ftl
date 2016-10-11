@@ -13,6 +13,7 @@
     <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="<@spring.url "/resources/js/stream.js" />"></script>
 
     <link rel="stylesheet"
           href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
@@ -39,6 +40,10 @@
             xhr.setRequestHeader(header, token);
         }
     });
+
+    window.onbeforeunload = function () {
+        new Stream().stop();
+    };
 </script>
 </body>
 </#macro>
@@ -158,7 +163,7 @@
             <span class="glyphicon num-likes" aria-hidden="true"></span>
         </td>
         <td>
-            <%= data.artist ? data.artist.name : "Unknown" %>
+            <%= data.artist ? data.artist.name : "<@spring.message "followingpage.unknown" />" %>
         </td>
         <td>
             <%= data.name %>

@@ -11,10 +11,6 @@ public class ContactManagerController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ContactManagerController.class);
 
-    public ContactManagerController() {
-        LOG.info("");
-    }
-
     @RequestMapping("/contactManager")
     public String friends(Model model) {
         return "contactManager";

@@ -1,7 +1,7 @@
 package com.musicforall.services.feed;
 
 import com.musicforall.dto.feed.Feed;
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 
 import java.util.Collection;
 import java.util.Map;

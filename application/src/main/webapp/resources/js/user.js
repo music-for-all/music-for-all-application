@@ -3,7 +3,7 @@
 function User() {
 
     var self = this;
-    var baseUrl = dict.contextPath + "/contactManager";
+    var baseUrl = dict.contextPath + "/user";
 
     self.unfollow = function (id) {
         return $.when(
@@ -28,5 +28,12 @@ function User() {
     self.search = function (username) {
         return $.when($.get(baseUrl + "/search=" + username));
     };
+<<<<<<< HEAD
   
+=======
+
+    self.me = function () {
+        return $.when($.get(baseUrl + "/me"));
+    };
+>>>>>>> origin/master
 }

@@ -3,7 +3,7 @@
 function Social() {
 
     var self = this;
-    var baseUrl = dict.contextPath + "/user";
+    var baseUrl = dict.contextPath + "/social";
 
     self.getUserFollowers = function (id) {
         return $.when($.get(baseUrl + "/followers/"+id));

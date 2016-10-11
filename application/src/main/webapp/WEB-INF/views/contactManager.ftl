@@ -5,8 +5,12 @@
 <@m.head>
 <title><@spring.message "contactpage.Title"/></title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-<link href="/resources/css/contactManager.css" rel="stylesheet"/>
-<script src="/resources/js/user.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.1/sockjs.min.js"></script>
+
+<link href="<@spring.url "/resources/css/contactManager.css" />" rel="stylesheet"/>
+<script src="<@spring.url "/resources/js/user.js" />"></script>
+<script src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
 </@m.head>
 <@m.body>
 
@@ -28,6 +32,7 @@
             <form id="search-form" class="form-inline text-center ">
                 <div class="input-group">
                     <input id="name" class="form-control" type="text" value=""/>
+
                     <div class="input-group-btn">
                         <input id="searchButton" data-style="slide-left" class="btn btn-success "
                                type="submit" value="<@spring.message "contactpage.SubmitSearch"/>"/>
@@ -79,6 +84,17 @@
             <a href="/user/show?user_id=<%= contact.id %>"><%= contact.username %></a>
         </td>
         <td>
+            <div class="track-container <%= contact.track ? 'playing' : '' %>">
+                <%= contact.track ? contact.track.name : ""%>
+            </div>
+        </td>
+        <td>
+            <button type="button" class="btn btn-xs btn-success start-stream-button">
+                <span class='glyphicon glyphicon-play' aria-hidden='true'></span>
+            </button>
+            <button type="button" class="btn btn-xs btn-warning stop-stream-button" onclick="leftCurrentStream()">
+                <span class='glyphicon glyphicon-pause' aria-hidden='true'></span>
+            </button>
             <button type="button" class="btn btn-default" onclick="unsubscribe('<%= contact.id %>')">
                 <i class="fa fa-user-times" aria-hidden="true"></i>
             </button>
@@ -89,6 +105,9 @@
 </script>
 <script type="text/javascript">
     var user = new User();
+    var stompClient;
+    var player = new ChunksPlayer();
+    var stream = new Stream();
 
     _.templateSettings.variable = "data";
 
@@ -100,13 +119,93 @@
             $("script.followingRow").html()
     );
 
+    $("#results").on("click", ".start-stream-button", function (e) {
+        leftCurrentStream();
+        $("#results").find("tr").removeClass("active");
+        var row = $(this).closest("tr");
+        row.addClass("active");
+        var id = row.attr("id");
+        joinStream(id);
+    });
+
+    $("#results").on("click", ".stop-stream-button", function (e) {
+        leftCurrentStream();
+        $("#results").find("tr").removeClass("active");
+    });
+
+    function connect() {
+        var socket = new SockJS("/sockjs");
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+        });
+    }
+
+    function disconnect() {
+        if (stompClient) {
+            stompClient.disconnect();
+        }
+    }
+
+    function updateStreamRow(track) {
+        var row = $("#results").find("tr.active .track-container");
+        if (track) {
+            row.addClass("playing");
+            $(row).text(track.name);
+        } else {
+            row.removeClass("playing");
+            $(row).text(" ");
+        }
+    }
+
+    var radioSub;
+
+    function joinStream(userId) {
+        if (!radioSub) {
+            radioSub = stompClient.subscribe("/radio/subscribers/" + userId, onMessage);
+        }
+    }
+
+    function onMessage(data) {
+        var response = JSON.parse(data.body);
+        var track = response.track;
+        updateStreamRow(track);
+        if (track) {
+            if (!player.isCurrentTrack(track)) {
+                player.reset();
+            }
+            player.playChunk(track, response.partId);
+        } else {
+            player.pause();
+        }
+    }
+
+    function leftCurrentStream() {
+        if (radioSub) {
+            radioSub.unsubscribe();
+            radioSub = null;
+            player.reset();
+        }
+    }
+
     function getFollowing() {
         clearContacts();
         user.getFollowing().then(function (users) {
-            $("#results").find("thead").after(
-                    userFollowingRow(users)
-            );
-        })
+            var ids = users.map(function (user) {
+                return user.id;
+            });
+            stream.streamsByUsers(ids).then(function (userToTrack) {
+                users.forEach(function (user) {
+                    var track = userToTrack[user.id];
+                    if (track) {
+                        user.track = track;
+                    }
+                });
+
+                $("#results").find("thead").after(
+                        userFollowingRow(users)
+                );
+            });
+        });
     }
 
     function getFollowers() {
@@ -115,7 +214,7 @@
             $("#results").find("thead").after(
                     userFollowersRow(users)
             );
-        })
+        });
     }
 
     function unsubscribe(id) {
@@ -146,13 +245,18 @@
         $("#message").text("");
     }
 
-    jQuery(document).ready(function () {
+    $(document).ready(function () {
+        connect();
         getFollowing();
         $("#search-form").on("submit", function () {
             search();
             return false;
         });
     });
+
+    window.onbeforeunload = function () {
+        disconnect();
+    };
 </script>
 </@m.body>
 </html>

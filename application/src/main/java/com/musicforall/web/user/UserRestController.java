@@ -2,7 +2,7 @@ package com.musicforall.web.user;
 
 import com.musicforall.common.Constants;
 import com.musicforall.model.Playlist;
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.user.UserService;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/social")
 public class UserRestController {
 
     @Autowired

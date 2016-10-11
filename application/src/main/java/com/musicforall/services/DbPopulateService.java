@@ -5,7 +5,8 @@ import com.musicforall.history.service.DBHistoryPopulateService;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
-import com.musicforall.model.User;
+import com.musicforall.model.user.User;
+import com.musicforall.model.user.UserSettings;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.user.UserService;
@@ -100,9 +101,11 @@ public class DbPopulateService {
     }
 
     private static void setDefaultValues(User user) {
-        user.setPicture(USER_PICTURE);
         user.setLastName(DEFAULT_NAME);
         user.setFirstName(DEFAULT_NAME);
+
+        final boolean isPublicRadio = true;
+        user.setSettings(new UserSettings(isPublicRadio, USER_PICTURE));
     }
 
     @PostConstruct

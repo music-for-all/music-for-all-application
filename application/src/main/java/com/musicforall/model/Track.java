@@ -40,13 +40,9 @@ public class Track implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "tag_name")})
     private Set<Tag> tags;
 
-    @Deprecated
     @Size(min = 2, max = 30)
     @Column(name = Constants.NAME, nullable = false)
     private String name;
-
-    @Size(min = 2, max = 30)
-    private String title;
 
     @ManyToOne
     @Cascade(CascadeType.SAVE_UPDATE)
@@ -87,9 +83,8 @@ public class Track implements Serializable {
         this.location = location;
     }
 
-    public Track(String name, String title, Artist artist, String album, String location, Set<Tag> tags) {
+    public Track(String name, Artist artist, String album, String location, Set<Tag> tags) {
         this.name = name;
-        this.title = title;
         this.artist = artist;
         this.album = album;
         this.location = location;
@@ -119,14 +114,6 @@ public class Track implements Serializable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public Artist getArtist() {
         return artist;
     }
@@ -151,12 +138,10 @@ public class Track implements Serializable {
         this.location = location;
     }
 
-    @Deprecated
     public String getName() {
         return name;
     }
 
-    @Deprecated
     public void setName(String name) {
         this.name = name;
     }
@@ -204,7 +189,6 @@ public class Track implements Serializable {
                 "id=" + id +
                 ", tags=" + tags +
                 ", name='" + name + '\'' +
-                ", title='" + title + '\'' +
                 ", artist='" + artist + '\'' +
                 ", album='" + album + '\'' +
                 ", location='" + location + '\'' +
