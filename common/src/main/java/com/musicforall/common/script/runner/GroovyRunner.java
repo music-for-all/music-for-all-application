@@ -1,6 +1,6 @@
-package com.musicforall.runner;
+package com.musicforall.common.script.runner;
 
-import com.musicforall.script.Script;
+import com.musicforall.common.script.Script;
 import groovy.lang.GroovyShell;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.slf4j.Logger;

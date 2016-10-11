@@ -1,6 +1,6 @@
-package com.musicforall.script;
+package com.musicforall.common.script;
 
-import com.musicforall.runner.Runners;
+import com.musicforall.common.script.runner.Runners;
 
 import java.util.Map;
 

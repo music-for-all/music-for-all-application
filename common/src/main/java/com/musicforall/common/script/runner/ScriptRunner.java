@@ -1,6 +1,6 @@
-package com.musicforall.runner;
+package com.musicforall.common.script.runner;
 
-import com.musicforall.script.Script;
+import com.musicforall.common.script.Script;
 
 /**
  * @author Evgeniy on 11.10.2016.

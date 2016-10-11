@@ -1,4 +1,4 @@
-package com.musicforall.runner;
+package com.musicforall.common.script.runner;
 
 /**
  * @author Evgeniy on 11.10.2016.

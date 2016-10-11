@@ -11,9 +11,14 @@ import java.util.Objects;
 /**
  * @author ENikolskiy.
  */
+@NamedQueries({
+        @NamedQuery(name = InProgressAchievement.INCREMENT_COUNT_QUERY,
+                query = "update InProgressAchievement ac set ac.count = ac.count + 1 where ac.id = :id")
+})
 @Entity
 @Table(name = "in_progress_achievements")
 public class InProgressAchievement {
+    public static final String INCREMENT_COUNT_QUERY = "increment_counter";
     @Id
     @Column(name = Constants.ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

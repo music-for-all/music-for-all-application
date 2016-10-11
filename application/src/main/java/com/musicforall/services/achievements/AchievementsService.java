@@ -15,4 +15,6 @@ public interface AchievementsService {
     Achievement getAchievement(Integer id);
 
     InProgressAchievement getInProgressAchievement(Integer id);
+
+    InProgressAchievement incrementProgressCount(InProgressAchievement achievement);
 }
