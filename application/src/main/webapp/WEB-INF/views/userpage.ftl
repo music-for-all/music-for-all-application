@@ -64,7 +64,7 @@
     </div>
 </div>
 <script type="text/template" class="userHeader">
-    <img class="img-responsive img-rounded" src="<%= data.settings.picture %>">
+    <img class="img-responsive img-rounded" src="<%= data.userData.picture %>">
     <div class="profile-info">
         <div class="caption">
             <h3><%= data.firstName %> <%= data.lastName %></h3>

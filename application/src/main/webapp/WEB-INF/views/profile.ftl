@@ -155,8 +155,8 @@
     }
 
     function updateFields(user) {
-        document.getElementById("userPicture").src = user.picture;
-        document.getElementById("uploadPicture").src = user.picture;
+        document.getElementById("userPicture").src = user.userData.picture;
+        document.getElementById("uploadPicture").src = user.userData.picture;
         $("#panelUsername").text(user.username);
         $("#tdFirstName").text(user.firstName);
         $("#tdLastName").text(user.lastName);

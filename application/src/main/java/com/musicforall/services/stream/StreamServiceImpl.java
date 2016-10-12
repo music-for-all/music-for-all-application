@@ -43,16 +43,16 @@ public class StreamServiceImpl implements StreamService {
 
     @Override
     public void publish(Integer userId, boolean toPublish) {
-        final User currentUser = userService.getWithSettingsById(userId);
-        currentUser.getSettings().setPublicRadio(toPublish);
+        final User currentUser = userService.getWithUserDataById(userId);
+        currentUser.getUserData().setPublicRadio(toPublish);
         userService.save(currentUser);
     }
 
     @Override
     public Map<Integer, Track> getGroupedPublicStreams(Collection<Integer> ids) {
-        final List<User> users = userService.getAllWithSettingsByIds(ids);
+        final List<User> users = userService.getAllWithUserDataByIds(ids);
         return users.stream()
-                .filter(u -> u.getSettings() != null && u.getSettings().isPublicRadio())
+                .filter(u -> u.getUserData() != null && u.getUserData().isPublicRadio())
                 .map(User::getId)
                 .collect(HashMap::new, ((m, id) -> {
                     final Track track = cache.get(id);

@@ -156,7 +156,7 @@
                     <tr>
                         <td>
                             <div class="avatar">
-                                <img src=" <%= usr.settings.picture %>" class="img-responsive img-rounded">
+                                <img src=" <%= usr.userData.picture %>" class="img-responsive img-rounded">
                             </div>
                         </td>
                         <td><a href="/user/show?user_id=<%= usr.id %>"><%= usr.username %></a></td>
@@ -192,7 +192,7 @@
                     <tr>
                         <td>
                             <div class="avatar">
-                                <img src=" <%= usr.settings.picture %>" class="img-responsive img-rounded">
+                                <img src=" <%= usr.userData.picture %>" class="img-responsive img-rounded">
                             </div>
                         </td>
                         <td><a href="/user/show?user_id=<%= usr.id %>"><%= usr.username %></a></td>

@@ -3,7 +3,7 @@ package com.musicforall.services;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.*;
 import com.musicforall.model.user.User;
-import com.musicforall.model.user.UserSettings;
+import com.musicforall.model.user.UserData;
 import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
@@ -114,11 +114,11 @@ public class SearchCriteriaFactoryTest {
                 new SearchUserRequest("")));
         assertEquals(0, users.size());
 
-        final UserSettings settings = new UserSettings(true, "link");
+        final UserData settings = new UserData(true, "link");
         User user = new User(USER, PASSWORD, "testGetUserLike@test.com");
         user.setLastName("lastName");
         user.setFirstName("firstName");
-        user.setSettings(settings);
+        user.setUserData(settings);
 
         userService.save(user);
 

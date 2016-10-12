@@ -105,7 +105,7 @@ public class DbPopulateService {
         user.setFirstName(DEFAULT_NAME);
 
         final boolean isPublicRadio = true;
-        user.setSettings(new UserData(isPublicRadio, USER_PICTURE_LINK));
+        user.setUserData(new UserData(isPublicRadio, USER_PICTURE_LINK));
     }
 
     @PostConstruct

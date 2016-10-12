@@ -25,12 +25,12 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 @NamedQueries(
         {
                 @NamedQuery(
-                        name = User.USERS_BY_IDS_WITH_SETTINGS_QUERY,
-                        query = "from User u left join fetch u.settings where u.id in (:ids)"
+                        name = User.USERS_BY_IDS_WITH_DATA_QUERY,
+                        query = "from User u left join fetch u.userData where u.id in (:ids)"
                 ),
                 @NamedQuery(
-                        name = User.USER_BY_ID_WITH_SETTINGS_QUERY,
-                        query = "from User u left join fetch u.settings where u.id = :id"
+                        name = User.USER_BY_ID_WITH_DATA_QUERY,
+                        query = "from User u left join fetch u.userData where u.id = :id"
                 ),
                 @NamedQuery(
                         name = User.UPDATE_USER_DATA,
@@ -48,8 +48,8 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 @Table(name = "users")
 public class User implements SocialUserDetails, Serializable {
 
-    public static final String USERS_BY_IDS_WITH_SETTINGS_QUERY = "users_by_ids_with_settings";
-    public static final String USER_BY_ID_WITH_SETTINGS_QUERY = "user_by_id_with_settings";
+    public static final String USERS_BY_IDS_WITH_DATA_QUERY = "users_by_ids_with_data";
+    public static final String USER_BY_ID_WITH_DATA_QUERY = "user_by_id_with_data";
     public static final String UPDATE_USER_DATA = "update_user_data";
 
     private static final long serialVersionUID = 1959293141381203004L;
@@ -82,7 +82,7 @@ public class User implements SocialUserDetails, Serializable {
 
     @OneToOne(fetch = FetchType.LAZY)
     @Cascade({SAVE_UPDATE, DELETE})
-    private UserData settings;
+    private UserData userData;
 
     public User() {
     }
@@ -93,11 +93,11 @@ public class User implements SocialUserDetails, Serializable {
         this.email = email;
     }
 
-    public User(String username, String password, String email, UserData settings) {
+    public User(String username, String password, String email, UserData userData) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.settings = settings;
+        this.userData = userData;
     }
 
     public Integer getId() {
@@ -168,12 +168,12 @@ public class User implements SocialUserDetails, Serializable {
         return email;
     }
 
-    public UserData getSettings() {
-        return settings;
+    public UserData getUserData() {
+        return userData;
     }
 
-    public void setSettings(UserData settings) {
-        this.settings = settings;
+    public void setUserData(UserData userData) {
+        this.userData = userData;
     }
 
     @Override

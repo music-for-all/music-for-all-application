@@ -11,7 +11,7 @@ import java.util.Objects;
  * @author ENikolskiy.
  */
 @Entity
-@Table(name = "user_settings")
+@Table(name = "user_data")
 public class UserData implements Serializable {
 
     @Id
@@ -32,6 +32,10 @@ public class UserData implements Serializable {
     public UserData(boolean isPublicRadio, String picture) {
         this.publicRadio = isPublicRadio;
         this.picture = picture;
+    }
+
+    private void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getId() {

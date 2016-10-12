@@ -47,7 +47,6 @@ public class UserServiceImpl implements UserService {
         return dao.saveAll(users);
     }
 
-
     @Override
     public void updateUserData(User user, ProfileData profileData) {
 
@@ -124,17 +123,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllWithSettingsByIds(Collection<Integer> ids) {
+    public List<User> getAllWithUserDataByIds(Collection<Integer> ids) {
         final Map<String, Object> params = new HashMap<>();
         params.put("ids", ids);
-        return dao.getAllByNamedQuery(User.class, User.USERS_BY_IDS_WITH_SETTINGS_QUERY, params);
+        return dao.getAllByNamedQuery(User.class, User.USERS_BY_IDS_WITH_DATA_QUERY, params);
     }
 
     @Override
-    public User getWithSettingsById(Integer id) {
+    public User getWithUserDataById(Integer id) {
         final Map<String, Object> params = new HashMap<>();
         params.put("id", id);
-        return dao.getByNamedQuery(User.class, User.USER_BY_ID_WITH_SETTINGS_QUERY, params);
+        return dao.getByNamedQuery(User.class, User.USER_BY_ID_WITH_DATA_QUERY, params);
     }
 
     @Override

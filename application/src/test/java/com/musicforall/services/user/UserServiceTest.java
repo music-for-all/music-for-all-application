@@ -142,41 +142,41 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testGetUsersWithSettings() {
+    public void testGetUsersWithData() {
         final UserData defaultSettings = new UserData(true, "link");
         final User user1 = new User(USER, PASSWORD, "mail1@example.com");
         final User user2 = new User(USER, PASSWORD, "mail2@example.com");
         final User user3 = new User(USER, PASSWORD, "mail3@example.com");
 
         final List<User> users = asList(user1, user2, user3);
-        users.forEach(user -> user.setSettings(defaultSettings));
+        users.forEach(user -> user.setUserData(defaultSettings));
         userService.saveAll(users);
 
         final List<Integer> userIds = users.stream().map(User::getId).collect(toList());
-        final List<User> usersWithSettings = userService.getAllWithSettingsByIds(userIds);
+        final List<User> usersWithSettings = userService.getAllWithUserDataByIds(userIds);
 
         final boolean match = usersWithSettings.stream()
-                .filter(u -> defaultSettings.equals(u.getSettings()))
+                .filter(u -> defaultSettings.equals(u.getUserData()))
                 .allMatch(user -> userIds.contains(user.getId()));
         assertTrue(match);
     }
 
     @Test
-    public void testGetUserWithSettings() {
+    public void testGetUserWithData() {
         final UserData settings = new UserData(true, "link");
         User user = new User(USER, PASSWORD, "testGetUserWithSettings@test.com");
-        user.setSettings(settings);
+        user.setUserData(settings);
 
         userService.save(user);
 
-        assertEquals(settings, userService.getWithSettingsById(user.getId()).getSettings());
+        assertEquals(settings, userService.getWithUserDataById(user.getId()).getUserData());
     }
 
     @Test
     public void testGetUserLike() {
-        final UserSettings settings = new UserSettings(true, "link");
+        final UserData settings = new UserData(true, "link");
         User user = new User("test_name", PASSWORD, "testGetUserLike@test.com");
-        user.setSettings(settings);
+        user.setUserData(settings);
 
         userService.save(user);
 
