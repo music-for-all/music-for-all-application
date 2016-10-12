@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "user_settings")
-public class UserSettings implements Serializable {
+public class UserData implements Serializable {
 
     @Id
     @Column(name = Constants.ID)
@@ -22,23 +22,20 @@ public class UserSettings implements Serializable {
 
     @Column(name = "public_radio")
     private boolean publicRadio;
+
     @Column
     private String picture;
 
-    public UserSettings() {
+    public UserData() {
     }
 
-    public UserSettings(boolean isPublicRadio, String picture) {
+    public UserData(boolean isPublicRadio, String picture) {
         this.publicRadio = isPublicRadio;
         this.picture = picture;
     }
 
     public Integer getId() {
         return id;
-    }
-
-    private void setId(Integer id) {
-        this.id = id;
     }
 
     public boolean isPublicRadio() {
@@ -70,7 +67,7 @@ public class UserSettings implements Serializable {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final UserSettings other = (UserSettings) obj;
+        final UserData other = (UserData) obj;
         return Objects.equals(this.publicRadio, other.publicRadio);
     }
 

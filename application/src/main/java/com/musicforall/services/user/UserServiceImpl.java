@@ -52,7 +52,6 @@ public class UserServiceImpl implements UserService {
         params.put("username", profileData.getUsername());
         params.put("firstName", profileData.getFirstName());
         params.put("lastName", profileData.getLastName());
-        params.put("picture", profileData.getPicture());
         params.put("bio", profileData.getBio());
         if (profileData.getPassword() != null) {
             profileData.setPassword(passwordEncoder.encode(profileData.getPassword()));

@@ -39,7 +39,6 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
                                 " user.password = COALESCE(:password, user.password)," +
                                 " user.firstName = COALESCE(:firstName, user.firstName)," +
                                 " user.lastName = COALESCE(:lastName, user.lastName)," +
-                                " user.picture = COALESCE(:picture, user.picture)," +
                                 " user.bio = COALESCE(:bio, user.bio)" +
                                 " where user.id = :id"
                 )
@@ -83,7 +82,7 @@ public class User implements SocialUserDetails, Serializable {
 
     @OneToOne(fetch = FetchType.LAZY)
     @Cascade({SAVE_UPDATE, DELETE})
-    private UserSettings settings;
+    private UserData settings;
 
     public User() {
     }
@@ -94,7 +93,7 @@ public class User implements SocialUserDetails, Serializable {
         this.email = email;
     }
 
-    public User(String username, String password, String email, UserSettings settings) {
+    public User(String username, String password, String email, UserData settings) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -169,11 +168,11 @@ public class User implements SocialUserDetails, Serializable {
         return email;
     }
 
-    public UserSettings getSettings() {
+    public UserData getSettings() {
         return settings;
     }
 
-    public void setSettings(UserSettings settings) {
+    public void setSettings(UserData settings) {
         this.settings = settings;
     }
 

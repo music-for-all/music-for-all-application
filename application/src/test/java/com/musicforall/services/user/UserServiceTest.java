@@ -1,7 +1,7 @@
 package com.musicforall.services.user;
 
 import com.musicforall.model.user.User;
-import com.musicforall.model.user.UserSettings;
+import com.musicforall.model.user.UserData;
 import com.musicforall.dto.profile.ProfileData;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
@@ -142,7 +142,7 @@ public class UserServiceTest {
 
     @Test
     public void testGetUsersWithSettings() {
-        final UserSettings defaultSettings = new UserSettings(true, "link");
+        final UserData defaultSettings = new UserData(true, "link");
         final User user1 = new User(USER, PASSWORD, "mail1@example.com");
         final User user2 = new User(USER, PASSWORD, "mail2@example.com");
         final User user3 = new User(USER, PASSWORD, "mail3@example.com");
@@ -162,7 +162,7 @@ public class UserServiceTest {
 
     @Test
     public void testGetUserWithSettings() {
-        final UserSettings settings = new UserSettings(true, "link");
+        final UserData settings = new UserData(true, "link");
         User user = new User(USER, PASSWORD, "testGetUserWithSettings@test.com");
         user.setSettings(settings);
 

@@ -2,7 +2,7 @@ package com.musicforall.services.stream;
 
 import com.musicforall.model.Track;
 import com.musicforall.model.user.User;
-import com.musicforall.model.user.UserSettings;
+import com.musicforall.model.user.UserData;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import com.musicforall.util.ServicesTestConfig;
@@ -51,7 +51,7 @@ public class StreamServiceTest {
     @Test
     public void testStart() throws Exception {
         final User user = userService.save(
-                new User(USER, PASSWORD, "testStart@test.com", new UserSettings(true, "/link")));
+                new User(USER, PASSWORD, "testStart@test.com", new UserData(true, "/link")));
         final Track track = trackService.save(new Track("Valera", "/disk"));
 
         streamService.start(user.getId(), track.getId());
@@ -62,7 +62,7 @@ public class StreamServiceTest {
     @Test
     public void testStop() throws Exception {
         final User user = userService.save(
-                new User(USER, PASSWORD, "testStop@test.com", new UserSettings(true, "/link")));
+                new User(USER, PASSWORD, "testStop@test.com", new UserData(true, "/link")));
         final Track track = trackService.save(new Track("Valera", "/disk"));
 
         streamService.start(user.getId(), track.getId());
@@ -75,7 +75,7 @@ public class StreamServiceTest {
     @Test
     public void testPublish() throws Exception {
         final User user = userService.save(
-                new User(USER, PASSWORD, "testPublish@test.com", new UserSettings(false, "/link")));
+                new User(USER, PASSWORD, "testPublish@test.com", new UserData(false, "/link")));
         final Track track = trackService.save(new Track("Valera", "/disk"));
 
         streamService.start(user.getId(), track.getId());
