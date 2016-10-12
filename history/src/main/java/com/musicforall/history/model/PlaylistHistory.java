@@ -3,6 +3,7 @@ package com.musicforall.history.model;
 import com.musicforall.history.handlers.events.PlaylistEventType;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -19,18 +20,13 @@ public class PlaylistHistory extends History {
     @Column(name = "playlist_name")
     private String playlistName;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "event_type")
-    private PlaylistEventType eventType;
-
-    public PlaylistEventType getEventType() {
-        return eventType;
+    public PlaylistHistory(Date date, Integer userId,
+                           PlaylistEventType type, Integer playlistId, String playlistName) {
+        super(date, userId, type);
+        this.playlistId = playlistId;
+        this.playlistName = playlistName;
     }
-
-    public void setEventType(PlaylistEventType eventType) {
-        this.eventType = eventType;
-    }
-
+    public PlaylistHistory() {}
     public Integer getPlaylistId() {
         return playlistId;
     }
@@ -57,13 +53,12 @@ public class PlaylistHistory extends History {
         }
         PlaylistHistory other = (PlaylistHistory) obj;
         return super.equals(other) &&
-                Objects.equals(this.playlistId, other.playlistId)
-                && Objects.equals(this.eventType, other.eventType);
+                Objects.equals(this.playlistId, other.playlistId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.getId(), super.getUserId(), super.getDate(), playlistId, eventType);
+        return Objects.hash(super.getId(), super.getUserId(), super.getDate(), super.getEventType(), playlistId, playlistName);
     }
 
     @Override
@@ -71,7 +66,6 @@ public class PlaylistHistory extends History {
         return super.toString() +
                 ", playlistId='" + playlistId + '\'' +
                 ", playlistName=" + playlistName +
-                ", eventType=" + eventType +
                 '}';
     }
 }

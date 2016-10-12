@@ -19,15 +19,13 @@ public class TrackHistory extends History {
     @Column(name = "track_name")
     private String trackName;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "event_type")
-    private TrackEventType eventType;
-
-    public TrackHistory(Integer trackId, Date date, Integer userId, TrackEventType eventType) {
-        super(date, userId);
-        this.eventType = eventType;
+    public TrackHistory(Integer trackId, Date date, Integer userId, TrackEventType type, String trackName) {
+        super(date, userId, type);
+        this.trackName = trackName;
         this.trackId = trackId;
     }
+
+    public TrackHistory() {}
 
     public String getTrackName() {
         return trackName;
@@ -37,9 +35,15 @@ public class TrackHistory extends History {
         this.trackName = trackName;
     }
 
+    public void setTrackId(Integer trackId) {
+        this.trackId = trackId;
+    }
+
+    public Integer getTrackId() {return this.trackId; }
+
     @Override
     public int hashCode() {
-        return Objects.hash(super.getId(), super.getUserId(), super.getDate(), trackId, eventType);
+        return Objects.hash(super.getId(), super.getUserId(), super.getDate(), trackId, super.getEventType(), trackName);
     }
 
     @Override
@@ -47,7 +51,6 @@ public class TrackHistory extends History {
        return super.toString() +
                 ", trackId='" + trackId+ '\'' +
                ", trackName=" + trackName +
-                ", eventType=" + eventType +
                 '}';
     }
 
@@ -61,21 +64,7 @@ public class TrackHistory extends History {
         }
         TrackHistory other = (TrackHistory) obj;
         return super.equals(obj) &&
-                Objects.equals(this.trackId, other.trackId)
-                && Objects.equals(this.eventType, other.eventType);
-    }
+                Objects.equals(this.trackId, other.trackId);
 
-    public void setTrackId(Integer trackId) {
-        this.trackId = trackId;
-    }
-
-    public Integer getTrackId() {return this.trackId; }
-
-    public void setEventType(TrackEventType eventType) {
-        this.eventType = eventType;
-    }
-
-    public TrackEventType getEventType() {
-        return this.eventType;
     }
 }

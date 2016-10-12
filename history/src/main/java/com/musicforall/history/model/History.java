@@ -2,6 +2,7 @@ package com.musicforall.history.model;
 
 
 import com.musicforall.common.Constants;
+import com.musicforall.history.handlers.events.EventType;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -59,8 +60,14 @@ public class History {
     @Column(name = "date", nullable = false)
     private Timestamp date;
 
-    public History(Date date, Integer userId) {
+    @Enumerated(EnumType.STRING)
+    @Column(name = "event_type")
+    private EventType eventType;
+
+
+    public History(Date date, Integer userId, EventType type) {
         this.date = new Timestamp(date.getTime());
+        this.eventType = type;
         this.userId = userId;
     }
 
@@ -91,6 +98,15 @@ public class History {
         this.date = new Timestamp(date.getTime());
     }
 
+    public EventType getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
+    }
+
+
 
     @Override
     public int hashCode() {
@@ -104,6 +120,7 @@ public class History {
         }
         final History other = (History) obj;
         return Objects.equals(this.id, other.id)
+                && Objects.equals(this.eventType, other.eventType)
                 && Objects.equals(this.userId, other.userId)
                 && Objects.equals(this.date.getTime(), other.date.getTime());
     }
@@ -112,6 +129,7 @@ public class History {
     public String toString() {
         return "UsageHistory{" +
                 "id=" + id +
+                ", eventType" + eventType +
                 ", user_id=" + userId +
                 ", date='" + date + '\'' +
                 '}';

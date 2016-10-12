@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,12 +41,17 @@ public class HistoryServiceImpl implements HistoryService {
                         .userId(historyTrack.getUserId())
                         .get());
                 if (histories.isEmpty()) {
-                    dao.save(history);
+                    dao.save(historyTrack);
                 }
             }
         } else {
             dao.save(history);
         }
+    }
+
+    @Override
+    public List<Integer> getTheMostPopularTracks() {
+        return null;   //// TODO: 12.10.2016  change this method on new shema
     }
 
     @Override
