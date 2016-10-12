@@ -1,6 +1,6 @@
 package com.musicforall.services.user;
 
-import com.musicforall.dto.profile.ProfileData;
+import com.musicforall.model.SearchUserRequest;
 import com.musicforall.model.user.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.social.security.SocialUserDetailsService;
@@ -30,6 +30,8 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
     User getByEmail(String email);
 
     List<User> findAll();
+
+    List<User> getAllLike(SearchUserRequest searchCriteria);
 
     List<User> getUsersById(Collection<Integer> usersId);
 
