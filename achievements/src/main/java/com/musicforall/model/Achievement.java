@@ -10,17 +10,9 @@ import java.util.Objects;
 /**
  * @author ENikolskiy.
  */
-@NamedQueries(
-        {
-                @NamedQuery(
-                        name = Achievement.ALL_ACHIEVEMENTS_NOT_IN_IDS_QUERY,
-                        query = "from Achievement a where a.id not in (:ids)")
-        }
-)
 @Entity
 @Table(name = "achievements")
 public class Achievement {
-    public static final String ALL_ACHIEVEMENTS_NOT_IN_IDS_QUERY = "all_achievements_not_in_ids";
 
     @Id
     @Column(name = Constants.ID)

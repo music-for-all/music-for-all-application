@@ -17,6 +17,8 @@ import java.util.List;
 import static com.musicforall.history.handlers.events.EventType.*;
 import static com.musicforall.model.user.UserAchievement.Status.IN_PROGRESS;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singleton;
 import static org.junit.Assert.*;
 
 /**
@@ -71,7 +73,7 @@ public class AchievementsServiceTest {
     }
 
     @Test
-    public void getAllByEventType() {
+    public void filterBy() {
         final List<Achievement> trackAddedTypes = asList(
                 new Achievement("script1", TRACK_ADDED),
                 new Achievement("script1", TRACK_ADDED),
@@ -91,14 +93,13 @@ public class AchievementsServiceTest {
         achievementsService.saveAll(trackDeletedTypes);
         achievementsService.saveAll(playlistDeletedTypes);
 
-        Collection<Achievement> byEventType = achievementsService.getAllByEventType(TRACK_ADDED);
+        Collection<Achievement> filtered = achievementsService.filterBy(emptyList(), singleton(TRACK_ADDED));
+        assertTrue(filtered.stream().allMatch(a -> a.getEventType() == TRACK_ADDED));
 
-        assertTrue(trackAddedTypes.stream().allMatch(byEventType::contains));
-        assertTrue(byEventType.stream().allMatch(ac -> TRACK_ADDED == ac.getEventType()));
+        final List<Integer> excludedIds = asList(1, 2, 3, 4, 5);
 
-        byEventType = achievementsService.getAllByEventType(TRACK_DELETED);
-
-        assertTrue(trackDeletedTypes.stream().allMatch(byEventType::contains));
-        assertTrue(byEventType.stream().allMatch(ac -> TRACK_DELETED == ac.getEventType()));
+        filtered = achievementsService.filterBy(excludedIds, asList(TRACK_ADDED, TRACK_DELETED));
+        assertTrue(filtered.stream().allMatch(a -> a.getEventType().in(TRACK_ADDED, TRACK_DELETED)));
+        assertFalse(filtered.stream().anyMatch(a -> excludedIds.contains(a.getId())));
     }
 }

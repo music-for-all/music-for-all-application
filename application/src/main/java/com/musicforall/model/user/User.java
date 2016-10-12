@@ -73,7 +73,7 @@ public class User implements SocialUserDetails, Serializable {
 
     @OneToMany(fetch = FetchType.LAZY)
     @Cascade({SAVE_UPDATE, DELETE})
-    private Set<UserAchievement> achievements;
+    private Set<UserAchievement> achievements = new HashSet<>();
 
     public User() {
     }

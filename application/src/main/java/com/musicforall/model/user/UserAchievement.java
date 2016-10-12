@@ -84,23 +84,18 @@ public class UserAchievement {
         this.progressCount = progressCount;
     }
 
-    public enum Status {
-        IN_PROGRESS,
-        DONE;
-
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserAchievement that = (UserAchievement) o;
-        return Objects.equals(achievement, that.achievement);
+        return Objects.equals(id, that.id) &&
+                Objects.equals(achievement, that.achievement);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(achievement);
+        return Objects.hash(id, achievement);
     }
 
     @Override
@@ -111,5 +106,10 @@ public class UserAchievement {
                 .add("status", status)
                 .add("progressCount", progressCount)
                 .toString();
+    }
+
+    public enum Status {
+        IN_PROGRESS,
+        DONE
     }
 }

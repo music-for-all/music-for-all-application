@@ -9,7 +9,6 @@ import com.musicforall.model.user.User;
 import com.musicforall.model.user.UserAchievement;
 import com.musicforall.services.user.UserService;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -20,10 +19,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.musicforall.model.Achievement.ALL_ACHIEVEMENTS_NOT_IN_IDS_QUERY;
 import static com.musicforall.model.user.UserAchievement.INCREMENT_COUNT_QUERY;
 import static com.musicforall.model.user.UserAchievement.Status.DONE;
 import static com.musicforall.model.user.UserAchievement.Status.IN_PROGRESS;
+import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static org.hibernate.criterion.Restrictions.in;
 import static org.hibernate.criterion.Restrictions.not;
@@ -70,10 +69,7 @@ public class AchievementsServiceImpl implements AchievementsService {
 
     @Override
     public Collection<Achievement> getAllNotInIds(Collection<Integer> excludedIds) {
-        final Map<String, Object> params = new HashMap<>();
-        params.put("ids", excludedIds);
-
-        return dao.getAllByNamedQuery(Achievement.class, ALL_ACHIEVEMENTS_NOT_IN_IDS_QUERY, params);
+        return filterBy(excludedIds, asList(EventType.values()));
     }
 
     @Override
@@ -82,16 +78,9 @@ public class AchievementsServiceImpl implements AchievementsService {
     }
 
     @Override
-    public Collection<Achievement> getAllByEventType(EventType type) {
+    public Collection<Achievement> filterBy(Collection<Integer> excludedIds, Collection<EventType> types) {
         final DetachedCriteria criteria = DetachedCriteria.forClass(Achievement.class);
-        criteria.add(Property.forName("eventType").eq(type));
-
-        return dao.getAllBy(criteria);
-    }
-
-    public Collection<Achievement> filterBy(EventType type, Collection<Integer> excludedIds) {
-        final DetachedCriteria criteria = DetachedCriteria.forClass(Achievement.class);
-        criteria.add(Property.forName("eventType").eq(type));
+        criteria.add(in("eventType", types));
         criteria.add(not(in("id", excludedIds)));
 
         return dao.getAllBy(criteria);
@@ -118,13 +107,17 @@ public class AchievementsServiceImpl implements AchievementsService {
                         }
                     });
         } else {
-            final List<Integer> excludedIds = processed.stream().map(UserAchievement::getId).collect(toList());
-            final List<UserAchievement> newUA = filterBy(type, excludedIds).stream()
+            final List<Integer> excludedIds = user.getUserAchievements().stream()
+                    .map(UserAchievement::getId)
+                    .collect(toList());
+            final List<UserAchievement> newUA = filterBy(excludedIds, asList(type)).stream()
                     .filter(a -> processScript(a, vars))
                     .map(a -> new UserAchievement(a, IN_PROGRESS))
                     .collect(toList());
-            user.addUserAchievements(newUA);
-            userService.save(user);
+            if (!newUA.isEmpty()) {
+                user.addUserAchievements(newUA);
+                userService.save(user);
+            }
         }
     }
 

@@ -25,5 +25,5 @@ public interface AchievementsService {
 
     Collection<Achievement> saveAll(Collection<Achievement> achievements);
 
-    Collection<Achievement> getAllByEventType(EventType type);
+    Collection<Achievement> filterBy(Collection<Integer> excludedIds, Collection<EventType> types);
 }
