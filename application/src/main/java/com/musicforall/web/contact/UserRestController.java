@@ -1,6 +1,7 @@
 package com.musicforall.web.contact;
 
 import com.musicforall.common.Constants;
+import com.musicforall.model.SearchUserRequest;
 import com.musicforall.model.user.User;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.user.UserService;
@@ -56,7 +57,7 @@ public class UserRestController {
 
     @RequestMapping(value = "/search={username}", method = RequestMethod.GET)
     public Collection<User> search(@PathVariable("username") String username) {
-        return userService.getUsersByUsername(username);
+        return userService.getAllLike(new SearchUserRequest(username));
     }
 
     @RequestMapping(value = "/me", method = RequestMethod.GET)
