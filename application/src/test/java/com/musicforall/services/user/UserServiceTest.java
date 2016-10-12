@@ -1,6 +1,7 @@
 package com.musicforall.services.user;
 
 import com.musicforall.model.Achievement;
+import com.musicforall.model.SearchUserRequest;
 import com.musicforall.model.user.User;
 import com.musicforall.model.user.UserAchievement;
 import com.musicforall.model.user.UserSettings;
@@ -167,6 +168,23 @@ public class UserServiceTest {
         userService.save(user);
 
         assertEquals(settings, userService.getWithSettingsById(user.getId()).getSettings());
+    }
+
+    @Test
+    public void testGetUserLike() {
+        final UserSettings settings = new UserSettings(true, "link");
+        User user = new User("test_name", PASSWORD, "testGetUserLike@test.com");
+        user.setSettings(settings);
+
+        userService.save(user);
+
+        SearchUserRequest searchUserByEmail = new SearchUserRequest();
+        searchUserByEmail.setEmail("testGetUserLi");
+        assertEquals(userService.getAllLike(searchUserByEmail).size(), 1);
+
+        SearchUserRequest searchUserByUsername = new SearchUserRequest("test");
+        assertEquals(userService.getAllLike(searchUserByUsername).size(), 1);
+
     }
 
     @Test

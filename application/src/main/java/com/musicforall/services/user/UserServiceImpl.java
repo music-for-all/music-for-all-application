@@ -2,7 +2,9 @@ package com.musicforall.services.user;
 
 import com.musicforall.common.Constants;
 import com.musicforall.common.dao.Dao;
+import com.musicforall.model.SearchUserRequest;
 import com.musicforall.model.user.User;
+import com.musicforall.services.SearchCriteriaFactory;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
@@ -75,6 +77,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return dao.all(User.class);
+    }
+
+    @Override
+    public List<User> getAllLike(SearchUserRequest searchCriteria) {
+        final DetachedCriteria detachedCriteria =
+                SearchCriteriaFactory.createUserSearchCriteria(searchCriteria);
+        return dao.getAllBy(detachedCriteria);
     }
 
     @Override
