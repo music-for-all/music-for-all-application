@@ -130,7 +130,7 @@
     function showProfileTable() {
         $("#back").addClass("hidden");
         $("#uploadPicture").addClass("hidden");
-        $("#update").addClass("hidden");
+        $("#updateUser").addClass("hidden");
         $("#editProfileTable").addClass("hidden");
         $("#upload").addClass("hidden");
         $("#infoProfileTable").removeClass("hidden");
@@ -141,7 +141,7 @@
     function hideProfileTable() {
         $("#back").removeClass("hidden");
         $("#userPicture").addClass("hidden");
-        $("#update").removeClass("hidden");
+        $("#updateUser").removeClass("hidden");
         $("#editProfileTable").removeClass("hidden");
         $("#upload").removeClass("hidden");
         $("#infoProfileTable").addClass("hidden");
@@ -200,7 +200,7 @@
         });
     }
 
-    $("#update").on("click", function () {
+    $("#updateUser").on("click", function () {
         var formData = new FormData();
         var files = document.getElementById("image-input").files[0];
         if (files !== undefined) {

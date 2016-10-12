@@ -17,7 +17,9 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
 
     Collection<User> saveAll(Collection<User> users);
 
-    void update(User user, ProfileData profileData);
+    void updateUser(User user, ProfileData profileData);
+
+    void updateUserData(User user, ProfileData profileData);
 
     User get(Integer userId);
 

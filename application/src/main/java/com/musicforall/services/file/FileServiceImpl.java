@@ -65,7 +65,7 @@ public class FileServiceImpl implements FileService {
         requireNonNull(user, "user must not be null");
         final Optional<Path> saved = manager.savePicture(user.getId(), file);
         if (saved.isPresent()) {
-            userService.update(user, ProfileData.create()
+            userService.updateUser(user, ProfileData.create()
                     .picture(DEFAULT_PICTURE_DIRECTORY + user.getId() + "/" + file.getOriginalFilename())
                     .get());
             return new ResponseEntity<>("Picture successfully saved", HttpStatus.OK);

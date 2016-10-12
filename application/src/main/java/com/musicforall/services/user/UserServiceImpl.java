@@ -45,8 +45,13 @@ public class UserServiceImpl implements UserService {
         return dao.saveAll(users);
     }
 
+
     @Override
-    public void update(User user, ProfileData profileData) {
+    public void updateUserData(User user, ProfileData profileData) {
+
+    }
+    @Override
+    public void updateUser(User user, ProfileData profileData) {
         final Map<String, Object> params = new HashMap<>();
         params.put("id", user.getId());
         params.put("username", profileData.getUsername());
