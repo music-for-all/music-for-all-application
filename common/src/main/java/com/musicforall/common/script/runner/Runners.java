@@ -13,7 +13,7 @@ public final class Runners {
             case GROOVY:
                 return new GroovyRunner();
             default:
-                return null;
+                throw new IllegalArgumentException("Wrong runner type " + type);
         }
     }
 

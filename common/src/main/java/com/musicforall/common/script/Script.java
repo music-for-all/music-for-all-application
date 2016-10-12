@@ -4,6 +4,8 @@ import com.musicforall.common.script.runner.Runners;
 
 import java.util.Map;
 
+import static com.musicforall.common.script.runner.Runners.Type.GROOVY;
+
 /**
  * @author Evgeniy on 09.10.2016.
  */
@@ -12,10 +14,14 @@ public class Script<T> {
     private final Map<String, Object> variables;
     private Runners.Type type;
 
-    public Script(String text, Map<String, Object> variables, Runners.Type type) {
+    public static <T> Script<T> create(String text, Map<String, Object> variables) {
+        return new Script<T>(text, variables);
+    }
+
+    private Script(String text, Map<String, Object> variables) {
         this.text = text;
         this.variables = variables;
-        this.type = type;
+        this.type = GROOVY;
     }
 
     public Script<T> type(Runners.Type type) {

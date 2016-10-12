@@ -1,5 +1,6 @@
 package com.musicforall.model;
 
+import com.google.common.base.MoreObjects;
 import com.musicforall.common.Constants;
 import com.musicforall.history.handlers.events.EventType;
 
@@ -9,9 +10,17 @@ import java.util.Objects;
 /**
  * @author ENikolskiy.
  */
+@NamedQueries(
+        {
+                @NamedQuery(
+                        name = Achievement.ALL_ACHIEVEMENTS_NOT_IN_IDS_QUERY,
+                        query = "from Achievement a where a.id not in (:ids)")
+        }
+)
 @Entity
 @Table(name = "achievements")
 public class Achievement {
+    public static final String ALL_ACHIEVEMENTS_NOT_IN_IDS_QUERY = "all_achievements_not_in_ids";
 
     @Id
     @Column(name = Constants.ID)
@@ -24,6 +33,9 @@ public class Achievement {
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type", nullable = false)
     private EventType eventType;
+
+    @Column
+    private int count;
 
     public Achievement() {
     }
@@ -64,21 +76,30 @@ public class Achievement {
         Achievement that = (Achievement) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(script, that.script) &&
+                Objects.equals(count, that.count) &&
                 Objects.equals(eventType, that.eventType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, script, eventType);
+        return Objects.hash(id, script, eventType, count);
     }
 
 
     @Override
     public String toString() {
-        return com.google.common.base.Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
                 .add("id", id)
                 .add("script", script)
                 .add("eventType", eventType)
                 .toString();
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

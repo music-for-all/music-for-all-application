@@ -14,7 +14,9 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import static org.hibernate.annotations.CascadeType.DELETE;
 import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
@@ -69,9 +71,9 @@ public class User implements SocialUserDetails, Serializable {
     @Cascade({SAVE_UPDATE, DELETE})
     private UserSettings settings;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     @Cascade({SAVE_UPDATE, DELETE})
-    private UserAchievements achievements;
+    private Set<UserAchievement> achievements;
 
     public User() {
     }
@@ -195,6 +197,21 @@ public class User implements SocialUserDetails, Serializable {
                 '}';
     }
 
+    public Set<UserAchievement> getUserAchievements() {
+        return achievements;
+    }
+
+    public void setUserAchievements(Set<UserAchievement> achievements) {
+        this.achievements = achievements;
+    }
+
+    public void addUserAchievements(Collection<UserAchievement> userAchievements) {
+        if (this.achievements == null) {
+            this.achievements = new HashSet<>();
+        }
+        this.achievements.addAll(userAchievements);
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -209,13 +226,5 @@ public class User implements SocialUserDetails, Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public UserAchievements getAchievements() {
-        return achievements;
-    }
-
-    public void setAchievements(UserAchievements achievements) {
-        this.achievements = achievements;
     }
 }

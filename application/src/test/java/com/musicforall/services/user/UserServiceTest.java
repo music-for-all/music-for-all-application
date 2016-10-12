@@ -1,9 +1,8 @@
 package com.musicforall.services.user;
 
 import com.musicforall.model.Achievement;
-import com.musicforall.model.InProgressAchievement;
 import com.musicforall.model.user.User;
-import com.musicforall.model.user.UserAchievements;
+import com.musicforall.model.user.UserAchievement;
 import com.musicforall.model.user.UserSettings;
 import com.musicforall.services.achievements.AchievementsService;
 import com.musicforall.util.ServicesTestConfig;
@@ -20,10 +19,13 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import static com.google.common.collect.Sets.newHashSet;
 import static com.musicforall.history.handlers.events.EventType.TRACK_ADDED;
+import static com.musicforall.model.user.UserAchievement.Status.IN_PROGRESS;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.*;
@@ -176,14 +178,19 @@ public class UserServiceTest {
     }
 
     private User createUserWithAchievements(final String email) {
-        final Achievement achievement1 = achievementsService.save(new Achievement("script1", TRACK_ADDED));
+        final Collection<Achievement> achievements = achievementsService.saveAll(asList(
+                new Achievement("script1", TRACK_ADDED),
+                new Achievement("script2", TRACK_ADDED),
+                new Achievement("script3", TRACK_ADDED),
+                new Achievement("script4", TRACK_ADDED)
+        ));
 
-        final InProgressAchievement achievement2 = new InProgressAchievement(new Achievement("script2", TRACK_ADDED));
-        achievementsService.save(achievement2);
+        final Set<UserAchievement> userAchievements = achievements.stream()
+                .map(a -> new UserAchievement(a, IN_PROGRESS))
+                .collect(Collectors.toSet());
 
-        final UserAchievements userAchievements = new UserAchievements(newHashSet(achievement2), newHashSet(achievement1));
         final User user = new User(USER, PASSWORD, email);
-        user.setAchievements(userAchievements);
+        user.setUserAchievements(userAchievements);
         return user;
     }
 }
