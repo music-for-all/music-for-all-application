@@ -57,20 +57,17 @@ function tagAutocomplete(placeholder) {
 function userAutocomplete() {
     return {
         source: function (request, response) {
-            var requestData = {
-                searchTerm: request.term
-            };
             $.ajax({
                 url: dict.contextPath + "/social/search",
-                data: requestData,
+                data: {searchTerm: request.term},
                 traditional: true,
                 success: function (data) {
-                    var array = data.error ? [] : $.map(data, function (item) {
+                    var dataArray = data.error ? [] : $.map(data, function (username) {
                         return {
-                            label: item
+                            label: username
                         };
                     });
-                    response(array);
+                    response(dataArray);
                 }
             });
         }
