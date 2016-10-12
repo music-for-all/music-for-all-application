@@ -10,7 +10,6 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.social.security.SocialUserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
@@ -29,17 +28,17 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
                         query = "from User u left join fetch u.userData where u.id in (:ids)"
                 ),
                 @NamedQuery(
+                        name = User.USERS_BY_EMAIL_QUERY,
+                        query = "from User u where u.email in (:emails)"
+                ),
+                @NamedQuery(
                         name = User.USER_BY_ID_WITH_DATA_QUERY,
                         query = "from User u left join fetch u.userData where u.id = :id"
                 ),
                 @NamedQuery(
-                        name = User.UPDATE_USER_DATA,
+                        name = User.UPDATE_USER,
                         query = "UPDATE User user" +
-                                " SET user.username = COALESCE(:username, user.username)," +
-                                " user.password = COALESCE(:password, user.password)," +
-                                " user.firstName = COALESCE(:firstName, user.firstName)," +
-                                " user.lastName = COALESCE(:lastName, user.lastName)," +
-                                " user.bio = COALESCE(:bio, user.bio)" +
+                                " SET user.password = COALESCE(:password, user.password)" +
                                 " where user.id = :id"
                 )
         }
@@ -50,7 +49,8 @@ public class User implements SocialUserDetails, Serializable {
 
     public static final String USERS_BY_IDS_WITH_DATA_QUERY = "users_by_ids_with_data";
     public static final String USER_BY_ID_WITH_DATA_QUERY = "user_by_id_with_data";
-    public static final String UPDATE_USER_DATA = "update_user_data";
+    public static final String UPDATE_USER = "update_user";
+    public static final String USERS_BY_EMAIL_QUERY = "users_by_emails";
 
     private static final long serialVersionUID = 1959293141381203004L;
 
@@ -58,11 +58,6 @@ public class User implements SocialUserDetails, Serializable {
     @Column(name = Constants.ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Size(min = 2, max = 16)
-    @Pattern(regexp = "^(^[a-zA-Z\\p{InCyrillic}][a-zA-Z0-9-_\\.\\p{InCyrillic}]+)$")
-    @Column(nullable = false)
-    private String username;
 
     @Size(min = 4, max = 128)
     @Column(nullable = false)
@@ -73,13 +68,6 @@ public class User implements SocialUserDetails, Serializable {
     @Column(unique = true)
     private String email;
 
-    private String firstName;
-
-    private String lastName;
-
-    @Size(max = 140)
-    private String bio = "";
-
     @OneToOne(fetch = FetchType.LAZY)
     @Cascade({SAVE_UPDATE, DELETE})
     private UserData userData;
@@ -87,17 +75,16 @@ public class User implements SocialUserDetails, Serializable {
     public User() {
     }
 
-    public User(String username, String password, String email) {
-        this.username = username;
+    public User(String password, String email) {
         this.password = password;
         this.email = email;
     }
 
-    public User(String username, String password, String email, UserData userData) {
-        this.username = username;
+    public User(String password, String email, UserData userData) {
         this.password = password;
         this.email = email;
         this.userData = userData;
+        userData.setEmail(email);
     }
 
     public Integer getId() {
@@ -106,14 +93,6 @@ public class User implements SocialUserDetails, Serializable {
 
     private void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     @Override
@@ -150,6 +129,11 @@ public class User implements SocialUserDetails, Serializable {
         return password;
     }
 
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -174,11 +158,12 @@ public class User implements SocialUserDetails, Serializable {
 
     public void setUserData(UserData userData) {
         this.userData = userData;
+        userData.setEmail(email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, email);
+        return Objects.hash(id, password, email);
     }
 
     @Override
@@ -191,7 +176,6 @@ public class User implements SocialUserDetails, Serializable {
         }
         final User other = (User) obj;
         return Objects.equals(this.id, other.id)
-                && Objects.equals(this.username, other.username)
                 && Objects.equals(this.password, other.password)
                 && Objects.equals(this.email, other.email);
     }
@@ -200,33 +184,8 @@ public class User implements SocialUserDetails, Serializable {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 }
