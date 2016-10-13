@@ -28,10 +28,6 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
                         query = "from User u left join fetch u.userData where u.id in (:ids)"
                 ),
                 @NamedQuery(
-                        name = User.USERS_BY_EMAIL_QUERY,
-                        query = "from User u where u.email in (:emails)"
-                ),
-                @NamedQuery(
                         name = User.USER_BY_ID_WITH_DATA_QUERY,
                         query = "from User u left join fetch u.userData where u.id = :id"
                 ),
@@ -50,7 +46,6 @@ public class User implements SocialUserDetails, Serializable {
     public static final String USERS_BY_IDS_WITH_DATA_QUERY = "users_by_ids_with_data";
     public static final String USER_BY_ID_WITH_DATA_QUERY = "user_by_id_with_data";
     public static final String UPDATE_USER = "update_user";
-    public static final String USERS_BY_EMAIL_QUERY = "users_by_emails";
 
     private static final long serialVersionUID = 1959293141381203004L;
 
@@ -84,7 +79,6 @@ public class User implements SocialUserDetails, Serializable {
         this.password = password;
         this.email = email;
         this.userData = userData;
-        userData.setEmail(email);
     }
 
     public Integer getId() {
@@ -158,7 +152,6 @@ public class User implements SocialUserDetails, Serializable {
 
     public void setUserData(UserData userData) {
         this.userData = userData;
-        userData.setEmail(email);
     }
 
     @Override
@@ -186,6 +179,7 @@ public class User implements SocialUserDetails, Serializable {
                 "id=" + id +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", " + userData +
                 '}';
     }
 }

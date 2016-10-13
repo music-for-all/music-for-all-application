@@ -2,7 +2,6 @@ package com.musicforall.model.user;
 
 import com.google.common.base.MoreObjects;
 import com.musicforall.common.Constants;
-import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -22,8 +21,15 @@ import java.util.Objects;
                                 " data.firstName = COALESCE(:firstName, data.firstName)," +
                                 " data.lastName = COALESCE(:lastName, data.lastName)," +
                                 " data.picture = COALESCE(:picture, data.picture)," +
+                                " data.publicRadio = COALESCE(:publicRadio, data.publicRadio)," +
                                 " data.bio = COALESCE(:bio, data.bio)" +
-                                " where data.email = :email"
+                                " where data.userId = :userId"
+                ),
+                @NamedQuery(
+                        name = UserData.UPDATE_USER_ID,
+                        query = "UPDATE UserData data" +
+                                " SET data.userId = COALESCE(:userId, data.userId)" +
+                                " where data.id = :id"
                 )
         }
 )
@@ -32,6 +38,7 @@ import java.util.Objects;
 public class UserData implements Serializable {
 
     public static final String UPDATE_USER_DATA = "update_user_data";
+    public static final String UPDATE_USER_ID = "update_user_data_id";
 
     @Id
     @Column(name = Constants.ID)
@@ -43,10 +50,6 @@ public class UserData implements Serializable {
     @Pattern(regexp = "^(^[a-zA-Z\\p{InCyrillic}][a-zA-Z0-9-_\\.\\p{InCyrillic}]+)$")
     @Column(nullable = false)
     private String username;
-
-    @Email
-    @Column(unique = true)
-    private String email;
 
     @Column
     private String picture;
@@ -60,6 +63,8 @@ public class UserData implements Serializable {
 
     @Column(name = "public_radio")
     private boolean publicRadio;
+
+    private Integer userId;
 
     public UserData() {
     }
@@ -134,17 +139,17 @@ public class UserData implements Serializable {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, firstName, lastName, bio, picture, email, publicRadio);
+        return Objects.hash(username, firstName, lastName, bio, picture, publicRadio, userId);
     }
 
     @Override
@@ -161,7 +166,7 @@ public class UserData implements Serializable {
                 && Objects.equals(this.lastName, other.lastName)
                 && Objects.equals(this.bio, other.bio)
                 && Objects.equals(this.picture, other.picture)
-                && Objects.equals(this.email, other.email)
+                && Objects.equals(this.userId, other.userId)
                 && Objects.equals(this.publicRadio, other.publicRadio);
     }
 
@@ -173,9 +178,9 @@ public class UserData implements Serializable {
                 .add("firstName", firstName)
                 .add("lastName", lastName)
                 .add("bio", bio)
-                .add("email", email)
                 .add("picture", picture)
                 .add("publicRadio", publicRadio)
+                .add("userId", userId)
                 .toString();
     }
 }
