@@ -1,6 +1,7 @@
 package com.musicforall.services.stream;
 
 import com.musicforall.common.cache.CacheProvider;
+import com.musicforall.dto.profile.ProfileData;
 import com.musicforall.model.Track;
 import com.musicforall.model.user.User;
 import com.musicforall.services.track.TrackService;
@@ -43,9 +44,7 @@ public class StreamServiceImpl implements StreamService {
 
     @Override
     public void publish(Integer userId, boolean toPublish) {
-        final User currentUser = userService.getWithUserDataById(userId);
-        currentUser.getUserData().setPublicRadio(toPublish);
-        userService.save(currentUser);
+        userService.updateUserData(userId, ProfileData.create().publicRadio(toPublish).get());
     }
 
     @Override

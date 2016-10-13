@@ -50,8 +50,10 @@ public class StreamServiceTest {
 
     @Test
     public void testStart() throws Exception {
+        final UserData userData = new UserData(USER);
+        userData.setPublicRadio(true);
         final User user = userService.save(
-                new User(USER, PASSWORD, "testStart@test.com", new UserData(true, "/link")));
+                new User(PASSWORD, "testStart@test.com", userData));
         final Track track = trackService.save(new Track("Valera", "/disk"));
 
         streamService.start(user.getId(), track.getId());
@@ -61,8 +63,10 @@ public class StreamServiceTest {
 
     @Test
     public void testStop() throws Exception {
+        final UserData userData = new UserData(USER);
+        userData.setPublicRadio(true);
         final User user = userService.save(
-                new User(USER, PASSWORD, "testStop@test.com", new UserData(true, "/link")));
+                new User(PASSWORD, "testStop@test.com", userData));
         final Track track = trackService.save(new Track("Valera", "/disk"));
 
         streamService.start(user.getId(), track.getId());
@@ -74,8 +78,10 @@ public class StreamServiceTest {
 
     @Test
     public void testPublish() throws Exception {
+        final UserData userData = new UserData(USER);
+        userData.setPublicRadio(false);
         final User user = userService.save(
-                new User(USER, PASSWORD, "testPublish@test.com", new UserData(false, "/link")));
+                new User(PASSWORD, "testPublish@test.com", userData));
         final Track track = trackService.save(new Track("Valera", "/disk"));
 
         streamService.start(user.getId(), track.getId());
