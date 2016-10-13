@@ -3,6 +3,7 @@ package com.musicforall.web.contact;
 import com.musicforall.common.Constants;
 import com.musicforall.model.SearchUserRequest;
 import com.musicforall.model.user.User;
+import com.musicforall.model.user.UserData;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.user.UserService;
 import org.slf4j.Logger;
@@ -46,18 +47,18 @@ public class UserRestController {
     }
 
     @RequestMapping(value = "/followers", method = RequestMethod.GET)
-    public Collection<User> getFollowers() {
-        return userService.getUsersById(followerService.getFollowersId(currentUser().getId()));
+    public Collection<UserData> getFollowers() {
+        return userService.getUsersDataById(followerService.getFollowersId(currentUser().getId()));
     }
 
     @RequestMapping(value = "/following", method = RequestMethod.GET)
-    public Collection<User> getFollowings() {
-        return userService.getUsersById(followerService.getFollowingId(currentUser().getId()));
+    public Collection<UserData> getFollowings() {
+        return userService.getUsersDataById(followerService.getFollowingId(currentUser().getId()));
     }
 
     @RequestMapping(value = "/search={username}", method = RequestMethod.GET)
-    public Collection<User> search(@PathVariable("username") String username) {
-        return userService.getAllLike(new SearchUserRequest(username));
+    public Collection<UserData> search(@PathVariable("username") String username) {
+        return userService.getAllUserDataLike(new SearchUserRequest(username));
     }
 
     @RequestMapping(value = "/me", method = RequestMethod.GET)
