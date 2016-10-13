@@ -2,29 +2,11 @@
 
 var baseUrl = dict.contextPath + "/profile";
 
-function updateData() {
+function updateUserData() {
 
     clearMessage();
 
-    var password = $("#password").val();
-
-    if ((password.length > 0 && password.length < 4) || password.length > 128) {
-        $("#fail-message").text("Fail: new password must be more than 4 and less than 128 in length!");
-        return;
-    }
-
-    var confirmPassword = $("#confirmPassword").val();
-
     var profileData = {};
-
-    if (password.length > 0) {
-        if (password !== confirmPassword) {
-            $("#fail-message").text("Fail: passwords do not match!");
-            return;
-        } else {
-            profileData.password = password;
-        }
-    }
 
     var username = $("#username").val();
 
@@ -56,6 +38,33 @@ function updateData() {
     }
 
     return $.when($.get(baseUrl + "/update", profileData));
+}
+
+function updatePassword() {
+
+    clearMessage();
+
+    var password = $("#password").val();
+
+    if ((password.length > 0 && password.length < 4) || password.length > 128) {
+        $("#fail-message").text("Fail: new password must be more than 4 and less than 128 in length!");
+        return;
+    }
+
+    var confirmPassword = $("#confirmPassword").val();
+
+    var profileData = {};
+
+    if (password.length > 0) {
+        if (password !== confirmPassword) {
+            $("#fail-message").text("Fail: passwords do not match!");
+            return;
+        } else {
+            profileData.password = password;
+        }
+    }
+
+    return $.when($.get(baseUrl + "/update/password", profileData));
 }
 
 function getCurrentUser() {

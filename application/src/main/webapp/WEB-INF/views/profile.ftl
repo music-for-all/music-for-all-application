@@ -23,22 +23,22 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-3 col-lg-3 " align="center">
+                        <div class="picture col-md-3 col-lg-3 " align="center">
                             <img id="userPicture"
                                  alt="User picture"
-                                 class="img-circle img-responsive">
+                                 class="profile img-circle img-responsive">
                             <img id="uploadPicture"
                                  alt="User picture"
-                                 class="img-circle img-responsive hidden">
-                            <div id="upload" class="hidden">
+                                 class="editProfile img-circle img-responsive hidden">
+                            <div id="upload" class="editProfile hidden">
                                 <span class="btn btn-file btn-sm btn-success">
                                     <span class="glyphicon glyphicon-open input-place"></span> <@spring.message "profilepage.UploadPicture" />
                                     <input type="file" id="image-input" name="filedata" onchange="upload(this);"
                                            accept="image/*">
                             </div>
                         </div>
-                        <div id="infoProfileTable">
-                            <div class=" col-md-9 col-lg-9 ">
+                        <div class="profile">
+                            <div class="col-md-9 col-lg-9 ">
                                 <table class="table table-user-information">
                                     <tbody>
                                     <tr>
@@ -57,12 +57,21 @@
                                         <td><@spring.message "profilepage.Bio" /></td>
                                         <td id="tdBio"></td>
                                     </tr>
+                                    <tr>
+                                        <td><@spring.message "profilepage.Broadcasting" /></td>
+                                        <td>
+                                            <label class="switch pull-left">
+                                                <input type="checkbox" id="publicRadio">
+                                                <div class="slider round"></div>
+                                            </label>
+                                        </td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
 
-                        <div class="hidden" id="editProfileTable">
+                        <div class="editProfile hidden">
                             <div class=" col-md-9 col-lg-9 ">
                                 <table class="table table-user-information">
                                     <tbody>
@@ -79,6 +88,24 @@
                                         <td><input id="lastName" class="form-control" type="text"/></td>
                                     </tr>
                                     <tr>
+                                        <td><@spring.message "profilepage.Bio" /></td>
+                                        <td><textarea class="form-control" cols="30"
+                                                      data-bio-label="remaining"
+                                                      data-max-length="140"
+                                                      id="user_profile_bio" maxlength="140" rows="4"
+                                                      placeholder="<@spring.message "profilepage.BioPlaceholder" />"></textarea>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="hidden editProfilePassword">
+                            <div class=" col-md-9 col-lg-9 ">
+                                <table class="table table-user-information">
+                                    <tbody>
+                                    <tr>
                                         <td><@spring.message "profilepage.Password" /></td>
                                         <td><input id="password" class="form-control" type="password"
                                                    placeholder="<@spring.message "profilepage.NewPassword" />"/></td>
@@ -87,15 +114,6 @@
                                         <td><@spring.message "profilepage.ConfirmPassword" /></td>
                                         <td><input id="confirmPassword" class="form-control" type="password"
                                                    placeholder="<@spring.message "profilepage.ConfirmPassword" />"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><@spring.message "profilepage.Bio" /></td>
-                                        <td><textarea class="form-control" cols="30"
-                                                      data-bio-label="remaining"
-                                                      data-max-length="140"
-                                                      id="user_profile_bio" maxlength="140" rows="4"
-                                                      placeholder="<@spring.message "profilepage.BioPlaceholder" />"></textarea>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -113,12 +131,20 @@
                     <button class="btn btn-default hidden" id="back">
                         <span class="glyphicon glyphicon-arrow-left"></span> <@spring.message "profilepage.Back" />
                     </button>
-                    <button class="btn btn-success hidden" id="updateUser">
-                        <span class="glyphicon"></span><@spring.message "profilepage.Update" />
-                    </button>
                     <button class="btn btn-default" id="edit">
                         <span class="glyphicon glyphicon-edit"></span> <@spring.message "profilepage.EditProfile" />
                     </button>
+                    <button class="btn btn-default" id="editPassword">
+                        <span class="glyphicon glyphicon-edit"></span> <@spring.message "profilepage.EditPassword" />
+                    </button>
+                    <span class="pull-right">
+                    <button class="editProfile btn btn-success hidden" id="updateUser">
+                        <span class="glyphicon"></span><@spring.message "profilepage.Update" />
+                    </button>
+                    <button class="editProfilePassword btn btn-success hidden" id="updatePassword">
+                        <span class="glyphicon"></span><@spring.message "profilepage.Update" />
+                    </button>
+                        </span>
                 </div>
             </div>
         </div>
@@ -127,29 +153,38 @@
 <script type="text/javascript">
     const max_length_error = 200;
 
+    var stream = new Stream();
+
     function showProfileTable() {
         $("#back").addClass("hidden");
-        $("#uploadPicture").addClass("hidden");
-        $("#updateUser").addClass("hidden");
-        $("#editProfileTable").addClass("hidden");
-        $("#upload").addClass("hidden");
-        $("#infoProfileTable").removeClass("hidden");
-        $("#userPicture").removeClass("hidden");
         $("#edit").removeClass("hidden");
+        $("#editPassword").removeClass("hidden");
+        $(".editProfile").addClass("hidden");
+        $(".profile").removeClass("hidden");
+        $(".editProfilePassword").addClass("hidden");
     }
 
-    function hideProfileTable() {
+    function showEditProfileTable() {
         $("#back").removeClass("hidden");
-        $("#userPicture").addClass("hidden");
-        $("#updateUser").removeClass("hidden");
-        $("#editProfileTable").removeClass("hidden");
-        $("#upload").removeClass("hidden");
-        $("#infoProfileTable").addClass("hidden");
-        $("#uploadPicture").removeClass("hidden");
         $("#edit").addClass("hidden");
+        $("#editPassword").removeClass("hidden");
+        $(".editProfile").removeClass("hidden");
+        $(".profile").addClass("hidden");
+        $(".editProfilePassword").addClass("hidden");
+    }
+
+    function showEditProfilePasswordTable() {
+        $("#back").removeClass("hidden");
+        $("#editPassword").addClass("hidden");
+        $("#edit").removeClass("hidden");
+        $(".editProfile").addClass("hidden");
+        $(".editProfilePassword").removeClass("hidden");
+        $(".profile").addClass("hidden");
     }
 
     function clearMessage() {
+        $("#confirmPassword").text('');
+        $("#password").text('');
         $("#success-message").text('');
         $("#fail-message").text('');
     }
@@ -166,11 +201,25 @@
         $("#firstName").val(user.userData.firstName);
         $("#lastName").val(user.userData.lastName);
         $("#user_profile_bio").text(user.userData.bio);
+        if (user.userData.publicRadio) {
+            $("#publicRadio").prop("checked", true);
+        } else {
+            $("#publicRadio").prop("checked", false);
+        }
     }
+
+    $("#publicRadio").on("click", function () {
+        stream.publish(this.checked);
+    });
 
     $("#edit").on("click", function () {
         clearMessage();
-        hideProfileTable();
+        showEditProfileTable();
+    });
+
+    $("#editPassword").on("click", function () {
+        clearMessage();
+        showEditProfilePasswordTable();
     });
 
     $("#back").on("click", function () {
@@ -191,7 +240,7 @@
     }
 
     function updateProfileData() {
-        updateData().then(function () {
+        updateUserData().then(function () {
             $("#success-message").text("Updated");
             getCurrentUser().then(function (user) {
                 updateFields(user);
@@ -218,6 +267,18 @@
         } else {
             updateProfileData();
         }
+    });
+
+    $("#updatePassword").on("click", function () {
+        updatePassword().then(function () {
+            $("#success-message").text("Updated");
+            getCurrentUser().then(function (user) {
+                updateFields(user);
+            });
+            showProfileTable();
+        }, function () {
+            $("#fail-message").text("Fail");
+        });
     });
 
     $(document).ready(function () {

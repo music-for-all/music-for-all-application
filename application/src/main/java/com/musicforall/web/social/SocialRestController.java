@@ -3,7 +3,6 @@ package com.musicforall.web.social;
 import com.musicforall.common.Constants;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.SearchUserRequest;
-import com.musicforall.model.user.User;
 import com.musicforall.model.user.UserData;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;

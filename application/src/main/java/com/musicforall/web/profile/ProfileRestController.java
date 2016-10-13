@@ -43,4 +43,16 @@ public class ProfileRestController {
         userService.updateUserData(SecurityUtil.currentUserId(), profileData);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/update/password", method = RequestMethod.GET)
+    public ResponseEntity updatePassword(@Valid ProfileData profileData, BindingResult bindingResult) {
+        LOG.info(profileData.toString());
+
+        if (bindingResult.hasErrors()) {
+            LOG.info(bindingResult.getAllErrors().toString());
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        userService.updateUser(SecurityUtil.currentUserId(), profileData);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

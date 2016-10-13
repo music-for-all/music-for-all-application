@@ -72,9 +72,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user, ProfileData profileData) {
+    public void updateUser(Integer userId, ProfileData profileData) {
         final Map<String, Object> params = new HashMap<>();
-        params.put("id", user.getId());
+        params.put("id", userId);
         if (profileData.getPassword() != null) {
             profileData.setPassword(passwordEncoder.encode(profileData.getPassword()));
         }

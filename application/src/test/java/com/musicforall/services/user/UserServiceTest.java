@@ -74,7 +74,7 @@ public class UserServiceTest {
         userService.save(user);
 
         final ProfileData profileData = ProfileData.create().password("password").get();
-        userService.updateUser(user, profileData);
+        userService.updateUser(user.getId(), profileData);
         assertEquals(profileData.getPassword(), userService.getByEmail(user.getEmail()).getPassword());
     }
 

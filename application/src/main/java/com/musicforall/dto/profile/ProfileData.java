@@ -15,13 +15,13 @@ public final class ProfileData implements Serializable {
     private String lastName;
     private String picture;
     private String bio;
-    private boolean publicRadio;
+    private Boolean publicRadio;
 
     public ProfileData() {
     }
 
     private ProfileData(String username, String password, String firstName,
-                        String lastName, String picture, String bio, boolean publicRadio) {
+                        String lastName, String picture, String bio, Boolean publicRadio) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -79,11 +79,11 @@ public final class ProfileData implements Serializable {
         return picture;
     }
 
-    public boolean getPublicRadio() {
+    public Boolean getPublicRadio() {
         return publicRadio;
     }
 
-    public void setPublicRadio(boolean publicRadio) {
+    public void setPublicRadio(Boolean publicRadio) {
         this.publicRadio = publicRadio;
     }
 
@@ -111,7 +111,7 @@ public final class ProfileData implements Serializable {
         private String lastName;
         private String picture;
         private String bio;
-        private boolean publicRadio;
+        private Boolean publicRadio;
 
         private Builder() {
         }
@@ -146,7 +146,7 @@ public final class ProfileData implements Serializable {
             return this;
         }
 
-        public Builder publicRadio(boolean publicRadio) {
+        public Builder publicRadio(Boolean publicRadio) {
             this.publicRadio = publicRadio;
             return this;
         }
