@@ -14,7 +14,9 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import static org.hibernate.annotations.CascadeType.DELETE;
 import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
@@ -68,6 +70,10 @@ public class User implements SocialUserDetails, Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     @Cascade({SAVE_UPDATE, DELETE})
     private UserSettings settings;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @Cascade({SAVE_UPDATE, DELETE})
+    private Set<UserAchievement> achievements = new HashSet<>();
 
     public User() {
     }
@@ -203,5 +209,13 @@ public class User implements SocialUserDetails, Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Set<UserAchievement> getAchievements() {
+        return achievements;
+    }
+
+    public void setAchievements(Set<UserAchievement> achievements) {
+        this.achievements = achievements;
     }
 }
