@@ -40,7 +40,7 @@ public class ProfileRestController {
             LOG.info(bindingResult.getAllErrors().toString());
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        userService.updateUser(SecurityUtil.currentUser(), profileData);
-        return new ResponseEntity<>(userService.getWithUserDataById(SecurityUtil.currentUserId()), HttpStatus.OK);
+        userService.updateUserData(SecurityUtil.currentUserId(), profileData);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

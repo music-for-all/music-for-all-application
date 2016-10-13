@@ -4,7 +4,6 @@ import com.musicforall.files.manager.FileManager;
 import com.musicforall.model.Artist;
 import com.musicforall.dto.profile.ProfileData;
 import com.musicforall.model.Track;
-import com.musicforall.model.user.User;
 import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
@@ -61,12 +60,12 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public ResponseEntity<String> uploadPictureFile(User user, MultipartFile file) {
-        requireNonNull(user, "user must not be null");
-        final Optional<Path> saved = manager.savePicture(user.getId(), file);
+    public ResponseEntity<String> uploadPictureFile(Integer userId, MultipartFile file) {
+        requireNonNull(userId, "user must not be null");
+        final Optional<Path> saved = manager.savePicture(userId, file);
         if (saved.isPresent()) {
-            userService.updateUser(user, ProfileData.create()
-                    .picture(DEFAULT_PICTURE_DIRECTORY + user.getId() + "/" + file.getOriginalFilename())
+            userService.updateUserData(userId, ProfileData.create()
+                    .picture(DEFAULT_PICTURE_DIRECTORY + userId + "/" + file.getOriginalFilename())
                     .get());
             return new ResponseEntity<>("Picture successfully saved", HttpStatus.OK);
         } else {

@@ -89,7 +89,7 @@ public class FileController {
 
         final ResponseEntity<String> errorStatus = fileService.checkFile(file);
         if (Objects.equals(errorStatus.getBody(), "ok")) {
-            return fileService.uploadPictureFile(SecurityUtil.currentUser(), file);
+            return fileService.uploadPictureFile(SecurityUtil.currentUserId(), file);
         } else {
             return errorStatus;
         }
