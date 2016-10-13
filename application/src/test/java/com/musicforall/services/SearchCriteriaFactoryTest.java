@@ -114,36 +114,26 @@ public class SearchCriteriaFactoryTest {
                 new SearchUserRequest("")));
         assertEquals(0, users.size());
 
-        final UserData settings = new UserData(true, "link");
-        User user = new User(USER, PASSWORD, "testGetUserLike@test.com");
-        user.setLastName("lastName");
-        user.setFirstName("firstName");
-        user.setUserData(settings);
+        final UserData userData = new UserData(USER, "firstName", "lastName", "link", "bio", true);
+        User user = new User(PASSWORD, "testGetUserLike@test.com", userData);
 
         userService.save(user);
 
-
-        users = dao.getAllBy(createUserSearchCriteria(
-                new SearchUserRequest("use")));
-        assertEquals(1, users.size());
-
-
-        SearchUserRequest testEmailRequest = new SearchUserRequest();
-        testEmailRequest.setEmail("testGetUse");
-        users = dao.getAllBy(createUserSearchCriteria(testEmailRequest));
-        assertEquals(1, users.size());
+        users = dao.getAllBy(createUserSearchCriteria(new SearchUserRequest("oop")));
+        assertEquals(0, users.size());
 
         SearchUserRequest testFNameRequest = new SearchUserRequest();
         testFNameRequest.setFirstName("first");
         users = dao.getAllBy(createUserSearchCriteria(testFNameRequest));
         assertEquals(1, users.size());
 
+        users = dao.getAllBy(createUserSearchCriteria(new SearchUserRequest("use")));
+        assertEquals(1, users.size());
+
         SearchUserRequest testLNameRequest = new SearchUserRequest();
         testLNameRequest.setLastName("last");
         users = dao.getAllBy(createUserSearchCriteria(testLNameRequest));
         assertEquals(1, users.size());
-
-
     }
 
     @Test

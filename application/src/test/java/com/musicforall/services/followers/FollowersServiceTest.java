@@ -33,8 +33,8 @@ public class FollowersServiceTest {
 
     @Test
     public void testFollow() {
-        final User user1 = new User("Mike", PASSWORD, "mike@example.com");
-        final User user2 = new User("John2", PASSWORD, "john2@example.com");
+        final User user1 = new User(PASSWORD, "mike@example.com");
+        final User user2 = new User(PASSWORD, "john2@example.com");
         userService.save(user1);
         userService.save(user2);
         followerService.follow(user1.getId(), user1.getId());
@@ -46,8 +46,8 @@ public class FollowersServiceTest {
 
     @Test
     public void testUnfollow() {
-        final User user = new User("John1", PASSWORD, "test@example.com");
-        final User user_followers = new User("Spocks", PASSWORD, "mail1@example.com");
+        final User user = new User(PASSWORD, "test@example.com");
+        final User user_followers = new User(PASSWORD, "mail1@example.com");
         userService.save(user);
         userService.save(user_followers);
         followerService.follow(user_followers.getId(), user.getId());
@@ -58,8 +58,8 @@ public class FollowersServiceTest {
 
     @Test
     public void testGetFollowerId() {
-        final User user = new User("Anna", PASSWORD, "anna@example.com");
-        final User user_followers = new User("James", PASSWORD, "james@example.com");
+        final User user = new User(PASSWORD, "anna@example.com");
+        final User user_followers = new User(PASSWORD, "james@example.com");
         userService.save(user);
         userService.save(user_followers);
 
@@ -72,8 +72,8 @@ public class FollowersServiceTest {
 
     @Test
     public void testGetFollowingId() {
-        final User user = new User("Tasha", PASSWORD, "tasha@example.com");
-        final User user_followers = new User("Abrams", PASSWORD, "abrams@example.com");
+        final User user = new User(PASSWORD, "tasha@example.com");
+        final User user_followers = new User(PASSWORD, "abrams@example.com");
         userService.save(user);
         userService.save(user_followers);
         followerService.follow(user_followers.getId(), user.getId());
