@@ -49,7 +49,7 @@ public class UserServiceTest {
 
     @Test
     public void testSaveUser() {
-        final User user = new User("Masha", "123456789", "masha@example.com");
+        final User user = new User("123456789", "masha@example.com", new UserData(USER));
         userService.save(user);
 
         final Integer id = user.getId();
@@ -58,13 +58,34 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testUpdateUser() {
-        final User user = new User("Mike", "1234567890", "mike@example.com");
+    public void testSaveUserDataWitOtherUserId() {
+        final User user = new User("1234567891", "mash@example.com", new UserData(USER));
+        user.getUserData().setUserId(0);
         userService.save(user);
 
-        final ProfileData profileData = ProfileData.create().bio("Bio").get();
+        final Integer id = user.getId();
+        assertTrue(id > 0);
+        assertNotEquals(id, userService.get(id).getUserData().getUserId());
+    }
+
+    @Test
+    public void testUpdateUser() {
+        final User user = new User("12345678901", "mikel@example.com", new UserData(USER));
+        userService.save(user);
+
+        final ProfileData profileData = ProfileData.create().password("password").get();
         userService.updateUser(user, profileData);
-        assertEquals(profileData.getBio(), userService.getByEmail(user.getEmail()).getBio());
+        assertEquals(profileData.getPassword(), userService.getByEmail(user.getEmail()).getPassword());
+    }
+
+    @Test
+    public void testUpdateUserData() {
+        final User user = new User("1234567890", "mike@example.com", new UserData(USER));
+        userService.save(user);
+
+        final ProfileData profileData = ProfileData.create().picture("picture").get();
+        userService.updateUserData(user.getId(), profileData);
+        assertEquals(profileData.getPicture(), userService.getWithUserDataById(user.getId()).getUserData().getPicture());
     }
 
     @Test
@@ -82,7 +103,7 @@ public class UserServiceTest {
 
     @Test
     public void testUserDelete() {
-        final User user = new User("Test", "123456789", "test@example.com");
+        final User user = new User("123456789", "test@example.com");
         userService.save(user);
         userService.delete(user.getId());
 
@@ -110,15 +131,15 @@ public class UserServiceTest {
     @Test(expected = UsernameNotFoundException.class)
     public void testLoadUserByUsername() {
         final UserDetails user = userService.loadUserByUsername(USER_EMAIL_1);
-        assertEquals(USER, user.getUsername());
+        assertEquals(USER_EMAIL_1, user.getUsername());
         assertNotNull(userService.loadUserByUsername(USER_NOT_EXIST));
     }
 
     @Test
     public void testGetUsersById() {
-        final User user1 = new User("Johnny", PASSWORD, "testGetUsersById1@example.com");
-        final User user2 = new User("Abc", PASSWORD, "testGetUsersById2@example.com");
-        final User user3 = new User("Spock", PASSWORD, "testGetUsersById3@example.com");
+        final User user1 = new User(PASSWORD, "testGetUsersById1@example.com");
+        final User user2 = new User(PASSWORD, "testGetUsersById2@example.com");
+        final User user3 = new User(PASSWORD, "testGetUsersById3@example.com");
         final List<Integer> users = new ArrayList<>();
         userService.save(user1);
         users.add(user1.getId());
@@ -135,7 +156,7 @@ public class UserServiceTest {
 
     @Test
     public void testLoadUserByUserId() {
-        final User user1 = new User("C_3PO", PASSWORD, "c_3po@example.com");
+        final User user1 = new User(PASSWORD, "c_3po@example.com");
         userService.save(user1);
 
         assertNotNull(userService.loadUserByUserId(user1.getEmail()));
@@ -143,49 +164,35 @@ public class UserServiceTest {
 
     @Test
     public void testGetUsersWithData() {
-        final UserData defaultSettings = new UserData(true, "link");
-        final User user1 = new User(USER, PASSWORD, "mail1@example.com");
-        final User user2 = new User(USER, PASSWORD, "mail2@example.com");
-        final User user3 = new User(USER, PASSWORD, "mail3@example.com");
+        final User user1 = new User(PASSWORD, "mail1@example.com", new UserData(USER));
+        final User user2 = new User(PASSWORD, "mail2@example.com", new UserData(USER));
+        final User user3 = new User(PASSWORD, "mail3@example.com", new UserData(USER));
 
         final List<User> users = asList(user1, user2, user3);
-        users.forEach(user -> user.setUserData(defaultSettings));
         userService.saveAll(users);
 
         final List<Integer> userIds = users.stream().map(User::getId).collect(toList());
         final List<User> usersWithSettings = userService.getAllWithUserDataByIds(userIds);
 
         final boolean match = usersWithSettings.stream()
-                .filter(u -> defaultSettings.equals(u.getUserData()))
+                .filter(u -> new UserData(USER).equals(u.getUserData()))
                 .allMatch(user -> userIds.contains(user.getId()));
         assertTrue(match);
     }
 
     @Test
     public void testGetUserWithData() {
-        final UserData settings = new UserData(true, "link");
-        User user = new User(USER, PASSWORD, "testGetUserWithSettings@test.com");
-        user.setUserData(settings);
-
+        User user = new User(PASSWORD, "testGetUserWithSettings@test.com", new UserData(USER));
         userService.save(user);
-
-        assertEquals(settings, userService.getWithUserDataById(user.getId()).getUserData());
+        assertEquals(user.getUserData().getUsername(),
+                userService.getWithUserDataById(user.getId()).getUserData().getUsername());
     }
 
     @Test
     public void testGetUserLike() {
-        final UserData settings = new UserData(true, "link");
-        User user = new User("test_name", PASSWORD, "testGetUserLike@test.com");
-        user.setUserData(settings);
-
+        User user = new User(PASSWORD, "testGetUserLike@test.com", new UserData("test_name"));
         userService.save(user);
-
-        SearchUserRequest searchUserByEmail = new SearchUserRequest();
-        searchUserByEmail.setEmail("testGetUserLi");
-        assertEquals(userService.getAllLike(searchUserByEmail).size(), 1);
-
         SearchUserRequest searchUserByUsername = new SearchUserRequest("test");
         assertEquals(userService.getAllLike(searchUserByUsername).size(), 1);
-
     }
 }

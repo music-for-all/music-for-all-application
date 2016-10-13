@@ -4,6 +4,7 @@ import com.musicforall.common.Constants;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.SearchUserRequest;
 import com.musicforall.model.user.User;
+import com.musicforall.model.user.UserData;
 import com.musicforall.services.SearchCriteriaFactory;
 import org.hibernate.FetchMode;
 import com.musicforall.dto.profile.ProfileData;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Pukho on 16.06.2016.
@@ -39,7 +41,15 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         /* Encode the password before saving the user. */
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return dao.save(user);
+        dao.save(user);
+        if (user.getUserData() != null && user.getUserData().getUserId() == null) {
+            final Map<String, Object> params = new HashMap<>();
+            params.put("userId", user.getId());
+            params.put("id", user.getUserData().getId());
+            dao.update(UserData.UPDATE_USER_ID, params);
+            return user;
+        }
+        return user;
     }
 
     @Override
@@ -48,23 +58,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserData(User user, ProfileData profileData) {
+    public void updateUserData(Integer userId, ProfileData profileData) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("username", profileData.getUsername());
+        params.put("firstName", profileData.getFirstName());
+        params.put("lastName", profileData.getLastName());
+        params.put("picture", profileData.getPicture());
+        params.put("bio", profileData.getBio());
+        params.put("publicRadio", profileData.getPublicRadio());
 
+        dao.update(UserData.UPDATE_USER_DATA, params);
     }
+
     @Override
     public void updateUser(User user, ProfileData profileData) {
         final Map<String, Object> params = new HashMap<>();
         params.put("id", user.getId());
-        params.put("username", profileData.getUsername());
-        params.put("firstName", profileData.getFirstName());
-        params.put("lastName", profileData.getLastName());
-        params.put("bio", profileData.getBio());
         if (profileData.getPassword() != null) {
             profileData.setPassword(passwordEncoder.encode(profileData.getPassword()));
         }
         params.put("password", profileData.getPassword());
 
-        dao.update(User.UPDATE_USER_DATA, params);
+        dao.update(User.UPDATE_USER, params);
     }
 
     @Override
@@ -90,7 +106,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByEmail(String email) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
-                .setFetchMode("settings", FetchMode.JOIN)
+                .setFetchMode("userData", FetchMode.JOIN)
                 .add(Property.forName(Constants.EMAIL).eq(email));
 
         return dao.getBy(detachedCriteria);
@@ -105,7 +121,8 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllLike(SearchUserRequest searchCriteria) {
         final DetachedCriteria detachedCriteria =
                 SearchCriteriaFactory.createUserSearchCriteria(searchCriteria);
-        return dao.getAllBy(detachedCriteria);
+        final List<UserData> userData = dao.getAllBy(detachedCriteria);
+        return getUsersById(userData.stream().map(UserData::getUserId).collect(Collectors.toList()));
     }
 
     @Override

@@ -20,7 +20,7 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
 
     void updateUser(User user, ProfileData profileData);
 
-    void updateUserData(User user, ProfileData profileData);
+    void updateUserData(Integer userId, ProfileData profileData);
 
     User get(Integer userId);
 
