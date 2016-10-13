@@ -37,6 +37,10 @@ public class UserAchievement {
     @JoinColumn(name = "achievement_id", nullable = false)
     private Achievement achievement;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status;
@@ -47,7 +51,8 @@ public class UserAchievement {
     public UserAchievement() {
     }
 
-    public UserAchievement(Achievement achievement, Status status) {
+    public UserAchievement(User user, Achievement achievement, Status status) {
+        this.user = user;
         this.achievement = achievement;
         this.status = status;
     }
@@ -84,18 +89,27 @@ public class UserAchievement {
         this.progressCount = progressCount;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserAchievement that = (UserAchievement) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(achievement, that.achievement);
+        return Objects.equals(id, that.id)
+                && Objects.equals(achievement, that.achievement)
+                && Objects.equals(user, that.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, achievement);
+        return Objects.hash(id, achievement, user);
     }
 
     @Override

@@ -36,6 +36,4 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
     User getWithSettingsById(Integer id);
 
     List<User> getUsersByUsername(String username);
-
-    User getUserWithAchievements(Integer userId);
 }

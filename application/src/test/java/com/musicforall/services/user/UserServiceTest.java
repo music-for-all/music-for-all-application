@@ -1,9 +1,7 @@
 package com.musicforall.services.user;
 
-import com.musicforall.model.Achievement;
 import com.musicforall.model.SearchUserRequest;
 import com.musicforall.model.user.User;
-import com.musicforall.model.user.UserAchievement;
 import com.musicforall.model.user.UserSettings;
 import com.musicforall.services.achievements.AchievementsService;
 import com.musicforall.util.ServicesTestConfig;
@@ -20,13 +18,8 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import static com.musicforall.history.handlers.events.EventType.TRACK_ADDED;
-import static com.musicforall.model.user.UserAchievement.Status.IN_PROGRESS;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.*;
@@ -185,30 +178,5 @@ public class UserServiceTest {
         SearchUserRequest searchUserByUsername = new SearchUserRequest("test");
         assertEquals(userService.getAllLike(searchUserByUsername).size(), 1);
 
-    }
-
-    @Test
-    public void testGetUserWithAchievements() {
-        final User user = userService.save(createUserWithAchievements("testGetUserAchievements@test.com"));
-        final User userWithAchievements = userService.getUserWithAchievements(user.getId());
-
-        assertEquals(user, userWithAchievements);
-    }
-
-    private User createUserWithAchievements(final String email) {
-        final Collection<Achievement> achievements = achievementsService.saveAll(asList(
-                new Achievement("script1", TRACK_ADDED),
-                new Achievement("script2", TRACK_ADDED),
-                new Achievement("script3", TRACK_ADDED),
-                new Achievement("script4", TRACK_ADDED)
-        ));
-
-        final Set<UserAchievement> userAchievements = achievements.stream()
-                .map(a -> new UserAchievement(a, IN_PROGRESS))
-                .collect(Collectors.toSet());
-
-        final User user = new User(USER, PASSWORD, email);
-        user.setUserAchievements(userAchievements);
-        return user;
     }
 }

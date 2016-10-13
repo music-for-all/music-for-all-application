@@ -1,7 +1,9 @@
 package com.musicforall.services.achievements;
 
 import com.musicforall.model.Achievement;
+import com.musicforall.model.user.User;
 import com.musicforall.model.user.UserAchievement;
+import com.musicforall.services.user.UserService;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +16,8 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import java.util.Collection;
 import java.util.List;
 
+import static com.musicforall.common.Constants.PASSWORD;
+import static com.musicforall.common.Constants.USER;
 import static com.musicforall.history.handlers.events.EventType.*;
 import static com.musicforall.model.user.UserAchievement.Status.IN_PROGRESS;
 import static java.util.Arrays.asList;
@@ -30,6 +34,8 @@ import static org.junit.Assert.*;
 public class AchievementsServiceTest {
     @Autowired
     private AchievementsService achievementsService;
+    @Autowired
+    private UserService userService;
 
     @Test
     public void saveAchievement() {
@@ -41,8 +47,9 @@ public class AchievementsServiceTest {
 
     @Test
     public void saveUserAchievement() {
+        final User user = userService.save(new User(USER, PASSWORD, "saveUserAchievement@mail.com"));
         final Achievement achievement = new Achievement("script", TRACK_ADDED);
-        final UserAchievement inProgress = achievementsService.save(new UserAchievement(achievement, IN_PROGRESS));
+        final UserAchievement inProgress = achievementsService.save(new UserAchievement(user, achievement, IN_PROGRESS));
         final UserAchievement savedAchievement = achievementsService.getUserAchievement(inProgress.getId());
 
         assertEquals(inProgress, savedAchievement);
@@ -50,8 +57,9 @@ public class AchievementsServiceTest {
 
     @Test
     public void incrementProgressCount() {
+        final User user = userService.save(new User(USER, PASSWORD, "incrementProgressCount@mail.com"));
         final Achievement achievement = new Achievement("script", TRACK_ADDED);
-        final UserAchievement inProgress = achievementsService.save(new UserAchievement(achievement, IN_PROGRESS));
+        final UserAchievement inProgress = achievementsService.save(new UserAchievement(user, achievement, IN_PROGRESS));
         final UserAchievement savedAchievement = achievementsService.incrementProgressCount(inProgress);
 
         assertEquals(1, savedAchievement.getProgressCount() - inProgress.getProgressCount());

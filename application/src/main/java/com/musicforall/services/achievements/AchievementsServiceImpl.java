@@ -23,14 +23,14 @@ import static com.musicforall.model.user.UserAchievement.Status.DONE;
 import static com.musicforall.model.user.UserAchievement.Status.IN_PROGRESS;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
-import static org.hibernate.criterion.Restrictions.in;
-import static org.hibernate.criterion.Restrictions.not;
+import static org.hibernate.criterion.Restrictions.*;
 
 /**
  * @author ENikolskiy.
  */
 @Service
 @Transactional
+//TODO split in two services
 public class AchievementsServiceImpl implements AchievementsService {
     @Autowired
     private Dao dao;
@@ -77,6 +77,11 @@ public class AchievementsServiceImpl implements AchievementsService {
     }
 
     @Override
+    public Collection<UserAchievement> saveUserAchievements(Collection<UserAchievement> achievements) {
+        return dao.saveAll(achievements);
+    }
+
+    @Override
     public Collection<Achievement> filterBy(Collection<Integer> excludedIds, Collection<EventType> types) {
         final DetachedCriteria criteria = DetachedCriteria.forClass(Achievement.class);
         criteria.add(in("eventType", types));
@@ -85,11 +90,24 @@ public class AchievementsServiceImpl implements AchievementsService {
         return dao.getAllBy(criteria);
     }
 
-    private void doStuff(Map<String, Object> vars, Integer userId, EventType type) {
-        final User user = userService.getUserWithAchievements(userId);
+    @Override
+    public Collection<UserAchievement> getByUserInStatuses(Integer userId, UserAchievement.Status... statuses) {
+        final DetachedCriteria criteria = DetachedCriteria.forClass(UserAchievement.class);
+        criteria.add(eq("user.id", userId));
+        if (statuses != null && statuses.length != 0) {
+            criteria.add(in("status", statuses));
+        }
 
-        final List<UserAchievement> processed = user.getUserAchievements().stream()
-                .filter(ua -> ua.getStatus() != DONE && ua.getAchievement().getEventType() == type)
+        return dao.getAllBy(criteria);
+    }
+
+    //TODO place to some kind of AchievementProcessor
+    private void doStuff(Map<String, Object> vars, Integer userId, EventType type) {
+
+        final Collection<UserAchievement> userAchievements = getByUserInStatuses(userId, IN_PROGRESS);
+
+        final List<UserAchievement> processed = userAchievements.stream()
+                .filter(ua -> ua.getAchievement().getEventType() == type)
                 .filter(ua -> processScript(ua.getAchievement(), vars))
                 .collect(toList());
 
@@ -102,17 +120,16 @@ public class AchievementsServiceImpl implements AchievementsService {
                         save(ua);
                     });
         }
-        final List<Integer> excludedIds = user.getUserAchievements().stream()
+        final User user = userService.get(userId);
+
+        final List<Integer> excludedIds = userAchievements.stream()
                 .map(UserAchievement::getId)
                 .collect(toList());
         final List<UserAchievement> newUA = filterBy(excludedIds, asList(type)).stream()
                 .filter(a -> processScript(a, vars))
-                .map(a -> new UserAchievement(a, IN_PROGRESS))
+                .map(a -> new UserAchievement(user, a, IN_PROGRESS))
                 .collect(toList());
-        if (!newUA.isEmpty()) {
-            user.addUserAchievements(newUA);
-            userService.save(user);
-        }
+        saveUserAchievements(newUA);
     }
 
     private boolean processScript(Achievement achievement, Map<String, Object> vars) {

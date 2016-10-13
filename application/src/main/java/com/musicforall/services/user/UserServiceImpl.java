@@ -136,14 +136,4 @@ public class UserServiceImpl implements UserService {
 
         return dao.getAllBy(detachedCriteria);
     }
-
-    @Override
-    public User getUserWithAchievements(Integer userId) {
-        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
-                .setFetchMode("achievements", FetchMode.JOIN)
-                .add(Property.forName(Constants.ID).eq(userId));
-
-        return dao.getBy(detachedCriteria);
-    }
-
 }

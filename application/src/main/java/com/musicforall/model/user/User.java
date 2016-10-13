@@ -14,9 +14,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 import static org.hibernate.annotations.CascadeType.DELETE;
 import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
@@ -70,10 +68,6 @@ public class User implements SocialUserDetails, Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     @Cascade({SAVE_UPDATE, DELETE})
     private UserSettings settings;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @Cascade({SAVE_UPDATE, DELETE})
-    private Set<UserAchievement> achievements = new HashSet<>();
 
     public User() {
     }
@@ -169,7 +163,7 @@ public class User implements SocialUserDetails, Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, email);
+        return Objects.hash(id, username, email);
     }
 
     @Override
@@ -183,7 +177,6 @@ public class User implements SocialUserDetails, Serializable {
         final User other = (User) obj;
         return Objects.equals(this.id, other.id)
                 && Objects.equals(this.username, other.username)
-                && Objects.equals(this.password, other.password)
                 && Objects.equals(this.email, other.email);
     }
 
@@ -192,24 +185,8 @@ public class User implements SocialUserDetails, Serializable {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';
-    }
-
-    public Set<UserAchievement> getUserAchievements() {
-        return achievements;
-    }
-
-    public void setUserAchievements(Set<UserAchievement> achievements) {
-        this.achievements = achievements;
-    }
-
-    public void addUserAchievements(Collection<UserAchievement> userAchievements) {
-        if (this.achievements == null) {
-            this.achievements = new HashSet<>();
-        }
-        this.achievements.addAll(userAchievements);
     }
 
     public String getFirstName() {

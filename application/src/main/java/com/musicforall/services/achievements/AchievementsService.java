@@ -25,5 +25,9 @@ public interface AchievementsService {
 
     Collection<Achievement> saveAll(Collection<Achievement> achievements);
 
+    Collection<UserAchievement> saveUserAchievements(Collection<UserAchievement> achievements);
+
     Collection<Achievement> filterBy(Collection<Integer> excludedIds, Collection<EventType> types);
+
+    Collection<UserAchievement> getByUserInStatuses(Integer userId, UserAchievement.Status... statuses);
 }
