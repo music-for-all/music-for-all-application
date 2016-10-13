@@ -113,7 +113,7 @@
                     <button class="btn btn-default hidden" id="back">
                         <span class="glyphicon glyphicon-arrow-left"></span> <@spring.message "profilepage.Back" />
                     </button>
-                    <button class="btn btn-success hidden" id="update">
+                    <button class="btn btn-success hidden" id="updateUser">
                         <span class="glyphicon"></span><@spring.message "profilepage.Update" />
                     </button>
                     <button class="btn btn-default" id="edit">
@@ -157,15 +157,15 @@
     function updateFields(user) {
         document.getElementById("userPicture").src = user.userData.picture;
         document.getElementById("uploadPicture").src = user.userData.picture;
-        $("#panelUsername").text(user.username);
-        $("#tdFirstName").text(user.firstName);
-        $("#tdLastName").text(user.lastName);
-        $("#tdBio").text(user.bio);
+        $("#panelUsername").text(user.userData.username);
+        $("#tdFirstName").text(user.userData.firstName);
+        $("#tdLastName").text(user.userData.lastName);
+        $("#tdBio").text(user.userData.bio);
         $("#tdEmail").text(user.email);
-        $("#username").val(user.username);
-        $("#firstName").val(user.firstName);
-        $("#lastName").val(user.lastName);
-        $("#user_profile_bio").text(user.bio);
+        $("#username").val(user.userData.username);
+        $("#firstName").val(user.userData.firstName);
+        $("#lastName").val(user.userData.lastName);
+        $("#user_profile_bio").text(user.userData.bio);
     }
 
     $("#edit").on("click", function () {
@@ -191,9 +191,11 @@
     }
 
     function updateProfileData() {
-        updateData().then(function (user) {
-            updateFields(user);
+        updateData().then(function () {
             $("#success-message").text("Updated");
+            getCurrentUser().then(function (user) {
+                updateFields(user);
+            });
             showProfileTable();
         }, function () {
             $("#fail-message").text("Fail");
