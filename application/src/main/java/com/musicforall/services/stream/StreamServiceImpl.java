@@ -3,7 +3,7 @@ package com.musicforall.services.stream;
 import com.musicforall.common.cache.CacheProvider;
 import com.musicforall.dto.profile.ProfileData;
 import com.musicforall.model.Track;
-import com.musicforall.model.user.User;
+import com.musicforall.model.user.UserData;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,10 +49,10 @@ public class StreamServiceImpl implements StreamService {
 
     @Override
     public Map<Integer, Track> getGroupedPublicStreams(Collection<Integer> ids) {
-        final List<User> users = userService.getAllWithUserDataByIds(ids);
+        final List<UserData> users = userService.getAllUserDataByUserId(ids);
         return users.stream()
-                .filter(u -> u.getUserData() != null && u.getUserData().isPublicRadio())
-                .map(User::getId)
+                .filter(UserData::isPublicRadio)
+                .map(UserData::getUserId)
                 .collect(HashMap::new, ((m, id) -> {
                     final Track track = cache.get(id);
                     if (track != null) {

@@ -169,10 +169,10 @@ public class UserServiceTest {
         final List<Integer> users = new ArrayList<>();
         userService.save(user1);
         users.add(user1.getId());
-        assertEquals(users.size(), userService.getUsersDataById(users).size());
+        assertEquals(users.size(), userService.getAllUserDataByUserId(users).size());
         userService.save(user2);
         users.add(user2.getId());
-        assertEquals(users.size(), userService.getUsersDataById(users).size());
+        assertEquals(users.size(), userService.getAllUserDataByUserId(users).size());
     }
 
     @Test
@@ -207,14 +207,6 @@ public class UserServiceTest {
         userService.save(user);
         assertEquals(user.getUserData().getUsername(),
                 userService.getWithUserDataById(user.getId()).getUserData().getUsername());
-    }
-
-    @Test
-    public void testGetUserLike() {
-        User user = new User(PASSWORD, "testGetUserLike@test.com", new UserData("test_name"));
-        userService.save(user);
-        SearchUserRequest searchUserByUsername = new SearchUserRequest("test");
-        assertEquals(userService.getAllLike(searchUserByUsername).size(), 1);
     }
 
     @Test

@@ -48,12 +48,12 @@ public class UserRestController {
 
     @RequestMapping(value = "/followers", method = RequestMethod.GET)
     public Collection<UserData> getFollowers() {
-        return userService.getUsersDataById(followerService.getFollowersId(currentUser().getId()));
+        return userService.getAllUserDataByUserId(followerService.getFollowersId(currentUser().getId()));
     }
 
     @RequestMapping(value = "/following", method = RequestMethod.GET)
     public Collection<UserData> getFollowings() {
-        return userService.getUsersDataById(followerService.getFollowingId(currentUser().getId()));
+        return userService.getAllUserDataByUserId(followerService.getFollowingId(currentUser().getId()));
     }
 
     @RequestMapping(value = "/search={username}", method = RequestMethod.GET)

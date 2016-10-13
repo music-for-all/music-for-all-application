@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by Pukho on 16.06.2016.
@@ -92,7 +91,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserData> getUsersDataById(Collection<Integer> usersId) {
+    public List<UserData> getAllUserDataByUserId(Collection<Integer> usersId) {
         final Map<String, Object> params = new HashMap<>();
         params.put("usersId", usersId);
         return dao.getAllByNamedQuery(UserData.class, UserData.USERS_DATA_BY_USER_IDS, params);
@@ -137,14 +136,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return dao.all(User.class);
-    }
-
-    @Override
-    public List<User> getAllLike(SearchUserRequest searchCriteria) {
-        final DetachedCriteria detachedCriteria =
-                SearchCriteriaFactory.createUserSearchCriteria(searchCriteria);
-        final List<UserData> userData = dao.getAllBy(detachedCriteria);
-        return getUsersById(userData.stream().map(UserData::getUserId).collect(Collectors.toList()));
     }
 
     @Override

@@ -25,7 +25,7 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
 
     UserData getUserData(Integer userId);
 
-    List<UserData> getUsersDataById(Collection<Integer> usersId);
+    List<UserData> getAllUserDataByUserId(Collection<Integer> usersId);
 
     List<UserData> getAllUserDataLike(SearchUserRequest searchCriteria);
 
@@ -38,8 +38,6 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
     User getByEmail(String email);
 
     List<User> findAll();
-
-    List<User> getAllLike(SearchUserRequest searchCriteria);
 
     List<User> getUsersById(Collection<Integer> usersId);
 
