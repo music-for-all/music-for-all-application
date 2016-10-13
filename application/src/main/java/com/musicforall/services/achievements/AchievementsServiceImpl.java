@@ -10,7 +10,6 @@ import com.musicforall.model.user.UserAchievement;
 import com.musicforall.services.user.UserService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,38 +85,33 @@ public class AchievementsServiceImpl implements AchievementsService {
         return dao.getAllBy(criteria);
     }
 
-    @Async
     private void doStuff(Map<String, Object> vars, Integer userId, EventType type) {
         final User user = userService.getUserWithAchievements(userId);
-        final List<UserAchievement> userAchieve = user.getUserAchievements().stream()
-                .filter(a -> a.getStatus() != DONE && a.getAchievement().getEventType() == type)
-                .collect(toList());
 
-        final Collection<UserAchievement> processed = userAchieve.stream()
+        final List<UserAchievement> processed = user.getUserAchievements().stream()
+                .filter(ua -> ua.getStatus() != DONE && ua.getAchievement().getEventType() == type)
                 .filter(ua -> processScript(ua.getAchievement(), vars))
                 .collect(toList());
 
         if (!processed.isEmpty()) {
             processed.stream()
                     .map(this::incrementProgressCount)
+                    .filter(ua -> ua.getProgressCount() == ua.getAchievement().getCount())
                     .forEach(ua -> {
-                        if (ua.getProgressCount() == ua.getAchievement().getCount()) {
-                            ua.setStatus(DONE);
-                            save(ua);
-                        }
+                        ua.setStatus(DONE);
+                        save(ua);
                     });
-        } else {
-            final List<Integer> excludedIds = user.getUserAchievements().stream()
-                    .map(UserAchievement::getId)
-                    .collect(toList());
-            final List<UserAchievement> newUA = filterBy(excludedIds, asList(type)).stream()
-                    .filter(a -> processScript(a, vars))
-                    .map(a -> new UserAchievement(a, IN_PROGRESS))
-                    .collect(toList());
-            if (!newUA.isEmpty()) {
-                user.addUserAchievements(newUA);
-                userService.save(user);
-            }
+        }
+        final List<Integer> excludedIds = user.getUserAchievements().stream()
+                .map(UserAchievement::getId)
+                .collect(toList());
+        final List<UserAchievement> newUA = filterBy(excludedIds, asList(type)).stream()
+                .filter(a -> processScript(a, vars))
+                .map(a -> new UserAchievement(a, IN_PROGRESS))
+                .collect(toList());
+        if (!newUA.isEmpty()) {
+            user.addUserAchievements(newUA);
+            userService.save(user);
         }
     }
 
