@@ -84,6 +84,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserData getUserData(Integer userId){
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(UserData.class)
+                .add(Property.forName("userId").eq(userId));
+
+        return dao.getBy(detachedCriteria);
+    }
+
+    @Override
+    public List<UserData> getUsersDataById(Collection<Integer> usersId){
+        final Map<String, Object> params = new HashMap<>();
+        params.put("usersId", usersId);
+        return dao.getAllByNamedQuery(UserData.class, UserData.USERS_DATA_BY_USER_IDS, params);
+    }
+
+    @Override
+    public List<UserData> getAllUserDataLike(SearchUserRequest searchCriteria) {
+        final DetachedCriteria detachedCriteria =
+                SearchCriteriaFactory.createUserSearchCriteria(searchCriteria);
+        return dao.getAllBy(detachedCriteria);
+    }
+
+    @Override
     public User get(Integer id) {
         return dao.get(User.class, id);
     }

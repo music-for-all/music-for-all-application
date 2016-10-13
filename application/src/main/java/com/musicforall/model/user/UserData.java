@@ -30,6 +30,10 @@ import java.util.Objects;
                         query = "UPDATE UserData data" +
                                 " SET data.userId = COALESCE(:userId, data.userId)" +
                                 " where data.id = :id"
+                ),
+                @NamedQuery(
+                        name = UserData.USERS_DATA_BY_USER_IDS,
+                        query = "from UserData data where data.userId in (:usersId)"
                 )
         }
 )
@@ -37,6 +41,7 @@ import java.util.Objects;
 @Table(name = "user_data")
 public class UserData implements Serializable {
 
+    public static final String USERS_DATA_BY_USER_IDS = "users_data_by_user_ids";
     public static final String UPDATE_USER_DATA = "update_user_data";
     public static final String UPDATE_USER_ID = "update_user_data_id";
 

@@ -121,6 +121,14 @@ public class UserServiceTest {
     }
 
     @Test
+    public void testGetUserData() {
+        final User user = new User("123456", "getUserData@example.com", new UserData(USER));
+        userService.save(user);
+
+        assertNotNull(userService.getUserData(user.getId()));
+    }
+
+    @Test
     public void testFindAll() {
         final List<User> usersInDB = userBootstrap.bootstrapedEntities();
         final List<User> users = userService.findAll();
@@ -152,6 +160,19 @@ public class UserServiceTest {
         assertEquals(users.size(), userService.getUsersById(users).size());
         userService.delete(user3.getId());
         assertEquals(2, userService.getUsersById(users).size());
+    }
+
+    @Test
+    public void testGetUsersDataById() {
+        final User user1 = new User(PASSWORD, "testGetUsersDataById1@example.com", new UserData(USER));
+        final User user2 = new User(PASSWORD, "testGetUsersDataById2@example.com", new UserData(USER));
+        final List<Integer> users = new ArrayList<>();
+        userService.save(user1);
+        users.add(user1.getId());
+        assertEquals(users.size(), userService.getUsersDataById(users).size());
+        userService.save(user2);
+        users.add(user2.getId());
+        assertEquals(users.size(), userService.getUsersDataById(users).size());
     }
 
     @Test
@@ -194,5 +215,13 @@ public class UserServiceTest {
         userService.save(user);
         SearchUserRequest searchUserByUsername = new SearchUserRequest("test");
         assertEquals(userService.getAllLike(searchUserByUsername).size(), 1);
+    }
+
+    @Test
+    public void testGetUserDataLike() {
+        User user = new User(PASSWORD, "testGetUserDataLike@test.com", new UserData("data_name"));
+        userService.save(user);
+        SearchUserRequest searchUserDataByUsername = new SearchUserRequest("data");
+        assertEquals(userService.getAllUserDataLike(searchUserDataByUsername).size(), 1);
     }
 }
