@@ -26,15 +26,18 @@ public class ProfileController {
     public String profile(Model model) {
 
         model.addAttribute("user", SecurityUtil.currentUser());
-
         return "profile";
     }
 
-    @RequestMapping("/artist/{id}")
-    public String artistProfile(Model model, @PathVariable Integer id) {
+    @RequestMapping("/artist/{name}")
+    public String artistProfile(Model model, @PathVariable String name) {
 
-        model.addAttribute("artistName", "The Beatles"); // artistService.getById(id).getArtistName();
+        if (artistService.get(name) == null) {
+            LOG.info(String.format("Artist %s not found", name));
+            return "redirect:/";
+        }
 
+        model.addAttribute("artistName", name);
         return "artistProfile";
     }
 }
