@@ -3,6 +3,7 @@ package com.musicforall.services;
 import com.musicforall.files.manager.FileManager;
 import com.musicforall.history.service.DBHistoryPopulateService;
 import com.musicforall.model.*;
+import com.musicforall.model.user.User;
 import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
@@ -81,6 +82,7 @@ public class DbPopulateService {
             return new URL(url);
         } catch (MalformedURLException e) {
             LOG.error("URL is malformed {}", url, e);
+
         }
         return null;
     }
@@ -101,7 +103,6 @@ public class DbPopulateService {
     }
 
     private static void setDefaultValues(User user) {
-        user.setPicture(USER_PICTURE);
         user.setLastName(DEFAULT_NAME);
         user.setFirstName(DEFAULT_NAME);
     }
