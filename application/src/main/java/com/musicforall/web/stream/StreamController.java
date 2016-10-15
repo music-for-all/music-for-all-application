@@ -40,9 +40,9 @@ public class StreamController {
         return processWithCurrentUser(streamService::stop);
     }
 
-    @RequestMapping(value = "/publish/{toPublish}", method = POST)
-    public ResponseEntity publishStream(@PathVariable("toPublish") boolean toPublish) {
-        return processWithCurrentUser(userId -> streamService.publish(userId, toPublish));
+    @RequestMapping(value = "/switchRadio", method = POST)
+    public ResponseEntity publishStream() {
+        return processWithCurrentUser(userId -> streamService.switchRadio(userId));
     }
 
     @RequestMapping(method = GET)

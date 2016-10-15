@@ -89,6 +89,20 @@ public class UserServiceTest {
     }
 
     @Test
+    public void testUpdateUserRadio() {
+        final User user = new User("12345678908", "mike2@example.com", new UserData(USER));
+        userService.save(user);
+
+        assertEquals(Boolean.FALSE, userService.getUserData(user.getId()).isPublicRadio());
+
+        userService.switchPublicRadio(user.getId());
+        assertEquals(Boolean.TRUE, userService.getUserData(user.getId()).isPublicRadio());
+
+        userService.switchPublicRadio(user.getId());
+        assertEquals(Boolean.FALSE, userService.getUserData(user.getId()).isPublicRadio());
+    }
+
+    @Test
     public void testGetIdUserByEmail() {
         final Integer userId = userService.getIdByEmail(USER_EMAIL_1);
         assertEquals(userService.get(userId).getEmail(), USER_EMAIL_1);

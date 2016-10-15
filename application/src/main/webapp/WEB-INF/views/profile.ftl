@@ -209,7 +209,7 @@
     }
 
     $("#publicRadio").on("click", function () {
-        stream.publish(this.checked);
+        stream.switchRadio();
     });
 
     $("#edit").on("click", function () {

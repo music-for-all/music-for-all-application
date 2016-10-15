@@ -89,7 +89,7 @@ public class StreamServiceTest {
         Map<Integer, Track> groupedStreams = streamService.getGroupedPublicStreams(singleton(user.getId()));
         assertNull(groupedStreams.get(user.getId()));
 
-        streamService.publish(user.getId(), true);
+        streamService.switchRadio(user.getId());
 
         groupedStreams = streamService.getGroupedPublicStreams(singleton(user.getId()));
         assertNotNull(groupedStreams.get(user.getId()));

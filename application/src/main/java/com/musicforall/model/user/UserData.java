@@ -34,6 +34,12 @@ import java.util.Objects;
                 @NamedQuery(
                         name = UserData.USERS_DATA_BY_USER_IDS,
                         query = "from UserData data where data.userId in (:usersId)"
+                ),
+                @NamedQuery(
+                        name = UserData.SWITCH_STATE_OF_PUBLIC_RADIO,
+                        query = "UPDATE UserData data" +
+                                " SET data.publicRadio = CASE WHEN data.publicRadio = true THEN false ELSE true END" +
+                                " where data.userId = :userId"
                 )
         }
 )
@@ -44,6 +50,7 @@ public class UserData implements Serializable {
     public static final String USERS_DATA_BY_USER_IDS = "users_data_by_user_ids";
     public static final String UPDATE_USER_DATA = "update_user_data";
     public static final String UPDATE_USER_ID = "update_user_data_id";
+    public static final String SWITCH_STATE_OF_PUBLIC_RADIO = "switch_state_of_public_radio";
 
     @Id
     @Column(name = Constants.ID)

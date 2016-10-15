@@ -23,6 +23,8 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
 
     void updateUserData(Integer userId, ProfileData profileData);
 
+    void switchPublicRadio(Integer userId);
+
     UserData getUserData(Integer userId);
 
     List<UserData> getAllUserDataByUserId(Collection<Integer> usersId);

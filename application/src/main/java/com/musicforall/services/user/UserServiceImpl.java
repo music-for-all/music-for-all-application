@@ -83,6 +83,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void switchPublicRadio(Integer userId) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        dao.update(UserData.SWITCH_STATE_OF_PUBLIC_RADIO, params);
+    }
+
+    @Override
     public UserData getUserData(Integer userId) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(UserData.class)
                 .add(Property.forName("userId").eq(userId));
