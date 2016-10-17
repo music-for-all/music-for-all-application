@@ -3,7 +3,6 @@ package com.musicforall.services.user;
 import com.musicforall.model.SearchUserRequest;
 import com.musicforall.model.user.User;
 import com.musicforall.model.user.UserSettings;
-import com.musicforall.services.AchievementsService;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,8 +44,6 @@ public class UserServiceTest {
     private UserService userService;
     @Autowired
     private UserBootstrap userBootstrap;
-    @Autowired
-    private AchievementsService achievementsService;
 
     @Test
     public void testSaveUser() {
@@ -177,6 +174,5 @@ public class UserServiceTest {
 
         SearchUserRequest searchUserByUsername = new SearchUserRequest("test");
         assertEquals(userService.getAllLike(searchUserByUsername).size(), 1);
-
     }
 }
