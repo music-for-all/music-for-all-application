@@ -6,9 +6,9 @@ import com.musicforall.common.cache.config.CacheConfig;
 import com.musicforall.config.security.SecurityConfig;
 import com.musicforall.files.FileApiSpringConfig;
 import com.musicforall.history.HistorySpringConfig;
-import com.musicforall.model.Track;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.*;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -16,7 +16,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
-import static com.musicforall.common.cache.config.CacheConfig.GUAVA;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
 /**
@@ -55,8 +54,9 @@ public class SpringRootConfiguration implements AsyncConfigurer {
         return new SimpleAsyncUncaughtExceptionHandler();
     }
 
-    @Bean(name = GUAVA)
-    public CacheProvider<Integer, Track> cache() {
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public <K, V> CacheProvider<K, V> cache() {
         return new GuavaCacheProvider<>();
     }
 }

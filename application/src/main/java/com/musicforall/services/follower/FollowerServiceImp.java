@@ -1,5 +1,6 @@
 package com.musicforall.services.follower;
 
+import com.musicforall.common.cache.CacheProvider;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Followers;
 import org.hibernate.criterion.DetachedCriteria;
@@ -19,8 +20,13 @@ import java.util.stream.Collectors;
 @Transactional
 public class FollowerServiceImp implements FollowerService {
 
+    private static final String NUM_OF_UNREAD_NEWS = "num_of_unread_news_for ";
+
     @Autowired
     private Dao dao;
+
+    @Autowired
+    private CacheProvider<String, Integer> cache;
 
     @Override
     public void follow(Integer userId, Integer followingUserId) {
@@ -29,6 +35,7 @@ public class FollowerServiceImp implements FollowerService {
             followers = new Followers(userId);
         }
         if (!userId.equals(followingUserId)) {
+            incrementNumOfUnread(followingUserId);
             followers.follow(followingUserId);
         }
         dao.save(followers);
@@ -58,5 +65,15 @@ public class FollowerServiceImp implements FollowerService {
             followers = new Followers(userId);
         }
         return followers.getFollowingId();
+    }
+
+    private void incrementNumOfUnread(Integer userId) {
+        Integer numOfUnread = cache.get(NUM_OF_UNREAD_NEWS + userId);
+        if (numOfUnread != null) {
+            numOfUnread++;
+        } else {
+            numOfUnread = 1;
+        }
+        cache.put(NUM_OF_UNREAD_NEWS + userId, numOfUnread);
     }
 }

@@ -7,13 +7,11 @@ import com.musicforall.config.HibernateConfigDev;
 import com.musicforall.config.WebSocketConfig;
 import com.musicforall.config.security.SecurityConfig;
 import com.musicforall.history.HistorySpringConfig;
-import com.musicforall.model.Track;
 import com.musicforall.services.DbPopulateService;
 import com.musicforall.services.file.FileServiceImpl;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.*;
-
-import static com.musicforall.common.cache.config.CacheConfig.GUAVA;
 
 /**
  * Created by Pukho on 19.06.2016.
@@ -31,8 +29,9 @@ import static com.musicforall.common.cache.config.CacheConfig.GUAVA;
 @Import({HibernateConfigDev.class, SecurityConfig.class, TestMessageConfig.class,
         HistorySpringConfig.class, CacheConfig.class, WebSocketConfig.class})
 public class ServicesTestConfig {
-    @Bean(name = GUAVA)
-    public CacheProvider<Integer, Track> cache() {
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public <K, V> CacheProvider<K, V> cache() {
         return new GuavaCacheProvider<>();
     }
 }

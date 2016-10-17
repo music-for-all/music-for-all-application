@@ -6,15 +6,12 @@ import com.musicforall.model.user.User;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.musicforall.common.cache.config.CacheConfig.GUAVA;
 
 /**
  * @author Evgeniy on 06.10.2016.
@@ -23,7 +20,6 @@ import static com.musicforall.common.cache.config.CacheConfig.GUAVA;
 public class StreamServiceImpl implements StreamService {
 
     @Autowired
-    @Qualifier(GUAVA)
     private CacheProvider<Integer, Track> cache;
     @Autowired
     private TrackService trackService;
