@@ -5,6 +5,7 @@ import com.musicforall.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,12 +27,10 @@ public class FeedController {
     private static final String NUM_OF_UNREAD_NEWS = "num_of_unread_news_for ";
     private static final Logger LOG = LoggerFactory.getLogger(FeedController.class);
     private final Queue<DeferredResult<Integer>> responseBodyQueue = new ConcurrentLinkedQueue<>();
-    @Autowired
-    private CacheProvider<String, AtomicInteger> cache;
 
-    public FeedController() {
-        LOG.info("");
-    }
+    @Autowired
+    @Qualifier("news")
+    private CacheProvider<String, AtomicInteger> cache;
 
     @RequestMapping("/feed")
     public String friendsActivity(Model model) {

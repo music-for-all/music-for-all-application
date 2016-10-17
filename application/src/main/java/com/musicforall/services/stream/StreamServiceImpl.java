@@ -6,6 +6,7 @@ import com.musicforall.model.user.User;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -20,6 +21,7 @@ import java.util.Map;
 public class StreamServiceImpl implements StreamService {
 
     @Autowired
+    @Qualifier("stream")
     private CacheProvider<Integer, Track> cache;
     @Autowired
     private TrackService trackService;
