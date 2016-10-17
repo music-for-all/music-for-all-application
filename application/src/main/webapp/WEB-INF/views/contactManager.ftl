@@ -7,6 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.1/sockjs.min.js"></script>
+<script src="/resources/js/following.js"></script>
 
 <link href="<@spring.url "/resources/css/contactManager.css" />" rel="stylesheet"/>
 <script src="<@spring.url "/resources/js/user.js" />"></script>
@@ -252,6 +253,13 @@
             search();
             return false;
         });
+        setInterval(function () {
+            var ureadNum = getNumOfUnreadNews();
+            if (ureadNum > 0) {
+
+            }
+        }, 2000
+
     });
 
     window.onbeforeunload = function () {
