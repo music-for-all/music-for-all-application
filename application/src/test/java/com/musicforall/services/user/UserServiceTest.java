@@ -3,7 +3,7 @@ package com.musicforall.services.user;
 import com.musicforall.model.SearchUserRequest;
 import com.musicforall.model.user.User;
 import com.musicforall.model.user.UserSettings;
-import com.musicforall.services.achievements.AchievementsService;
+import com.musicforall.services.AchievementsService;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;

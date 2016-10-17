@@ -32,9 +32,10 @@ public class Achievement {
     public Achievement() {
     }
 
-    public Achievement(String script, EventType eventType) {
+    public Achievement(String script, EventType eventType, int count) {
         this.script = script;
         this.eventType = eventType;
+        this.count = count;
     }
 
     public Integer getId() {

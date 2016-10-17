@@ -3,7 +3,9 @@ package com.musicforall.web.history;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.handlers.events.PlaylistEvent;
 import com.musicforall.history.handlers.events.TrackEvent;
-import com.musicforall.model.user.User;
+import com.musicforall.model.Playlist;
+import com.musicforall.model.Track;
+import com.musicforall.services.achievements.AchievementProcessor;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.util.SecurityUtil;
@@ -20,15 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/history")
 public class HistoryController {
-
     @Autowired
     private ApplicationEventPublisher publisher;
-
     @Autowired
     private PlaylistService playlistService;
-
     @Autowired
     private TrackService trackService;
+    @Autowired
+    private AchievementProcessor achievementProcessor;
 
     @RequestMapping(value = "/track/liked", method = RequestMethod.POST)
     public void trackLiked(@RequestParam("trackId") final Integer trackId) {
@@ -63,21 +64,27 @@ public class HistoryController {
     }
 
     private void fireTrackEvent(final Integer trackId, final Integer playlistId, final EventType type) {
-        final User user = SecurityUtil.currentUser();
-        if (user == null) {
+        final Integer userId = SecurityUtil.currentUserId();
+        if (userId == null) {
             return;
         }
-        final String trackName = trackService.get(trackId).getName();
-        final String playlistName = playlistId != null ? playlistService.get(playlistId).getName() : null;
-        publisher.publishEvent(new TrackEvent(trackId, playlistId, trackName, playlistName, user.getId(), type));
+        final Track track = trackService.get(trackId);
+        final Playlist playlist = playlistId != null ? playlistService.get(playlistId) : null;
+
+        publisher.publishEvent(new TrackEvent(trackId, playlistId, track.getName(),
+                playlist != null ? playlist.getName() : null, userId, type));
+
+        achievementProcessor.process(track, userId, type);
     }
 
     private void firePlaylistEvent(final Integer playlistId, final EventType type) {
-        final User user = SecurityUtil.currentUser();
-        if (user == null) {
+        final Integer userId = SecurityUtil.currentUserId();
+        if (userId == null) {
             return;
         }
-        final String playlistName = playlistId != null ? playlistService.get(playlistId).getName() : null;
-        publisher.publishEvent(new PlaylistEvent(playlistId, playlistName, user.getId(), type));
+        final Playlist playlist = playlistService.get(playlistId);
+        publisher.publishEvent(new PlaylistEvent(playlistId, playlist.getName(), userId, type));
+
+        achievementProcessor.process(playlist, userId, type);
     }
 }
