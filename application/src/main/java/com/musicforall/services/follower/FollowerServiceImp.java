@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -20,13 +21,13 @@ import java.util.stream.Collectors;
 @Transactional
 public class FollowerServiceImp implements FollowerService {
 
-    private static final String NUM_OF_UNREAD_NEWS = "num_of_unread_news_for ";
+    private static final String NUM_OF_UNREAD_NEWS = "num_unread_news ";
 
     @Autowired
     private Dao dao;
 
     @Autowired
-    private CacheProvider<String, Integer> cache;
+    private CacheProvider<String, AtomicInteger> cache;
 
     @Override
     public void follow(Integer userId, Integer followingUserId) {
@@ -68,11 +69,11 @@ public class FollowerServiceImp implements FollowerService {
     }
 
     private void incrementNumOfUnread(Integer userId) {
-        Integer numOfUnread = cache.get(NUM_OF_UNREAD_NEWS + userId);
+        AtomicInteger numOfUnread = cache.get(NUM_OF_UNREAD_NEWS + userId);
         if (numOfUnread != null) {
-            numOfUnread++;
+            numOfUnread.incrementAndGet();
         } else {
-            numOfUnread = 1;
+            numOfUnread = new AtomicInteger(0);
         }
         cache.put(NUM_OF_UNREAD_NEWS + userId, numOfUnread);
     }

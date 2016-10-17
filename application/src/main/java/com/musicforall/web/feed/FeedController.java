@@ -15,6 +15,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author IliaNik on 31.08.2016.
@@ -26,7 +27,7 @@ public class FeedController {
     private static final Logger LOG = LoggerFactory.getLogger(FeedController.class);
     private final Queue<DeferredResult<Integer>> responseBodyQueue = new ConcurrentLinkedQueue<>();
     @Autowired
-    private CacheProvider<String, Integer> cache;
+    private CacheProvider<String, AtomicInteger> cache;
 
     public FeedController() {
         LOG.info("");
@@ -38,9 +39,8 @@ public class FeedController {
     }
 
     @RequestMapping(value = "/num_of_unread", method = RequestMethod.GET)
-    public
     @ResponseBody
-    DeferredResult<Integer> getNumOfUnreadNews() {
+    public DeferredResult<Integer> getNumOfUnreadNews() {
         DeferredResult<Integer> result = new DeferredResult<>();
         this.responseBodyQueue.add(result);
         return result;
@@ -49,8 +49,8 @@ public class FeedController {
     @Scheduled(fixedRate = 2000)
     public void processQueues() {
         for (DeferredResult<Integer> result : this.responseBodyQueue) {
-            Integer numOfUnread = cache.get(NUM_OF_UNREAD_NEWS + SecurityUtil.currentUserId());
-            result.setResult(numOfUnread);
+            AtomicInteger numOfUnread = cache.get(NUM_OF_UNREAD_NEWS + SecurityUtil.currentUserId());
+            result.setResult(numOfUnread.get());
             this.responseBodyQueue.remove(result);
         }
     }
