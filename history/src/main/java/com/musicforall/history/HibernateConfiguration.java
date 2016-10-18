@@ -1,4 +1,4 @@
-package com.musicforall.config;
+package com.musicforall.history;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +14,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Properties;
 
-
 /**
- * Contains beans related to the enterprise information system.
- * Production version.
+ * Created by Pukho on 16.10.2016.
  */
 @Configuration
 @EnableTransactionManagement
@@ -32,20 +30,20 @@ public class HibernateConfiguration {
     @Autowired
     private Environment env;
 
-    @Bean(name = "main_session")
+    @Bean(name="history_session")
     public LocalSessionFactoryBean sessionFactory() {
         final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.musicforall.model");
+        sessionFactory.setDataSource(dataHistorySource());
+        sessionFactory.setPackagesToScan("com.musicforall.history.model");
         sessionFactory.setHibernateProperties(additionalProperties());
         return sessionFactory;
     }
 
     @Bean
-    public DriverManagerDataSource dataSource() {
+    public DriverManagerDataSource dataHistorySource() {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getRequiredProperty("db.driver"));
-        dataSource.setUrl(env.getRequiredProperty("db.url"));
+        dataSource.setUrl(env.getRequiredProperty("db.url_history"));
         dataSource.setUsername(env.getRequiredProperty("db.userName"));
         dataSource.setPassword(env.getRequiredProperty("db.password"));
         return dataSource;
@@ -53,10 +51,10 @@ public class HibernateConfiguration {
 
     @Bean
     @Autowired
-    public HibernateTransactionManager transactionManager(@Qualifier("main_session") SessionFactory s) {
+    public HibernateTransactionManager transactionManager(@Qualifier("history_session") SessionFactory s) {
         final HibernateTransactionManager txManager = new HibernateTransactionManager();
         txManager.setSessionFactory(s);
-        txManager.setDataSource(dataSource());
+        txManager.setDataSource(dataHistorySource());
         return txManager;
     }
 

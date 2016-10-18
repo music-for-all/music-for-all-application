@@ -8,10 +8,12 @@ import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import com.musicforall.util.ServicesTestConfig;
+import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -35,7 +37,9 @@ public class SearchCriteriaFactoryTest {
 
     public static final String USER = "user";
     public static final String PASSWORD = "password";
+
     private Dao dao;
+
     @Autowired
     private TrackService trackService;
     @Autowired

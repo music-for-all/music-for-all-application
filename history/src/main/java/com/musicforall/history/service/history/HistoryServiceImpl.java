@@ -1,6 +1,7 @@
 package com.musicforall.history.service.history;
 
 import com.musicforall.common.dao.Dao;
+import com.musicforall.common.dao.HistoryDao;
 import com.musicforall.common.dao.QueryParams;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
@@ -26,7 +27,7 @@ public class HistoryServiceImpl implements HistoryService {
     private static final String TRACK_ID = "trackId";
 
     @Autowired
-    private Dao dao;
+    private HistoryDao dao;
 
     @Override
     public void record(final History history) {
