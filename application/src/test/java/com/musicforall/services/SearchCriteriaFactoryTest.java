@@ -2,8 +2,11 @@ package com.musicforall.services;
 
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.*;
+import com.musicforall.model.user.User;
+import com.musicforall.model.user.UserSettings;
 import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.track.TrackService;
+import com.musicforall.services.user.UserService;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,8 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.musicforall.services.SearchCriteriaFactory.createArtistSearchCriteria;
-import static com.musicforall.services.SearchCriteriaFactory.createTrackSearchCriteria;
+import static com.musicforall.services.SearchCriteriaFactory.*;
 import static java.util.Collections.singletonList;
 import static junit.framework.TestCase.assertEquals;
 
@@ -31,13 +33,15 @@ import static junit.framework.TestCase.assertEquals;
 @Transactional
 public class SearchCriteriaFactoryTest {
 
+    public static final String USER = "user";
+    public static final String PASSWORD = "password";
     private Dao dao;
-
     @Autowired
     private TrackService trackService;
-
     @Autowired
     private ArtistService artistService;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public void setDao(Dao dao) {
@@ -100,8 +104,52 @@ public class SearchCriteriaFactoryTest {
     }
 
     @Test
+    public void testBuildUserSearchCriteria() {
+        List<User> users;
+        users = dao.getAllBy(createUserSearchCriteria(
+                new SearchUserRequest("qwe")));
+        assertEquals(0, users.size());
+
+        users = dao.getAllBy(createUserSearchCriteria(
+                new SearchUserRequest("")));
+        assertEquals(0, users.size());
+
+        final UserSettings settings = new UserSettings(true, "link");
+        User user = new User(USER, PASSWORD, "testGetUserLike@test.com");
+        user.setLastName("lastName");
+        user.setFirstName("firstName");
+        user.setSettings(settings);
+
+        userService.save(user);
+
+
+        users = dao.getAllBy(createUserSearchCriteria(
+                new SearchUserRequest("use")));
+        assertEquals(1, users.size());
+
+
+        SearchUserRequest testEmailRequest = new SearchUserRequest();
+        testEmailRequest.setEmail("testGetUse");
+        users = dao.getAllBy(createUserSearchCriteria(testEmailRequest));
+        assertEquals(1, users.size());
+
+        SearchUserRequest testFNameRequest = new SearchUserRequest();
+        testFNameRequest.setFirstName("first");
+        users = dao.getAllBy(createUserSearchCriteria(testFNameRequest));
+        assertEquals(1, users.size());
+
+        SearchUserRequest testLNameRequest = new SearchUserRequest();
+        testLNameRequest.setLastName("last");
+        users = dao.getAllBy(createUserSearchCriteria(testLNameRequest));
+        assertEquals(1, users.size());
+
+
+    }
+
+    @Test
     public void testNullSearchCriteria() throws NoSuchMethodException {
         assertEquals(null, createArtistSearchCriteria(null));
         assertEquals(null, createTrackSearchCriteria(null));
+        assertEquals(null, createUserSearchCriteria(null));
     }
 }

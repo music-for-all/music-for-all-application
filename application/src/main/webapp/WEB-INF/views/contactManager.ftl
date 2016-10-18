@@ -8,10 +8,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.1/sockjs.min.js"></script>
 <script src="/resources/js/following.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
 
 <link href="<@spring.url "/resources/css/contactManager.css" />" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
+
 <script src="<@spring.url "/resources/js/user.js" />"></script>
 <script src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
+<script src="<@spring.url "/resources/js/autocompleteConfig.js"/>"></script>
 </@m.head>
 <@m.body>
 
@@ -32,7 +36,7 @@
         <div class="col-md-offset-1 col-md-6">
             <form id="search-form" class="form-inline text-center ">
                 <div class="input-group">
-                    <input id="name" class="form-control" type="text" value=""/>
+                    <input id="username" class="form-control" type="text" placeholder="<@spring.message "placeholder.Username"/>"/>
 
                     <div class="input-group-btn">
                         <input id="searchButton" data-style="slide-left" class="btn btn-success "
@@ -119,6 +123,8 @@
     var userFollowingRow = _.template(
             $("script.followingRow").html()
     );
+
+    $("#username").autocomplete(userAutocomplete());
 
     $("#results").on("click", ".start-stream-button", function (e) {
         leftCurrentStream();
@@ -232,7 +238,7 @@
     }
 
     function search() {
-        var username = $("#name").val();
+        var username = $("#username").val();
         clearContacts();
         user.search(username).then(function (users) {
             $("#results").find("thead").after(
