@@ -20,7 +20,7 @@ import java.util.Map;
  * Created by Pukho on 08.08.2016.
  */
 @Service("historyService")
-@Transactional
+@Transactional("history_transaction_manager")
 public class HistoryServiceImpl implements HistoryService {
 
     private static final String EVENT_TYPE = "eventType";
