@@ -2,6 +2,7 @@ package com.musicforall.services.user;
 
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.user.User;
+import com.musicforall.model.user.UserData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class UserBootstrap {
     @Autowired
     private Dao dao;
+    public static final String USER = "user";
 
     private boolean bootstraped;
 

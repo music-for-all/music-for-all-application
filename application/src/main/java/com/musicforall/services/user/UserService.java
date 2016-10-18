@@ -19,7 +19,7 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
 
     Collection<User> saveAll(Collection<User> users);
 
-    void updateUser(Integer userId, ProfileData profileData);
+    void updateUserPassword(Integer userId, ProfileData profileData);
 
     void updateUserData(Integer userId, ProfileData profileData);
 

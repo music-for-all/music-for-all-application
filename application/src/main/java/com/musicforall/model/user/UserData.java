@@ -2,12 +2,16 @@ package com.musicforall.model.user;
 
 import com.google.common.base.MoreObjects;
 import com.musicforall.common.Constants;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
+
+import static org.hibernate.annotations.CascadeType.DELETE;
+import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 
 /**
  * @author ENikolskiy.
@@ -23,23 +27,17 @@ import java.util.Objects;
                                 " data.picture = COALESCE(:picture, data.picture)," +
                                 " data.publicRadio = COALESCE(:publicRadio, data.publicRadio)," +
                                 " data.bio = COALESCE(:bio, data.bio)" +
-                                " where data.userId = :userId"
-                ),
-                @NamedQuery(
-                        name = UserData.UPDATE_USER_ID,
-                        query = "UPDATE UserData data" +
-                                " SET data.userId = COALESCE(:userId, data.userId)" +
-                                " where data.id = :id"
+                                " where data.userId.id =:userId"
                 ),
                 @NamedQuery(
                         name = UserData.USERS_DATA_BY_USER_IDS,
-                        query = "from UserData data where data.userId in (:usersId)"
+                        query = "from UserData data where data.userId.id in (:usersId)"
                 ),
                 @NamedQuery(
                         name = UserData.SWITCH_STATE_OF_PUBLIC_RADIO,
                         query = "UPDATE UserData data" +
                                 " SET data.publicRadio = CASE WHEN data.publicRadio = true THEN false ELSE true END" +
-                                " where data.userId = :userId"
+                                " where data.userId.id = :userId"
                 )
         }
 )
@@ -49,7 +47,6 @@ public class UserData implements Serializable {
 
     public static final String USERS_DATA_BY_USER_IDS = "users_data_by_user_ids";
     public static final String UPDATE_USER_DATA = "update_user_data";
-    public static final String UPDATE_USER_ID = "update_user_data_id";
     public static final String SWITCH_STATE_OF_PUBLIC_RADIO = "switch_state_of_public_radio";
 
     @Id
@@ -76,7 +73,8 @@ public class UserData implements Serializable {
     @Column(name = "public_radio")
     private boolean publicRadio;
 
-    private Integer userId;
+    @OneToOne
+    private User userId;
 
     public UserData() {
     }
@@ -152,16 +150,16 @@ public class UserData implements Serializable {
     }
 
     public Integer getUserId() {
-        return userId;
+        return userId.getId();
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, firstName, lastName, bio, picture, publicRadio, userId);
+        return Objects.hash(username, firstName, lastName, bio, picture, publicRadio, getUserId());
     }
 
     @Override
@@ -178,7 +176,7 @@ public class UserData implements Serializable {
                 && Objects.equals(this.lastName, other.lastName)
                 && Objects.equals(this.bio, other.bio)
                 && Objects.equals(this.picture, other.picture)
-                && Objects.equals(this.userId, other.userId)
+                && Objects.equals(this.getUserId(), other.getUserId())
                 && Objects.equals(this.publicRadio, other.publicRadio);
     }
 
@@ -192,7 +190,7 @@ public class UserData implements Serializable {
                 .add("bio", bio)
                 .add("picture", picture)
                 .add("publicRadio", publicRadio)
-                .add("userId", userId)
+                .add("userId", getUserId())
                 .toString();
     }
 }

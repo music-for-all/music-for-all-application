@@ -40,14 +40,8 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         /* Encode the password before saving the user. */
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.getUserData().setUserId(user);
         dao.save(user);
-        if (user.getUserData() != null && user.getUserData().getUserId() == null) {
-            final Map<String, Object> params = new HashMap<>();
-            params.put("userId", user.getId());
-            params.put("id", user.getUserData().getId());
-            dao.update(UserData.UPDATE_USER_ID, params);
-            return user;
-        }
         return user;
     }
 
@@ -71,7 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(Integer userId, ProfileData profileData) {
+    public void updateUserPassword(Integer userId, ProfileData profileData) {
         final Map<String, Object> params = new HashMap<>();
         params.put("id", userId);
         if (profileData.getPassword() != null) {
@@ -92,7 +86,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserData getUserData(Integer userId) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(UserData.class)
-                .add(Property.forName("userId").eq(userId));
+                .add(Property.forName("userId.id").eq(userId));
 
         return dao.getBy(detachedCriteria);
     }
@@ -151,8 +145,8 @@ public class UserServiceImpl implements UserService {
             return new ArrayList<>();
         }
         final Disjunction disjunction = Restrictions.disjunction();
-        for (final Integer follower : usersId) {
-            disjunction.add(Property.forName(Constants.ID).eq(follower));
+        for (final Integer id : usersId) {
+            disjunction.add(Property.forName(Constants.ID).eq(id));
         }
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
                 .add(disjunction);

@@ -52,7 +52,7 @@ public class ProfileRestController {
             LOG.info(bindingResult.getAllErrors().toString());
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        userService.updateUser(SecurityUtil.currentUserId(), profileData);
+        userService.updateUserPassword(SecurityUtil.currentUserId(), profileData);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

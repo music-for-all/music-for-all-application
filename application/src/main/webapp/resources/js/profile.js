@@ -4,8 +4,6 @@ var baseUrl = dict.contextPath + "/profile";
 
 function updateUserData() {
 
-    clearMessage();
-
     var profileData = {};
 
     var username = $("#username").val();
@@ -42,8 +40,6 @@ function updateUserData() {
 
 function updatePassword() {
 
-    clearMessage();
-
     var password = $("#password").val();
 
     if ((password.length > 0 && password.length < 4) || password.length > 128) {
@@ -55,20 +51,18 @@ function updatePassword() {
 
     var profileData = {};
 
-    if (password.length > 0) {
         if (password !== confirmPassword) {
             $("#fail-message").text("Fail: passwords do not match!");
             return;
         } else {
             profileData.password = password;
         }
-    }
 
     return $.when($.get(baseUrl + "/update/password", profileData));
 }
 
 function getCurrentUser() {
-    return $.when($.get(baseUrl + "/currentUser"))
+    return $.when($.get(baseUrl + "/currentUser"));
 }
 
 function uploadFile(formData) {

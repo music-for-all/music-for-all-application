@@ -49,7 +49,7 @@ public class UserServiceTest {
 
     @Test
     public void testSaveUser() {
-        final User user = new User("123456789", "masha@example.com", new UserData(USER));
+        final User user = new User("123456789", "masha@example.com");
         userService.save(user);
 
         final Integer id = user.getId();
@@ -58,24 +58,14 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testSaveUserDataWitOtherUserId() {
-        final User user = new User("1234567891", "mash@example.com", new UserData(USER));
-        user.getUserData().setUserId(0);
-        userService.save(user);
-
-        final Integer id = user.getId();
-        assertTrue(id > 0);
-        assertNotEquals(id, userService.get(id).getUserData().getUserId());
-    }
-
-    @Test
     public void testUpdateUser() {
-        final User user = new User("12345678901", "mikel@example.com", new UserData(USER));
+        final User user = new User("12345678901", "mikel@example.com");
         userService.save(user);
+        final String password = userService.getByEmail(user.getEmail()).getPassword();
 
         final ProfileData profileData = ProfileData.create().password("password").get();
-        userService.updateUser(user.getId(), profileData);
-        assertEquals(profileData.getPassword(), userService.getByEmail(user.getEmail()).getPassword());
+        userService.updateUserPassword(user.getId(), profileData);
+        assertNotEquals(password, userService.getByEmail(user.getEmail()).getPassword());
     }
 
     @Test
