@@ -40,7 +40,6 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         /* Encode the password before saving the user. */
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.getUserData().setUserId(user);
         dao.save(user);
         return user;
     }

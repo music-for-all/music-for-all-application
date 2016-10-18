@@ -2,16 +2,12 @@ package com.musicforall.model.user;
 
 import com.google.common.base.MoreObjects;
 import com.musicforall.common.Constants;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-
-import static org.hibernate.annotations.CascadeType.DELETE;
-import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 
 /**
  * @author ENikolskiy.
@@ -159,7 +155,7 @@ public class UserData implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, firstName, lastName, bio, picture, publicRadio, getUserId());
+        return Objects.hash(username, firstName, lastName, bio, picture, publicRadio);
     }
 
     @Override
@@ -176,7 +172,6 @@ public class UserData implements Serializable {
                 && Objects.equals(this.lastName, other.lastName)
                 && Objects.equals(this.bio, other.bio)
                 && Objects.equals(this.picture, other.picture)
-                && Objects.equals(this.getUserId(), other.getUserId())
                 && Objects.equals(this.publicRadio, other.publicRadio);
     }
 
