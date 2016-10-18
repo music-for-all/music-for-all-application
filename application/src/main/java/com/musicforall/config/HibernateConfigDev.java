@@ -2,8 +2,10 @@ package com.musicforall.config;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -27,11 +29,11 @@ import java.util.Properties;
 @Profile("dev")
 public class HibernateConfigDev {
 
-    @Bean
+    @Bean(name = "main_session")
     public LocalSessionFactoryBean sessionFactory() {
         final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.musicforall.model", "com.musicforall.history.model");
+        sessionFactory.setPackagesToScan("com.musicforall.model");
         sessionFactory.setHibernateProperties(additionalProperties());
         return sessionFactory;
     }
@@ -45,8 +47,9 @@ public class HibernateConfigDev {
     }
 
     @Bean
+    @Primary
     @Autowired
-    public HibernateTransactionManager transactionManager(SessionFactory s) {
+    public HibernateTransactionManager transactionManager(@Qualifier("main_session") SessionFactory s) {
         final HibernateTransactionManager txManager = new HibernateTransactionManager();
         txManager.setSessionFactory(s);
         txManager.setDataSource(dataSource());

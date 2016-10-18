@@ -18,21 +18,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 /**
- * Created by kgavrylchenko on 10/23/2015.
+ * Created by Pukho on 16.10.2016.
  */
 @Repository
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class Dao extends AbstractDao {
+public class HistoryDao extends AbstractDao {
 
     public static final String FOUND_ENTITY = "Found entity - {}";
     private static final Logger LOG = LoggerFactory.getLogger(Dao.class);
     private final int batchSize = 20;
 
     @Autowired
-    @Qualifier("main_session")
+    @Qualifier("history_session")
     private SessionFactory sessionFactory;
 
 

@@ -53,3 +53,23 @@ function tagAutocomplete(placeholder) {
         tokenSeparators: [' ']
     }
 }
+
+function userAutocomplete() {
+    return {
+        source: function (request, response) {
+            $.ajax({
+                url: dict.contextPath + "/social/search",
+                data: {searchTerm: request.term},
+                traditional: true,
+                success: function (data) {
+                    var dataArray = data.error ? [] : $.map(data, function (username) {
+                        return {
+                            label: username
+                        };
+                    });
+                    response(dataArray);
+                }
+            });
+        }
+    };
+}

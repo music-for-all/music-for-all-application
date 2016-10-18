@@ -1,6 +1,7 @@
 package com.musicforall.history.service.history;
+import com.musicforall.common.dao.HistoryDao;
+import com.musicforall.common.dao.QueryParams;
 
-import com.musicforall.common.dao.Dao;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.handlers.events.TrackEvent;
 import com.musicforall.history.handlers.events.TrackEventType;
@@ -21,14 +22,14 @@ import java.util.Map;
  * Created by Pukho on 08.08.2016.
  */
 @Service("historyService")
-@Transactional
+@Transactional("history_transaction_manager")
 public class HistoryServiceImpl implements HistoryService {
 
     private static final String EVENT_TYPE = "eventType";
     private static final String TRACK_ID = "trackId";
 
     @Autowired
-    private Dao dao;
+    private HistoryDao dao;
 
     @Override
     public void record(final History history) {
