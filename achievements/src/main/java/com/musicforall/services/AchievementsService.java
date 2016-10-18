@@ -4,6 +4,7 @@ import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.model.Achievement;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author ENikolskiy.
@@ -19,4 +20,6 @@ public interface AchievementsService {
     Collection<Achievement> saveAll(Collection<Achievement> achievements);
 
     Collection<Achievement> filterBy(Collection<Integer> excludedIds, EventType... types);
+
+    boolean validateScript(Achievement achievement, Map<String, Object> vars);
 }

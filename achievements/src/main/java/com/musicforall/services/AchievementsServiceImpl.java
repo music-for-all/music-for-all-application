@@ -1,6 +1,7 @@
 package com.musicforall.services;
 
 import com.musicforall.common.dao.Dao;
+import com.musicforall.common.script.Script;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.model.Achievement;
 import org.hibernate.criterion.DetachedCriteria;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Map;
 
 import static org.hibernate.criterion.Restrictions.in;
 import static org.hibernate.criterion.Restrictions.not;
@@ -53,5 +55,10 @@ public class AchievementsServiceImpl implements AchievementsService {
         }
 
         return dao.getAllBy(criteria);
+    }
+
+    @Override
+    public boolean validateScript(Achievement achievement, Map<String, Object> vars) {
+        return Script.create(achievement.getScript(), vars).isValid();
     }
 }
