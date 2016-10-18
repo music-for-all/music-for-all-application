@@ -1,7 +1,5 @@
 package com.musicforall.model;
 
-import org.hibernate.validator.constraints.Email;
-
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -13,9 +11,6 @@ public class SearchUserRequest {
     @Size(min = 2, max = 16)
     @Pattern(regexp = "^(^[a-zA-Z\\p{InCyrillic}][a-zA-Z0-9-_\\.\\p{InCyrillic}]+)$")
     private String username;
-
-    @Email
-    private String email;
 
     private String firstName;
 
@@ -34,13 +29,6 @@ public class SearchUserRequest {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getUsername() {
         return username;
@@ -70,7 +58,6 @@ public class SearchUserRequest {
     public String toString() {
         return "User{" +
                 ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 '}';

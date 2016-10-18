@@ -83,6 +83,10 @@ public final class ProfileData implements Serializable {
         return publicRadio;
     }
 
+    public void setPublicRadio(Boolean publicRadio) {
+        this.publicRadio = publicRadio;
+    }
+
     @Override
     public String toString() {
         return "ProfileData{" +

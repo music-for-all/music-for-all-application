@@ -240,7 +240,6 @@
     }
 
     function updateProfileData() {
-        clearMessage();
         updateUserData().then(function () {
             $("#success-message").text("Updated");
             getCurrentUser().then(function (user) {
@@ -271,7 +270,6 @@
     });
 
     $("#updatePassword").on("click", function () {
-        clearMessage();
         updatePassword().then(function () {
             $("#success-message").text("Updated");
             getCurrentUser().then(function (user) {

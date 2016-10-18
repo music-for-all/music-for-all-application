@@ -156,12 +156,12 @@
                     <tr>
                         <td>
                             <div class="avatar">
-                                <img src=" <%= usr.userData.picture %>" class="img-responsive img-rounded">
+                                <img src=" <%= usr.picture %>" class="img-responsive img-rounded">
                             </div>
                         </td>
-                        <td><a href="/user/show?user_id=<%= usr.id %>"><%= usr.userData.username %></a></td>
-                        <td><%= usr.userData.firstName %></td>
-                        <td><%= usr.userData.lastName %></td>
+                        <td><a href="/user/show?user_id=<%= usr.userId %>"><%= usr.username %></a></td>
+                        <td><%= usr.firstName %></td>
+                        <td><%= usr.lastName %></td>
                     </tr>
                     <% }); %>
                     </tbody>
@@ -192,12 +192,12 @@
                     <tr>
                         <td>
                             <div class="avatar">
-                                <img src=" <%= usr.userData.picture %>" class="img-responsive img-rounded">
+                                <img src=" <%= usr.picture %>" class="img-responsive img-rounded">
                             </div>
                         </td>
-                        <td><a href="/user/show?user_id=<%= usr.id %>"><%= usr.userData.username %></a></td>
-                        <td><%= usr.userData.firstName %></td>
-                        <td><%= usr.userData.lastName %></td>
+                        <td><a href="/user/show?user_id=<%= usr.userId %>"><%= usr.username %></a></td>
+                        <td><%= usr.firstName %></td>
+                        <td><%= usr.lastName %></td>
                     </tr>
                     <% }); %>
                     </tbody>

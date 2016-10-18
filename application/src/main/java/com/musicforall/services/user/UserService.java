@@ -3,6 +3,7 @@ package com.musicforall.services.user;
 import com.musicforall.dto.profile.ProfileData;
 import com.musicforall.model.SearchUserRequest;
 import com.musicforall.model.user.User;
+import com.musicforall.model.user.UserData;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.social.security.SocialUserDetailsService;
 
@@ -18,13 +19,17 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
 
     Collection<User> saveAll(Collection<User> users);
 
-    void updateUserPassword(Integer userId, ProfileData profileData);
+    void updateUser(Integer userId, ProfileData profileData);
 
     void updateUserData(Integer userId, ProfileData profileData);
 
     void switchPublicRadio(Integer userId);
 
-    List<User> getAllLike(SearchUserRequest searchCriteria);
+    UserData getUserData(Integer userId);
+
+    List<UserData> getAllUserDataByUserId(Collection<Integer> usersId);
+
+    List<UserData> getAllUserDataLike(SearchUserRequest searchCriteria);
 
     User get(Integer userId);
 
@@ -37,6 +42,10 @@ public interface UserService extends UserDetailsService, SocialUserDetailsServic
     List<User> findAll();
 
     List<User> getUsersById(Collection<Integer> usersId);
+
+    List<User> getAllWithUserDataByIds(Collection<Integer> ids);
+
+    User getWithUserDataById(Integer id);
 
     List<User> getUsersByUsername(String username);
 }

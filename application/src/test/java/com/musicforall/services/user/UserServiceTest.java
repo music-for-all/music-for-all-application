@@ -49,7 +49,7 @@ public class UserServiceTest {
 
     @Test
     public void testSaveUser() {
-        final User user = new User("123456789", "masha@example.com");
+        final User user = new User("123456789", "masha@example.com", new UserData(USER));
         userService.save(user);
 
         final Integer id = user.getId();
@@ -58,14 +58,24 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testUpdateUser() {
-        final User user = new User("12345678901", "mikel@example.com");
+    public void testSaveUserDataWitOtherUserId() {
+        final User user = new User("1234567891", "mash@example.com", new UserData(USER));
+        user.getUserData().setUserId(0);
         userService.save(user);
-        final String password = userService.getByEmail(user.getEmail()).getPassword();
+
+        final Integer id = user.getId();
+        assertTrue(id > 0);
+        assertNotEquals(id, userService.get(id).getUserData().getUserId());
+    }
+
+    @Test
+    public void testUpdateUser() {
+        final User user = new User("12345678901", "mikel@example.com", new UserData(USER));
+        userService.save(user);
 
         final ProfileData profileData = ProfileData.create().password("password").get();
-        userService.updateUserPassword(user.getId(), profileData);
-        assertNotEquals(password, userService.getByEmail(user.getEmail()).getPassword());
+        userService.updateUser(user.getId(), profileData);
+        assertEquals(profileData.getPassword(), userService.getByEmail(user.getEmail()).getPassword());
     }
 
     @Test
@@ -75,7 +85,7 @@ public class UserServiceTest {
 
         final ProfileData profileData = ProfileData.create().picture("picture").get();
         userService.updateUserData(user.getId(), profileData);
-        assertEquals(profileData.getPicture(), userService.get(user.getId()).getUserData().getPicture());
+        assertEquals(profileData.getPicture(), userService.getWithUserDataById(user.getId()).getUserData().getPicture());
     }
 
     @Test
@@ -83,13 +93,13 @@ public class UserServiceTest {
         final User user = new User("12345678908", "mike2@example.com", new UserData(USER));
         userService.save(user);
 
-        assertEquals(Boolean.FALSE, userService.get(user.getId()).getUserData().isPublicRadio());
+        assertEquals(Boolean.FALSE, userService.getUserData(user.getId()).isPublicRadio());
 
         userService.switchPublicRadio(user.getId());
-        assertEquals(Boolean.TRUE, userService.get(user.getId()).getUserData().isPublicRadio());
+        assertEquals(Boolean.TRUE, userService.getUserData(user.getId()).isPublicRadio());
 
         userService.switchPublicRadio(user.getId());
-        assertEquals(Boolean.FALSE, userService.get(user.getId()).getUserData().isPublicRadio());
+        assertEquals(Boolean.FALSE, userService.getUserData(user.getId()).isPublicRadio());
     }
 
     @Test
@@ -129,7 +139,7 @@ public class UserServiceTest {
         final User user = new User("123456", "getUserData@example.com", new UserData(USER));
         userService.save(user);
 
-        assertNotNull(userService.get(user.getId()).getUserData());
+        assertNotNull(userService.getUserData(user.getId()));
     }
 
     @Test
@@ -167,6 +177,19 @@ public class UserServiceTest {
     }
 
     @Test
+    public void testGetUsersDataById() {
+        final User user1 = new User(PASSWORD, "testGetUsersDataById1@example.com", new UserData(USER));
+        final User user2 = new User(PASSWORD, "testGetUsersDataById2@example.com", new UserData(USER));
+        final List<Integer> users = new ArrayList<>();
+        userService.save(user1);
+        users.add(user1.getId());
+        assertEquals(users.size(), userService.getAllUserDataByUserId(users).size());
+        userService.save(user2);
+        users.add(user2.getId());
+        assertEquals(users.size(), userService.getAllUserDataByUserId(users).size());
+    }
+
+    @Test
     public void testLoadUserByUserId() {
         final User user1 = new User(PASSWORD, "c_3po@example.com");
         userService.save(user1);
@@ -184,7 +207,7 @@ public class UserServiceTest {
         userService.saveAll(users);
 
         final List<Integer> userIds = users.stream().map(User::getId).collect(toList());
-        final List<User> usersWithSettings = userService.getUsersById(userIds);
+        final List<User> usersWithSettings = userService.getAllWithUserDataByIds(userIds);
 
         final boolean match = usersWithSettings.stream()
                 .filter(u -> new UserData(USER).equals(u.getUserData()))
@@ -197,7 +220,7 @@ public class UserServiceTest {
         User user = new User(PASSWORD, "testGetUserWithSettings@test.com", new UserData(USER));
         userService.save(user);
         assertEquals(user.getUserData().getUsername(),
-                userService.get(user.getId()).getUserData().getUsername());
+                userService.getWithUserDataById(user.getId()).getUserData().getUsername());
     }
 
     @Test
@@ -205,6 +228,6 @@ public class UserServiceTest {
         User user = new User(PASSWORD, "testGetUserDataLike@test.com", new UserData("data_name"));
         userService.save(user);
         SearchUserRequest searchUserDataByUsername = new SearchUserRequest("data");
-        assertEquals(userService.getAllLike(searchUserDataByUsername).size(), 1);
+        assertEquals(userService.getAllUserDataLike(searchUserDataByUsername).size(), 1);
     }
 }
