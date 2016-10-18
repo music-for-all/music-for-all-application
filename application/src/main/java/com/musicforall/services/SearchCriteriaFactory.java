@@ -3,7 +3,7 @@ package com.musicforall.services;
 import com.musicforall.common.Constants;
 import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.*;
-import com.musicforall.model.user.UserData;
+import com.musicforall.model.user.User;
 import org.hibernate.criterion.*;
 
 import java.util.List;
@@ -91,22 +91,26 @@ public final class SearchCriteriaFactory {
         if (searchCriteria == null) {
             return null;
         }
-        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(UserData.class);
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class);
 
         final String username = searchCriteria.getUsername();
+        final String email = searchCriteria.getEmail();
         final String firstName = searchCriteria.getFirstName();
         final String lastName = searchCriteria.getLastName();
 
         if (username != null && !username.isEmpty()) {
-            detachedCriteria.add(Restrictions.ilike("username", QueryUtil.like(username)));
+            detachedCriteria.add(Restrictions.ilike("userData.username", QueryUtil.like(username)));
+        }
+        if (email != null && !email.isEmpty()) {
+            detachedCriteria.add(Restrictions.ilike("email", QueryUtil.like(email)));
         }
 
         if (firstName != null && !firstName.isEmpty()) {
-            detachedCriteria.add(Restrictions.ilike("firstName", QueryUtil.like(firstName)));
+            detachedCriteria.add(Restrictions.ilike("userData.firstName", QueryUtil.like(firstName)));
         }
 
         if (lastName != null && !lastName.isEmpty()) {
-            detachedCriteria.add(Restrictions.ilike("lastName", QueryUtil.like(lastName)));
+            detachedCriteria.add(Restrictions.ilike("userData.lastName", QueryUtil.like(lastName)));
         }
 
         return detachedCriteria;

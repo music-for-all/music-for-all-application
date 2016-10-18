@@ -10,57 +10,13 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * @author ENikolskiy.
+ * Created by Andrey
  */
-@NamedQueries(
-        {
-                @NamedQuery(
-                        name = UserData.UPDATE_USER_DATA,
-                        query = "UPDATE UserData data" +
-                                " SET data.username = COALESCE(:username, data.username)," +
-                                " data.firstName = COALESCE(:firstName, data.firstName)," +
-                                " data.lastName = COALESCE(:lastName, data.lastName)," +
-                                " data.picture = COALESCE(:picture, data.picture)," +
-                                " data.publicRadio = COALESCE(:publicRadio, data.publicRadio)," +
-                                " data.bio = COALESCE(:bio, data.bio)" +
-                                " where data.userId = :userId"
-                ),
-                @NamedQuery(
-                        name = UserData.UPDATE_USER_ID,
-                        query = "UPDATE UserData data" +
-                                " SET data.userId = COALESCE(:userId, data.userId)" +
-                                " where data.id = :id"
-                ),
-                @NamedQuery(
-                        name = UserData.USERS_DATA_BY_USER_IDS,
-                        query = "from UserData data where data.userId in (:usersId)"
-                ),
-                @NamedQuery(
-                        name = UserData.SWITCH_STATE_OF_PUBLIC_RADIO,
-                        query = "UPDATE UserData data" +
-                                " SET data.publicRadio = CASE WHEN data.publicRadio = true THEN false ELSE true END" +
-                                " where data.userId = :userId"
-                )
-        }
-)
-@Entity
-@Table(name = "user_data")
+@Embeddable
 public class UserData implements Serializable {
-
-    public static final String USERS_DATA_BY_USER_IDS = "users_data_by_user_ids";
-    public static final String UPDATE_USER_DATA = "update_user_data";
-    public static final String UPDATE_USER_ID = "update_user_data_id";
-    public static final String SWITCH_STATE_OF_PUBLIC_RADIO = "switch_state_of_public_radio";
-
-    @Id
-    @Column(name = Constants.ID)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Access(AccessType.PROPERTY)
-    private Integer id;
 
     @Size(min = 2, max = 16)
     @Pattern(regexp = "^(^[a-zA-Z\\p{InCyrillic}][a-zA-Z0-9-_\\.\\p{InCyrillic}]+)$")
-    @Column(nullable = false)
     private String username;
 
     @Column
@@ -75,8 +31,6 @@ public class UserData implements Serializable {
 
     @Column(name = "public_radio")
     private boolean publicRadio;
-
-    private Integer userId;
 
     public UserData() {
     }
@@ -93,14 +47,6 @@ public class UserData implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.picture = picture;
-    }
-
-    private void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public boolean isPublicRadio() {
@@ -144,6 +90,9 @@ public class UserData implements Serializable {
     }
 
     public String getUsername() {
+        if (username == null) {
+            return Constants.USER;
+        }
         return username;
     }
 
@@ -151,17 +100,9 @@ public class UserData implements Serializable {
         this.username = username;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
     @Override
     public int hashCode() {
-        return Objects.hash(username, firstName, lastName, bio, picture, publicRadio, userId);
+        return Objects.hash(username, firstName, lastName, bio, picture, publicRadio);
     }
 
     @Override
@@ -178,21 +119,18 @@ public class UserData implements Serializable {
                 && Objects.equals(this.lastName, other.lastName)
                 && Objects.equals(this.bio, other.bio)
                 && Objects.equals(this.picture, other.picture)
-                && Objects.equals(this.userId, other.userId)
                 && Objects.equals(this.publicRadio, other.publicRadio);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
                 .add("username", username)
                 .add("firstName", firstName)
                 .add("lastName", lastName)
                 .add("bio", bio)
                 .add("picture", picture)
                 .add("publicRadio", publicRadio)
-                .add("userId", userId)
                 .toString();
     }
 }

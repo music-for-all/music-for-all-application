@@ -73,21 +73,18 @@ public class AccountConnectionSignUpServiceTest {
     }
 
     @Test
-    public void testSaveWithSmallUsername() {
-        UserProfile userProfile = new UserProfile("", " ,", "1name", " ", "1name@mail.com", "o");
-        when(connection.fetchUserProfile()).thenReturn(userProfile);
+    public void testSaveWithIncorrectUsername() {
+        UserProfile userProfile1 = new UserProfile("", " ,", "1name", " ", "1name@mail.com", "o");
+        when(connection.fetchUserProfile()).thenReturn(userProfile1);
 
         signUpService.execute(connection);
-        assertEquals(userProfile.getFirstName(), userProfile.getFirstName());
-    }
+        assertEquals(userProfile1.getFirstName(), userProfile1.getFirstName());
 
-    @Test
-    public void testSaveWithBigUsername() {
-        UserProfile userProfile = new UserProfile("", " ,", "2name", " ", "2name@mail.com", "12345678901234567");
-        when(connection.fetchUserProfile()).thenReturn(userProfile);
+        UserProfile userProfile2 = new UserProfile("", " ,", "2name", " ", "2name@mail.com", "12345678901234567");
+        when(connection.fetchUserProfile()).thenReturn(userProfile2);
 
         signUpService.execute(connection);
-        assertEquals(userProfile.getFirstName(), userProfile.getFirstName());
+        assertEquals(userProfile2.getFirstName(), userProfile2.getFirstName());
     }
 
     @Test

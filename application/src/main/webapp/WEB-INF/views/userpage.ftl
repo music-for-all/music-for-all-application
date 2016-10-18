@@ -64,16 +64,16 @@
     </div>
 </div>
 <script type="text/template" class="userHeader">
-    <img class="img-responsive img-rounded" src="<%= data.picture %>">
+    <img class="img-responsive img-rounded" src="<%= data.userData.picture %>">
     <div class="profile-info">
         <div class="caption">
-            <h3><%= data.firstName %> <%= data.lastName %></h3>
+            <h3><%= data.userData.firstName %> <%= data.userData.lastName %></h3>
         </div>
         <div class="profile-usertitle-job">
-            <h4><%= data.username %></h4>
+            <h4><%= data.userData.username %></h4>
         </div>
         <div class="profile-bio">
-            <p><%= data.bio %></p>
+            <p><%= data.userData.bio %></p>
         </div>
     </div>
 </script>

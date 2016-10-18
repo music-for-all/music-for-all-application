@@ -3,7 +3,6 @@ package com.musicforall.model.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.musicforall.common.Constants;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -15,27 +14,34 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
 
-import static org.hibernate.annotations.CascadeType.DELETE;
-import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
-
 /**
  * Created by ilianik on 11.06.2016.
  */
 @NamedQueries(
         {
                 @NamedQuery(
-                        name = User.USERS_BY_IDS_WITH_DATA_QUERY,
-                        query = "from User u left join fetch u.userData where u.id in (:ids)"
-                ),
-                @NamedQuery(
-                        name = User.USER_BY_ID_WITH_DATA_QUERY,
-                        query = "from User u left join fetch u.userData where u.id = :id"
-                ),
-                @NamedQuery(
-                        name = User.UPDATE_USER,
+                        name = User.CHANGE_USER_PASSWORD,
                         query = "UPDATE User user" +
                                 " SET user.password = COALESCE(:password, user.password)" +
                                 " where user.id = :id"
+                ),
+                @NamedQuery(
+                        name = User.SWITCH_STATE_OF_PUBLIC_RADIO,
+                        query = "UPDATE User user" +
+                                " SET user.userData.publicRadio = CASE" +
+                                " WHEN user.userData.publicRadio = true THEN false ELSE true END" +
+                                " where user.id = :userId"
+                ),
+                @NamedQuery(
+                        name = User.UPDATE_USER_DATA,
+                        query = "UPDATE User user" +
+                                " SET user.userData.username = COALESCE(:username, user.userData.username)," +
+                                " user.userData.firstName = COALESCE(:firstName, user.userData.firstName)," +
+                                " user.userData.lastName = COALESCE(:lastName, user.userData.lastName)," +
+                                " user.userData.picture = COALESCE(:picture, user.userData.picture)," +
+                                " user.userData.publicRadio = COALESCE(:publicRadio, user.userData.publicRadio)," +
+                                " user.userData.bio = COALESCE(:bio, user.userData.bio)" +
+                                " where user.id = :userId"
                 )
         }
 )
@@ -43,9 +49,9 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 @Table(name = "users")
 public class User implements SocialUserDetails, Serializable {
 
-    public static final String USERS_BY_IDS_WITH_DATA_QUERY = "users_by_ids_with_data";
-    public static final String USER_BY_ID_WITH_DATA_QUERY = "user_by_id_with_data";
-    public static final String UPDATE_USER = "update_user";
+    public static final String CHANGE_USER_PASSWORD = "change_user_password";
+    public static final String SWITCH_STATE_OF_PUBLIC_RADIO = "switch_state_of_public_radio";
+    public static final String UPDATE_USER_DATA = "update_user_data";
 
     private static final long serialVersionUID = 1959293141381203004L;
 
@@ -63,8 +69,7 @@ public class User implements SocialUserDetails, Serializable {
     @Column(unique = true)
     private String email;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @Cascade({SAVE_UPDATE, DELETE})
+    @Embedded
     private UserData userData;
 
     public User() {

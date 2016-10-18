@@ -61,15 +61,15 @@
 <script type="text/template" class="followersRow">
     <tbody>
     <% _.each(data, function(contact){ %>
-    <tr id="<%= contact.userId %>">
+    <tr id="<%= contact.id %>">
         <td>
             <i class="fa fa-user" aria-hidden="true"></i>
         </td>
         <td>
-            <a id="user_link" href="/user/show?user_id=<%= contact.userId %>"><%= contact.username %></a>
+            <a id="user_link" href="/user/show?user_id=<%= contact.id %>"><%= contact.userData.username %></a>
         </td>
         <td>
-            <button type="button" class="btn btn-default" onclick="follow('<%= contact.userId %>')">
+            <button type="button" class="btn btn-default" onclick="follow('<%= contact.id %>')">
                 <i class="fa fa-user-plus" aria-hidden="true"></i>
             </button>
         </td>
@@ -80,12 +80,12 @@
 <script type="text/template" class="followingRow">
     <tbody>
     <% _.each(data, function(contact){ %>
-    <tr id="<%= contact.userId %>">
+    <tr id="<%= contact.id %>">
         <td>
             <i class="fa fa-user" aria-hidden="true"></i>
         </td>
         <td>
-            <a href="/user/show?user_id=<%= contact.userId %>"><%= contact.username %></a>
+            <a href="/user/show?user_id=<%= contact.id %>"><%= contact.userData.username %></a>
         </td>
         <td>
             <div class="track-container <%= contact.track ? 'playing' : '' %>">
@@ -99,7 +99,7 @@
             <button type="button" class="btn btn-xs btn-warning stop-stream-button" onclick="leftCurrentStream()">
                 <span class='glyphicon glyphicon-pause' aria-hidden='true'></span>
             </button>
-            <button type="button" class="btn btn-default" onclick="unsubscribe('<%= contact.userId %>')">
+            <button type="button" class="btn btn-default" onclick="unsubscribe('<%= contact.id %>')">
                 <i class="fa fa-user-times" aria-hidden="true"></i>
             </button>
         </td>
@@ -197,11 +197,11 @@
         clearContacts();
         user.getFollowing().then(function (users) {
             var ids = users.map(function (user) {
-                return user.userId;
+                return user.id;
             });
             stream.streamsByUsers(ids).then(function (userToTrack) {
                 users.forEach(function (user) {
-                    var track = userToTrack[user.userId];
+                    var track = userToTrack[user.id];
                     if (track) {
                         user.track = track;
                     }

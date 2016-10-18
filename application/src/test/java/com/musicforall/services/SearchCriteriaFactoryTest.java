@@ -119,6 +119,11 @@ public class SearchCriteriaFactoryTest {
 
         userService.save(user);
 
+        SearchUserRequest testEmailRequest = new SearchUserRequest();
+        testEmailRequest.setEmail("testGetUse");
+        users = dao.getAllBy(createUserSearchCriteria(testEmailRequest));
+        assertEquals(1, users.size());
+
         users = dao.getAllBy(createUserSearchCriteria(new SearchUserRequest("oop")));
         assertEquals(0, users.size());
 
