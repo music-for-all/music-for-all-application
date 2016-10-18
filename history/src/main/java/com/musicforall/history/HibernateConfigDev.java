@@ -32,7 +32,7 @@ public class HibernateConfigDev {
     public LocalSessionFactoryBean sessionFactory() {
         final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.musicforall.model", "com.musicforall.history.model");
+        sessionFactory.setPackagesToScan("com.musicforall.history.model");
         sessionFactory.setHibernateProperties(additionalProperties());
         return sessionFactory;
     }

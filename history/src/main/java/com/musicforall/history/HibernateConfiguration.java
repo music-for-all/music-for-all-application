@@ -49,7 +49,7 @@ public class HibernateConfiguration {
         return dataSource;
     }
 
-    @Bean
+    @Bean("history_transaction_manager")
     @Autowired
     public HibernateTransactionManager transactionManager(@Qualifier("history_session") SessionFactory s) {
         final HibernateTransactionManager txManager = new HibernateTransactionManager();
