@@ -78,7 +78,7 @@ public class User implements SocialUserDetails, Serializable {
     public User(String password, String email, UserData userData) {
         this.password = password;
         this.email = email;
-        setUserData(userData);
+        this.userData = userData;
     }
 
     public Integer getId() {
@@ -151,7 +151,6 @@ public class User implements SocialUserDetails, Serializable {
     }
 
     public void setUserData(UserData userData) {
-        userData.setUserId(this);
         this.userData = userData;
     }
 

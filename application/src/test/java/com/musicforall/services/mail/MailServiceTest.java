@@ -74,7 +74,8 @@ public class MailServiceTest {
     @Test
     public void testSendMessage() throws Exception {
         final String testMessage = "Test email message";
-        final User user = new User("password1", "user@mail.com", new UserData("user"));
+        final User user = new User("password1", "user@mail.com");
+        user.setUserData(new UserData(user, "user"));
 
         when(templateService.from(any(), any())).thenReturn(testMessage);
         mailService.send(mails.welcomeMail(user));

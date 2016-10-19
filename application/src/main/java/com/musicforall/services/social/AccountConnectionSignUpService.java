@@ -35,10 +35,10 @@ public class AccountConnectionSignUpService implements ConnectionSignUp {
         if ((profile.getUsername() == null) ||
                 (profile.getUsername().length() < 2) ||
                 (profile.getUsername().length() > MAX_NAME_LENGTH)) {
-            user.setUserData(new UserData(profile.getFirstName(), profile.getFirstName(),
+            user.setUserData(new UserData(user, profile.getFirstName(), profile.getFirstName(),
                     profile.getLastName(), connection.getImageUrl(), "", false));
         } else {
-            user.setUserData(new UserData(profile.getUsername(), profile.getFirstName(),
+            user.setUserData(new UserData(user, profile.getUsername(), profile.getFirstName(),
                     profile.getLastName(), connection.getImageUrl(), "", false));
         }
         user.setPassword(KeyGenerators.string().generateKey());

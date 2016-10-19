@@ -75,12 +75,14 @@ public class UserData implements Serializable {
     public UserData() {
     }
 
-    public UserData(String username) {
+    public UserData(User user, String username) {
+        this.userId = user;
         this.username = username;
     }
 
-    public UserData(String username, String firstName, String lastName,
+    public UserData(User user, String username, String firstName, String lastName,
                     String picture, String bio, boolean isPublicRadio) {
+        this.userId = user;
         this.username = username;
         this.bio = bio;
         this.publicRadio = isPublicRadio;

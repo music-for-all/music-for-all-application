@@ -51,12 +51,12 @@ function updatePassword() {
 
     var profileData = {};
 
-        if (password !== confirmPassword) {
-            $("#fail-message").text("Fail: passwords do not match!");
-            return;
-        } else {
-            profileData.password = password;
-        }
+    if (password !== confirmPassword) {
+        $("#fail-message").text("Fail: passwords do not match!");
+        return;
+    } else {
+        profileData.password = password;
+    }
 
     return $.when($.get(baseUrl + "/update/password", profileData));
 }

@@ -114,8 +114,8 @@ public class SearchCriteriaFactoryTest {
                 new SearchUserRequest("")));
         assertEquals(0, users.size());
 
-        final UserData userData = new UserData(USER, "firstName", "lastName", "link", "bio", true);
-        User user = new User(PASSWORD, "testGetUserLike@test.com", userData);
+        User user = new User(PASSWORD, "testGetUserLike@test.com");
+        user.setUserData(new UserData(user, USER, "firstName", "lastName", "link", "bio", true));
 
         userService.save(user);
 
