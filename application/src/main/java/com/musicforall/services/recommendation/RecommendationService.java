@@ -40,6 +40,11 @@ public class RecommendationService {
         return trackService.getAllByIds(popularTracksIds);
     }
 
+    public Collection<Track> getArtistMostPopularTracks(String artistName) {
+        final List<Integer> ids = historyService.getArtistMostPopularTracks(artistName);
+        return trackService.getAllByIds(ids);
+    }
+
     public Collection<Track> getRecommendedTracks() {
         final Collection<Track> tracks = getFollowingsRecommendedTracks();
         if (tracks == null || tracks.isEmpty()) {
