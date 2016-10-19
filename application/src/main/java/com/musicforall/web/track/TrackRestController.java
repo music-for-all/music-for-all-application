@@ -83,4 +83,9 @@ public class TrackRestController {
     public Collection<Track> getByPopularity() {
         return recommendationService.getMostPopularTracks();
     }
+
+    @RequestMapping(value = "/topTracksOf/{artist}", method = RequestMethod.GET)
+    public Collection<Track> getArtistTracksByPopularity(@PathVariable String artistName) {
+        return recommendationService.getMostPopularTracks();
+    }
 }
