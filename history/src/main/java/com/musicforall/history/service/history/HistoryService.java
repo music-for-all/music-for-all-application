@@ -23,4 +23,6 @@ public interface HistoryService {
     Collection<History> getUsersHistories(Collection<Integer> usersIds);
 
     Collection<History> getAllForUsers(EventType type, Collection<Integer> usersIds);
+
+    List<Integer> getArtistMostPopularTracks(String artistName);
 }
