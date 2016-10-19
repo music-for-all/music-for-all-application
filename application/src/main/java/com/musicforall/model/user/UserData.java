@@ -12,31 +12,28 @@ import java.util.Objects;
 /**
  * @author ENikolskiy.
  */
-@NamedQueries(
-        {
-                @NamedQuery(
-                        name = UserData.UPDATE_USER_DATA,
-                        query = "UPDATE UserData data" +
-                                " SET data.username = COALESCE(:username, data.username)," +
-                                " data.firstName = COALESCE(:firstName, data.firstName)," +
-                                " data.lastName = COALESCE(:lastName, data.lastName)," +
-                                " data.picture = COALESCE(:picture, data.picture)," +
-                                " data.publicRadio = COALESCE(:publicRadio, data.publicRadio)," +
-                                " data.bio = COALESCE(:bio, data.bio)" +
-                                " where data.userId.id =:userId"
-                ),
-                @NamedQuery(
-                        name = UserData.USERS_DATA_BY_USER_IDS,
-                        query = "from UserData data where data.userId.id in (:usersId)"
-                ),
-                @NamedQuery(
-                        name = UserData.SWITCH_STATE_OF_PUBLIC_RADIO,
-                        query = "UPDATE UserData data" +
-                                " SET data.publicRadio = CASE WHEN data.publicRadio = true THEN false ELSE true END" +
-                                " where data.userId.id = :userId"
-                )
-        }
-)
+@NamedQueries({
+        @NamedQuery(
+                name = UserData.UPDATE_USER_DATA,
+                query = "UPDATE UserData data" +
+                        " SET data.username = COALESCE(:username, data.username)," +
+                        " data.firstName = COALESCE(:firstName, data.firstName)," +
+                        " data.lastName = COALESCE(:lastName, data.lastName)," +
+                        " data.picture = COALESCE(:picture, data.picture)," +
+                        " data.publicRadio = COALESCE(:publicRadio, data.publicRadio)," +
+                        " data.bio = COALESCE(:bio, data.bio)" +
+                        " where data.userId.id =:userId"
+        ),
+        @NamedQuery(
+                name = UserData.USERS_DATA_BY_USER_IDS,
+                query = "from UserData data where data.userId.id in (:usersId)"
+        ),
+        @NamedQuery(
+                name = UserData.SWITCH_STATE_OF_PUBLIC_RADIO,
+                query = "UPDATE UserData data" +
+                        " SET data.publicRadio = CASE WHEN data.publicRadio = true THEN false ELSE true END" +
+                        " where data.userId.id = :userId"
+        )})
 @Entity
 @Table(name = "user_data")
 public class UserData implements Serializable {
@@ -44,6 +41,8 @@ public class UserData implements Serializable {
     public static final String USERS_DATA_BY_USER_IDS = "users_data_by_user_ids";
     public static final String UPDATE_USER_DATA = "update_user_data";
     public static final String SWITCH_STATE_OF_PUBLIC_RADIO = "switch_state_of_public_radio";
+
+    private static final long serialVersionUID = 1582395038231058789L;
 
     @Id
     @Column(name = Constants.ID)
