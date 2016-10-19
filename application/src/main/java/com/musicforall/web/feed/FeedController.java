@@ -34,6 +34,8 @@ public class FeedController {
 
     @RequestMapping("/feed")
     public String friendsActivity(Model model) {
+        final Integer userId = SecurityUtil.currentUserId();
+        cache.put(NUM_OF_UNREAD_NEWS + userId, new AtomicInteger(0));
         return "followingHistory";
     }
 

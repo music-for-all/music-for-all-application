@@ -11,6 +11,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
 
 <link href="<@spring.url "/resources/css/contactManager.css" />" rel="stylesheet"/>
+<link href="<@spring.url "/resources/css/notification.css" />" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
 
 <script src="<@spring.url "/resources/js/user.js" />"></script>
@@ -20,11 +21,6 @@
 <@m.body>
 
     <@m.navigation m.pages.Contacts/>
-<div class="container">
-    <span id="num">
-        0
-    </span>
-</div>
 
 <div class="container">
     <div class="well col-md-8 col-md-offset-2 text-center">
@@ -264,7 +260,7 @@
             search();
             return false;
         });
-        viewNumLongPoll();
+        getNotificationNumPolling();
     });
 
     window.onbeforeunload = function () {

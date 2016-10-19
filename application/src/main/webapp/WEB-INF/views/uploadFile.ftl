@@ -4,11 +4,13 @@
 <html lang="en">
 <@m.head>
 <title><@spring.message "uploadFile.Title"/></title>
+<script src="<@spring.url "/resources/js/following.js" />"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
 <script src="<@spring.url "/resources/js/track.js"/>"></script>
 <script src="<@spring.url "/resources/js/history.js"/>"></script>
 <script src="<@spring.url "/resources/js/autocompleteConfig.js"/>"></script>
+<link href="<@spring.url "/resources/css/notification.css" />" rel="stylesheet"/>
 <link href="<@spring.url "/resources/css/filespage.css" />" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
 </@m.head>

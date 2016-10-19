@@ -5,6 +5,7 @@
 <html lang="en">
 <@m.head>
 <title><@spring.message "profilepage.Title"/></title>
+<script src="<@spring.url "/resources/js/following.js" />"></script>
 <link href="<@spring.url "/resources/css/userpage.css" />" rel="stylesheet"/>
 <script src="<@spring.url "/resources/js/social.js" />"></script>
 <script src="<@spring.url "/resources/js/playlist.js" />"></script>
@@ -13,6 +14,7 @@
 
 <script src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
 <script src="<@spring.url "/resources/js/player.js" />"></script>
+<link href="<@spring.url "/resources/css/notification.css" />" rel="stylesheet"/>
 <link href="<@spring.url "/resources/css/additionalTracksTable.css" />" rel="stylesheet">
 <link href="<@spring.url "/resources/css/player.css" />" rel="stylesheet">
 
@@ -20,6 +22,7 @@
 </@m.head>
 <@m.body>
     <@m.navigation m.pages.Profile/>
+
 <div id="popupBlock">
     <@p.followersPopup "followersPopup"></@p.followersPopup>
        <@p.followingPopup "followingPopup"></@p.followingPopup>
@@ -230,6 +233,7 @@
                     userHeader(req_user)
             );
         });
+        getNotificationNumPolling();
 
         social.getUserFollowers(${user_id}).then(function (ufollowers) {
             $("#popupBlock").append(
