@@ -9,10 +9,11 @@ function getNumOfUnreadNews() {
 }
 function viewNumLongPoll() {
     setInterval(function () {
-
-        var ureadNum = getNumOfUnreadNews();
-        if (ureadNum > 0) {
-            $("#num").text(ureadNum);
-        }
+        var unreadNum = getNumOfUnreadNews();
+        unreadNum.then(function (num) {
+            if (num && num > 0) {
+                $("#num").text(num);
+            }
+        });
     }, 10000);
 }
