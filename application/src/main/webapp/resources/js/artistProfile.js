@@ -8,10 +8,11 @@ $(document).ready(function() {
     artist.getInfo(name)
         .then(function (data) {
             var artist = data.artist;
-            $(".artist-name").text(artist.name);
-            console.log(artist.image);
-            $("#artist-picture").attr("src", artist.image);
-            console.log(artist.bio.summary);
-            $("#artist-bio").text(artist.bio.summary);
+            console.log(artist);
+            $("#artist-name").text(artist.name);
+
+            $("#artist-picture").attr("src", artist.image[3]["#text"]);
+
+            $("#artist-bio").html(artist.bio.summary);
         });
 });
