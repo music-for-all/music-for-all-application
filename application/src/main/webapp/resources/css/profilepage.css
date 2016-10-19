@@ -13,3 +13,15 @@ body {
 .table-user-information > tbody > tr > td {
     border-top: 0;
 }
+
+.left {
+    float: left;
+}
+
+.clear {
+    clear: both;
+}
+
+.artist-image {
+    margin: 1em;
+}
