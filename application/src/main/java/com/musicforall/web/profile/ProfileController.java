@@ -33,7 +33,6 @@ public class ProfileController {
     public String artistProfile(Model model, @PathVariable String name) {
 
         if (artistService.get(name) == null) {
-            LOG.info(String.format("Artist %s not found", name));
             return "redirect:/";
         }
 
