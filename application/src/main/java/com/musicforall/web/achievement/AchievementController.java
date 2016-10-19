@@ -5,30 +5,37 @@ import com.musicforall.model.Achievement;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
 import com.musicforall.services.AchievementsService;
+import com.musicforall.services.achievements.UserAchievementsService;
+import com.musicforall.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.musicforall.model.user.UserAchievement.Status.DONE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
 /**
  * @author ENikolskiy.
  */
 @RestController
-@RequestMapping("/achievement")
+@RequestMapping("/achievements")
 public class AchievementController {
     @Autowired
     private AchievementsService achievementsService;
+    @Autowired
+    private UserAchievementsService userAchievementsService;
 
     private static final Playlist DUMMY_PLAYLIST = new Playlist();
     private static final Track DUMMY_TRACK = new Track();
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = POST)
     public ResponseEntity saveAchievement(@RequestParam Achievement achievement,
                                           @RequestParam EventType type) {
         final boolean isValid = achievementsService.validateScript(achievement, prepareDummyVars(type));
@@ -37,6 +44,15 @@ public class AchievementController {
             return new ResponseEntity(HttpStatus.ACCEPTED);
         }
         return new ResponseEntity<>("Script is invalid", HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/user/current", method = GET)
+    public ResponseEntity userAchievements() {
+        final Integer userId = SecurityUtil.currentUserId();
+        if (userId == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(userAchievementsService.getByUserIdInStatuses(userId, DONE), HttpStatus.OK);
     }
 
     private Map<String, Object> prepareDummyVars(EventType type) {

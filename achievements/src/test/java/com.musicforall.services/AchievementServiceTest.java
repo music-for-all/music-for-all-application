@@ -11,7 +11,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.musicforall.history.handlers.events.EventType.*;
 import static java.util.Arrays.asList;
@@ -84,5 +86,18 @@ public class AchievementServiceTest {
         filtered = achievementsService.filterBy(null);
         assertTrue(filtered.containsAll(trackAddedTypes));
         assertTrue(filtered.containsAll(trackDeletedTypes));
+    }
+
+    @Test
+    public void validateScript() {
+        final Achievement achievement = new Achievement("name.size() > 3", TRACK_ADDED, 10);
+
+        final Map<String, Object> vars = new HashMap<>(1);
+        vars.put("name", "123131231");
+
+        assertTrue(achievementsService.validateScript(achievement, vars));
+
+        achievement.setScript("valera >! 18");
+        assertFalse(achievementsService.validateScript(achievement, vars));
     }
 }
