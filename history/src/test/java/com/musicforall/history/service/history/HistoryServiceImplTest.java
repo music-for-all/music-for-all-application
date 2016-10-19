@@ -82,6 +82,27 @@ public class HistoryServiceImplTest {
     }
 
     @Test
+    public void testGetArtistMostPopularTracks() throws Exception {
+        IntStream.range(0, 100)
+                .mapToObj(i -> new History(TOP_TRACK_ID, null, new Date(), USER_ID, TRACK_LISTENED))
+                .forEach(service::record);
+        final Collection<History> histories = service.getAllBy(SearchHistoryParams.create()
+                .eventType(TRACK_LISTENED)
+                .get());
+
+        final Map<Integer, Integer> listenedByTrackId = histories.stream()
+                .collect(toMap(History::getTrackId, h -> 1, Integer::sum));
+
+        final List<Integer> topListened = listenedByTrackId.keySet().stream()
+                .sorted((i1, i2) -> listenedByTrackId.get(i2).compareTo(listenedByTrackId.get(i1)))
+                .limit(10)
+                .collect(toList());
+
+        assertEquals(service.getArtistMostPopularTracks("The Beatles").get(0), TOP_TRACK_ID);
+        assertEquals(service.getArtistMostPopularTracks("The Beatles").size(), topListened.size());
+    }
+
+    @Test
     public void testGetAllBy() throws Exception {
         Collection<History> histories = service.getAllBy(SearchHistoryParams.create()
                 .eventType(TRACK_LIKED)
