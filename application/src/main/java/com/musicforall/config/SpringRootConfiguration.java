@@ -12,18 +12,23 @@ import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.*;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.SchedulingConfigurer;
+import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.util.concurrent.Executors.newFixedThreadPool;
+import static java.util.concurrent.Executors.newScheduledThreadPool;
 
 /**
  * Created by kgavrylchenko on 10.06.16.
  */
 @Configuration
 @EnableAsync
+@EnableScheduling
 @ComponentScan({"com.musicforall.common",
         "com.musicforall.services"})
 @Import({HibernateConfiguration.class,
@@ -36,7 +41,7 @@ import static java.util.concurrent.Executors.newFixedThreadPool;
         CacheConfig.class
 })
 @PropertySource(value = "file:${user.home}/application.properties")
-public class SpringRootConfiguration implements AsyncConfigurer {
+public class SpringRootConfiguration implements AsyncConfigurer, SchedulingConfigurer {
 
     public static final int THREAD_POOL_SIZE = 10;
 
@@ -45,14 +50,9 @@ public class SpringRootConfiguration implements AsyncConfigurer {
         return newFixedThreadPool(THREAD_POOL_SIZE);
     }
 
-    @Override
-    public Executor getAsyncExecutor() {
-        return executorService();
-    }
-
-    @Override
-    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return new SimpleAsyncUncaughtExceptionHandler();
+    @Bean
+    public Executor taskScheduler() {
+        return newScheduledThreadPool(THREAD_POOL_SIZE);
     }
 
     @Bean(name = "news")
@@ -63,5 +63,20 @@ public class SpringRootConfiguration implements AsyncConfigurer {
     @Bean(name = "stream")
     public CacheProvider<Integer, Track> cacheStream() {
         return new GuavaCacheProvider<>();
+    }
+
+    @Override
+    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+        return new SimpleAsyncUncaughtExceptionHandler();
+    }
+
+    @Override
+    public Executor getAsyncExecutor() {
+        return executorService();
+    }
+
+    @Override
+    public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+        taskRegistrar.setScheduler(taskScheduler());
     }
 }
