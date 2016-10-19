@@ -160,9 +160,7 @@
         /* Set focus on the name input field when the pop-up window has been shown. */
         $("#popover").on("shown.bs.popover", function () {
 
-            // TODO
-//            $("#inputEmail").focus();
-            $(".facebook").focus();
+            $("#inputEmail").focus();
         });
     });
 </script>
