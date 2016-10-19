@@ -35,8 +35,8 @@
                 <thead>
                 <tr>
                     <th><@spring.message "welcomepage.Actions"/></th>
-                    <th><@spring.message "welcomepage.Artist"/></th>
                     <th><@spring.message "welcomepage.Title"/></th>
+                    <th><@spring.message "welcomepage.Artist"/></th>
                     <th><@spring.message "welcomepage.Duration"/></th>
                 </tr>
                 </thead>
@@ -64,8 +64,8 @@
                 <thead>
                 <tr>
                     <th><@spring.message "songTable.Actions"/></th>
-                    <th><@spring.message "songTable.Artist"/></th>
                     <th><@spring.message "songTable.Title"/></th>
+                    <th><@spring.message "songTable.Artist"/></th>
                     <th><@spring.message "songTable.Duration"/></th>
                 </tr>
                 </thead>
