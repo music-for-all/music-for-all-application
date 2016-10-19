@@ -159,16 +159,17 @@ public class DbPopulateService {
 
             final Iterator<Long> iterator = sizes.iterator();
 
+            final Artist artist = new Artist("The Beatles");
+            artistService.save(artist);
+
             final List<Track> tracks = LINKS.entrySet().stream()
                     .map(entry -> {
-                        final Track track = new Track(entry.getKey(), getName(entry.getValue()), tags);
+                        final Track track = new Track(entry.getKey(), artist, "The Best",
+                                getName(entry.getValue()), tags);
                         track.setSize(iterator.next());
                         return track;
                     })
                     .collect(toList());
-
-            final Artist artist = new Artist("The Beatles");
-            artistService.save(artist);
 
             final Playlist playlist = new Playlist("Hype", new HashSet<>(tracks), user);
             playlistService.save(playlist);
