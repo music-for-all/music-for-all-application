@@ -97,7 +97,7 @@ public class AchievementServiceTest {
 
         assertTrue(achievementsService.validateScript(achievement, vars));
 
-        achievement.setScript("valera >! 18");
+        achievement.setScript(" valera >! 18.stream()");
         assertFalse(achievementsService.validateScript(achievement, vars));
     }
 }

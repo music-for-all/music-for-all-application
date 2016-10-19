@@ -2,7 +2,6 @@ package com.musicforall.common.script.runner;
 
 import com.musicforall.common.script.Script;
 import groovy.lang.GroovyShell;
-import org.codehaus.groovy.control.CompilationFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,9 +26,9 @@ public final class GroovyRunner implements ScriptRunner {
         final GroovyShell shell = createShell(script.getVariables());
 
         try {
-            shell.parse(script.getText());
+            shell.evaluate(script.getText());
             return true;
-        } catch (CompilationFailedException e) {
+        } catch (Exception e) {
             LOG.error("Compilation of script '{}' failed", script.getText());
             return false;
         }
