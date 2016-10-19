@@ -75,7 +75,7 @@ public class FollowerServiceImp implements FollowerService {
         if (numOfUnread != null) {
             numOfUnread.incrementAndGet();
         } else {
-            numOfUnread = new AtomicInteger(0);
+            numOfUnread = new AtomicInteger(1);
         }
         cache.put(NUM_OF_UNREAD_NEWS + userId, numOfUnread);
     }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import java.util.Collections;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -24,7 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Controller
 public class FeedController {
 
-    private static final String NUM_OF_UNREAD_NEWS = "num_of_unread_news_for ";
+    private static final String NUM_OF_UNREAD_NEWS = "num_unread_news ";
     private static final Logger LOG = LoggerFactory.getLogger(FeedController.class);
     private final Queue<DeferredResult<Integer>> responseBodyQueue = new ConcurrentLinkedQueue<>();
 
@@ -40,8 +41,12 @@ public class FeedController {
     @RequestMapping(value = "/num_of_unread", method = RequestMethod.GET)
     @ResponseBody
     public DeferredResult<Integer> getNumOfUnreadNews() {
-        DeferredResult<Integer> result = new DeferredResult<>();
+        final  DeferredResult<Integer> result = new DeferredResult<>(null, Collections.emptyList());
         this.responseBodyQueue.add(result);
+        Runnable remove = () -> {
+            responseBodyQueue.remove(result);
+        };
+        result.onCompletion(remove);
         return result;
     }
 

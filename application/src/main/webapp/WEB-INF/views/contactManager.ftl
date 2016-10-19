@@ -4,10 +4,10 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <@m.head>
 <title><@spring.message "contactpage.Title"/></title>
+<script src="<@spring.url "/resources/js/following.js" />"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.1/sockjs.min.js"></script>
-<script src="/resources/js/following.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
 
 <link href="<@spring.url "/resources/css/contactManager.css" />" rel="stylesheet"/>
@@ -20,6 +20,11 @@
 <@m.body>
 
     <@m.navigation m.pages.Contacts/>
+<div class="container">
+    <span id="num">
+        0
+    </span>
+</div>
 
 <div class="container">
     <div class="well col-md-8 col-md-offset-2 text-center">
@@ -259,13 +264,7 @@
             search();
             return false;
         });
-        setInterval(function () {
-            var ureadNum = getNumOfUnreadNews();
-            if (ureadNum > 0) {
-
-            }
-        }, 2000
-
+        viewNumLongPoll();
     });
 
     window.onbeforeunload = function () {
