@@ -20,14 +20,26 @@ import java.util.Set;
         @NamedQuery(
                 name = Track.ALL_BY_ID_QUERY,
                 query = "select t from Track t where t.id in (:ids)"
+        ),
+        @NamedQuery(
+                name = Track.ARTIST_TOP_TRACKS_QUERY,
+                query = "select history.trackId" +
+                        " from History history" +
+                        " where history.eventType=:eventType" +
+                        " and history.trackId in" +
+                        " (select track.id from Track track" +
+                        " where track.artist.name=:artistName)" +
+                        " group by history.trackId" +
+                        " order by count(history.trackId) desc"
         )})
-
 @Entity
 @Table(name = "tracks")
 public class Track implements Serializable {
 
-    public static final String ALL_BY_ID_QUERY = "all_tracks_by_id";
     private static final long serialVersionUID = -6851477594231058789L;
+    public static final String ALL_BY_ID_QUERY = "all_tracks_by_id";
+    public static final String ARTIST_TOP_TRACKS_QUERY = "artist_top_tracks";
+
     @Id
     @Column(name = Constants.ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,12 +70,10 @@ public class Track implements Serializable {
     @Column(name = "location", nullable = false)
     private String location;
 
-    @Column
     private Long size;
 
     @JsonIgnore
     @ManyToMany
-    @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "playlists_tracks",
             inverseJoinColumns = {@JoinColumn(name = "playlist_id")},
             joinColumns = {@JoinColumn(name = "track_id")})
