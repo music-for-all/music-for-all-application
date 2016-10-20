@@ -81,7 +81,9 @@ public class PlaylistServiceImpl implements PlaylistService {
     public void addTrack(Integer playlistId, Integer trackId) {
         final Playlist playlist = dao.get(Playlist.class, playlistId);
         final Track track = dao.get(Track.class, trackId);
+
         playlist.getTracks().add(track);
+        track.getPlaylists().add(playlist);
         save(playlist);
     }
 
@@ -89,14 +91,24 @@ public class PlaylistServiceImpl implements PlaylistService {
     public void addTracks(Integer playlistId, Collection<Integer> tracksIds) {
         final Playlist playlist = dao.get(Playlist.class, playlistId);
         final Collection<Track> tracks = trackService.getAllByIds(tracksIds);
+
         playlist.addTracks(new HashSet<>(tracks));
+        for (Track track : tracks) {
+            track.getPlaylists().add(playlist);
+        }
         save(playlist);
     }
 
     @Override
     public void removeTrack(Integer playlistId, Integer trackId) {
         final Playlist playlist = dao.get(Playlist.class, playlistId);
-        playlist.getTracks().removeIf(track -> Objects.equals(track.getId(), trackId));
+        playlist.getTracks().removeIf(track -> {
+            if (Objects.equals(track.getId(), trackId)) {
+                track.getPlaylists().remove(playlist);
+                return true;
+            };
+            return false;
+        });
         save(playlist);
     }
 }
