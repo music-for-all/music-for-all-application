@@ -45,7 +45,7 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public List<Integer> getTheMostPopularTracks() {
+    public List<Integer> getMostPopularTracks() {
 
         final int count = 10;
         final int offset = 0;
@@ -79,19 +79,6 @@ public class HistoryServiceImpl implements HistoryService {
         params.put("usersIds", usersIds);
         params.put("eventType", type);
         return dao.getAllByNamedQuery(History.class, "all_for_users_by_type", params);
-    }
-
-    @Override
-    public List<Integer> getArtistMostPopularTracks(String artistName) {
-
-        final int count = 10;
-        final int offset = 0;
-
-        final Map<String, Object> parameters = new HashMap<>();
-        parameters.put(EVENT_TYPE, EventType.TRACK_LISTENED);
-
-        return dao.getAllByNamedQuery(Integer.class, History.POPULAR_TRACKS_QUERY,
-                parameters, new QueryParams(count, offset));
     }
 
     private DetachedCriteria toDetachedCriteria(SearchHistoryParams params) {

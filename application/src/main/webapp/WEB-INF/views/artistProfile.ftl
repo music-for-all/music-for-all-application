@@ -65,8 +65,9 @@
                 $("script.addTrackRowTemplate").html()
         );
 
-        $.when($.get("<@spring.url "/tracks/topTracksOf/" + ${artistName} />"))
+        $.when($.get("<@spring.url "/tracks/topTracksOf/" + artistName />"))
                 .then(function (response) {
+
                     response.forEach(function (track) {
                         $("#tracks").find("thead").after(
                                 trackTable(track)
