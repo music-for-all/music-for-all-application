@@ -25,7 +25,7 @@ public class PopularHistoryServiceImpl implements PopularHistoryService {
 
     @Override
     public Collection<Tag> getPopularTags() {
-        final List<Integer> ids = historyService.getTheMostPopularTracks();
+        final List<Integer> ids = historyService.getMostPopularTracks();
         if (ids.isEmpty()) {
             return Collections.emptyList();
         }
