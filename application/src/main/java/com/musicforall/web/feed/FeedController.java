@@ -26,7 +26,7 @@ public class FeedController {
     private static final Logger LOG = LoggerFactory.getLogger(FeedController.class);
 
     @Autowired
-    @Qualifier("news")
+    @Qualifier("notification")
     private CacheProvider<String, AtomicInteger> cache;
 
     @Autowired

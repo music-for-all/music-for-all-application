@@ -1,7 +1,8 @@
 package com.musicforall.config;
 
 import com.musicforall.common.cache.CacheProvider;
-import com.musicforall.common.cache.GuavaCacheProvider;
+import com.musicforall.common.cache.NotificationCacheProvider;
+import com.musicforall.common.cache.StreamCacheProvider;
 import com.musicforall.common.cache.config.CacheConfig;
 import com.musicforall.config.security.SecurityConfig;
 import com.musicforall.files.FileApiSpringConfig;
@@ -55,14 +56,14 @@ public class SpringRootConfiguration implements AsyncConfigurer, SchedulingConfi
         return newScheduledThreadPool(THREAD_POOL_SIZE);
     }
 
-    @Bean(name = "news")
+    @Bean(name = "notification")
     public CacheProvider<String, AtomicInteger> cacheNews() {
-        return new GuavaCacheProvider<>();
+        return new NotificationCacheProvider<>();
     }
 
     @Bean(name = "stream")
     public CacheProvider<Integer, Track> cacheStream() {
-        return new GuavaCacheProvider<>();
+        return new StreamCacheProvider<>();
     }
 
     @Override

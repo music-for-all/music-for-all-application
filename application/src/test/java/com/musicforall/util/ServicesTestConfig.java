@@ -1,7 +1,7 @@
 package com.musicforall.util;
 
 import com.musicforall.common.cache.CacheProvider;
-import com.musicforall.common.cache.GuavaCacheProvider;
+import com.musicforall.common.cache.StreamCacheProvider;
 import com.musicforall.common.cache.config.CacheConfig;
 import com.musicforall.config.HibernateConfigDev;
 import com.musicforall.config.WebSocketConfig;
@@ -32,6 +32,6 @@ public class ServicesTestConfig {
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public <K, V> CacheProvider<K, V> cache() {
-        return new GuavaCacheProvider<>();
+        return new StreamCacheProvider<>();
     }
 }

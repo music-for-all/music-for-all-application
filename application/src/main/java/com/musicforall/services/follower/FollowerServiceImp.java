@@ -28,7 +28,7 @@ public class FollowerServiceImp implements FollowerService {
     private Dao dao;
 
     @Autowired
-    @Qualifier("news")
+    @Qualifier("notification")
     private CacheProvider<String, AtomicInteger> cache;
 
     @Override
