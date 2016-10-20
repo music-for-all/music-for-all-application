@@ -2,7 +2,9 @@ package com.musicforall.services.track;
 
 import com.musicforall.common.Constants;
 import com.musicforall.common.dao.Dao;
+import com.musicforall.common.dao.QueryParams;
 import com.musicforall.common.query.QueryUtil;
+import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
@@ -81,5 +83,20 @@ public class TrackServiceImpl implements TrackService {
     @Override
     public List<Track> findAll() {
         return dao.all(Track.class);
+    }
+
+    @Override
+    public Collection<Track> getArtistMostPopularTracks(String artistName) {
+
+        final int count = 10;
+        final int offset = 0;
+
+        final Map<String, Object> parameters = new HashMap<>();
+        parameters.put("eventType", EventType.TRACK_LISTENED);
+        parameters.put("artistName", artistName);
+
+        List<Integer> trackIds = dao.getAllByNamedQuery(Integer.class, Track.ARTIST_TOP_TRACKS_QUERY,
+                parameters, new QueryParams(count, offset));
+        return getAllByIds(trackIds);
     }
 }

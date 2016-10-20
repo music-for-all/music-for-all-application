@@ -30,4 +30,6 @@ public interface TrackService {
     List<Track> getAllLike(SearchTrackRequest searchCriteria);
 
     List<Track> findAll();
+
+    Collection<Track> getArtistMostPopularTracks(String artistName);
 }
