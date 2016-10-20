@@ -44,6 +44,8 @@ public class History {
 
     public static final String POPULAR_TRACKS_QUERY = "most_popular_tracks";
 
+    public static final String ARTIST_POPULAR_TRACKS_QUERY = "artist_most_popular_tracks";
+
     public static final String TRACK_LIKES_COUNT_QUERY = "get_likes_count";
 
     public static final String USERS_HISTORIES_QUERY = "get_users_histories";
