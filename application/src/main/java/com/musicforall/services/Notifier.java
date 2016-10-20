@@ -30,7 +30,7 @@ public class Notifier {
     @Scheduled(fixedRate = 2000)
     public void doNotify() throws Exception {
         for (Notification notification : queue) {
-            notification.getResult().setResult(notification.getCallable().call());
+            notification.doNotify();
         }
     }
 }
