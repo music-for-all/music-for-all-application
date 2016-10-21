@@ -10,8 +10,8 @@ import com.musicforall.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -27,16 +27,15 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 @RequestMapping("/achievements")
 public class AchievementController {
+    private static final Playlist DUMMY_PLAYLIST = new Playlist();
+    private static final Track DUMMY_TRACK = new Track();
     @Autowired
     private AchievementsService achievementsService;
     @Autowired
     private UserAchievementsService userAchievementsService;
 
-    private static final Playlist DUMMY_PLAYLIST = new Playlist();
-    private static final Track DUMMY_TRACK = new Track();
-
     @RequestMapping(method = POST)
-    public ResponseEntity saveAchievement(@RequestParam Achievement achievement) {
+    public ResponseEntity saveAchievement(@RequestBody Achievement achievement) {
         final boolean isValid = achievementsService.validateScript(achievement,
                 prepareDummyVars(achievement.getEventType()));
         if (isValid) {
