@@ -1,0 +1,16 @@
+body {
+    padding-top: 70px;
+}
+
+.container .fields .form-control {
+    margin-right: 2em;
+    width: auto;
+}
+
+.container .fields {
+    display: flex;
+}
+
+label {
+    margin-right: 1em;
+}

@@ -36,9 +36,9 @@ public class AchievementController {
     private static final Track DUMMY_TRACK = new Track();
 
     @RequestMapping(method = POST)
-    public ResponseEntity saveAchievement(@RequestParam Achievement achievement,
-                                          @RequestParam EventType type) {
-        final boolean isValid = achievementsService.validateScript(achievement, prepareDummyVars(type));
+    public ResponseEntity saveAchievement(@RequestParam Achievement achievement) {
+        final boolean isValid = achievementsService.validateScript(achievement,
+                prepareDummyVars(achievement.getEventType()));
         if (isValid) {
             achievementsService.save(achievement);
             return new ResponseEntity(HttpStatus.ACCEPTED);

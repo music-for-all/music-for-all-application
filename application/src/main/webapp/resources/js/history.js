@@ -28,4 +28,8 @@ function History() {
     self.playlistDeleted = function (playlistId) {
         return $.when($.post(baseUrl + "/playlist/deleted", {"playlistId": playlistId}));
     };
+
+    self.types = function () {
+        return $.when($.get(baseUrl + "/types"));
+    };
 }
