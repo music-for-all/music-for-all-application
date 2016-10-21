@@ -172,6 +172,10 @@ public class DbPopulateService {
                     .collect(toList());
 
             final Playlist playlist = new Playlist("Hype", new HashSet<>(tracks), user);
+
+            for (Track track : tracks) {
+                track.getPlaylists().add(playlist);
+            }
             playlistService.save(playlist);
 
             final List<Integer> tracksId = tracks.stream().map(Track::getId).collect(toList());
@@ -181,10 +185,9 @@ public class DbPopulateService {
 
             LOG.info("playlist {} is saved", playlist);
 
+            LOG.info("finished database population");
         } catch (InterruptedException e) {
             LOG.error("Saving failed", e);
-        } finally {
-            LOG.info("finished database population");
         }
     }
 }

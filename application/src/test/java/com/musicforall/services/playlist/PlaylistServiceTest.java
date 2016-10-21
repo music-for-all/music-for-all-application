@@ -145,6 +145,10 @@ public class PlaylistServiceTest {
         for (Track track : tracksInDb) {
             assertTrue(tracksInPlaylist.contains(trackService.get(track.getId())));
         }
+
+        for (Integer trackId : tracksIds) {
+            playlistService.removeTrack(playlistId, trackId);
+        }
     }
 
     @Test
@@ -157,6 +161,8 @@ public class PlaylistServiceTest {
 
         playlistService.addTrack(playlistId, trackId);
         assertEquals(1, playlistService.get(playlistId).getTracks().size());
+
+        playlistService.removeTrack(playlistId, trackId);
     }
 
     @Test

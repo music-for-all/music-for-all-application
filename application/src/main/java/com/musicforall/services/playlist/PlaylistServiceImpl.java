@@ -74,6 +74,9 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public void delete(Integer playlistId) {
         final Playlist playlist = dao.get(Playlist.class, playlistId);
+        for (Track track : playlist.getTracks()) {
+            track.getPlaylists().remove(playlist);
+        }
         dao.delete(playlist);
     }
 
@@ -106,7 +109,7 @@ public class PlaylistServiceImpl implements PlaylistService {
             if (Objects.equals(track.getId(), trackId)) {
                 track.getPlaylists().remove(playlist);
                 return true;
-            };
+            }
             return false;
         });
         save(playlist);
