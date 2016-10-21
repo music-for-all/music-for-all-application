@@ -22,14 +22,12 @@ import java.util.stream.Collectors;
 @Transactional
 public class FollowerServiceImp implements FollowerService {
 
-    private static final String NUM_OF_UNREAD_NEWS = "num_unread_news ";
-
     @Autowired
     private Dao dao;
 
     @Autowired
     @Qualifier("notification")
-    private CacheProvider<String, AtomicInteger> cache;
+    private CacheProvider<Integer, AtomicInteger> cache;
 
     @Override
     public void follow(Integer userId, Integer followingUserId) {
@@ -38,7 +36,7 @@ public class FollowerServiceImp implements FollowerService {
             followers = new Followers(userId);
         }
         if (!userId.equals(followingUserId)) {
-            incrementNumOfUnread(followingUserId);
+            incrementNotifierNum(followingUserId);
             followers.follow(followingUserId);
         }
         dao.save(followers);
@@ -47,6 +45,7 @@ public class FollowerServiceImp implements FollowerService {
     @Override
     public void unfollow(Integer userId, Integer followingUserId) {
         final Followers followers = dao.get(Followers.class, userId);
+        incrementNotifierNum(followingUserId);
         followers.unfollow(followingUserId);
         dao.save(followers);
     }
@@ -70,13 +69,13 @@ public class FollowerServiceImp implements FollowerService {
         return followers.getFollowingId();
     }
 
-    private void incrementNumOfUnread(Integer userId) {
-        AtomicInteger numOfUnread = cache.get(NUM_OF_UNREAD_NEWS + userId);
+    private void incrementNotifierNum(Integer userId) {
+        AtomicInteger numOfUnread = cache.get(userId);
         if (numOfUnread != null) {
             numOfUnread.incrementAndGet();
         } else {
             numOfUnread = new AtomicInteger(1);
         }
-        cache.put(NUM_OF_UNREAD_NEWS + userId, numOfUnread);
+        cache.put(userId, numOfUnread);
     }
 }

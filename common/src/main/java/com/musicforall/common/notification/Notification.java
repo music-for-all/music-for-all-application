@@ -1,4 +1,4 @@
-package com.musicforall.services;
+package com.musicforall.common.notification;
 
 import org.springframework.web.context.request.async.DeferredResult;
 
@@ -10,7 +10,6 @@ import static java.util.Objects.requireNonNull;
 /**
  * @author ENikolskiy.
  */
-//TODO move to common
 public class Notification<T> {
     private String id = UUID.randomUUID().toString();
     private DeferredResult<T> result;

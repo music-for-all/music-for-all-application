@@ -1,4 +1,4 @@
-package com.musicforall.services;
+package com.musicforall.common.notification;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @author ENikolskiy.
  */
 @Component
-//TODO move to common
 public class Notifier {
     private final Queue<Notification> queue = new ConcurrentLinkedQueue<>();
 

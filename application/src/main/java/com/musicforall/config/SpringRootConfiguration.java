@@ -57,7 +57,7 @@ public class SpringRootConfiguration implements AsyncConfigurer, SchedulingConfi
     }
 
     @Bean(name = "notification")
-    public CacheProvider<String, AtomicInteger> cacheNews() {
+    public CacheProvider<Integer, AtomicInteger> cacheNews() {
         return new NotificationCacheProvider<>();
     }
 

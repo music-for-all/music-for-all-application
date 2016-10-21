@@ -1,17 +1,21 @@
 package com.musicforall.util;
 
 import com.musicforall.common.cache.CacheProvider;
+import com.musicforall.common.cache.NotificationCacheProvider;
 import com.musicforall.common.cache.StreamCacheProvider;
 import com.musicforall.common.cache.config.CacheConfig;
 import com.musicforall.config.HibernateConfigDev;
 import com.musicforall.config.WebSocketConfig;
 import com.musicforall.config.security.SecurityConfig;
 import com.musicforall.history.HistorySpringConfig;
+import com.musicforall.model.Track;
 import com.musicforall.services.DbPopulateService;
 import com.musicforall.services.file.FileServiceImpl;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.*;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Pukho on 19.06.2016.
@@ -29,9 +33,14 @@ import org.springframework.context.annotation.*;
 @Import({HibernateConfigDev.class, SecurityConfig.class, TestMessageConfig.class,
         HistorySpringConfig.class, CacheConfig.class, WebSocketConfig.class})
 public class ServicesTestConfig {
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public <K, V> CacheProvider<K, V> cache() {
+
+    @Bean(name = "notification")
+    public CacheProvider<String, AtomicInteger> cacheNews() {
+        return new NotificationCacheProvider<>();
+    }
+
+    @Bean(name = "stream")
+    public CacheProvider<Integer, Track> cacheStream() {
         return new StreamCacheProvider<>();
     }
 }
