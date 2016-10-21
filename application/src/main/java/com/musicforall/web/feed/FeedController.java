@@ -2,6 +2,7 @@ package com.musicforall.web.feed;
 
 import com.musicforall.common.cache.CacheProvider;
 import com.musicforall.common.notification.Notifier;
+import com.musicforall.services.notification.NotificationService;
 import com.musicforall.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,30 +26,18 @@ public class FeedController {
     private static final Logger LOG = LoggerFactory.getLogger(FeedController.class);
 
     @Autowired
-    @Qualifier("notification")
-    private CacheProvider<Integer, AtomicInteger> cache;
-
-    @Autowired
-    private Notifier notifier;
+    private NotificationService notificationService;
 
     @RequestMapping("/feed")
     public String friendsActivity(Model model) {
-        //TODO move to service
-        final Integer userId = SecurityUtil.currentUserId();
-        cache.put(userId, new AtomicInteger(0));
-        //
+        notificationService.resetNotifierNum();
         return "followingHistory";
     }
 
     @ResponseBody
     @RequestMapping(value = "/num_of_unread", method = RequestMethod.GET)
     public DeferredResult<Integer> getNumOfUnreadNews() {
-        //TODO move to service
-        final Integer userId = SecurityUtil.currentUserId();
-        return notifier.deffer(() -> {
-            final AtomicInteger numOfUnread = cache.get(userId);
-            return numOfUnread != null ? numOfUnread.get() : null;
-        });
+        return notificationService.getDeferredNotifierNum();
     }
 }
 

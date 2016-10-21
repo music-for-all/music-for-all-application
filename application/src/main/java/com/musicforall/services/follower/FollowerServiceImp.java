@@ -3,6 +3,7 @@ package com.musicforall.services.follower;
 import com.musicforall.common.cache.CacheProvider;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Followers;
+import com.musicforall.services.notification.NotificationService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,7 @@ public class FollowerServiceImp implements FollowerService {
     private Dao dao;
 
     @Autowired
-    @Qualifier("notification")
-    private CacheProvider<Integer, AtomicInteger> cache;
+    private NotificationService notificationService;
 
     @Override
     public void follow(Integer userId, Integer followingUserId) {
@@ -36,7 +36,7 @@ public class FollowerServiceImp implements FollowerService {
             followers = new Followers(userId);
         }
         if (!userId.equals(followingUserId)) {
-            incrementNotifierNum(followingUserId);
+            notificationService.incrementNotifierNum(followingUserId);
             followers.follow(followingUserId);
         }
         dao.save(followers);
@@ -45,7 +45,7 @@ public class FollowerServiceImp implements FollowerService {
     @Override
     public void unfollow(Integer userId, Integer followingUserId) {
         final Followers followers = dao.get(Followers.class, userId);
-        incrementNotifierNum(followingUserId);
+        notificationService.incrementNotifierNum(followingUserId);
         followers.unfollow(followingUserId);
         dao.save(followers);
     }
@@ -69,13 +69,5 @@ public class FollowerServiceImp implements FollowerService {
         return followers.getFollowingId();
     }
 
-    private void incrementNotifierNum(Integer userId) {
-        AtomicInteger numOfUnread = cache.get(userId);
-        if (numOfUnread != null) {
-            numOfUnread.incrementAndGet();
-        } else {
-            numOfUnread = new AtomicInteger(1);
-        }
-        cache.put(userId, numOfUnread);
-    }
+
 }
