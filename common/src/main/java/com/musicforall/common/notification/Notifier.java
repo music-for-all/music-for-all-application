@@ -13,6 +13,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 @Component
 public class Notifier {
+    public Integer checkingNum = 0;
+
     private final Queue<Notification> queue = new ConcurrentLinkedQueue<>();
 
     public <T> DeferredResult<T> deffer(Callable<T> callable) {

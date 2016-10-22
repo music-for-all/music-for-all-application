@@ -23,8 +23,6 @@ public class NotificationServiceImpl implements NotificationService {
     @Autowired
     private Notifier notifier;
 
-    private static Integer checkingNum = 0;
-
     @Override
     public void incrementNotifierNum(Integer userId) {
         AtomicInteger numOfUnread = cache.get(userId);
@@ -52,10 +50,10 @@ public class NotificationServiceImpl implements NotificationService {
                 return null;
             }
             final Integer unreadNum = unreadAtomicNum.get();
-            if (unreadNum.equals(checkingNum)) {
+            if (unreadNum.equals(notifier.checkingNum)) {
                 return null;
             }
-            checkingNum = unreadNum;
+            notifier.checkingNum = unreadNum;
             return unreadNum;
         });
     }
