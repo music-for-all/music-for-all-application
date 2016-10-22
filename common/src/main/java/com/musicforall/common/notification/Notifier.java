@@ -17,20 +17,13 @@ import java.util.function.Predicate;
 public class Notifier<T extends Notification> {
     private final Queue<T> queue = new ConcurrentLinkedQueue<>();
 
-    public DeferredResult add(T notification) {
+    public void add(T notification) {
         final DeferredResult result = notification.getDeferredResult();
 
         final Runnable remove = () -> queue.removeIf(n -> n.getId().equals(notification.getId()));
         result.onCompletion(remove);
 
         this.queue.add(notification);
-        return result;
-    }
-
-    public void doNotify() {
-        for (Notification notification : queue) {
-            notification.doNotify();
-        }
     }
 
     public void doNotifyWhere(Predicate<T> predicate) {

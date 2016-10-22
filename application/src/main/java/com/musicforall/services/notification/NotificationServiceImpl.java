@@ -57,6 +57,7 @@ public class NotificationServiceImpl implements NotificationService {
             return unreadAtomicNum.get();
         }, userId);
 
-        return notifier.add(userNotification);
+        notifier.add(userNotification);
+        return result;
     }
 }
