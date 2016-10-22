@@ -336,8 +336,6 @@
 
         refreshRecommendationTable();
 
-        getNotificationNumPolling();
-
         /* Handle the Like button (Ajax). */
         $(".tracks-table").on("click", ".like-button", function () {
 
@@ -367,6 +365,7 @@
         $("#deletePlaylistModal").on("shown.bs.modal", function () {
             $("#acceptRemovingPlaylistButton").focus();
         });
+        updateNotification();
     });
 </script>
 </@m.body>

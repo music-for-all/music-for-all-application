@@ -260,7 +260,7 @@
             search();
             return false;
         });
-        getNotificationNumPolling();
+        updateNotification();
     });
 
     window.onbeforeunload = function () {

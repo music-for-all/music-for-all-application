@@ -233,7 +233,6 @@
                     userHeader(req_user)
             );
         });
-        getNotificationNumPolling();
 
         social.getUserFollowers(${user_id}).then(function (ufollowers) {
             $("#popupBlock").append(
@@ -278,6 +277,8 @@
                 $("#acceptCreatingPlaylistButton").trigger("click");
             }
         });
+
+        updateNotification();
     });
 </script>
 </@m.body>

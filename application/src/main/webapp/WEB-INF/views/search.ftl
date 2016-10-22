@@ -185,7 +185,7 @@
         });
         getPopularTracks();
         getPopularTags();
-        getNotificationNumPolling();
+        updateNotification();
     });
 
     $("#change-multiselect-state").on("click", "input", function (e) {
