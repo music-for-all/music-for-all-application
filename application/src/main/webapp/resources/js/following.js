@@ -9,13 +9,15 @@ function getNotificationNum() {
 }
 
 function updateNotification() {
-    getNotificationNum().then(function (num) {
+    getNotificationNum().done(function (num) {
         if (num && num > 0) {
             $(".notifications-reminder").css("display", "inline-block");
             $(".notifications-reminder #notification-num").text(num);
         } else {
             $(".notifications-reminder").css("display", "none");
         }
+        setTimeout(updateNotification, 0);
+    }).fail(function () {
         setTimeout(updateNotification, 0);
     });
 }

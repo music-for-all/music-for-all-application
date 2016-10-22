@@ -13,12 +13,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 @Component
 public class Notifier {
-    private Integer checkingNum = 0;
-
     private final Queue<Notification> queue = new ConcurrentLinkedQueue<>();
 
-    public <T> DeferredResult<T> deffer(Callable<T> callable) {
-        final DeferredResult<T> result = new DeferredResult<>();
+    public <T> DeferredResult<T> deffer(Callable<T> callable, Object defaultResult) {
+        final DeferredResult<T> result = new DeferredResult<>(null, defaultResult);
         final Notification<T> notification = new Notification<T>(result, callable);
 
         final Runnable remove = () -> queue.removeIf(n -> n.getId().equals(notification.getId()));
@@ -26,14 +24,6 @@ public class Notifier {
 
         this.queue.add(notification);
         return result;
-    }
-
-    public Integer getCheckingNum() {
-        return checkingNum;
-    }
-
-    public void setCheckingNum(Integer checkingNum) {
-        this.checkingNum = checkingNum;
     }
 
     @Scheduled(fixedRate = 2000)

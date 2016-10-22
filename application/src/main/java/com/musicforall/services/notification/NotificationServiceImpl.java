@@ -5,19 +5,23 @@ import com.musicforall.common.notification.Notifier;
 import com.musicforall.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.musicforall.config.CacheConfig.NOTIFICATION;
+
 /**
  * @author IliaNik on 21.10.2016.
  */
-@Service("notification")
+@Service
 public class NotificationServiceImpl implements NotificationService {
 
     @Autowired
-    @Qualifier("notifications")
+    @Qualifier(NOTIFICATION)
     private CacheProvider<Integer, AtomicInteger> cache;
 
     @Autowired
@@ -49,12 +53,7 @@ public class NotificationServiceImpl implements NotificationService {
             if (unreadAtomicNum == null) {
                 return null;
             }
-            final Integer unreadNum = unreadAtomicNum.get();
-            if (unreadNum.equals(notifier.getCheckingNum())) {
-                return null;
-            }
-            notifier.setCheckingNum(unreadNum);
-            return unreadNum;
-        });
+            return unreadAtomicNum.get();
+        }, new ResponseEntity<>(HttpStatus.REQUEST_TIMEOUT));
     }
 }

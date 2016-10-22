@@ -1,4 +1,4 @@
-package com.musicforall.common.cache.config;
+package com.musicforall.config;
 
 import com.google.common.cache.CacheBuilder;
 import org.springframework.cache.CacheManager;

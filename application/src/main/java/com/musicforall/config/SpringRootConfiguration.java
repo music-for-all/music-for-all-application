@@ -1,9 +1,8 @@
 package com.musicforall.config;
 
+import com.musicforall.cache.NotificationCacheProvider;
+import com.musicforall.cache.StreamCacheProvider;
 import com.musicforall.common.cache.CacheProvider;
-import com.musicforall.common.cache.NotificationCacheProvider;
-import com.musicforall.common.cache.StreamCacheProvider;
-import com.musicforall.common.cache.config.CacheConfig;
 import com.musicforall.config.security.SecurityConfig;
 import com.musicforall.files.FileApiSpringConfig;
 import com.musicforall.history.HistorySpringConfig;
@@ -21,6 +20,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.musicforall.config.CacheConfig.NOTIFICATION;
+import static com.musicforall.config.CacheConfig.STREAM;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.Executors.newScheduledThreadPool;
 
@@ -56,14 +57,14 @@ public class SpringRootConfiguration implements AsyncConfigurer, SchedulingConfi
         return newScheduledThreadPool(THREAD_POOL_SIZE);
     }
 
-    @Bean(name = "notifications")
+    @Bean(name = NOTIFICATION)
     public CacheProvider<Integer, AtomicInteger> cacheNews() {
-        return new NotificationCacheProvider<>();
+        return new NotificationCacheProvider();
     }
 
-    @Bean(name = "stream")
+    @Bean(name = STREAM)
     public CacheProvider<Integer, Track> cacheStream() {
-        return new StreamCacheProvider<>();
+        return new StreamCacheProvider();
     }
 
     @Override

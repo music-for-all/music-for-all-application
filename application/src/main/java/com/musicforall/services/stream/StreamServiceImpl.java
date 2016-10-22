@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.musicforall.config.CacheConfig.STREAM;
+
 /**
  * @author Evgeniy on 06.10.2016.
  */
@@ -21,7 +23,7 @@ import java.util.Map;
 public class StreamServiceImpl implements StreamService {
 
     @Autowired
-    @Qualifier("stream")
+    @Qualifier(STREAM)
     private CacheProvider<Integer, Track> cache;
     @Autowired
     private TrackService trackService;
