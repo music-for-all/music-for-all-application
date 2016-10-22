@@ -56,7 +56,7 @@ public class SpringRootConfiguration implements AsyncConfigurer, SchedulingConfi
         return newScheduledThreadPool(THREAD_POOL_SIZE);
     }
 
-    @Bean(name = "notification")
+    @Bean(name = "notifications")
     public CacheProvider<Integer, AtomicInteger> cacheNews() {
         return new NotificationCacheProvider<>();
     }

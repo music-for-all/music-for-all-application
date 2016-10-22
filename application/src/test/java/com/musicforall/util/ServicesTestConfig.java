@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger;
         HistorySpringConfig.class, CacheConfig.class, WebSocketConfig.class})
 public class ServicesTestConfig {
 
-    @Bean(name = "notification")
+    @Bean(name = "notifications")
     public CacheProvider<String, AtomicInteger> cacheNews() {
         return new NotificationCacheProvider<>();
     }

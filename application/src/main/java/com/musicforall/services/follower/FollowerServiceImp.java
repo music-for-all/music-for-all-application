@@ -1,19 +1,16 @@
 package com.musicforall.services.follower;
 
-import com.musicforall.common.cache.CacheProvider;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Followers;
 import com.musicforall.services.notification.NotificationService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
