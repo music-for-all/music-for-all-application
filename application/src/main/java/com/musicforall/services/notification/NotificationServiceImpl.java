@@ -18,11 +18,11 @@ import static com.musicforall.config.CacheConfig.NOTIFICATION;
  */
 @Service
 public class NotificationServiceImpl implements NotificationService {
+    private static final long TIMEOUT = 60000;
 
     @Autowired
     @Qualifier(NOTIFICATION)
     private CacheProvider<Integer, AtomicInteger> cache;
-
     @Autowired
     private Notifier<UserNotification> notifier;
 
@@ -47,7 +47,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public DeferredResult getDeferredNotifierNum(Object timeoutResult) {
         final Integer userId = SecurityUtil.currentUserId();
-        final DeferredResult<Integer> result = new DeferredResult<>(null, timeoutResult);
+        final DeferredResult<Integer> result = new DeferredResult<>(TIMEOUT, timeoutResult);
 
         final UserNotification<Integer> userNotification = new UserNotification<>(result, () -> {
             final AtomicInteger unreadAtomicNum = cache.get(userId);
