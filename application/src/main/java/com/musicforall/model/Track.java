@@ -74,9 +74,9 @@ public class Track implements Serializable {
 
     @JsonIgnore
     @ManyToMany
-    @JoinTable(name = "playlists_tracks",
-            inverseJoinColumns = {@JoinColumn(name = "playlist_id")},
-            joinColumns = {@JoinColumn(name = "track_id")})
+    @JoinTable(name = "playlist_track",
+            joinColumns = {@JoinColumn(name = "track_id")},
+            inverseJoinColumns = {@JoinColumn(name = "playlist_id")})
     private Set<Playlist> playlists = new HashSet<>();
 
     public Track() {
