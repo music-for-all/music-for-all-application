@@ -33,7 +33,7 @@ public class FeedController {
 
     @ResponseBody
     @RequestMapping(value = "/num_of_unread", method = RequestMethod.GET)
-    public DeferredResult<Integer> getNumOfUnreadNews() {
+    public DeferredResult getNumOfUnreadNews() {
         return notificationService.getDeferredNotifierNum(new ResponseEntity<>(REQUEST_TIMEOUT));
     }
 }

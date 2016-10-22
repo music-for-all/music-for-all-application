@@ -11,5 +11,5 @@ public interface NotificationService {
 
     void resetNotifierNum();
 
-    DeferredResult<Integer> getDeferredNotifierNum(Object timeoutResult);
+    DeferredResult getDeferredNotifierNum(Object timeoutResult);
 }

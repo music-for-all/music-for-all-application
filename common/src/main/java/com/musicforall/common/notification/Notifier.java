@@ -33,7 +33,7 @@ public class Notifier<T extends Notification> {
         }
     }
 
-    public void doNotifyWhen(Predicate<T> predicate) {
+    public void doNotifyWhere(Predicate<T> predicate) {
         queue.stream()
                 .filter(predicate)
                 .forEach(Notification::doNotify);

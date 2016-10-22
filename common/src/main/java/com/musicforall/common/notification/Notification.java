@@ -12,14 +12,14 @@ import static java.util.Objects.requireNonNull;
 /**
  * @author ENikolskiy.
  */
-public class Notification {
+public class Notification<T> {
     private static final Logger LOG = LoggerFactory.getLogger(Notification.class);
 
     private String id = UUID.randomUUID().toString();
-    private DeferredResult deferredResult;
-    private Callable callable;
+    private DeferredResult<T> deferredResult;
+    private Callable<T> callable;
 
-    public Notification(DeferredResult deferredResult, Callable callable) {
+    public Notification(DeferredResult<T> deferredResult, Callable<T> callable) {
         requireNonNull(deferredResult, "deferredResult must not be null");
         requireNonNull(callable, "callable must not be null");
         this.deferredResult = deferredResult;
@@ -27,7 +27,7 @@ public class Notification {
     }
 
     public void doNotify() {
-        Object result = null;
+        T result = null;
         try {
             result = callable.call();
         } catch (Exception e) {
@@ -43,11 +43,7 @@ public class Notification {
         return id;
     }
 
-    public DeferredResult getDeferredResult() {
+    public DeferredResult<T> getDeferredResult() {
         return deferredResult;
-    }
-
-    public Callable getCallable() {
-        return callable;
     }
 }

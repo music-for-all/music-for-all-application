@@ -10,7 +10,7 @@ function getNotificationNum() {
 
 function updateNotification() {
     getNotificationNum().done(function (num) {
-        if (num && num > 0) {
+        if (num > 0) {
             $(".notifications-reminder").css("display", "inline-block");
             $(".notifications-reminder #notification-num").text(num);
         } else {

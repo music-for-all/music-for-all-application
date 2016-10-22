@@ -35,7 +35,7 @@ public class NotificationServiceImpl implements NotificationService {
             numOfUnread = new AtomicInteger(1);
         }
         cache.put(userId, numOfUnread);
-        notifier.doNotifyWhen(n -> n.getUserId().equals(userId));
+        notifier.doNotifyWhere(n -> userId.equals(n.getUserId()));
     }
 
     @Override
@@ -45,11 +45,11 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public DeferredResult<Integer> getDeferredNotifierNum(Object timeoutResult) {
+    public DeferredResult getDeferredNotifierNum(Object timeoutResult) {
         final Integer userId = SecurityUtil.currentUserId();
-        final DeferredResult result = new DeferredResult(null, timeoutResult);
+        final DeferredResult<Integer> result = new DeferredResult<>(null, timeoutResult);
 
-        final UserNotification userNotification = new UserNotification(result, () -> {
+        final UserNotification<Integer> userNotification = new UserNotification<>(result, () -> {
             final AtomicInteger unreadAtomicNum = cache.get(userId);
             if (unreadAtomicNum == null) {
                 return null;
