@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 @Component
 public class Notifier {
-    public Integer checkingNum = 0;
+    private Integer checkingNum = 0;
 
     private final Queue<Notification> queue = new ConcurrentLinkedQueue<>();
 
@@ -26,6 +26,14 @@ public class Notifier {
 
         this.queue.add(notification);
         return result;
+    }
+
+    public Integer getCheckingNum() {
+        return checkingNum;
+    }
+
+    public void setCheckingNum(Integer checkingNum) {
+        this.checkingNum = checkingNum;
     }
 
     @Scheduled(fixedRate = 2000)

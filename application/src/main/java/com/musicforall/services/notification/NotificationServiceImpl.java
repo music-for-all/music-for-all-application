@@ -50,10 +50,10 @@ public class NotificationServiceImpl implements NotificationService {
                 return null;
             }
             final Integer unreadNum = unreadAtomicNum.get();
-            if (unreadNum.equals(notifier.checkingNum)) {
+            if (unreadNum.equals(notifier.getCheckingNum())) {
                 return null;
             }
-            notifier.checkingNum = unreadNum;
+            notifier.setCheckingNum(unreadNum);
             return unreadNum;
         });
     }

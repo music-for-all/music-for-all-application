@@ -16,7 +16,7 @@ public class Notification<T> {
     private Callable<T> callable;
 
     public Notification(DeferredResult<T> deferredResult, Callable<T> callable) {
-        requireNonNull(deferredResult, "result must not be null");
+        requireNonNull(deferredResult, "deferredResult must not be null");
         requireNonNull(callable, "callable must not be null");
         this.deferredResult = deferredResult;
         this.callable = callable;
