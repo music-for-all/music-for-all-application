@@ -2,11 +2,10 @@ package com.musicforall.services.notification;
 
 import com.musicforall.common.cache.CacheProvider;
 import com.musicforall.common.notification.Notifier;
+import com.musicforall.dto.UserNotification;
 import com.musicforall.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
 
@@ -25,7 +24,7 @@ public class NotificationServiceImpl implements NotificationService {
     private CacheProvider<Integer, AtomicInteger> cache;
 
     @Autowired
-    private Notifier notifier;
+    private Notifier<UserNotification> notifier;
 
     @Override
     public void incrementNotifierNum(Integer userId) {
@@ -36,6 +35,7 @@ public class NotificationServiceImpl implements NotificationService {
             numOfUnread = new AtomicInteger(1);
         }
         cache.put(userId, numOfUnread);
+        notifier.doNotifyWhen(n -> n.getUserId().equals(userId));
     }
 
     @Override
@@ -44,16 +44,19 @@ public class NotificationServiceImpl implements NotificationService {
         cache.put(userId, new AtomicInteger(0));
     }
 
-
     @Override
-    public DeferredResult<Integer> getDeferredNotifierNum() {
+    public DeferredResult<Integer> getDeferredNotifierNum(Object timeoutResult) {
         final Integer userId = SecurityUtil.currentUserId();
-        return notifier.deffer(() -> {
+        final DeferredResult result = new DeferredResult(null, timeoutResult);
+
+        final UserNotification userNotification = new UserNotification(result, () -> {
             final AtomicInteger unreadAtomicNum = cache.get(userId);
             if (unreadAtomicNum == null) {
                 return null;
             }
             return unreadAtomicNum.get();
-        }, new ResponseEntity<>(HttpStatus.REQUEST_TIMEOUT));
+        }, userId);
+
+        return notifier.add(userNotification);
     }
 }

@@ -1,23 +1,24 @@
 package com.musicforall.common.notification;
 
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.Queue;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.Predicate;
 
 /**
  * @author ENikolskiy.
  */
 @Component
-public class Notifier {
-    private final Queue<Notification> queue = new ConcurrentLinkedQueue<>();
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class Notifier<T extends Notification> {
+    private final Queue<T> queue = new ConcurrentLinkedQueue<>();
 
-    public <T> DeferredResult<T> deffer(Callable<T> callable, Object defaultResult) {
-        final DeferredResult<T> result = new DeferredResult<>(null, defaultResult);
-        final Notification<T> notification = new Notification<T>(result, callable);
+    public DeferredResult add(T notification) {
+        final DeferredResult result = notification.getDeferredResult();
 
         final Runnable remove = () -> queue.removeIf(n -> n.getId().equals(notification.getId()));
         result.onCompletion(remove);
@@ -26,10 +27,15 @@ public class Notifier {
         return result;
     }
 
-    @Scheduled(fixedRate = 2000)
-    public void doNotify() throws Exception {
+    public void doNotify() {
         for (Notification notification : queue) {
             notification.doNotify();
         }
+    }
+
+    public void doNotifyWhen(Predicate<T> predicate) {
+        queue.stream()
+                .filter(predicate)
+                .forEach(Notification::doNotify);
     }
 }
