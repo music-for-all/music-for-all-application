@@ -31,6 +31,20 @@ import java.util.Set;
                         " where track.artist.name=:artistName)" +
                         " group by history.trackId" +
                         " order by count(history.trackId) desc"
+        ),
+        @NamedQuery(
+                name = Track.ARTIST_TOP_ALBUMS_QUERY,
+                query = "select distinct track.album" +
+                        " from Track track" +
+                        " where track.id in" +
+                        " (select history.trackId" +
+                        " from History history" +
+                        " where history.eventType=:eventType" +
+                        " and history.trackId in" +
+                        " (select track.id from Track track" +
+                        " where track.artist.name=:artistName)" +
+                        " group by history.trackId" +
+                        " order by count(history.trackId) desc)"
         )})
 @Entity
 @Table(name = "tracks")
@@ -39,6 +53,7 @@ public class Track implements Serializable {
     private static final long serialVersionUID = -6851477594231058789L;
     public static final String ALL_BY_ID_QUERY = "all_tracks_by_id";
     public static final String ARTIST_TOP_TRACKS_QUERY = "artist_top_tracks";
+    public static final String ARTIST_TOP_ALBUMS_QUERY = "artist_top_albums";
 
     @Id
     @Column(name = Constants.ID)
