@@ -99,4 +99,18 @@ public class TrackServiceImpl implements TrackService {
                 parameters, new QueryParams(count, offset));
         return getAllByIds(trackIds);
     }
+
+    @Override
+    public Collection<String> getArtistMostPopularAlbums(String artistName) {
+        final int count = 10;
+        final int offset = 0;
+
+        final Map<String, Object> parameters = new HashMap<>();
+        parameters.put("eventType", EventType.TRACK_LISTENED);
+        parameters.put("artistName", artistName);
+
+        List<String> albums = dao.getAllByNamedQuery(String.class, Track.ARTIST_TOP_ALBUMS_QUERY,
+                parameters, new QueryParams(count, offset));
+        return albums;
+    }
 }

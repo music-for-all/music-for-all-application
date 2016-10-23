@@ -32,4 +32,6 @@ public interface TrackService {
     List<Track> findAll();
 
     Collection<Track> getArtistMostPopularTracks(String artistName);
+
+    Collection<String> getArtistMostPopularAlbums(String artistName);
 }
