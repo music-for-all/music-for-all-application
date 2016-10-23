@@ -35,7 +35,7 @@ public class UserAchievementsServiceTest {
     @Test
     public void saveUserAchievement() {
         final User user = userService.save(new User(USER, PASSWORD, "saveUserAchievement@mail.com"));
-        final Achievement achievement = new Achievement("saveUserAchievement", TRACK_ADDED, 0);
+        final Achievement achievement = new Achievement(NAME, "saveUserAchievement", TRACK_ADDED, 0);
         final UserAchievement inProgress = userAchievementsService.save(new UserAchievement(user, achievement, IN_PROGRESS));
         final UserAchievement savedAchievement = userAchievementsService.get(inProgress.getId());
 
@@ -45,7 +45,7 @@ public class UserAchievementsServiceTest {
     @Test
     public void incrementProgressCount() {
         final User user = userService.save(new User(USER, PASSWORD, "incrementProgressCount@mail.com"));
-        final Achievement achievement = new Achievement("incrementProgressCount", TRACK_ADDED, 0);
+        final Achievement achievement = new Achievement(NAME, "incrementProgressCount", TRACK_ADDED, 0);
         final UserAchievement inProgress = userAchievementsService.save(new UserAchievement(user, achievement, IN_PROGRESS));
         final UserAchievement savedAchievement = userAchievementsService.incrementProgressCount(inProgress);
 
@@ -58,19 +58,18 @@ public class UserAchievementsServiceTest {
         final User user2 = userService.save(new User(NAME, PASSWORD, "getByUser2@mail.com"));
 
         userAchievementsService.saveAll(asList(
-                new UserAchievement(user1, new Achievement("getByUser1", TRACK_ADDED, 3), IN_PROGRESS),
-                new UserAchievement(user1, new Achievement("getByUser2", TRACK_ADDED, 5), DONE),
-                new UserAchievement(user1, new Achievement("getByUser3", TRACK_ADDED, 3), IN_PROGRESS),
+                new UserAchievement(user1, new Achievement(NAME, "getByUser1", TRACK_ADDED, 3), IN_PROGRESS),
+                new UserAchievement(user1, new Achievement(NAME, "getByUser2", TRACK_ADDED, 5), DONE),
+                new UserAchievement(user1, new Achievement(NAME, "getByUser3", TRACK_ADDED, 3), IN_PROGRESS),
 
-                new UserAchievement(user2, new Achievement("getByUser4", TRACK_ADDED, 3), IN_PROGRESS),
-                new UserAchievement(user2, new Achievement("getByUser5", TRACK_ADDED, 7), DONE)
+                new UserAchievement(user2, new Achievement(NAME, "getByUser4", TRACK_ADDED, 3), IN_PROGRESS),
+                new UserAchievement(user2, new Achievement(NAME, "getByUser5", TRACK_ADDED, 7), DONE)
         ));
-        assertEquals(3, userAchievementsService.getByUserIdInStatuses(user1.getId()).size());
-        assertEquals(3, userAchievementsService.getByUserIdInStatuses(user1.getId(), null).size());
+        assertEquals(3, userAchievementsService.getAllByUserId(user1.getId()).size());
         assertEquals(2, userAchievementsService.getByUserIdInStatuses(user1.getId(), IN_PROGRESS).size());
         assertEquals(1, userAchievementsService.getByUserIdInStatuses(user1.getId(), DONE).size());
 
-        assertEquals(2, userAchievementsService.getByUserIdInStatuses(user2.getId()).size());
+        assertEquals(2, userAchievementsService.getAllByUserId(user2.getId()).size());
         assertEquals(1, userAchievementsService.getByUserIdInStatuses(user2.getId(), IN_PROGRESS).size());
         assertEquals(1, userAchievementsService.getByUserIdInStatuses(user2.getId(), DONE).size());
     }

@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,14 +48,12 @@ public class AchievementProcessor {
     }
 
     private void process(Map<String, Object> vars, Integer userId, EventType type) {
-        final Collection<UserAchievement> userAchievements =
-                userAchievementsService.getByUserIdInStatuses(userId, IN_PROGRESS);
-
-        userAchievements.stream()
+        userAchievementsService.getByUserIdInStatuses(userId, IN_PROGRESS)
+                .stream()
                 .filter(ua -> ua.getAchievement().getEventType() == type)
                 .filter(ua -> runScript(ua.getAchievement(), vars))
                 .map(userAchievementsService::incrementProgressCount)
-                .filter(ua -> ua.getProgressCount() == ua.getAchievement().getCount())
+                .filter(ua -> ua.getProgressCount() >= ua.getAchievement().getCount())
                 .forEach(ua -> {
                     ua.setStatus(DONE);
                     userAchievementsService.save(ua);
@@ -64,13 +61,14 @@ public class AchievementProcessor {
 
         final User user = userService.get(userId);
 
-        final List<Integer> excludedIds = userAchievements.stream()
+        final List<Integer> excludedIds = userAchievementsService.getAllByUserId(userId)
+                .stream()
                 .map(UserAchievement::getAchievement)
                 .map(Achievement::getId)
                 .collect(toList());
         final List<UserAchievement> newUA = achievementsService.filterBy(excludedIds, type).stream()
                 .filter(a -> runScript(a, vars))
-                .map(a -> new UserAchievement(user, a, IN_PROGRESS))
+                .map(a -> new UserAchievement(user, a, a.getCount() > 1 ? IN_PROGRESS : DONE))
                 .collect(toList());
         userAchievementsService.saveAll(newUA);
     }

@@ -54,7 +54,6 @@
                                             checked
                                             <% } %>
                                             >
-
                                             <div class="slider round"></div>
                                         </label>
                                     </td>
@@ -68,12 +67,27 @@
         </div>
     </div>
 </script>
+<script type="text/template" class="achievements">
+    <div class="achievements">
+        <% _.each(data, function(ua){ %>
+        <div class="achievement" title="<%= ua.achievement.name %>">
+            <% if (ua.status === "DONE") { %>
+            <i class="fa fa-check-circle" aria-hidden="true"></i>
+            <% } %>
+        </div>
+        <% }); %>
+    </div>
+</script>
 <script type="text/javascript">
     var user = new User();
     var stream = new Stream();
     _.templateSettings.variable = "data";
     var profileRow = _.template(
             $("script.profile").html()
+    );
+
+    var achievementsRow = _.template(
+            $("script.achievements").html()
     );
 
     $("#container").on("click", "input", function (e) {
@@ -83,6 +97,9 @@
     $(document).ready(function () {
         user.me().then(function (me) {
             $("#container").append(profileRow(me));
+            user.achievements(me.id).then(function (achievements) {
+                $("#container").append(achievementsRow(achievements));
+            });
         });
     });
 </script>

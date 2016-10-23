@@ -59,4 +59,11 @@ public class UserAchievementsServiceImpl implements UserAchievementsService {
 
         return dao.getAllBy(criteria);
     }
+
+    @Override
+    public Collection<UserAchievement> getAllByUserId(Integer userId) {
+        final DetachedCriteria criteria = DetachedCriteria.forClass(UserAchievement.class);
+        criteria.add(eq("user.id", userId));
+        return dao.getAllBy(criteria);
+    }
 }

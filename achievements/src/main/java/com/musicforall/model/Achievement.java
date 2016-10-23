@@ -26,13 +26,17 @@ public class Achievement {
     @Column(name = "event_type", nullable = false)
     private EventType eventType;
 
+    @Column(nullable = false)
+    private String name;
+
     @Column
     private int count;
 
     public Achievement() {
     }
 
-    public Achievement(String script, EventType eventType, int count) {
+    public Achievement(String name, String script, EventType eventType, int count) {
+        this.name = name;
         this.script = script;
         this.eventType = eventType;
         this.count = count;
@@ -70,12 +74,13 @@ public class Achievement {
         return Objects.equals(id, that.id) &&
                 Objects.equals(script, that.script) &&
                 Objects.equals(count, that.count) &&
+                Objects.equals(name, that.name) &&
                 Objects.equals(eventType, that.eventType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, script, eventType, count);
+        return Objects.hash(id, script, eventType, name, count);
     }
 
 
@@ -83,8 +88,10 @@ public class Achievement {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("id", id)
+                .add("name", name)
                 .add("script", script)
                 .add("eventType", eventType)
+                .add("count", count)
                 .toString();
     }
 
@@ -94,5 +101,13 @@ public class Achievement {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -4,11 +4,12 @@ package com.musicforall.model;
  * @author IliaNik on 15.06.2016.
  */
 
+import com.musicforall.common.Constants;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @NamedQueries(
@@ -34,7 +35,7 @@ public class Artist implements Serializable {
     @JoinTable(name = "artist_tag",
             joinColumns = {@JoinColumn(name = "artist_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_name")})
-    private Set<Tag> tags;
+    private Set<Tag> tags = new HashSet<>();
 
 
     public Artist() {
@@ -47,6 +48,11 @@ public class Artist implements Serializable {
     public Artist(String name, Set<Tag> tags) {
         this.name = name;
         this.tags = tags;
+    }
+
+    public static Artist createDummyArtist() {
+        final String artistName = Constants.NAME + UUID.randomUUID().toString();
+        return new Artist(artistName, Collections.emptySet());
     }
 
     public String getName() {

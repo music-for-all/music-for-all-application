@@ -32,4 +32,8 @@ function User() {
     self.me = function () {
         return $.when($.get(baseUrl + "/me"));
     };
+
+    self.achievements = function (id) {
+        return $.when($.get(baseUrl + "/" + id + "/achievements"));
+    };
 }

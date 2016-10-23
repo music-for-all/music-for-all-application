@@ -53,15 +53,15 @@ public class AchievementProcessorTest {
         final User user = userService.save(new User(NAME, PASSWORD, "processTrack@sabaka.com"));
 
         achievementsService.saveAll(asList(
-                new Achievement("track.name.equals('name1')", TRACK_ADDED, 5),
-                new Achievement("track.name.equals('name2')", TRACK_DELETED, 4),
-                new Achievement("track.name.equals('name3')", TRACK_LIKED, 3),
-                new Achievement("track.name.equals('name4')", TRACK_LISTENED, 2),
-                new Achievement("track.name.equals('name5')", TRACK_LISTENED, 1)
+                new Achievement(NAME, "track.name.equals('name1')", TRACK_ADDED, 5),
+                new Achievement(NAME, "track.name.equals('name2')", TRACK_DELETED, 4),
+                new Achievement(NAME, "track.name.equals('name3')", TRACK_LIKED, 3),
+                new Achievement(NAME, "track.name.equals('name4')", TRACK_LISTENED, 2),
+                new Achievement(NAME, "track.name.equals('name5')", TRACK_LISTENED, 1)
         ));
 
         userAchievementsService.saveAll(asList(
-                new UserAchievement(user, new Achievement("track.tags.size() > 0", TRACK_ADDED, 2), IN_PROGRESS)
+                new UserAchievement(user, new Achievement(NAME, "track.tags.size() > 0", TRACK_ADDED, 2), IN_PROGRESS)
         ));
 
         final Track track = trackService.save(new Track("name1", "location1", newHashSet(
@@ -83,17 +83,17 @@ public class AchievementProcessorTest {
         final User user = userService.save(new User(NAME, PASSWORD, "processPlaylist@sabaka.com"));
 
         achievementsService.saveAll(asList(
-                new Achievement("playlist.name.equals('name1')", PLAYLIST_ADDED, 5),
-                new Achievement("playlist.name.equals('name2')", PLAYLIST_DELETED, 4),
-                new Achievement("playlist.name.equals('name3')", PLAYLIST_ADDED, 3),
-                new Achievement("playlist.name.equals('name4')", PLAYLIST_DELETED, 2),
-                new Achievement("playlist.name.equals('name5')", PLAYLIST_ADDED, 1)
+                new Achievement(NAME, "playlist.name.equals('name1')", PLAYLIST_ADDED, 5),
+                new Achievement(NAME, "playlist.name.equals('name2')", PLAYLIST_DELETED, 4),
+                new Achievement(NAME, "playlist.name.equals('name3')", PLAYLIST_ADDED, 3),
+                new Achievement(NAME, "playlist.name.equals('name4')", PLAYLIST_DELETED, 2),
+                new Achievement(NAME, "playlist.name.equals('name5')", PLAYLIST_ADDED, 1)
         ));
 
         userAchievementsService.saveAll(asList(
-                new UserAchievement(user, new Achievement("playlist.tracks.size() > 0", PLAYLIST_ADDED, 2), IN_PROGRESS),
-                new UserAchievement(user, new Achievement("playlist.tracks.size() > 100", PLAYLIST_DELETED, 25), IN_PROGRESS),
-                new UserAchievement(user, new Achievement("playlist.tracks.size() > 0", PLAYLIST_ADDED, 25), IN_PROGRESS)
+                new UserAchievement(user, new Achievement(NAME, "playlist.tracks.size() > 0", PLAYLIST_ADDED, 2), IN_PROGRESS),
+                new UserAchievement(user, new Achievement(NAME, "playlist.tracks.size() > 100", PLAYLIST_DELETED, 25), IN_PROGRESS),
+                new UserAchievement(user, new Achievement(NAME, "playlist.tracks.size() > 0", PLAYLIST_ADDED, 25), IN_PROGRESS)
         ));
 
         final Playlist playlist = playlistService.save(new Playlist("name1", newHashSet(

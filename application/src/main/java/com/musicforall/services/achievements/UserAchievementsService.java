@@ -17,4 +17,6 @@ public interface UserAchievementsService {
     Collection<UserAchievement> saveAll(Collection<UserAchievement> achievements);
 
     Collection<UserAchievement> getByUserIdInStatuses(Integer userId, UserAchievement.Status... statuses);
+
+    Collection<UserAchievement> getAllByUserId(Integer userId);
 }

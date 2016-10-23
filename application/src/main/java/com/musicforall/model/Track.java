@@ -13,6 +13,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import static com.musicforall.common.Constants.NAME;
+import static java.util.Collections.emptySet;
+
 /**
  * Created by ilianik on 11.06.2016.
  */
@@ -38,10 +41,10 @@ public class Track implements Serializable {
     @JoinTable(name = "track_tag",
             joinColumns = {@JoinColumn(name = "track_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_name")})
-    private Set<Tag> tags;
+    private Set<Tag> tags = new HashSet<>();
 
     @Size(min = 2, max = 30)
-    @Column(name = Constants.NAME, nullable = false)
+    @Column(name = NAME, nullable = false)
     private String name;
 
     @ManyToOne
@@ -67,7 +70,7 @@ public class Track implements Serializable {
     @JoinTable(name = "playlists_tracks",
             inverseJoinColumns = {@JoinColumn(name = "playlist_id")},
             joinColumns = {@JoinColumn(name = "track_id")})
-    private Set<Playlist> playlists;
+    private Set<Playlist> playlists = new HashSet<>();
 
     public Track() {
     }
@@ -89,6 +92,10 @@ public class Track implements Serializable {
         this.album = album;
         this.location = location;
         this.tags = tags;
+    }
+
+    public static Track createDummyTrack() {
+        return new Track(NAME, Artist.createDummyArtist(), "", "", emptySet());
     }
 
     public Set<Playlist> getPlaylists() {

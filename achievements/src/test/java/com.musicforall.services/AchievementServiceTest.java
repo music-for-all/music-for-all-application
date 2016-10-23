@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.musicforall.common.Constants.NAME;
 import static com.musicforall.history.handlers.events.EventType.*;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -32,7 +33,7 @@ public class AchievementServiceTest {
 
     @Test
     public void saveAchievement() {
-        final Achievement achievement = achievementsService.save(new Achievement("saveAchievement", TRACK_ADDED, 0));
+        final Achievement achievement = achievementsService.save(new Achievement(NAME, "saveAchievement", TRACK_ADDED, 0));
         final Achievement savedAchievement = achievementsService.get(achievement.getId());
 
         assertEquals(achievement, savedAchievement);
@@ -40,9 +41,9 @@ public class AchievementServiceTest {
 
     @Test
     public void getAllNotInIds() {
-        final Achievement achievement1 = new Achievement("getAllNotInIds1", TRACK_ADDED, 0);
-        final Achievement achievement2 = new Achievement("getAllNotInIds2", TRACK_DELETED, 0);
-        final Achievement achievement3 = new Achievement("getAllNotInIds3", TRACK_LIKED, 0);
+        final Achievement achievement1 = new Achievement(NAME, "getAllNotInIds1", TRACK_ADDED, 0);
+        final Achievement achievement2 = new Achievement(NAME, "getAllNotInIds2", TRACK_DELETED, 0);
+        final Achievement achievement3 = new Achievement(NAME, "getAllNotInIds3", TRACK_LIKED, 0);
         achievementsService.saveAll(asList(achievement1, achievement2, achievement3));
 
         final List<Integer> excludedIds = asList(achievement1.getId(), achievement2.getId());
@@ -56,19 +57,19 @@ public class AchievementServiceTest {
     @Test
     public void filterBy() {
         final List<Achievement> trackAddedTypes = asList(
-                new Achievement("filterBy11", TRACK_ADDED, 0),
-                new Achievement("filterBy12", TRACK_ADDED, 0),
-                new Achievement("filterBy13", TRACK_ADDED, 0)
+                new Achievement(NAME, "filterBy11", TRACK_ADDED, 0),
+                new Achievement(NAME, "filterBy12", TRACK_ADDED, 0),
+                new Achievement(NAME, "filterBy13", TRACK_ADDED, 0)
         );
         final List<Achievement> trackDeletedTypes = asList(
-                new Achievement("filterBy21", TRACK_DELETED, 0),
-                new Achievement("filterBy22", TRACK_DELETED, 0),
-                new Achievement("filterBy23", TRACK_DELETED, 0)
+                new Achievement(NAME, "filterBy21", TRACK_DELETED, 0),
+                new Achievement(NAME, "filterBy22", TRACK_DELETED, 0),
+                new Achievement(NAME, "filterBy23", TRACK_DELETED, 0)
         );
         final List<Achievement> playlistDeletedTypes = asList(
-                new Achievement("filterBy31", PLAYLIST_DELETED, 0),
-                new Achievement("filterBy32", PLAYLIST_DELETED, 0),
-                new Achievement("filterBy33", PLAYLIST_DELETED, 0)
+                new Achievement(NAME, "filterBy31", PLAYLIST_DELETED, 0),
+                new Achievement(NAME, "filterBy32", PLAYLIST_DELETED, 0),
+                new Achievement(NAME, "filterBy33", PLAYLIST_DELETED, 0)
         );
         achievementsService.saveAll(trackAddedTypes);
         achievementsService.saveAll(trackDeletedTypes);
@@ -90,7 +91,7 @@ public class AchievementServiceTest {
 
     @Test
     public void validateScript() {
-        final Achievement achievement = new Achievement("name.size() > 3", TRACK_ADDED, 10);
+        final Achievement achievement = new Achievement(NAME, "name.size() > 3", TRACK_ADDED, 10);
 
         final Map<String, Object> vars = new HashMap<>(1);
         vars.put("name", "123131231");

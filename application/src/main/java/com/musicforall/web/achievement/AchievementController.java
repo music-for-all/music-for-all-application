@@ -27,8 +27,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 @RequestMapping("/achievements")
 public class AchievementController {
-    private static final Playlist DUMMY_PLAYLIST = new Playlist();
-    private static final Track DUMMY_TRACK = new Track();
+    private static final Playlist DUMMY_PLAYLIST = Playlist.createDummyPlaylist();
+    private static final Track DUMMY_TRACK = Track.createDummyTrack();
     @Autowired
     private AchievementsService achievementsService;
     @Autowired

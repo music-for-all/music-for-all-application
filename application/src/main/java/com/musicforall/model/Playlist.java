@@ -1,7 +1,6 @@
 package com.musicforall.model;
 
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.musicforall.common.Constants;
 import com.musicforall.model.user.User;
@@ -11,6 +10,7 @@ import org.hibernate.annotations.CascadeType;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -45,7 +45,7 @@ public class Playlist implements Serializable {
     @JoinTable(name = "playlists_tracks",
             joinColumns = {@JoinColumn(name = "playlist_id")},
             inverseJoinColumns = {@JoinColumn(name = "track_id")})
-    private Set<Track> tracks;
+    private Set<Track> tracks = new HashSet<>();
 
     @JsonIgnore
     @ManyToOne
@@ -59,6 +59,13 @@ public class Playlist implements Serializable {
         this.name = name;
         this.tracks = tracks;
         this.user = user;
+    }
+
+    public static Playlist createDummyPlaylist() {
+        final Playlist playlist = new Playlist();
+        playlist.setName(Constants.NAME);
+        playlist.setTracks(Collections.emptySet());
+        return playlist;
     }
 
     public void addTracks(Set<Track> tracks) {
@@ -76,7 +83,6 @@ public class Playlist implements Serializable {
         this.id = id;
     }
 
-
     public String getName() {
         return name;
     }
@@ -84,7 +90,6 @@ public class Playlist implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
 
     public Set<Track> getTracks() {
         return tracks;
@@ -101,7 +106,6 @@ public class Playlist implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
-
 
     @Override
     public int hashCode() {

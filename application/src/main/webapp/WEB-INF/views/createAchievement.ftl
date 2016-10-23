@@ -23,6 +23,8 @@
                 <label for="count">Count:</label>
                 <input type="number" class="form-control" id="count" min="0" max="1000" required>
             </div>
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" required>
 
             <label for="script">Script:</label>
             <textarea class="form-control" rows="5" id="script" required></textarea>
@@ -40,6 +42,7 @@
 
     function createAchievement() {
         var achievement = {};
+        achievement.name = $("#name").val();
         achievement.script = $("#script").val();
         achievement.eventType = $("#eventTypes").val();
         achievement.count = $("#count").val();
@@ -81,6 +84,7 @@
     }
 
     function clear() {
+        $("#name").val("");
         $("#script").val("");
         $("#count").val("");
         $("#message").html("");

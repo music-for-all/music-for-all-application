@@ -13,3 +13,21 @@ body {
 .table-user-information > tbody > tr > td {
     border-top: 0;
 }
+
+.achievement {
+    width: 5em;
+    height: 5em;
+    background: url("/resources/img/star.svg.png");
+    background-size: 5em 5em;
+    display: inline-block;
+    margin-right: 1em;
+    position: relative;
+}
+
+.achievement i {
+    color: green;
+    font-size: xx-large;
+    position: absolute;
+    left: 29%;
+    bottom: 23%;
+}
