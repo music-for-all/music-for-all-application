@@ -48,12 +48,19 @@ public class DbPopulateService {
     private static final String USER_IS_FOLLOW = "user {} is follow {}";
 
     static {
+        /*
         LINKS.put("Jerry-Lee-Lewis-part-1", OPEN_SOURCE_MUSIC_HOST +
                 "/2010/04/01-Selvin-On-The-City-Jerry-Lee-Lewis-part-1.mp3");
         LINKS.put("Tom-Waits-part-1", OPEN_SOURCE_MUSIC_HOST +
                 "/2012/10/01-Tom-Waits-on-Selvin-On-The-City-part-1.mp3");
         LINKS.put("Jerry-Lee-Lewis-part-4", OPEN_SOURCE_MUSIC_HOST +
                 "/2010/04/04-Selvin-On-The-City-Jerry-Lee-Lewis-part-4.mp3");
+        */
+        LINKS.put("Prelude 01", "http://www.mfiles.co.uk/mp3-downloads/book1-prelude01.mp3");
+        LINKS.put("Prelude 02", "http://www.mfiles.co.uk/mp3-downloads/book1-prelude02.mp3");
+        LINKS.put("Fugue 02", "http://www.mfiles.co.uk/mp3-downloads/book1-fugue02.mp3");
+        LINKS.put("Prelude 03", "http://www.mfiles.co.uk/mp3-downloads/book1-prelude03.mp3");
+        LINKS.put("Prelude 06", "http://www.mfiles.co.uk/mp3-downloads/book1-prelude06.mp3");
     }
 
     @Autowired
@@ -159,7 +166,7 @@ public class DbPopulateService {
 
             final Iterator<Long> iterator = sizes.iterator();
 
-            final Artist artist = new Artist("The Beatles");
+            final Artist artist = new Artist("Johann Sebastian Bach");
             artistService.save(artist);
 
             final List<Track> tracks = LINKS.entrySet().stream()
