@@ -45,6 +45,17 @@
                                     </thead>
                                 </table>
                             </div>
+
+                            <div class="top-albums well clear" id="top-albums">
+                                <h3><@spring.message "artist.TopAlbums" /></h3>
+                                <table id="albums" class="table table-hover table-striped table-condensed no-checkbox tracks-table ">
+                                    <thead>
+                                    <tr>
+                                        <th><@spring.message "welcomepage.Title"/></th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -55,26 +66,5 @@
     <@m.addTrackRowTemplate/>
     <@p.player_Footer/>
 
-<script type="text/javascript">
-
-    $(document).ready(function() {
-
-        var track = new Track();
-        _.templateSettings.variable = "data";
-        var trackTable = _.template(
-                $("script.addTrackRowTemplate").html()
-        );
-
-        $.when($.get("<@spring.url "/tracks/topTracksOf/" + artistName />"))
-                .then(function (response) {
-
-                    response.forEach(function (track) {
-                        $("#tracks").find("thead").after(
-                                trackTable(track)
-                        );
-                    });
-                });
-    });
-</script>
 </@m.body>
 </html>
