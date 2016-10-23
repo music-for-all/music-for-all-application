@@ -33,7 +33,7 @@ public class FollowerServiceImp implements FollowerService {
             followers = new Followers(userId);
         }
         if (!userId.equals(followingUserId)) {
-            notificationService.incrementNotifierNum(followingUserId);
+            notificationService.incrementUnreadNum(followingUserId);
             followers.follow(followingUserId);
         }
         dao.save(followers);
@@ -42,7 +42,7 @@ public class FollowerServiceImp implements FollowerService {
     @Override
     public void unfollow(Integer userId, Integer followingUserId) {
         final Followers followers = dao.get(Followers.class, userId);
-        notificationService.incrementNotifierNum(followingUserId);
+        notificationService.incrementUnreadNum(followingUserId);
         followers.unfollow(followingUserId);
         dao.save(followers);
     }

@@ -5,7 +5,7 @@ function getHistories() {
 }
 
 function getNotificationNum() {
-    return $.when($.get(dict.contextPath + "/num_of_unread"));
+    return $.when($.get(dict.contextPath + "/unread_num"));
 }
 
 function updateNotification() {

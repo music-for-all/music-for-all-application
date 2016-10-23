@@ -7,9 +7,11 @@ import org.springframework.web.context.request.async.DeferredResult;
  */
 public interface NotificationService {
 
-    void incrementNotifierNum(Integer userId);
+    void incrementUnreadNum(Integer userId);
 
-    void resetNotifierNum();
+    void resetUnreadNum();
 
-    DeferredResult getDeferredNotifierNum(Object timeoutResult);
+    DeferredResult getDeferredUnreadNum(Object timeoutResult);
+
+    Integer getUnreadNum(Integer userId);
 }

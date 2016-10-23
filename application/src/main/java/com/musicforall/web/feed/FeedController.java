@@ -27,14 +27,14 @@ public class FeedController {
 
     @RequestMapping("/feed")
     public String friendsActivity(Model model) {
-        notificationService.resetNotifierNum();
+        notificationService.resetUnreadNum();
         return "followingHistory";
     }
 
     @ResponseBody
-    @RequestMapping(value = "/num_of_unread", method = RequestMethod.GET)
-    public DeferredResult getNumOfUnreadNews() {
-        return notificationService.getDeferredNotifierNum(new ResponseEntity<>(REQUEST_TIMEOUT));
+    @RequestMapping(value = "/unread_num", method = RequestMethod.GET)
+    public DeferredResult getUnreadNum() {
+        return notificationService.getDeferredUnreadNum(new ResponseEntity<>(REQUEST_TIMEOUT));
     }
 }
 

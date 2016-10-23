@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.musicforall.config.CacheConfig.NOTIFICATION;
@@ -27,7 +28,7 @@ public class NotificationServiceImpl implements NotificationService {
     private Notifier<UserNotification> notifier;
 
     @Override
-    public void incrementNotifierNum(Integer userId) {
+    public void incrementUnreadNum(Integer userId) {
         AtomicInteger numOfUnread = cache.get(userId);
         if (numOfUnread != null) {
             numOfUnread.incrementAndGet();
@@ -39,25 +40,30 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void resetNotifierNum() {
+    public void resetUnreadNum() {
         final Integer userId = SecurityUtil.currentUserId();
         cache.put(userId, new AtomicInteger(0));
     }
 
     @Override
-    public DeferredResult getDeferredNotifierNum(Object timeoutResult) {
+    public DeferredResult getDeferredUnreadNum(Object timeoutResult) {
         final Integer userId = SecurityUtil.currentUserId();
         final DeferredResult<Integer> result = new DeferredResult<>(TIMEOUT, timeoutResult);
 
-        final UserNotification<Integer> userNotification = new UserNotification<>(result, () -> {
-            final AtomicInteger unreadAtomicNum = cache.get(userId);
-            if (unreadAtomicNum == null) {
-                return null;
-            }
-            return unreadAtomicNum.get();
-        }, userId);
+        Callable<Integer> callback = () -> getUnreadNum(userId);
+
+        final UserNotification<Integer> userNotification = new UserNotification<>(result, callback, userId);
 
         notifier.add(userNotification);
         return result;
+    }
+
+    @Override
+    public Integer getUnreadNum(Integer userId) {
+        final AtomicInteger unreadAtomicNum = cache.get(userId);
+        if (unreadAtomicNum == null) {
+            return null;
+        }
+        return unreadAtomicNum.get();
     }
 }
