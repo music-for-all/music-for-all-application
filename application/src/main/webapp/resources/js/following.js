@@ -1,14 +1,21 @@
 "use strict";
 
+var started = true;
+
 function getHistories() {
     return $.when($.get(dict.contextPath + "/feed" + "/histories"));
 }
 
 function getNotificationNum() {
+    if (started) {
+        started = false;
+        return $.when($.get(dict.contextPath + "/start_unread_num"));
+    }
     return $.when($.get(dict.contextPath + "/unread_num"));
 }
 
 function updateNotification() {
+
     getNotificationNum().done(function (num) {
         if (num > 0) {
             $(".notifications-reminder").css("display", "inline-block");
