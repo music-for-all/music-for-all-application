@@ -76,17 +76,20 @@
 <#assign feedCaption>
     <@spring.message "macros.Feed"/>
 </#assign>
+<#assign contactsCaption>
+    <@spring.message "macros.Contacts"/>
+</#assign>
 
 <#assign pages = {"Main": {"url": '/main', "title": "${mainCaption}", "icon": "fa-th-list"},
 "Search": {"url": '/search', "title": "${searchCaption}", "icon": "fa-search"},
 "Add": {"url": '/uploadFile', "title": "${addCaption}", "icon": "fa-plus"},
-"Profile": {"url": '/profile', "title": "", "icon": "fa-cog"},
-"Contacts": {"url": '/contactManager', "title": "", "icon": "fa-users"},
+"Profile": {"url": '/profile', "title": "${profileCaption}", "icon": "fa-cog"},
+"Contacts": {"url": '/contactManager', "title": "${contactsCaption}", "icon": "fa-users"},
 "Feed": {"url": '/feed', "title": "${feedCaption}", "icon": "fa-newspaper-o"},
 "WithoutActivePage": {"url": ''}}>
 
 <#macro navigation activePage=pages.WithoutActivePage>
-    <#assign items = [pages.Contacts, pages.Main, pages.Search, pages.Feed]>
+    <#assign items = [pages.Main, pages.Contacts, pages.Search, pages.Feed]>
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
