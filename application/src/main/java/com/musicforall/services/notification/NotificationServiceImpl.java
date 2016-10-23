@@ -45,7 +45,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public DeferredResult getDeferredNotifierNum(Object timeoutResult) {
+    public DeferredResult<Integer> getDeferredNotifierNum(Object timeoutResult) {
         final Integer userId = SecurityUtil.currentUserId();
         final DeferredResult<Integer> result = new DeferredResult<>(TIMEOUT, timeoutResult);
 
