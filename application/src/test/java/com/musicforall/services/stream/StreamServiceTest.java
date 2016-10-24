@@ -2,7 +2,7 @@ package com.musicforall.services.stream;
 
 import com.musicforall.model.Track;
 import com.musicforall.model.user.User;
-import com.musicforall.model.user.UserSettings;
+import com.musicforall.model.user.UserData;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import com.musicforall.util.ServicesTestConfig;
@@ -50,8 +50,11 @@ public class StreamServiceTest {
 
     @Test
     public void testStart() throws Exception {
-        final User user = userService.save(
-                new User(USER, PASSWORD, "testStart@test.com", new UserSettings(true, "/link")));
+        final User user = new User(PASSWORD, "testStart@test.com");
+        final UserData userData = new UserData(user, USER);
+        userData.setPublicRadio(true);
+        user.setUserData(userData);
+        userService.save(user);
         final Track track = trackService.save(new Track("Valera", "/disk"));
 
         streamService.start(user.getId(), track.getId());
@@ -61,8 +64,11 @@ public class StreamServiceTest {
 
     @Test
     public void testStop() throws Exception {
-        final User user = userService.save(
-                new User(USER, PASSWORD, "testStop@test.com", new UserSettings(true, "/link")));
+        final User user = new User(PASSWORD, "testStop@test.com");
+        final UserData userData = new UserData(user, USER);
+        userData.setPublicRadio(true);
+        user.setUserData(userData);
+        userService.save(user);
         final Track track = trackService.save(new Track("Valera", "/disk"));
 
         streamService.start(user.getId(), track.getId());
@@ -74,8 +80,11 @@ public class StreamServiceTest {
 
     @Test
     public void testPublish() throws Exception {
-        final User user = userService.save(
-                new User(USER, PASSWORD, "testPublish@test.com", new UserSettings(false, "/link")));
+        final User user = new User(PASSWORD, "testPublish@test.com");
+        final UserData userData = new UserData(user, USER);
+        userData.setPublicRadio(false);
+        user.setUserData(userData);
+        userService.save(user);
         final Track track = trackService.save(new Track("Valera", "/disk"));
 
         streamService.start(user.getId(), track.getId());
@@ -83,7 +92,7 @@ public class StreamServiceTest {
         Map<Integer, Track> groupedStreams = streamService.getGroupedPublicStreams(singleton(user.getId()));
         assertNull(groupedStreams.get(user.getId()));
 
-        streamService.publish(user.getId(), true);
+        streamService.switchRadio(user.getId());
 
         groupedStreams = streamService.getGroupedPublicStreams(singleton(user.getId()));
         assertNotNull(groupedStreams.get(user.getId()));

@@ -3,7 +3,7 @@ package com.musicforall.web.social;
 import com.musicforall.common.Constants;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.SearchUserRequest;
-import com.musicforall.model.user.User;
+import com.musicforall.model.user.UserData;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.user.UserService;
@@ -31,17 +31,17 @@ public class SocialRestController {
     private UserService userService;
 
     @RequestMapping(value = "/followers/{id}", method = RequestMethod.GET)
-    public List<User> getUserFollowers(@PathVariable(Constants.ID) Integer user_id) {
+    public List<UserData> getUserFollowers(@PathVariable(Constants.ID) Integer user_id) {
         List<Integer> followersId = followerService.getFollowersId(user_id);
-        List<User> followers = userService.getAllWithSettingsByIds(followersId);
+        List<UserData> followers = userService.getAllUserDataByUserId(followersId);
 
         return followers;
     }
 
     @RequestMapping(value = "/following/{id}", method = RequestMethod.GET)
-    public List<User> getUserFollowing(@PathVariable(Constants.ID) Integer user_id) {
+    public List<UserData> getUserFollowing(@PathVariable(Constants.ID) Integer user_id) {
         Collection<Integer> followingId = followerService.getFollowingId(user_id);
-        List<User> following = userService.getAllWithSettingsByIds(followingId);
+        List<UserData> following = userService.getAllUserDataByUserId(followingId);
 
         return following;
     }
@@ -54,26 +54,26 @@ public class SocialRestController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public User getUser(@PathVariable(Constants.ID) Integer user_id) {
-        return userService.getWithSettingsById(user_id);
+    public UserData getUser(@PathVariable(Constants.ID) Integer user_id) {
+        return userService.getUserData(user_id);
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity getUsersLike(@RequestParam("searchTerm") final String searchTerm) {
 
-        final List<User> users = userService.getAllLike(new SearchUserRequest(searchTerm));
+        final List<UserData> users = userService.getAllUserDataLike(new SearchUserRequest(searchTerm));
 
         if (users.isEmpty()) {
             SearchUserRequest searchRequest = new SearchUserRequest();
-            searchRequest.setEmail(searchTerm);
+            searchRequest.setFirstName(searchTerm);
 
-            final List<User> usersByEmail = userService.getAllLike(searchRequest);
-            final List<String> usersUsernameByEmail = usersByEmail.stream()
-                    .map(User::getUsername).collect(Collectors.toList());
+            final List<UserData> usersByFirstName = userService.getAllUserDataLike(searchRequest);
+            final List<String> usersUsernameByEmail = usersByFirstName.stream()
+                    .map(UserData::getUsername).collect(Collectors.toList());
 
             return new ResponseEntity<>(usersUsernameByEmail, HttpStatus.OK);
         } else {
-            final List<String> usersUsername = users.stream().map(User::getUsername).collect(Collectors.toList());
+            final List<String> usersUsername = users.stream().map(UserData::getUsername).collect(Collectors.toList());
 
             return new ResponseEntity<>(usersUsername, HttpStatus.OK);
         }

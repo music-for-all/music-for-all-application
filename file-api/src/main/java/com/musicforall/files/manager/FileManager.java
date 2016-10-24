@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
@@ -38,9 +39,14 @@ public class FileManager {
     private String taleDirectory;
 
     /**
-     * The absolute path to the upload directory.
+     * The absolute path to the upload directory of music file.
      */
-    private String workingDirectory;
+    private String musicDirectory;
+
+    /**
+     * The absolute path to the upload directory of picture.
+     */
+    private String pictureDirectory;
 
     /**
      * Builds the absolute path to the upload directory;
@@ -48,36 +54,75 @@ public class FileManager {
      */
     @PostConstruct
     private void prepareWorkingDirectory() {
-        workingDirectory = System.getProperty("user.home") + File.separator + taleDirectory;
-        final File dir = new File(workingDirectory);
-        dir.mkdirs();
+        final String workingDirectory = System.getProperty("user.home") + File.separator + taleDirectory;
+        musicDirectory = workingDirectory + File.separator + "Music";
+        pictureDirectory = workingDirectory + File.separator + "Pictures";
+        new File(pictureDirectory).mkdirs();
+        new File(musicDirectory).mkdirs();
     }
 
-    public Optional<Path> save(final MultipartFile file) {
-        requireNonNull(file, "file must not be null");
-        LOG.info("save file from multipart {}", file);
+    public Optional<Path> savePicture(final Integer userId, final MultipartFile file) {
+        requireNonNull(file, "picture must not be null");
+        LOG.info("savePicture file from multipart {}", file);
         try (InputStream in = file.getInputStream()) {
-            return Optional.of(save(in, file.getOriginalFilename()));
+            return Optional.of(savePicture(userId, in, file.getOriginalFilename()));
         } catch (IOException e) {
             LOG.error(SAVE_ERROR_MSG, e);
         }
         return Optional.empty();
     }
 
-    public Optional<Path> save(final URL url) {
-        requireNonNull(url, "url must not be null");
-        LOG.info("save file by url {}", url);
+    public Optional<Path> saveTrack(final MultipartFile file) {
+        requireNonNull(file, "file must not be null");
+        LOG.info("saveTrack file from multipart {}", file);
+        try (InputStream in = file.getInputStream()) {
+            return Optional.of(saveTrack(in, file.getOriginalFilename()));
+        } catch (IOException e) {
+            LOG.error(SAVE_ERROR_MSG, e);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Path> saveTrack(final URL url) {
+        requireNonNull(url, "track url must not be null");
+        LOG.info("saveTrack file by url {}", url);
         final String fileName = FilenameUtils.getName(url.toString());
         try (InputStream in = url.openStream()) {
-            return Optional.of(save(in, fileName));
+            return Optional.of(saveTrack(in, fileName));
         } catch (IOException e) {
             LOG.error(SAVE_ERROR_MSG, e);
         }
         return Optional.empty();
     }
 
-    private Path save(final InputStream stream, final String fileName) throws IOException {
-        final Path path = Paths.get(workingDirectory, fileName);
+    public Optional<Path> savePicture(final Integer userId, final URL url) {
+        requireNonNull(url, "picture url must not be null");
+        LOG.info("savePicture file by url {}", url);
+        final String fileName = FilenameUtils.getName(url.toString());
+        try (InputStream in = url.openStream()) {
+            return Optional.of(savePicture(userId, in, fileName));
+        } catch (IOException e) {
+            LOG.error(SAVE_ERROR_MSG, e);
+        }
+        return Optional.empty();
+    }
+
+    private Path savePicture(final Integer userId, final InputStream stream, final String fileName) throws IOException {
+        final Path userPath = Paths.get(pictureDirectory, userId.toString());
+        if (!isDirectory(userPath)) {
+            createDirectory(userPath);
+        }
+
+        final Path path = Paths.get(userPath.toString(), fileName);
+        if (Files.exists(path)) {
+            return path;
+        }
+        Files.copy(stream, path);
+        return path;
+    }
+
+    private Path saveTrack(final InputStream stream, final String fileName) throws IOException {
+        final Path path = Paths.get(musicDirectory, fileName);
         if (isDirectory(path)) {
             return path;
         } else {
@@ -113,13 +158,21 @@ public class FileManager {
         }
     }
 
+    public Optional<Path> getFilePathByName(final String filename) {
+        return getPathByName(filename, musicDirectory);
+    }
+
+    public Optional<Path> getPicturePathByName(final String filename) {
+        return getPathByName(filename, pictureDirectory);
+    }
+
     /**
      * Converts the given filename to the Path containing the full path to the file.
      *
      * @param filename the filename of the file
      * @return the path
      */
-    public Optional<Path> getFilePathByName(final String filename) {
+    private Optional<Path> getPathByName(final String filename, final String workingDirectory) {
         requireNonNull(filename, "filename must not be null");
         final Path path = Paths.get(workingDirectory, filename);
         if (!exists(path)) {
@@ -141,14 +194,16 @@ public class FileManager {
     /**
      * need this only when application is run for first time to be sure
      * that directory with files doesn't contain old files
-     *
+     * <p>
      * SHOULD NOT BE USED ANYWHERE IN APP!!! ONLY FOR POPULATOR SERVICES
      */
 
     public void clearDirectory() {
-        final Path path = Paths.get(workingDirectory);
+        final Path musicPath = Paths.get(musicDirectory);
+        final Path picturePath = Paths.get(pictureDirectory);
         try {
-            FileUtils.cleanDirectory(path.toFile());
+            FileUtils.cleanDirectory(musicPath.toFile());
+            FileUtils.cleanDirectory(picturePath.toFile());
         } catch (IOException e) {
             LOG.error("Exception during directory cleaning! Clean directory manually!");
         }

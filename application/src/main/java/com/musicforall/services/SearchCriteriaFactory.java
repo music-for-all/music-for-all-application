@@ -3,7 +3,7 @@ package com.musicforall.services;
 import com.musicforall.common.Constants;
 import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.*;
-import com.musicforall.model.user.User;
+import com.musicforall.model.user.UserData;
 import org.hibernate.criterion.*;
 
 import java.util.List;
@@ -91,19 +91,14 @@ public final class SearchCriteriaFactory {
         if (searchCriteria == null) {
             return null;
         }
-        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class);
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(UserData.class);
 
         final String username = searchCriteria.getUsername();
-        final String email = searchCriteria.getEmail();
         final String firstName = searchCriteria.getFirstName();
         final String lastName = searchCriteria.getLastName();
 
         if (username != null && !username.isEmpty()) {
             detachedCriteria.add(Restrictions.ilike("username", QueryUtil.like(username)));
-        }
-
-        if (email != null && !email.isEmpty()) {
-            detachedCriteria.add(Restrictions.ilike("email", QueryUtil.like(email)));
         }
 
         if (firstName != null && !firstName.isEmpty()) {

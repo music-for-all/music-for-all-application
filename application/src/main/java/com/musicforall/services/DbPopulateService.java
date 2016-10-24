@@ -5,6 +5,7 @@ import com.musicforall.history.service.DBHistoryPopulateService;
 import com.musicforall.model.*;
 import com.musicforall.model.user.User;
 import com.musicforall.services.artist.ArtistService;
+import com.musicforall.model.user.UserData;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.user.UserService;
@@ -39,9 +40,11 @@ public class DbPopulateService {
 
     private static final String OPEN_SOURCE_MUSIC_HOST = "http://opensourcemusic.com/files";
 
-    private static final String USER_PICTURE = "https://developers.google.com/experts/img/user/user-default.png";
+    private static final String USER_PICTURE_LINK = "https://developers.google.com/experts/img/user/user-default.png";
 
     private static final String DEFAULT_NAME = "Unknown";
+
+    private static final String DEFAULT_BIO = "Jedi";
 
     private static final String USER_IS_SAVED = "user {} is saved";
 
@@ -109,9 +112,10 @@ public class DbPopulateService {
                 .reduce(0L, (x, y) -> x + y);
     }
 
-    private static void setDefaultValues(User user) {
-        user.setLastName(DEFAULT_NAME);
-        user.setFirstName(DEFAULT_NAME);
+    private static void setDefaultValues(User user, String username) {
+        final boolean isPublicRadio = true;
+        user.setUserData(new UserData(user, username, DEFAULT_NAME, DEFAULT_NAME,
+                USER_PICTURE_LINK, DEFAULT_BIO, isPublicRadio));
     }
 
     @PostConstruct
@@ -123,13 +127,13 @@ public class DbPopulateService {
 
         LOG.info("going to populate database with test data");
 
-        final User user = new User("dev", "password", "dev@musicforall.com");
-        setDefaultValues(user);
+        final User user = new User("password", "dev@musicforall.com");
+        setDefaultValues(user, "dev");
         userService.save(user);
         LOG.info(USER_IS_SAVED, user);
 
-        final User user2 = new User("C-3PO", "password2", "dev_C-3PO@musicforall.com");
-        setDefaultValues(user2);
+        final User user2 = new User("password2", "dev_C-3PO@musicforall.com");
+        setDefaultValues(user2, "C-3PO");
         userService.save(user2);
         LOG.info(USER_IS_SAVED, user2);
 
@@ -138,8 +142,8 @@ public class DbPopulateService {
         followerService.follow(user2.getId(), user.getId());
         LOG.info(USER_IS_FOLLOW, user2, user);
 
-        final User user3 = new User("R2-D2", "password3", "dev_R2-D2@musicforall.com");
-        setDefaultValues(user3);
+        final User user3 = new User("password3", "dev_R2-D2@musicforall.com");
+        setDefaultValues(user3, "R2-D2");
         userService.save(user3);
         LOG.info(USER_IS_SAVED, user3);
 
@@ -150,12 +154,12 @@ public class DbPopulateService {
 
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag("Dummy"), new Tag("Classic"), new Tag("2016")));
 
+        fileManager.clearDirectory();
         final List<Callable<Path>> tasks = LINKS.values().stream().map(DbPopulateService::toURL)
                 .filter(u -> u != null)
-                .peek(u -> LOG.info("going to save file by url - {}", u))
-                .map(url -> (Callable<Path>) () -> fileManager.save(url).get())
+                .peek(u -> LOG.info("going to saveTrack file by url - {}", u))
+                .map(url -> (Callable<Path>) () -> fileManager.saveTrack(url).get())
                 .collect(toList());
-        fileManager.clearDirectory();
 
         try {
             final List<Future<Path>> futures = executorService.invokeAll(tasks);
