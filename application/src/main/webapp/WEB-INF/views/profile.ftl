@@ -87,7 +87,6 @@
         user.me().then(function (me) {
             $("#container").append(profileRow(me));
         });
-        updateNotification();
     });
 </script>
 </@m.body>

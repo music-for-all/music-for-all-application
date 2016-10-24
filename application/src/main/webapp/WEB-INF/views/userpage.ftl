@@ -277,8 +277,6 @@
                 $("#acceptCreatingPlaylistButton").trigger("click");
             }
         });
-
-        updateNotification();
     });
 </script>
 </@m.body>

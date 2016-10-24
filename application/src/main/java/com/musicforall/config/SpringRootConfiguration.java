@@ -32,7 +32,8 @@ import static java.util.concurrent.Executors.newScheduledThreadPool;
 @EnableAsync
 @EnableScheduling
 @ComponentScan({"com.musicforall.common",
-        "com.musicforall.services"})
+        "com.musicforall.services",
+        "com.musicforall.notifications"})
 @Import({HibernateConfiguration.class,
         HibernateConfigDev.class,
         FileApiSpringConfig.class,

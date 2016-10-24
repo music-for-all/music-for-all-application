@@ -365,7 +365,6 @@
         $("#deletePlaylistModal").on("shown.bs.modal", function () {
             $("#acceptRemovingPlaylistButton").focus();
         });
-        updateNotification();
     });
 </script>
 </@m.body>

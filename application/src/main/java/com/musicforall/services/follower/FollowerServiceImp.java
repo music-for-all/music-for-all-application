@@ -13,6 +13,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.musicforall.notifications.Notification.Type.FOLLOWER;
+
 /**
  * Created by andrey on 8/2/16.
  */
@@ -33,7 +35,7 @@ public class FollowerServiceImp implements FollowerService {
             followers = new Followers(userId);
         }
         if (!userId.equals(followingUserId)) {
-            notificationService.incrementUnreadNum(followingUserId);
+            notificationService.fire(followingUserId, FOLLOWER);
             followers.follow(followingUserId);
         }
         dao.save(followers);
@@ -42,7 +44,7 @@ public class FollowerServiceImp implements FollowerService {
     @Override
     public void unfollow(Integer userId, Integer followingUserId) {
         final Followers followers = dao.get(Followers.class, userId);
-        notificationService.incrementUnreadNum(followingUserId);
+        notificationService.fire(followingUserId, FOLLOWER);
         followers.unfollow(followingUserId);
         dao.save(followers);
     }

@@ -14,6 +14,7 @@
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="<@spring.url "/resources/js/stream.js" />"></script>
+    <script src="<@spring.url "/resources/js/following.js" />"></script>
 
     <link rel="stylesheet"
           href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
@@ -39,6 +40,11 @@
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         }
+    });
+
+    $(document).ready(function () {
+        getNotificationNum();
+        subscribeToNotifications();
     });
 
     window.onbeforeunload = function () {
@@ -192,14 +198,14 @@
 
 <#macro playlistRowTemplateWithoutDeleting >
 <script type="text/template" class="playlistRowTemplateWithoutDeleting">
-<ul class="nav nav-pills nav-stacked">
-    <% _.each(data, function(playlist){ %>
+    <ul class="nav nav-pills nav-stacked">
+        <% _.each(data, function(playlist){ %>
         <li id="<%= playlist.id %>">
             <a href="#">
                 <%= playlist.name %>
             </a>
         </li>
-    <% }); %>
-</ul>
+        <% }); %>
+    </ul>
 </script>
 </#macro>

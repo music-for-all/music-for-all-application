@@ -1,5 +1,6 @@
 package com.musicforall.services.notification;
 
+import com.musicforall.notifications.Notification;
 import org.springframework.web.context.request.async.DeferredResult;
 
 /**
@@ -7,11 +8,11 @@ import org.springframework.web.context.request.async.DeferredResult;
  */
 public interface NotificationService {
 
-    void incrementUnreadNum(Integer userId);
+    void fire(Integer userId, Notification.Type type);
 
     void resetUnreadNum();
 
-    DeferredResult getDeferredUnreadNum(Object timeoutResult);
+    DeferredResult subscribe(Notification.Type type, Object timeoutResult);
 
     Integer getUnreadNum(Integer userId);
 }

@@ -37,7 +37,8 @@
         <div class="col-md-offset-1 col-md-6">
             <form id="search-form" class="form-inline text-center ">
                 <div class="input-group">
-                    <input id="username" class="form-control" type="text" placeholder="<@spring.message "placeholder.Username"/>"/>
+                    <input id="username" class="form-control" type="text"
+                           placeholder="<@spring.message "placeholder.Username"/>"/>
 
                     <div class="input-group-btn">
                         <input id="searchButton" data-style="slide-left" class="btn btn-success "
@@ -260,7 +261,6 @@
             search();
             return false;
         });
-        updateNotification();
     });
 
     window.onbeforeunload = function () {
