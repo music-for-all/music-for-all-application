@@ -13,7 +13,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import static com.musicforall.common.Constants.*;
+import static com.musicforall.common.Constants.NAME;
+import static com.musicforall.common.Constants.PASSWORD;
 import static com.musicforall.history.handlers.events.EventType.TRACK_ADDED;
 import static com.musicforall.model.user.UserAchievement.Status.DONE;
 import static com.musicforall.model.user.UserAchievement.Status.IN_PROGRESS;
@@ -34,7 +35,7 @@ public class UserAchievementsServiceTest {
 
     @Test
     public void saveUserAchievement() {
-        final User user = userService.save(new User(USER, PASSWORD, "saveUserAchievement@mail.com"));
+        final User user = userService.save(new User(PASSWORD, "saveUserAchievement@mail.com"));
         final Achievement achievement = new Achievement(NAME, "saveUserAchievement", TRACK_ADDED, 0);
         final UserAchievement inProgress = userAchievementsService.save(new UserAchievement(user, achievement, IN_PROGRESS));
         final UserAchievement savedAchievement = userAchievementsService.get(inProgress.getId());
@@ -44,7 +45,7 @@ public class UserAchievementsServiceTest {
 
     @Test
     public void incrementProgressCount() {
-        final User user = userService.save(new User(USER, PASSWORD, "incrementProgressCount@mail.com"));
+        final User user = userService.save(new User(PASSWORD, "incrementProgressCount@mail.com"));
         final Achievement achievement = new Achievement(NAME, "incrementProgressCount", TRACK_ADDED, 0);
         final UserAchievement inProgress = userAchievementsService.save(new UserAchievement(user, achievement, IN_PROGRESS));
         final UserAchievement savedAchievement = userAchievementsService.incrementProgressCount(inProgress);
@@ -54,8 +55,8 @@ public class UserAchievementsServiceTest {
 
     @Test
     public void getByUser() {
-        final User user1 = userService.save(new User(NAME, PASSWORD, "getByUser1@mail.com"));
-        final User user2 = userService.save(new User(NAME, PASSWORD, "getByUser2@mail.com"));
+        final User user1 = userService.save(new User(PASSWORD, "getByUser1@mail.com"));
+        final User user2 = userService.save(new User(PASSWORD, "getByUser2@mail.com"));
 
         userAchievementsService.saveAll(asList(
                 new UserAchievement(user1, new Achievement(NAME, "getByUser1", TRACK_ADDED, 3), IN_PROGRESS),
@@ -66,6 +67,7 @@ public class UserAchievementsServiceTest {
                 new UserAchievement(user2, new Achievement(NAME, "getByUser5", TRACK_ADDED, 7), DONE)
         ));
         assertEquals(3, userAchievementsService.getAllByUserId(user1.getId()).size());
+        assertEquals(3, userAchievementsService.getByUserIdInStatuses(user1.getId(), null).size());
         assertEquals(2, userAchievementsService.getByUserIdInStatuses(user1.getId(), IN_PROGRESS).size());
         assertEquals(1, userAchievementsService.getByUserIdInStatuses(user1.getId(), DONE).size());
 

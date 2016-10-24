@@ -188,7 +188,7 @@ public class User implements SocialUserDetails, Serializable {
                 ", " + userData +
                 '}';
     }
-    
+
     public Set<UserAchievement> getAchievements() {
         return achievements;
     }

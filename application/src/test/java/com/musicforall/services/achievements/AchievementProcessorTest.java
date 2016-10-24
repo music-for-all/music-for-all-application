@@ -50,7 +50,7 @@ public class AchievementProcessorTest {
 
     @Test
     public void testProcessTrack() throws Exception {
-        final User user = userService.save(new User(NAME, PASSWORD, "processTrack@sabaka.com"));
+        final User user = userService.save(new User(PASSWORD, "processTrack@sabaka.com"));
 
         achievementsService.saveAll(asList(
                 new Achievement(NAME, "track.name.equals('name1')", TRACK_ADDED, 5),
@@ -80,7 +80,7 @@ public class AchievementProcessorTest {
 
     @Test
     public void testProcessPlaylist() throws Exception {
-        final User user = userService.save(new User(NAME, PASSWORD, "processPlaylist@sabaka.com"));
+        final User user = userService.save(new User(PASSWORD, "processPlaylist@sabaka.com"));
 
         achievementsService.saveAll(asList(
                 new Achievement(NAME, "playlist.name.equals('name1')", PLAYLIST_ADDED, 5),
