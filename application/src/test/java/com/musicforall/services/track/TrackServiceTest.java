@@ -262,4 +262,23 @@ public class TrackServiceTest {
 
         assertEquals(trackIds.size() - 1, trackService.getArtistMostPopularTracks("The Beatles").size());
     }
+
+    @Test
+    @WithUserDetails("user@example.com")
+    public void testGetArtistMostPopularAlbums() throws Exception {
+
+        final Track track1 = new Track("track1", new Artist("Johann Sebastian Bach"), "The Best", "/root/track1.mp3", null);
+        final Track track2 = new Track("track2", new Artist("Johann Sebastian Bach"), "The Best", "/root/track2.mp3", null);
+        final Track track3 = new Track("track3", new Artist("Johann Sebastian Bach"), "The Best", "/root/track3.mp3", null);
+        final Track track4 = new Track("track4", new Artist("Johann Sebastian Bach"), "Not The Best", "/root/track4.mp3", null);
+
+        trackService.save(track1);
+        trackService.save(track2);
+        trackService.save(track3);
+        trackService.save(track4);
+        final List<Integer> trackIds = Arrays.asList(track1.getId(), track2.getId(), track3.getId(), track4.getId());
+        dbHistoryPopulateService.populateTrackListened(trackIds, SecurityUtil.currentUser().getId());
+
+        assertEquals(2, trackService.getArtistMostPopularAlbums("Johann Sebastian Bach").size());
+    }
 }
