@@ -46,12 +46,11 @@
         </form>
     </div>
 </div>
-</@m.body>
-<@m.footer />
+    <@m.footer />
 
 <script type="text/javascript">
     const max_length_error = 200;
-    var track = new Track();
+      var track = new Track();
     var placeholder = "<@spring.message "placeholder.Tags"/>";
 
     $("#tags").select2(tagAutocomplete(placeholder));
@@ -59,7 +58,7 @@
     $("input[name=artist]").autocomplete(artistAutocomplete(function () {
         return $("select[name=tags]").val()
     }));
-    
+
     function validateForm() {
         var validator = $("form[name=uploadForm]:last").data("bs.validator");
         validator.validate();
@@ -138,4 +137,5 @@
     }
 
 </script>
+</@m.body>
 </html>
