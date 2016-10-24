@@ -2,6 +2,7 @@ package com.musicforall.services.user;
 
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.user.User;
+import com.musicforall.model.user.UserData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class UserBootstrap {
     @Autowired
     private Dao dao;
+    public static final String USER = "user";
 
     private boolean bootstraped;
 
@@ -29,9 +31,9 @@ public class UserBootstrap {
         }
         lock.lock();
 
-        dao.save(new User("user", "password", "user@example.com"));
-        dao.save(new User("user1", "password1", "user1@gmail.com"));
-        dao.save(new User("user2", "password2", "user2@example.com"));
+        dao.save(new User("password", "user@example.com"));
+        dao.save(new User("password1", "user1@gmail.com"));
+        dao.save(new User("password2", "user2@example.com"));
 
 
         bootstraped = true;

@@ -26,7 +26,7 @@ public class Mails {
 
     public Mail welcomeMail(final User user) {
         final Map<String, Object> params = new HashMap<>();
-        params.put("username", user.getUsername());
+        params.put("username", user.getUserData().getUsername());
         return Mail.build()
                 .to(user.getEmail())
                 .from(emailFrom)
