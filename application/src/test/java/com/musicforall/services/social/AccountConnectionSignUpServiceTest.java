@@ -1,6 +1,7 @@
 package com.musicforall.services.social;
 
 import com.musicforall.services.mail.Mails;
+import com.musicforall.services.user.UserService;
 import com.musicforall.services.user.UserTestExecutionListener;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Before;
@@ -19,8 +20,6 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-
-import javax.validation.ConstraintViolationException;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -47,6 +46,8 @@ public class AccountConnectionSignUpServiceTest {
     private Mails mails;
     @Mock
     private ApplicationEventPublisher publisher;
+    @Mock
+    private UserService userService;
 
     @Before
     public void setUp() {
@@ -64,28 +65,26 @@ public class AccountConnectionSignUpServiceTest {
 
     @Test
     public void testSaveWithoutUsername() {
-        UserProfile userProfile = new UserProfile("", " ,", "Fg", " ", "dd@mail.com", "");
+        UserProfile userProfile = new UserProfile("", " ,", "Fg", " ", "dd@mail.com", null);
         when(connection.fetchUserProfile()).thenReturn(userProfile);
 
         String username = signUpService.execute(connection);
         assertEquals(username, userProfile.getEmail());
     }
 
-    @Test(expected = ConstraintViolationException.class)
-    public void testSaveWithSmallUsername() {
+    @Test
+    public void testSaveWithIncorrectUsername() {
         UserProfile userProfile = new UserProfile("", " ,", "1name", " ", "1name@mail.com", "o");
         when(connection.fetchUserProfile()).thenReturn(userProfile);
 
         signUpService.execute(connection);
-    }
+        assertEquals(userProfile.getFirstName(), userProfile.getFirstName());
 
-
-    @Test(expected = ConstraintViolationException.class)
-    public void testSaveWithBigUsername() {
-        UserProfile userProfile = new UserProfile("", " ,", "2name", " ", "2name@mail.com", "12345678901234567");
-        when(connection.fetchUserProfile()).thenReturn(userProfile);
+        UserProfile userProfile2 = new UserProfile("", " ,", "2name", " ", "2name@mail.com", "12345678901234567");
+        when(connection.fetchUserProfile()).thenReturn(userProfile2);
 
         signUpService.execute(connection);
+        assertEquals(userProfile2.getFirstName(), userProfile2.getFirstName());
     }
 
     @Test

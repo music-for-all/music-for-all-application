@@ -4,8 +4,10 @@ import com.musicforall.common.Constants;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.SearchUserRequest;
 import com.musicforall.model.user.User;
+import com.musicforall.model.user.UserData;
 import com.musicforall.services.SearchCriteriaFactory;
 import org.hibernate.FetchMode;
+import com.musicforall.dto.profile.ProfileData;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Property;
@@ -30,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private Dao dao;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -37,12 +40,68 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         /* Encode the password before saving the user. */
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return dao.save(user);
+        dao.save(user);
+        return user;
     }
 
     @Override
     public Collection<User> saveAll(Collection<User> users) {
         return dao.saveAll(users);
+    }
+
+    @Override
+    public void updateUserData(Integer userId, ProfileData profileData) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("username", profileData.getUsername());
+        params.put("firstName", profileData.getFirstName());
+        params.put("lastName", profileData.getLastName());
+        params.put("picture", profileData.getPicture());
+        params.put("bio", profileData.getBio());
+        params.put("publicRadio", profileData.getPublicRadio());
+
+        dao.update(UserData.UPDATE_USER_DATA, params);
+    }
+
+    @Override
+    public void updateUserPassword(Integer userId, ProfileData profileData) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("id", userId);
+        if (profileData.getPassword() != null) {
+            profileData.setPassword(passwordEncoder.encode(profileData.getPassword()));
+        }
+        params.put("password", profileData.getPassword());
+
+        dao.update(User.UPDATE_USER, params);
+    }
+
+    @Override
+    public void switchPublicRadio(Integer userId) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        dao.update(UserData.SWITCH_STATE_OF_PUBLIC_RADIO, params);
+    }
+
+    @Override
+    public UserData getUserData(Integer userId) {
+        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(UserData.class)
+                .add(Property.forName("userId.id").eq(userId));
+
+        return dao.getBy(detachedCriteria);
+    }
+
+    @Override
+    public List<UserData> getAllUserDataByUserId(Collection<Integer> usersId) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("usersId", usersId);
+        return dao.getAllByNamedQuery(UserData.class, UserData.USERS_DATA_BY_USER_IDS, params);
+    }
+
+    @Override
+    public List<UserData> getAllUserDataLike(SearchUserRequest searchCriteria) {
+        final DetachedCriteria detachedCriteria =
+                SearchCriteriaFactory.createUserSearchCriteria(searchCriteria);
+        return dao.getAllBy(detachedCriteria);
     }
 
     @Override
@@ -68,7 +127,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByEmail(String email) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
-                .setFetchMode("settings", FetchMode.JOIN)
+                .setFetchMode("userData", FetchMode.JOIN)
                 .add(Property.forName(Constants.EMAIL).eq(email));
 
         return dao.getBy(detachedCriteria);
@@ -80,20 +139,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllLike(SearchUserRequest searchCriteria) {
-        final DetachedCriteria detachedCriteria =
-                SearchCriteriaFactory.createUserSearchCriteria(searchCriteria);
-        return dao.getAllBy(detachedCriteria);
-    }
-
-    @Override
     public List<User> getUsersById(Collection<Integer> usersId) {
         if (usersId.isEmpty()) {
             return new ArrayList<>();
         }
         final Disjunction disjunction = Restrictions.disjunction();
-        for (final Integer follower : usersId) {
-            disjunction.add(Property.forName(Constants.ID).eq(follower));
+        for (final Integer id : usersId) {
+            disjunction.add(Property.forName(Constants.ID).eq(id));
         }
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class)
                 .add(disjunction);
@@ -101,17 +153,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllWithSettingsByIds(Collection<Integer> ids) {
+    public List<User> getAllWithUserDataByIds(Collection<Integer> ids) {
         final Map<String, Object> params = new HashMap<>();
         params.put("ids", ids);
-        return dao.getAllByNamedQuery(User.class, User.USERS_BY_IDS_WITH_SETTINGS_QUERY, params);
+        return dao.getAllByNamedQuery(User.class, User.USERS_BY_IDS_WITH_DATA_QUERY, params);
     }
 
     @Override
-    public User getWithSettingsById(Integer id) {
+    public User getWithUserDataById(Integer id) {
         final Map<String, Object> params = new HashMap<>();
         params.put("id", id);
-        return dao.getByNamedQuery(User.class, User.USER_BY_ID_WITH_SETTINGS_QUERY, params);
+        return dao.getByNamedQuery(User.class, User.USER_BY_ID_WITH_DATA_QUERY, params);
     }
 
     @Override
