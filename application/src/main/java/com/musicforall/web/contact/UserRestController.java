@@ -5,6 +5,7 @@ import com.musicforall.model.SearchUserRequest;
 import com.musicforall.model.user.User;
 import com.musicforall.model.user.UserAchievement;
 import com.musicforall.services.achievements.UserAchievementsService;
+import com.musicforall.model.user.UserData;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.user.UserService;
 import org.slf4j.Logger;
@@ -49,19 +50,19 @@ public class UserRestController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/followers", method = GET)
-    public Collection<User> getFollowers() {
-        return userService.getUsersById(followerService.getFollowersId(currentUser().getId()));
+    @RequestMapping(value = "/followers", method = RequestMethod.GET)
+    public Collection<UserData> getFollowers() {
+        return userService.getAllUserDataByUserId(followerService.getFollowersId(currentUser().getId()));
     }
 
-    @RequestMapping(value = "/following", method = GET)
-    public Collection<User> getFollowings() {
-        return userService.getUsersById(followerService.getFollowingId(currentUser().getId()));
+    @RequestMapping(value = "/following", method = RequestMethod.GET)
+    public Collection<UserData> getFollowings() {
+        return userService.getAllUserDataByUserId(followerService.getFollowingId(currentUser().getId()));
     }
 
-    @RequestMapping(value = "/search={username}", method = GET)
-    public Collection<User> search(@PathVariable("username") String username) {
-        return userService.getAllLike(new SearchUserRequest(username));
+    @RequestMapping(value = "/search={username}", method = RequestMethod.GET)
+    public Collection<UserData> search(@PathVariable("username") String username) {
+        return userService.getAllUserDataLike(new SearchUserRequest(username));
     }
 
     @RequestMapping(value = "/me", method = GET)

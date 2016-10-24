@@ -72,7 +72,14 @@ public class Dao {
         return entity;
     }
 
+    public <T> T update(T entity) {
+        LOG.info("Going to update entity - {}", entity);
+        currentSession().update(entity);
+        return entity;
+    }
+
     public void update(String namedQuery, Map<String, Object> parameters) {
+        LOG.info("Going to update entity by named query - {} with parameters - {}", namedQuery, parameters);
         final Query query = currentSession().createNamedQuery(namedQuery);
         for (final Map.Entry<String, Object> s : parameters.entrySet()) {
             query.setParameter(s.getKey(), s.getValue());

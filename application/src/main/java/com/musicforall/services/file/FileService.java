@@ -10,5 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface FileService {
     ResponseEntity<String> uploadTrackFile(Track trackJson, MultipartFile file);
 
+    ResponseEntity<String> uploadPictureFile(Integer userId, MultipartFile file);
+
     ResponseEntity<String> checkFile(MultipartFile file);
 }

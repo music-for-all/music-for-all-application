@@ -16,7 +16,7 @@ import java.util.*;
         {
                 @NamedQuery(
                         name = Artist.ARTIST_LIKE_NAME_QUERY,
-                        query = "from Artist where artist_name like :artist_name"
+                        query = "from Artist a where a.name like :artistName"
                 )
         }
 )

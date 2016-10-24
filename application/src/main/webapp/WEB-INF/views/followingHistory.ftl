@@ -25,7 +25,7 @@
     %>
     <div class="following_user">
         <div class="username text-center" data-toggle="collapse" data-target="#<%= feedsByUser.user.id %>">
-            <%= feedsByUser.user.username %>
+            <%= feedsByUser.user.userData.username %>
         </div>
         <div class="activities">
             <%_.each(feedsByUser.feeds, function(feed, index){

@@ -3,7 +3,7 @@ package com.musicforall.services;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.*;
 import com.musicforall.model.user.User;
-import com.musicforall.model.user.UserSettings;
+import com.musicforall.model.user.UserData;
 import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
@@ -114,36 +114,26 @@ public class SearchCriteriaFactoryTest {
                 new SearchUserRequest("")));
         assertEquals(0, users.size());
 
-        final UserSettings settings = new UserSettings(true, "link");
-        User user = new User(USER, PASSWORD, "testGetUserLike@test.com");
-        user.setLastName("lastName");
-        user.setFirstName("firstName");
-        user.setSettings(settings);
+        User user = new User(PASSWORD, "testGetUserLike@test.com");
+        user.setUserData(new UserData(user, USER, "firstName", "lastName", "link", "bio", true));
 
         userService.save(user);
 
-
-        users = dao.getAllBy(createUserSearchCriteria(
-                new SearchUserRequest("use")));
-        assertEquals(1, users.size());
-
-
-        SearchUserRequest testEmailRequest = new SearchUserRequest();
-        testEmailRequest.setEmail("testGetUse");
-        users = dao.getAllBy(createUserSearchCriteria(testEmailRequest));
-        assertEquals(1, users.size());
+        users = dao.getAllBy(createUserSearchCriteria(new SearchUserRequest("oop")));
+        assertEquals(0, users.size());
 
         SearchUserRequest testFNameRequest = new SearchUserRequest();
         testFNameRequest.setFirstName("first");
         users = dao.getAllBy(createUserSearchCriteria(testFNameRequest));
         assertEquals(1, users.size());
 
+        users = dao.getAllBy(createUserSearchCriteria(new SearchUserRequest("use")));
+        assertEquals(1, users.size());
+
         SearchUserRequest testLNameRequest = new SearchUserRequest();
         testLNameRequest.setLastName("last");
         users = dao.getAllBy(createUserSearchCriteria(testLNameRequest));
         assertEquals(1, users.size());
-
-
     }
 
     @Test

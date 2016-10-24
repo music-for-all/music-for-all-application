@@ -6,6 +6,7 @@ import com.musicforall.model.Track;
 import com.musicforall.services.file.FileService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.web.stream.Radio;
+import com.musicforall.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,4 +80,36 @@ public class FileController {
     public String uploadFile() {
         return "uploadFile";
     }
+
+    @RequestMapping(value = "/files/picture", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> uploadPicFileHandler(
+            @RequestPart("file") MultipartFile file) {
+        LOG.info(("Streaming picture"));
+
+        final ResponseEntity<String> errorStatus = fileService.checkFile(file);
+        if (Objects.equals(errorStatus.getBody(), "ok")) {
+            return fileService.uploadPictureFile(SecurityUtil.currentUserId(), file);
+        } else {
+            return errorStatus;
+        }
+    }
+
+    @RequestMapping(value = "/files/picture/{userId}/{pictureName:.+}", method = RequestMethod.GET)
+    public void getFileHandler(HttpServletResponse response, @PathVariable("pictureName") String name,
+                               @PathVariable("userId") String userId) {
+        LOG.info(String.format("Streaming picture: %s\n", name));
+        final Optional<Path> filePath = manager.getPicturePathByName(userId + "/" + name);
+
+        if (filePath.isPresent()) {
+            try {
+                Files.copy(filePath.get(), response.getOutputStream());
+            } catch (IOException e) {
+                LOG.error("Streaming failed! ", e);
+            }
+        } else {
+            LOG.error("File not found");
+        }
+    }
+
 }
