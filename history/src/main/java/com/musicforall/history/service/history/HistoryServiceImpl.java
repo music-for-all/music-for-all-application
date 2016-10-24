@@ -1,9 +1,12 @@
 package com.musicforall.history.service.history;
-
-import com.musicforall.common.dao.Dao;
+import com.musicforall.common.dao.HistoryDao;
 import com.musicforall.common.dao.QueryParams;
+
 import com.musicforall.history.handlers.events.EventType;
+import com.musicforall.history.handlers.events.TrackEvent;
+import com.musicforall.history.handlers.events.TrackEventType;
 import com.musicforall.history.model.History;
+import com.musicforall.history.model.TrackHistory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,25 +22,28 @@ import java.util.Map;
  * Created by Pukho on 08.08.2016.
  */
 @Service("historyService")
-@Transactional
+@Transactional("history_transaction_manager")
 public class HistoryServiceImpl implements HistoryService {
 
     private static final String EVENT_TYPE = "eventType";
     private static final String TRACK_ID = "trackId";
 
     @Autowired
-    private Dao dao;
+    private HistoryDao dao;
 
     @Override
     public void record(final History history) {
-        if (history.getEventType() == EventType.TRACK_LIKED) {
-            final Collection<History> histories = getAllBy(SearchHistoryParams.create()
-                    .eventType(EventType.TRACK_LIKED)
-                    .trackId(history.getTrackId())
-                    .userId(history.getUserId())
-                    .get());
-            if (histories.isEmpty()) {
-                dao.save(history);
+        if (history instanceof TrackHistory) {
+            TrackHistory historyTrack = (TrackHistory) history;
+            if (historyTrack.getEventType() == TrackEventType.TRACK_LIKED) {
+                final Collection<History> histories = getAllBy(SearchHistoryParams.create()
+                        .eventType(TrackEventType.TRACK_LIKED)
+                        .trackId(historyTrack.getTrackId())
+                        .userId(historyTrack.getUserId())
+                        .get());
+                if (histories.isEmpty()) {
+                    dao.save(historyTrack);
+                }
             }
         } else {
             dao.save(history);
@@ -46,15 +52,7 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public List<Integer> getTheMostPopularTracks() {
-
-        final int count = 10;
-        final int offset = 0;
-
-        final Map<String, Object> parameters = new HashMap<>();
-        parameters.put(EVENT_TYPE, EventType.TRACK_LISTENED);
-
-        return dao.getAllByNamedQuery(Integer.class, History.POPULAR_TRACKS_QUERY,
-                parameters, new QueryParams(count, offset));
+        return null;   //// TODO: 12.10.2016  change this method on new shema
     }
 
     @Override
@@ -67,18 +65,10 @@ public class HistoryServiceImpl implements HistoryService {
 
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put(TRACK_ID, trackId);
-        parameters.put(EVENT_TYPE, EventType.TRACK_LIKED);
+        parameters.put(EVENT_TYPE, TrackEventType.TRACK_LIKED);
 
         return dao.getByNamedQuery(Long.class, History.TRACK_LIKES_COUNT_QUERY,
                 parameters);
-    }
-
-    @Override
-    public Collection<History> getAllForUsers(EventType type, Collection<Integer> usersIds) {
-        final Map<String, Object> params = new HashMap<>();
-        params.put("usersIds", usersIds);
-        params.put("eventType", type);
-        return dao.getAllByNamedQuery(History.class, "all_for_users_by_type", params);
     }
 
     private DetachedCriteria toDetachedCriteria(SearchHistoryParams params) {
@@ -103,6 +93,11 @@ public class HistoryServiceImpl implements HistoryService {
 
         return dao.getAllByNamedQuery(History.class, History.USERS_HISTORIES_QUERY,
                 parameters);
+    }
+
+    @Override
+    public Collection<History> getAllForUsers(EventType type, Collection<Integer> usersIds) {
+        return null;
     }
 
 }
