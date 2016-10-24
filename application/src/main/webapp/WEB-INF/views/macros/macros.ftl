@@ -115,9 +115,9 @@
                        aria-expanded="false"><i class="fa fa-globe" aria-hidden="true"></i><span
                             class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href=<@spring.url '?lang=en'/>>English</a></li>
-                        <li><a href=<@spring.url '?lang=ru'/>>Русский</a></li>
-                        <li><a href=<@spring.url '?lang=ua'/>>Українська</a></li>
+                        <li><a href="<@spring.url '?lang=en'/>">English</a></li>
+                        <li><a href="<@spring.url '?lang=ru'/>">Русский</a></li>
+                        <li><a href="<@spring.url '?lang=ua'/>">Українська</a></li>
                     </ul>
                 </li>
             </ul>
