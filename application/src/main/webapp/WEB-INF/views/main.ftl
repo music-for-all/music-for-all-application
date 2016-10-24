@@ -45,7 +45,7 @@
 
         <a class="btn btn-success" href="<@spring.url '${m.pages.Add.url}' />" title="Upload">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            <span>Upload</span>
+            <span><@spring.message "mainpage.Upload" /></span>
         </a>
 
         <section id="recommendations-section" class="well col-md-11 col-md-offset-0">
