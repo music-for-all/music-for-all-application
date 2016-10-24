@@ -2,21 +2,7 @@
 
 var baseUrl = dict.contextPath + "/profile";
 
-function updateUserData() {
-
-    var profileData = {};
-
-    var username = $("#username").val();
-
-    if (username.length < 2 || username.length > 16) {
-        $("#fail-message").text("Fail: new username must be more than 2 and less than 16 in length!");
-        return;
-    }
-
-    if (username !== $("#panelUsername").text()) {
-        profileData.username = username;
-    }
-
+function addUncheckedUserData(profileData) {
     var firstName = $("#firstName").val();
 
     if (firstName !== $("#tdFirstName").text()) {
@@ -34,6 +20,24 @@ function updateUserData() {
     if (bio !== $("#tdBio").text()) {
         profileData.bio = bio;
     }
+}
+
+function updateUserData() {
+
+    var profileData = {};
+
+    var username = $("#username").val();
+
+    if (username.length < 2 || username.length > 16) {
+        $("#fail-message").text("Fail: new username must be more than 2 and less than 16 in length!");
+        return;
+    }
+
+    if (username !== $("#panelUsername").text()) {
+        profileData.username = username;
+    }
+
+    addUncheckedUserData(profileData);
 
     return $.when($.get(baseUrl + "/update", profileData));
 }
