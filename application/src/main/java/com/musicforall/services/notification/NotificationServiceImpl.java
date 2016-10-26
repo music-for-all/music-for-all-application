@@ -1,16 +1,16 @@
 package com.musicforall.services.notification;
 
 import com.musicforall.common.cache.CacheProvider;
-import com.musicforall.notifications.DeferredNotification;
+import com.musicforall.notifications.DeferredConnection;
 import com.musicforall.notifications.Notification;
 import com.musicforall.notifications.Notifier;
-import com.musicforall.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Collection;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static com.musicforall.config.CacheConfig.NOTIFICATION;
 
@@ -23,51 +23,47 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Autowired
     @Qualifier(NOTIFICATION)
-    private CacheProvider<Integer, AtomicInteger> cache;
+    private CacheProvider<Integer, Collection<Notification>> cache;
     @Autowired
     private Notifier notifier;
 
     @Override
     public void fire(Integer userId, Notification.Type type) {
-        incrementUnreadNum(userId);
-        notifier.fire(userId, type);
+        Collection<Notification> notifications = cache.get(userId);
+
+        if (notifications == null) {
+            notifications = new ConcurrentLinkedQueue<>();
+            notifications.add(new Notification(type));
+            cache.put(userId, notifications);
+        }
+        incrementCountByType(notifications, type);
+        notifier.fire(userId);
     }
 
     @Override
-    public void resetUnreadNum() {
-        final Integer userId = SecurityUtil.currentUserId();
-        cache.put(userId, new AtomicInteger(0));
+    public void clearNotifications(Integer userId) {
+        cache.remove(userId);
     }
 
     @Override
-    public DeferredResult subscribe(Notification.Type type, Object timeoutResult) {
-        final Integer userId = SecurityUtil.currentUserId();
-        final DeferredResult<Integer> result = new DeferredResult<>(TIMEOUT, timeoutResult);
-        result.onCompletion(() -> notifier.unsubscribe(userId, type));
+    public DeferredResult<Collection<Notification>> subscribe(Integer userId, Object timeoutResult) {
+        final DeferredResult<Collection<Notification>> result = new DeferredResult<>(TIMEOUT, timeoutResult);
+        result.onCompletion(() -> notifier.unsubscribe(userId));
 
-        final DeferredNotification<Integer> userNotification = new DeferredNotification<>(result,
-                () -> getUnreadNum(userId), type);
-
-        notifier.subscribe(userId, userNotification);
+        final DeferredConnection<Collection<Notification>> connection = new DeferredConnection<>(result,
+                () -> getUnread(userId));
+        notifier.subscribe(userId, connection);
         return result;
     }
 
     @Override
-    public Integer getUnreadNum(Integer userId) {
-        final AtomicInteger unreadAtomicNum = cache.get(userId);
-        if (unreadAtomicNum == null) {
-            return null;
-        }
-        return unreadAtomicNum.get();
+    public Collection<Notification> getUnread(Integer userId) {
+        return cache.get(userId);
     }
 
-    private void incrementUnreadNum(Integer userId) {
-        AtomicInteger numOfUnread = cache.get(userId);
-        if (numOfUnread != null) {
-            numOfUnread.incrementAndGet();
-        } else {
-            numOfUnread = new AtomicInteger(1);
-        }
-        cache.put(userId, numOfUnread);
+    private void incrementCountByType(Collection<Notification> notifications, Notification.Type type) {
+        notifications.stream()
+                .filter(n -> n.getType() == type)
+                .forEach(Notification::increment);
     }
 }

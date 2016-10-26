@@ -1,6 +1,7 @@
 package com.musicforall.web.feed;
 
 import com.musicforall.services.notification.NotificationService;
+import com.musicforall.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,8 @@ public class FeedController {
 
     @RequestMapping("/feed")
     public String friendsActivity(Model model) {
-        notificationService.resetUnreadNum();
+        final Integer userId = SecurityUtil.currentUserId();
+        notificationService.clearNotifications(userId);
         return "followingHistory";
     }
 }

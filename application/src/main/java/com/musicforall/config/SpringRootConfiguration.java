@@ -7,6 +7,7 @@ import com.musicforall.config.security.SecurityConfig;
 import com.musicforall.files.FileApiSpringConfig;
 import com.musicforall.history.HistorySpringConfig;
 import com.musicforall.model.Track;
+import com.musicforall.notifications.Notification;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.*;
@@ -16,9 +17,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
+import java.util.Collection;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.musicforall.config.CacheConfig.NOTIFICATION;
 import static com.musicforall.config.CacheConfig.STREAM;
@@ -59,7 +60,7 @@ public class SpringRootConfiguration implements AsyncConfigurer, SchedulingConfi
     }
 
     @Bean(name = NOTIFICATION)
-    public CacheProvider<Integer, AtomicInteger> cacheNews() {
+    public CacheProvider<Integer, Collection<Notification>> cacheNews() {
         return new NotificationCacheProvider();
     }
 

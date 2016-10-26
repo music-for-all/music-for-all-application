@@ -11,14 +11,13 @@ import static java.util.Objects.requireNonNull;
 /**
  * @author ENikolskiy.
  */
-public class DeferredNotification<R> extends Notification {
-    private static final Logger LOG = LoggerFactory.getLogger(DeferredNotification.class);
+public class DeferredConnection<R> implements Notifier.Connection {
+    private static final Logger LOG = LoggerFactory.getLogger(DeferredConnection.class);
 
     private DeferredResult<R> deferredResult;
     private Callable<R> callable;
 
-    public DeferredNotification(DeferredResult<R> deferredResult, Callable<R> callable, Type type) {
-        super(type);
+    public DeferredConnection(DeferredResult<R> deferredResult, Callable<R> callable) {
         requireNonNull(deferredResult, "deferredResult must not be null");
         requireNonNull(callable, "callable must not be null");
         this.deferredResult = deferredResult;

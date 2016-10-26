@@ -331,9 +331,8 @@
     }
 
     $(document).ready(function () {
-
+        getNotifications();
         refreshPlaylistTable();
-
         refreshRecommendationTable();
 
         /* Handle the Like button (Ajax). */

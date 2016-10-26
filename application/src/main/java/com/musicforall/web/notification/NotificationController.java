@@ -8,12 +8,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import java.util.Collection;
+
 import static org.springframework.http.HttpStatus.REQUEST_TIMEOUT;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * @author IliaNik on 23.10.2016.
@@ -26,14 +28,15 @@ public class NotificationController {
     @Autowired
     private NotificationService notificationService;
 
-    @RequestMapping(value = "/subscribe", method = RequestMethod.POST)
-    public DeferredResult subscribe(@RequestParam Notification.Type type) {
-        return notificationService.subscribe(type, new ResponseEntity<>(REQUEST_TIMEOUT));
+    @RequestMapping(method = POST)
+    public DeferredResult<Collection<Notification>> subscribe() {
+        final Integer userId = SecurityUtil.currentUserId();
+        return notificationService.subscribe(userId, new ResponseEntity<>(REQUEST_TIMEOUT));
     }
 
-    @RequestMapping(value = "/unreadCount", method = RequestMethod.GET)
-    public Integer getUnreadNum() {
+    @RequestMapping(method = GET)
+    public Collection<Notification> getUnreadNum() {
         final Integer userId = SecurityUtil.currentUserId();
-        return notificationService.getUnreadNum(userId);
+        return notificationService.getUnread(userId);
     }
 }

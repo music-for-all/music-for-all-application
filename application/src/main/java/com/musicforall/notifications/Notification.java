@@ -1,29 +1,31 @@
 package com.musicforall.notifications;
 
-import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.util.Objects.requireNonNull;
 
 /**
  * @author ENikolskiy.
  */
-public abstract class Notification {
+public class Notification {
     private Type type;
-    private String id = UUID.randomUUID().toString();
+    private AtomicInteger count = new AtomicInteger(0);
 
     public Notification(Type type) {
         requireNonNull(type, "Notification type must not be null");
         this.type = type;
     }
 
-    public abstract void doNotify();
-
-    public String getId() {
-        return id;
-    }
-
     public Type getType() {
         return type;
+    }
+
+    public AtomicInteger getCount() {
+        return count;
+    }
+
+    public int increment() {
+        return count.incrementAndGet();
     }
 
     public enum Type {
