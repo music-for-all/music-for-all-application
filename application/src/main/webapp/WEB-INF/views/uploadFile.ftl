@@ -9,6 +9,7 @@
 <script src="<@spring.url "/resources/js/track.js"/>"></script>
 <script src="<@spring.url "/resources/js/history.js"/>"></script>
 <script src="<@spring.url "/resources/js/autocompleteConfig.js"/>"></script>
+<script src="<@spring.url "/resources/js/id3.min.js"/>"></script>
 <link href="<@spring.url "/resources/css/filespage.css" />" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
 </@m.head>
@@ -38,6 +39,10 @@
                    data-minlength="2"
                    maxlength="30" required/>
 
+            <input type="text" name="album" class="form-control" placeholder="<@spring.message "placeholder.Album"/>"
+                   data-minlength="2"
+                   maxlength="30"/>
+
             <div class="form-group" name="tagsContainer">
                 <h4 class="control-label text-center"><@spring.message "uploadFile.TagsCaption"/></h4>
                 <select class="form-control" id="tags" name="tags"></select>
@@ -59,7 +64,15 @@
     $("input[name=artist]").autocomplete(artistAutocomplete(function () {
         return $("select[name=tags]").val()
     }));
-    
+
+    $('input[type="file"]').change(function(e) {
+        id3(this.files[0], function(err, tags) {
+            $("input[name=name]").val(tags.title);
+            $("input[name=artist]").val(tags.artist);
+            $("input[name=album]").val(tags.album);
+        });
+    });
+
     function validateForm() {
         var validator = $("form[name=uploadForm]:last").data("bs.validator");
         validator.validate();
@@ -111,12 +124,16 @@
         $("form[name=uploadForm]").each(function () {
             var obj = {};
             var artist = {};
+            var album = $(this).find("input[name=album]").val();
             artist.name = $(this).find("input[name=artist]").val();
             artist.tags=$(this).find("#tags").val();
             obj.name = $(this).find("input[name=name]").val() ;
             obj.artist = artist;
             obj.location = "unknown";
             obj.tags = $(this).find("#tags").val();
+            if(album != ""){
+                obj.album = $(this).find("input[name=album]").val() ;
+            }
 
             var formData = new FormData();
             formData.append("track", new Blob([JSON.stringify(obj)], {
