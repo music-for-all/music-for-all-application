@@ -65,14 +65,20 @@
         return $("select[name=tags]").val()
     }));
 
-    $('input[type="file"]').change(function(e) {
-        id3(this.files[0], function(err, tags) {
-            $("input[name=name]").val(tags.title);
-            $("input[name=artist]").val(tags.artist);
-            $("input[name=album]").val(tags.album);
+    $('input[type="file"]').change(function (e) {
+        id3(this.files[0], function (err, tags) {
+            if (!!tags.title) {
+                $("input[name=name]").val(tags.title);
+            }
+            if (!!tags.artist) {
+                $("input[name=artist]").val(tags.artist);
+            }
+            if (!!tags.album) {
+                $("input[name=album]").val(tags.album);
+            }
         });
     });
-
+    
     function validateForm() {
         var validator = $("form[name=uploadForm]:last").data("bs.validator");
         validator.validate();
@@ -108,6 +114,15 @@
         }));
         $("select[name=tags]:last").select2(tagAutocomplete(placeholder));
         $("form[name=uploadForm]:last").validator();
+
+        $('input[type="file"]:last').change(function(e) {
+            id3(this.files[0], function(err, tags) {
+                if (!!tags.title) {$("input[name=name]:last").val(tags.title);}
+                if (!!tags.artist) {$("input[name=artist]:last").val(tags.artist);}
+                if (!!tags.album) {$("input[name=album]:last").val(tags.album);}
+            });
+        });
+
     }
 
     function showMessage(message, type) {
