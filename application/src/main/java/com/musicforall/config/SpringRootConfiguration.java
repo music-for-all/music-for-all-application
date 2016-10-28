@@ -12,6 +12,7 @@ import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.*;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -23,6 +24,7 @@ import static java.util.concurrent.Executors.newFixedThreadPool;
  * Created by kgavrylchenko on 10.06.16.
  */
 @Configuration
+@EnableScheduling
 @EnableAsync
 @ComponentScan({"com.musicforall.common",
         "com.musicforall.services"})
