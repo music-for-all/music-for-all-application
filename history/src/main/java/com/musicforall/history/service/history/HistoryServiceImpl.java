@@ -11,10 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.persistence.TemporalType;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Created by Pukho on 08.08.2016.
@@ -64,6 +65,11 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
+    public Collection<History> getAllBy(DetachedCriteria criteria) {
+        return dao.getAllBy(criteria);
+    }
+
+    @Override
     public long getLikeCount(Integer trackId) {
 
         final Map<String, Object> parameters = new HashMap<>();
@@ -92,6 +98,9 @@ public class HistoryServiceImpl implements HistoryService {
         }
         if (params.getTrackId() != null) {
             criteria.add(Property.forName(TRACK_ID).eq(params.getTrackId()));
+        }
+        if (params.getDate() != null) {
+            criteria.add(Property.forName("date").eq(params.getDate()));
         }
         return criteria;
     }

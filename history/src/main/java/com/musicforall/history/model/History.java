@@ -3,8 +3,11 @@ package com.musicforall.history.model;
 
 import com.musicforall.common.Constants;
 import com.musicforall.history.handlers.events.EventType;
+import com.musicforall.history.handlers.events.PlaylistEvent;
+import com.musicforall.history.service.history.SearchHistoryParams;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
@@ -25,7 +28,7 @@ import java.util.Objects;
                 name = History.POPULAR_TRACKS_QUERY,
                 query = "select history.trackId" +
                         " from History history" +
-                        " where history.eventType=:eventType" +
+                        " where  history.eventType=:eventType" +
                         " group by history.trackId" +
                         " order by count(history.trackId) desc"),
         @NamedQuery(
@@ -35,7 +38,13 @@ import java.util.Objects;
         @NamedQuery(
                 name = History.ALL_USERS_BY_TYPE_QUERY,
                 query = "select h from History h where h.eventType = :eventType and h.userId in " +
-                        "(:usersIds) order by h.date desc"
+                        "(:usersIds) order by h.date desc"),
+        @NamedQuery(
+                name = History.ALL_HISTORY_BY_TIME,
+                query = "select h from History h " +
+                        "where h.eventType=:eventType " +
+                        "and (h.date between :begin and :end)"
+                  //      "and h.date > :begin and h.date < :end2"
         )
 })
 
@@ -49,6 +58,12 @@ public class History {
     public static final String USERS_HISTORIES_QUERY = "get_users_histories";
 
     public static final String ALL_USERS_BY_TYPE_QUERY = "all_for_users_by_type";
+
+    public static final String ALL_HISTORY_BY_TIME = "all_histories_by_time";
+
+    public static Builder create() {
+        return new Builder();
+    }
 
     @Id
     @Column(name = Constants.ID)
@@ -67,6 +82,9 @@ public class History {
     @Column(name = "playlist_name")
     private String playlistName;
 
+    @Column(name = "artist_name")
+    private String artistName;
+
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
@@ -77,12 +95,25 @@ public class History {
     @Column(name = "event_type", nullable = false)
     private EventType eventType;
 
-    public History(Integer trackId, Integer playlistId, Date date, Integer userId, EventType eventType) {
+    public History(Integer trackId, Integer playlistId, Date date, Integer userId,
+                   EventType eventType) {
         this.trackId = trackId;
         this.playlistId = playlistId;
         this.date = new Timestamp(date.getTime());
         this.userId = userId;
         this.eventType = eventType;
+    }
+
+    public History(Integer trackId, Integer playlistId, String trackName, String playlistName,
+                   Date date, Integer userId, EventType eventType, String artistName) {
+        this.trackId = trackId;
+        this.playlistId = playlistId;
+        this.trackName = trackName;
+        this.playlistName = playlistName;
+        this.date = new Timestamp(date.getTime());
+        this.userId = userId;
+        this.eventType = eventType;
+        this.artistName = artistName;
     }
 
     public History() {
@@ -153,6 +184,14 @@ public class History {
         this.trackName = trackName;
     }
 
+    public String getArtistName() {
+        return artistName;
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(id, userId, trackId, date, eventType, playlistId);
@@ -180,10 +219,74 @@ public class History {
         return "UsageHistory{" +
                 "id=" + id +
                 ", track_id=" + trackId +
+                ", artist_name" + artistName +
                 ", playlist_id=" + playlistId +
                 ", user_id=" + userId +
                 ", date='" + date + '\'' +
                 ", eventType=" + eventType +
                 '}';
+    }
+
+    public static class Builder {
+
+        private Integer trackId;
+
+        private String trackName;
+
+        private Integer playlistId;
+
+        private String playlistName;
+
+        private String artistName;
+
+        private Integer userId;
+
+        private Date date;
+
+        private EventType eventType;
+
+        public Builder() {
+        }
+
+        public Builder date(Date date) {
+            this.date = date;
+            return this;
+        }
+
+        public Builder playlistName(String playlistName) {
+            this.playlistName = playlistName;
+            return this;
+        }
+        public Builder trackName(String trackName) {
+            this.trackName = trackName;
+            return this;
+        }
+        public Builder eventType(EventType eventType) {
+            this.eventType = eventType;
+            return this;
+        }
+        public Builder trackId(Integer trackId) {
+            this.trackId = trackId;
+            return this;
+        }
+        public Builder artistName(String artistName) {
+            this.artistName = artistName;
+            return this;
+        }
+
+        public Builder userId(Integer userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder playlistId(Integer playlistId) {
+            this.playlistId = playlistId;
+            return this;
+        }
+
+        public History get() {
+            return new History(trackId, playlistId, trackName, playlistName,
+                   date, userId, eventType, artistName);
+        }
     }
 }
