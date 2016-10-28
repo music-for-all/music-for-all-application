@@ -39,11 +39,13 @@ jQuery(document).ready(function () {
         $(this).closest("tr").removeClass("playing");
     });
 
+
     $('#nextFooterBtn').bind('click', function () {
         if ($("tr.active").next().attr("id")) {
             changeActiveTrackRow($("tr.active").next());
         }
     });
+
 
     $('#prevFooterBtn').bind('click', function () {
         if ($("tr.active").prev().attr("id")) {
@@ -59,5 +61,11 @@ jQuery(document).ready(function () {
     $('#pauseFooterBtn').bind('click', function () {
         player.pause();
         $("tr.active").removeClass("playing");
+    });
+
+    player.addEventListener('finished', function (event) {
+        if ($("tr.active").next().attr("id")) {
+            changeActiveTrackRow($("tr.active").next());
+        }
     });
 });

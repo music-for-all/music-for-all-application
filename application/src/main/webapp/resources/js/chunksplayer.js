@@ -87,6 +87,8 @@ function ChunksPlayer() {
         }
 
         if (request.response.byteLength <= 0) {
+            var event = new Event("finished");
+            self.dispatchEvent(event);
             return;
         }
         audioContext.decodeAudioData(request.response, function (buf) {
