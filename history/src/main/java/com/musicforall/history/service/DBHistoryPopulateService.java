@@ -60,4 +60,22 @@ public class DBHistoryPopulateService {
                 .map(t -> new History(t, null, new Date(), userId, EventType.TRACK_LIKED))
                 .forEach(historyService::record);
     }
+
+    public void recordArtistHistories(List<String> artistNames, Long date, Integer userId, EventType eventType) {
+        final Random rnd = new Random();
+        artistNames.stream()
+                .flatMap(t -> {
+                    int listened = 0;
+                    while (listened == 0) {
+                        listened = rnd.nextInt(MAX);
+                    }
+                    return IntStream.range(0, listened)
+                            .mapToObj(i -> History.create()
+                                    .artistName(t)
+                                    .eventType(eventType)
+                                    .date(new Date(date)).userId(userId).get())
+                            .collect(Collectors.toList()).stream();
+                })
+                .forEach(historyService::record);
+    }
 }
