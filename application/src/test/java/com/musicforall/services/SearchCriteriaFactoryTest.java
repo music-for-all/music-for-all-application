@@ -53,10 +53,6 @@ public class SearchCriteriaFactoryTest {
         trackService.saveAll(tracks);
 
         tracks = trackService.getAllLike(
-                new SearchTrackRequest("S", null, null, null));
-        assertEquals(3, tracks.size());
-
-        tracks = trackService.getAllLike(
                 new SearchTrackRequest("Sonata", new Artist(""), null, null));
         assertEquals(2, tracks.size());
 
