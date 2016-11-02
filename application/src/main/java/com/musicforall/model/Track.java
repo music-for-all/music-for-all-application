@@ -22,38 +22,24 @@ import java.util.Set;
                 query = "select t from Track t where t.id in (:ids)"
         ),
         @NamedQuery(
-                name = Track.ARTIST_TOP_TRACKS_QUERY,
-                query = "select history.trackId" +
-                        " from History history" +
-                        " where history.eventType=:eventType" +
-                        " and history.trackId in" +
-                        " (select track.id from Track track" +
-                        " where track.artist.name=:artistName)" +
-                        " group by history.trackId" +
-                        " order by count(history.trackId) desc"
+                name = Track.ALL_BY_ARTIST_QUERY,
+                query = "select t.id from Track t where t.artist.name=:artistName"
         ),
         @NamedQuery(
-                name = Track.ARTIST_TOP_ALBUMS_QUERY,
+                name = Track.TOP_ALBUMS_QUERY,
                 query = "select distinct track.album" +
                         " from Track track" +
                         " where track.id in" +
-                        " (select history.trackId" +
-                        " from History history" +
-                        " where history.eventType=:eventType" +
-                        " and history.trackId in" +
-                        " (select track.id from Track track" +
-                        " where track.artist.name=:artistName)" +
-                        " group by history.trackId" +
-                        " order by count(history.trackId) desc)"
-        )})
+                        " (:trackIds)")
+})
 @Entity
 @Table(name = "tracks")
 public class Track implements Serializable {
 
     private static final long serialVersionUID = -6851477594231058789L;
     public static final String ALL_BY_ID_QUERY = "all_tracks_by_id";
-    public static final String ARTIST_TOP_TRACKS_QUERY = "artist_top_tracks";
-    public static final String ARTIST_TOP_ALBUMS_QUERY = "artist_top_albums";
+    public static final String ALL_BY_ARTIST_QUERY = "all_by_artist";
+    public static final String TOP_ALBUMS_QUERY = "top_albums";
 
     @Id
     @Column(name = Constants.ID)
