@@ -1,13 +1,17 @@
 package com.musicforall.services.playlist;
 
 import com.musicforall.common.dao.Dao;
+import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
 import com.musicforall.model.user.User;
 import com.musicforall.services.track.TrackService;
+import com.musicforall.services.user.UserService;
 import com.musicforall.util.SecurityUtil;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +24,18 @@ import java.util.*;
 @Service("playlistService")
 @Transactional
 public class PlaylistServiceImpl implements PlaylistService {
-
+    
     @Autowired
     private Dao dao;
+
     @Autowired
     private TrackService trackService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private HistoryService historyService;
 
     @Override
     public Set<Playlist> getAllUserPlaylists(Integer userId) {
@@ -37,6 +48,18 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public Playlist get(Integer playlistId) {
         return dao.get(Playlist.class, playlistId);
+    }
+
+    @Override
+    public Collection<Track> getAllTracks() {
+        return trackService.getAllByIds(
+                historyService.getAllUserTracks(SecurityUtil.currentUserId()));
+    }
+
+    @Override
+    public Collection<Track> getAllTracksByUserId(Integer user_id) {
+        return trackService.getAllByIds(
+                historyService.getAllUserTracks(user_id));
     }
 
     @Override

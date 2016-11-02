@@ -27,6 +27,10 @@ public interface PlaylistService {
 
     Playlist get(Integer playlistId);
 
+    Collection<Track> getAllTracks();
+
+    Collection<Track> getAllTracksByUserId(Integer user_id);
+
     void addTrack(Integer playlistId, Integer trackId);
 
     void removeTrack(Integer playlistId, Integer trackId);

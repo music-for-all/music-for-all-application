@@ -63,7 +63,7 @@ public class FileServiceImpl implements FileService {
             Track savedTrack = trackService.save(trackForSaving);
 
             final History history = new History(savedTrack.getId(), null,
-                    new Date(), userService.getWithUserDataById(SecurityUtil.currentUserId()).getId(), TRACK_UPLOADED);
+                    new Date(), SecurityUtil.currentUserId(), TRACK_UPLOADED);
             historyService.record(history);
 
             return new ResponseEntity<>("Song successfully saved", HttpStatus.OK);
