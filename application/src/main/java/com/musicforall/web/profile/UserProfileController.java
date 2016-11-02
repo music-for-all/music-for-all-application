@@ -7,18 +7,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class ProfileController {
+public class UserProfileController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ProfileController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserProfileController.class);
 
     @Autowired
     private ArtistService artistService;
 
-    public ProfileController() {
+    public UserProfileController() {
         LOG.info("");
     }
 
@@ -27,16 +26,5 @@ public class ProfileController {
 
         model.addAttribute("user", SecurityUtil.currentUser());
         return "profile";
-    }
-
-    @RequestMapping("/artist/{name}")
-    public String artistProfile(Model model, @PathVariable String name) {
-
-        if (artistService.get(name) == null) {
-            return "redirect:/";
-        }
-
-        model.addAttribute("artistName", name);
-        return "artistProfile";
     }
 }
