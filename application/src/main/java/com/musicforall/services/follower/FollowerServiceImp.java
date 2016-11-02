@@ -2,6 +2,7 @@ package com.musicforall.services.follower;
 
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Followers;
+import com.musicforall.services.notification.NotificationService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.musicforall.notifications.Notification.Type.FOLLOWER;
 
 /**
  * Created by andrey on 8/2/16.
@@ -22,6 +25,9 @@ public class FollowerServiceImp implements FollowerService {
     @Autowired
     private Dao dao;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @Override
     public void follow(Integer userId, Integer followingUserId) {
         Followers followers = dao.get(Followers.class, userId);
@@ -29,6 +35,7 @@ public class FollowerServiceImp implements FollowerService {
             followers = new Followers(userId);
         }
         if (!userId.equals(followingUserId)) {
+            notificationService.fire(followingUserId, FOLLOWER);
             followers.follow(followingUserId);
         }
         dao.save(followers);
@@ -37,6 +44,7 @@ public class FollowerServiceImp implements FollowerService {
     @Override
     public void unfollow(Integer userId, Integer followingUserId) {
         final Followers followers = dao.get(Followers.class, userId);
+        notificationService.fire(followingUserId, FOLLOWER);
         followers.unfollow(followingUserId);
         dao.save(followers);
     }
@@ -59,4 +67,6 @@ public class FollowerServiceImp implements FollowerService {
         }
         return followers.getFollowingId();
     }
+
+
 }
