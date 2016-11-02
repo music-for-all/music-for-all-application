@@ -99,8 +99,7 @@ public class HistoryServiceImplTest {
     }
 
     @Test
-    public void
-    testGetLikeCount() throws Exception {
+    public void testGetLikeCount() throws Exception {
         final Integer trackId = 321;
         service.record(new History(trackId, null, new Date(), USER_ID, TRACK_LIKED));
         long numLikes = service.getLikeCount(trackId);

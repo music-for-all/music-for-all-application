@@ -22,7 +22,7 @@
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic"
           rel="stylesheet"/>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-
+    <link rel="icon" type="image/x-icon" href="<@spring.url "/resources/img/favicon.ico"/>"/>
     <#nested>
 </head>
 </#macro>
