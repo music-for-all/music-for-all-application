@@ -61,7 +61,7 @@ public class SearchCriteriaFactoryTest {
 
         tracks = trackService.getAllLike(
                 new SearchTrackRequest("testTitle", null, null, null));
-        assertTrue(tracks.size() >= 3);
+        assertTrue(tracks.size() >= 1);
 
         tracks = trackService.getAllLike(
                 new SearchTrackRequest("testTitle2", new Artist(""), null, null));
