@@ -1,7 +1,10 @@
 package com.musicforall.web.feed;
 
+import com.musicforall.services.notification.NotificationService;
+import com.musicforall.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,13 +17,14 @@ public class FeedController {
 
     private static final Logger LOG = LoggerFactory.getLogger(FeedController.class);
 
-    public FeedController() {
-        LOG.info("");
-    }
+    @Autowired
+    private NotificationService notificationService;
 
     @RequestMapping("/feed")
     public String friendsActivity(Model model) {
+        final Integer userId = SecurityUtil.currentUserId();
+        notificationService.clearNotifications(userId);
         return "followingHistory";
     }
-
 }
+

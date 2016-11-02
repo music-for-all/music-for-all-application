@@ -128,6 +128,12 @@
     <a href=<@spring.url '${item.url}'/>>
         <i class="fa ${item.icon}"></i> ${item.title}
     </a>
+    <#if item.url ==  pages.Feed.url && activePage.url != pages.Feed.url>
+        <span class="fa-stack fa-lg notifications-reminder">
+            <i class="fa fa-comment fa-stack-1x"></i>
+            <strong class="fa-stack-1x" id="notification-num"></strong>
+        </span>
+    </#if>
 </li>
 </#macro>
 
