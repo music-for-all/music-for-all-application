@@ -35,22 +35,28 @@ import java.util.Objects;
         @NamedQuery(
                 name = History.ALL_USERS_BY_TYPE_QUERY,
                 query = "select h from History h where h.eventType = :eventType and h.userId in " +
-                        "(:usersIds) order by h.date desc"
-        )
-})
-
+                        "(:usersIds) order by h.date desc"),
+        @NamedQuery(
+                name = History.POPULAR_TRACKS_BY_ID_QUERY,
+                query = "select history.trackId" +
+                        " from History history" +
+                        " where history.eventType=:eventType" +
+                        " and history.trackId in" +
+                        " (:trackIds)" +
+                        " group by history.trackId" +
+                        " order by count(history.trackId) desc")})
 @Table(name = "history")
 public class History {
 
     public static final String POPULAR_TRACKS_QUERY = "most_popular_tracks";
-
-    public static final String ARTIST_POPULAR_TRACKS_QUERY = "artist_most_popular_tracks";
 
     public static final String TRACK_LIKES_COUNT_QUERY = "get_likes_count";
 
     public static final String USERS_HISTORIES_QUERY = "get_users_histories";
 
     public static final String ALL_USERS_BY_TYPE_QUERY = "all_for_users_by_type";
+
+    public static final String POPULAR_TRACKS_BY_ID_QUERY = "popular_tracks_by_id";
 
     @Id
     @Column(name = Constants.ID)
