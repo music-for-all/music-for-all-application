@@ -7,7 +7,6 @@ import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import com.musicforall.util.ServicesTestConfig;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ import java.util.*;
 import static com.musicforall.services.SearchCriteriaFactory.*;
 import static java.util.Collections.singletonList;
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
@@ -43,8 +41,8 @@ public class SearchCriteriaFactoryTest {
     @Autowired
     private UserService userService;
 
-    @Before
-    public void initialize() {
+    @Test
+    public void testBuildTrackSearchCriteria() {
         final Set<Tag> tags = new HashSet<>(Arrays.asList(new Tag(TAG1), new Tag(TAG2)));
 
         List<Track> tracks = Arrays.asList(
@@ -53,31 +51,26 @@ public class SearchCriteriaFactoryTest {
                 new Track("testTitle3", new Artist("artist3"), "album3", "/root/track3.mp3", null)
         );
         trackService.saveAll(tracks);
-    }
-
-    @Test
-    public void testBuildTrackSearchCriteria() {
-        List<Track> tracks;
 
         tracks = trackService.getAllLike(
                 new SearchTrackRequest("testTitle", null, null, null));
-        assertTrue(tracks.size() >= 1);
+        assertEquals(3, tracks.size());
 
         tracks = trackService.getAllLike(
                 new SearchTrackRequest("testTitle2", new Artist(""), null, null));
-        assertTrue(tracks.size() >= 1);
+        assertEquals(1, tracks.size());
 
         tracks = trackService.getAllLike(
                 new SearchTrackRequest("testTitle3", new Artist("artist"), null, null));
-        assertTrue(tracks.size() >= 1);
+        assertEquals(1, tracks.size());
 
         tracks = trackService.getAllLike(
                 new SearchTrackRequest("testTitle3", new Artist("artist3"), "", null));
-        assertTrue(tracks.size() >= 1);
+        assertEquals(1, tracks.size());
 
         tracks = trackService.getAllLike(
                 new SearchTrackRequest("testTitle1", new Artist("artist1"), "album", null));
-        assertTrue(tracks.size() >= 1);
+        assertEquals(1, tracks.size());
 
         tracks = trackService.getAllLike(
                 new SearchTrackRequest("No_title", new Artist("artist"), "album", singletonList(TAG1)));
@@ -85,11 +78,11 @@ public class SearchCriteriaFactoryTest {
 
         tracks = trackService.getAllLike(
                 new SearchTrackRequest(null, null, null, singletonList(TAG1)));
-        assertTrue(tracks.size() >= 1);
+        assertEquals(1, tracks.size());
 
         tracks = trackService.getAllLike(
                 new SearchTrackRequest("testTitle2", new Artist("artist2"), "album2", Arrays.asList(TAG1, TAG2)));
-        assertTrue(tracks.size() >= 1);
+        assertEquals(1, tracks.size());
     }
 
     @Test
