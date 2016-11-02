@@ -29,6 +29,7 @@ public class Notification {
     }
 
     public enum Type {
-        FOLLOWER
+        FOLLOWER,
+        NEW_STREAM
     }
 }

@@ -33,6 +33,13 @@ public class NotificationServiceImpl implements NotificationService {
 
         if (notifications == null) {
             notifications = new ConcurrentLinkedQueue<>();
+        }
+
+        final boolean typeIsPresent = notifications.stream()
+                .filter(n -> n.getType() == type)
+                .count() > 0;
+
+        if (!typeIsPresent) {
             notifications.add(new Notification(type));
             cache.put(userId, notifications);
         }
