@@ -19,7 +19,7 @@ import java.util.Objects;
                 name = History.USERS_HISTORIES_QUERY,
                 query = " from History history" +
                         " where history.userId IN :usersIds" +
-                        " and day(current_date()) - day(history.date) <= 1" +
+                        " and DATEDIFF(day, history.date, current_date()) <= 1" +
                         " order by history.date desc"),
         @NamedQuery(
                 name = History.POPULAR_TRACKS_QUERY,

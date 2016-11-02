@@ -27,8 +27,7 @@ import static junit.framework.TestCase.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
-@TestExecutionListeners({
-        DependencyInjectionTestExecutionListener.class})
+@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 @ActiveProfiles("dev")
 public class SearchCriteriaFactoryTest {
 
