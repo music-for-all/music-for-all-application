@@ -6,29 +6,34 @@ import com.musicforall.model.user.User;
 import com.musicforall.model.user.UserData;
 import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.track.TrackService;
+import com.musicforall.services.track.TrackTestExecutionListener;
 import com.musicforall.services.user.UserService;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.musicforall.services.SearchCriteriaFactory.*;
 import static java.util.Collections.singletonList;
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
+@TestExecutionListeners({
+        DependencyInjectionTestExecutionListener.class})
 @ActiveProfiles("dev")
 @Transactional
 public class SearchCriteriaFactoryTest {
@@ -64,29 +69,29 @@ public class SearchCriteriaFactoryTest {
     public void testBuildTrackSearchCriteria() {
         List<Track> tracks;
 
-        tracks = dao.getAllBy(createTrackSearchCriteria(
-                new SearchTrackRequest("testTitle", null, null, null)));
+        tracks = trackService.getAllLike(new SearchTrackRequest("testTitle", null, null, null));
         assertEquals(3, tracks.size());
 
-        tracks = dao.getAllBy(createTrackSearchCriteria(
-                new SearchTrackRequest("testTitle2", new Artist(""), null, null)));
+        tracks = trackService.getAllLike(new SearchTrackRequest("testTitle2", new Artist(""), null, null));
         assertEquals(1, tracks.size());
 
-        tracks = dao.getAllBy(createTrackSearchCriteria(
-                new SearchTrackRequest("testTitle3", new Artist("artist"), null, null)));
+        tracks = trackService.getAllLike(new SearchTrackRequest("testTitle3", new Artist("artist"), null, null));
         assertEquals(1, tracks.size());
 
-        tracks = dao.getAllBy(createTrackSearchCriteria(
-                new SearchTrackRequest("testTitle3", new Artist("artist3"), "", null)));
+        tracks = trackService.getAllLike(new SearchTrackRequest("testTitle3", new Artist("artist3"), "", null));
         assertEquals(1, tracks.size());
 
-        tracks = dao.getAllBy(createTrackSearchCriteria(
-                new SearchTrackRequest("testTitle1", new Artist("artist1"), "album", null)));
+        tracks = trackService.getAllLike(new SearchTrackRequest("testTitle1", new Artist("artist1"), "album", null));
         assertEquals(1, tracks.size());
 
-        tracks = dao.getAllBy(createTrackSearchCriteria(
-                new SearchTrackRequest("No_title", new Artist("artist"), "album", singletonList("tag1"))));
+        tracks = trackService.getAllLike(new SearchTrackRequest("No_title", new Artist("artist"), "album", singletonList("tag1")));
         assertEquals(0, tracks.size());
+
+        tracks = trackService.getAllLike(new SearchTrackRequest(null, null, null, singletonList("tag1")));
+        assertEquals(1, tracks.size());
+
+        tracks = trackService.getAllLike(new SearchTrackRequest("testTitle2", new Artist("artist2"), "album2", new ArrayList<>(Arrays.asList("tag1", "tag2"))));
+        assertEquals(1, tracks.size());
     }
 
     @Test
@@ -98,8 +103,14 @@ public class SearchCriteriaFactoryTest {
         assertEquals(0, artists.size());
 
         artistService.save(new Artist("artist4", new HashSet<Tag>(Arrays.asList(new Tag("tag1"), new Tag("tag2")))));
+
         artists = dao.getAllBy(createArtistSearchCriteria(
                 new SearchArtistRequest("Art", singletonList("tag1"))));
+        assertEquals(1, artists.size());
+
+        List<String> list = new ArrayList<>(Arrays.asList("tag1", "tag2"));
+        artists = dao.getAllBy(createArtistSearchCriteria(
+                new SearchArtistRequest("Art", list)));
         assertEquals(1, artists.size());
     }
 
