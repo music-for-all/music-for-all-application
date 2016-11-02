@@ -5,6 +5,7 @@ import com.musicforall.common.dao.Dao;
 import com.musicforall.common.dao.QueryParams;
 import com.musicforall.common.query.QueryUtil;
 import com.musicforall.history.handlers.events.EventType;
+import com.musicforall.history.model.History;
 import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
@@ -87,15 +88,17 @@ public class TrackServiceImpl implements TrackService {
 
     @Override
     public Collection<Track> getArtistMostPopularTracks(String artistName) {
-
         final int count = 10;
         final int offset = 0;
 
         final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("eventType", EventType.TRACK_LISTENED);
         parameters.put("artistName", artistName);
+        List<Integer> trackIds = dao.getAllByNamedQuery(Integer.class, Track.ALL_BY_ARTIST_QUERY,
+                parameters);
 
-        List<Integer> trackIds = dao.getAllByNamedQuery(Integer.class, Track.ARTIST_TOP_TRACKS_QUERY,
+        parameters.put("trackIds", trackIds);
+        parameters.put("eventType", EventType.TRACK_LISTENED);
+        trackIds = dao.getAllByNamedQuery(Integer.class, History.POPULAR_TRACKS_BY_ID_QUERY,
                 parameters, new QueryParams(count, offset));
         return getAllByIds(trackIds);
     }
@@ -106,10 +109,17 @@ public class TrackServiceImpl implements TrackService {
         final int offset = 0;
 
         final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("eventType", EventType.TRACK_LISTENED);
         parameters.put("artistName", artistName);
+        List<Integer> trackIds = dao.getAllByNamedQuery(Integer.class, Track.ALL_BY_ARTIST_QUERY,
+                parameters);
 
-        List<String> albums = dao.getAllByNamedQuery(String.class, Track.ARTIST_TOP_ALBUMS_QUERY,
+        parameters.put("trackIds", trackIds);
+        parameters.put("eventType", EventType.TRACK_LISTENED);
+        trackIds = dao.getAllByNamedQuery(Integer.class, History.POPULAR_TRACKS_BY_ID_QUERY,
+                parameters);
+
+        parameters.put("trackIds", trackIds);
+        List<String> albums = dao.getAllByNamedQuery(String.class, Track.TOP_ALBUMS_QUERY,
                 parameters, new QueryParams(count, offset));
         return albums;
     }
