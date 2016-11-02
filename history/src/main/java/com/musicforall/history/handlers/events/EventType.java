@@ -8,6 +8,7 @@ import static java.util.Objects.requireNonNull;
 public enum EventType {
     TRACK_LISTENED,
     TRACK_ADDED,
+    TRACK_UPLOADED,
     TRACK_DELETED,
     TRACK_LIKED,
     PLAYLIST_ADDED,
@@ -29,6 +30,7 @@ public enum EventType {
         return in(
                 EventType.TRACK_LISTENED,
                 EventType.TRACK_ADDED,
+                EventType.TRACK_UPLOADED,
                 EventType.TRACK_DELETED,
                 EventType.TRACK_LIKED);
     }
