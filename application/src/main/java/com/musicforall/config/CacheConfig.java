@@ -26,7 +26,7 @@ public class CacheConfig {
         final long maxSize = 100;
         final long expirePeriod = 10;
 
-        SimpleCacheManager cacheManager = new SimpleCacheManager();
+        final SimpleCacheManager cacheManager = new SimpleCacheManager();
         final GuavaCache streamCache = new GuavaCache(STREAM, CacheBuilder.newBuilder()
                 .maximumSize(maxSize)
                 .expireAfterWrite(expirePeriod, TimeUnit.MINUTES).build());

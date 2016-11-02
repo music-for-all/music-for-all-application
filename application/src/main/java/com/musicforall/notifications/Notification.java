@@ -8,8 +8,8 @@ import static java.util.Objects.requireNonNull;
  * @author ENikolskiy.
  */
 public class Notification {
-    private Type type;
-    private AtomicInteger count = new AtomicInteger(0);
+    private final Type type;
+    private final AtomicInteger count = new AtomicInteger(0);
 
     public Notification(Type type) {
         requireNonNull(type, "Notification type must not be null");

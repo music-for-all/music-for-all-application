@@ -14,8 +14,8 @@ import static java.util.Objects.requireNonNull;
 public class DeferredConnection<R> implements Notifier.Connection {
     private static final Logger LOG = LoggerFactory.getLogger(DeferredConnection.class);
 
-    private DeferredResult<R> deferredResult;
-    private Callable<R> callable;
+    private final DeferredResult<R> deferredResult;
+    private final Callable<R> callable;
 
     public DeferredConnection(DeferredResult<R> deferredResult, Callable<R> callable) {
         requireNonNull(deferredResult, "deferredResult must not be null");
