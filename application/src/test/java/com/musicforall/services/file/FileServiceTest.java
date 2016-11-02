@@ -32,6 +32,7 @@ import java.util.Optional;
 import static com.musicforall.services.file.utils.FileTestUtils.getResource;
 import static java.nio.file.Files.newInputStream;
 import static java.nio.file.Paths.get;
+import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
@@ -122,7 +123,7 @@ public class FileServiceTest {
             final MockMultipartFile file = new MockMultipartFile(FILE, "sample2.mp3", null, inputStream);
             final Track track = new Track("track", new Artist("artist2"), "album2", "/root/track2.mp3", null);
 
-            when(artistService.get(any())).thenReturn((new Artist("artist")));
+            when(artistService.getAllLike(any())).thenReturn(singletonList(new Artist("artist")));
             when(trackService.save(any())).thenReturn(track);
 
             assertEquals(HTTP_STATUS_OK, fileService.uploadTrackFile(track, file).getStatusCode().value());
@@ -135,7 +136,7 @@ public class FileServiceTest {
             final MockMultipartFile file = new MockMultipartFile(FILE, "sample2.mp3", null, inputStream);
             final Track track = new Track("track3", new Artist("artist3"), "album3", "/root/track3.mp3", null);
 
-            when(artistService.get(any())).thenReturn((null));
+            when(artistService.getAllLike(any())).thenReturn((singletonList(null)));
             when(trackService.save(any())).thenReturn(track);
 
             assertEquals(HTTP_STATUS_OK, fileService.uploadTrackFile(track, file).getStatusCode().value());

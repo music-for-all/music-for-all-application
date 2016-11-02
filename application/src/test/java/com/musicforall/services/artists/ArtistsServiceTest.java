@@ -17,8 +17,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Created by Pavel Podgorniy on 8/19/2016.
@@ -43,15 +43,14 @@ public class ArtistsServiceTest {
     public void testGetArtist() {
         final Artist artist1 = new Artist("artist_for_save1");
         artistService.save(artist1);
-        final Artist savesArtists = artistService.get("artist_for_save1");
+        final Artist savesArtists = artistService.get(artist1.getId());
         assertNotNull(savesArtists);
     }
 
     @Test
     public void testSaveAll() {
         final Set<Artist> artistSet = new HashSet<>(Arrays.asList(new Artist("artist1"), new Artist("artist2")));
-        final Set<Artist> savesArtists = new HashSet<>(artistService.saveAll(artistSet));
-        assertEquals(artistSet, savesArtists);
+        assertEquals(2, artistService.saveAll(artistSet).size());
     }
 
     @Test
@@ -61,5 +60,13 @@ public class ArtistsServiceTest {
         final SearchArtistRequest searchCriteria = new SearchArtistRequest("test", Arrays.asList());
         final List<Artist> queryArtists = artistService.getAllLike(searchCriteria);
         assertEquals(2, queryArtists.size());
+    }
+
+    @Test
+    public void testDeleteTrack() {
+        final Artist artist = artistService.save(new Artist("artist_for_delete"));
+        artistService.delete(artist.getId());
+        assertNull(artistService.get(artist.getId()));
+
     }
 }

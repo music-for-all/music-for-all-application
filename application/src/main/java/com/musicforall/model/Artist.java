@@ -4,7 +4,15 @@ package com.musicforall.model;
  * @author IliaNik on 15.06.2016.
  */
 
+import com.musicforall.common.Constants;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
@@ -26,16 +34,20 @@ public class Artist implements Serializable {
     private static final long serialVersionUID = 5787383287840000175L;
 
     @Id
+    @Column(name = Constants.ID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     @Size(min = 2, max = 30)
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "artist_tag",
             joinColumns = {@JoinColumn(name = "artist_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_name")})
     private Set<Tag> tags;
-
 
     public Artist() {
     }
@@ -47,6 +59,14 @@ public class Artist implements Serializable {
     public Artist(String name, Set<Tag> tags) {
         this.name = name;
         this.tags = tags;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    private void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -71,7 +91,7 @@ public class Artist implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, tags);
+        return Objects.hash(id, name, tags);
     }
 
     @Override
@@ -83,16 +103,17 @@ public class Artist implements Serializable {
             return false;
         }
         final Artist other = (Artist) obj;
-        return Objects.equals(this.name, other.name)
+        return Objects.equals(this.id, other.id)
+                && Objects.equals(this.name, other.name)
                 && Objects.equals(this.tags, other.tags);
     }
 
     @Override
     public String toString() {
         return "Artist{" +
-                "name='" + name + '\'' +
-                "tags='" + tags + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", tags=" + tags +
                 '}';
     }
-
 }
