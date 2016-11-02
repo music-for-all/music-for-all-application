@@ -44,9 +44,6 @@ public class Track implements Serializable {
     @Column(name = Constants.NAME, nullable = false)
     private String name;
 
-//    @JoinTable(name = "artists_tracks",
-//            inverseJoinColumns = {@JoinColumn(name = "artist_name")},
-//            joinColumns = {@JoinColumn(name = "track_id")})
     @ManyToOne
     @Cascade(CascadeType.SAVE_UPDATE)
     private Artist artist;
