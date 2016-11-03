@@ -175,7 +175,7 @@
             <%= data.name %>
         </td>
         <td>
-            <%= data.artist ? "<a href=\"/artist/" + data.artist.name + "\">" + data.artist.name + "</a>"
+            <%= data.artist ? "<a href=\"/artist/" + data.artist.id + "\">" + data.artist.name + "</a>"
                                  : "<@spring.message "followingpage.unknown" />" %>
         </td>
         <td>n/a</td>
