@@ -1,33 +1,40 @@
 package com.musicforall.config;
 
+import com.musicforall.cache.NotificationCacheProvider;
+import com.musicforall.cache.StreamCacheProvider;
 import com.musicforall.common.cache.CacheProvider;
-import com.musicforall.common.cache.GuavaCacheProvider;
-import com.musicforall.common.cache.config.CacheConfig;
 import com.musicforall.config.security.SecurityConfig;
 import com.musicforall.files.FileApiSpringConfig;
 import com.musicforall.history.HistorySpringConfig;
 import com.musicforall.model.Track;
+import com.musicforall.notifications.Notification;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.*;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.SchedulingConfigurer;
+import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
+import java.util.Collection;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
-import static com.musicforall.common.cache.config.CacheConfig.GUAVA;
+import static com.musicforall.config.CacheConfig.NOTIFICATION;
+import static com.musicforall.config.CacheConfig.STREAM;
 import static java.util.concurrent.Executors.newFixedThreadPool;
+import static java.util.concurrent.Executors.newScheduledThreadPool;
 
 /**
  * Created by kgavrylchenko on 10.06.16.
  */
 @Configuration
-@EnableScheduling
 @EnableAsync
+@EnableScheduling
 @ComponentScan({"com.musicforall.common",
-        "com.musicforall.services"})
+        "com.musicforall.services",
+        "com.musicforall.notifications"})
 @Import({HibernateConfiguration.class,
         HibernateConfigDev.class,
         FileApiSpringConfig.class,
@@ -38,7 +45,7 @@ import static java.util.concurrent.Executors.newFixedThreadPool;
         CacheConfig.class
 })
 @PropertySource(value = "file:${user.home}/application.properties")
-public class SpringRootConfiguration implements AsyncConfigurer {
+public class SpringRootConfiguration implements AsyncConfigurer, SchedulingConfigurer {
 
     public static final int THREAD_POOL_SIZE = 10;
 
@@ -47,9 +54,19 @@ public class SpringRootConfiguration implements AsyncConfigurer {
         return newFixedThreadPool(THREAD_POOL_SIZE);
     }
 
-    @Override
-    public Executor getAsyncExecutor() {
-        return executorService();
+    @Bean
+    public Executor taskScheduler() {
+        return newScheduledThreadPool(THREAD_POOL_SIZE);
+    }
+
+    @Bean(name = NOTIFICATION)
+    public CacheProvider<Integer, Collection<Notification>> cacheNews() {
+        return new NotificationCacheProvider();
+    }
+
+    @Bean(name = STREAM)
+    public CacheProvider<Integer, Track> cacheStream() {
+        return new StreamCacheProvider();
     }
 
     @Override
@@ -57,8 +74,13 @@ public class SpringRootConfiguration implements AsyncConfigurer {
         return new SimpleAsyncUncaughtExceptionHandler();
     }
 
-    @Bean(name = GUAVA)
-    public CacheProvider<Integer, Track> cache() {
-        return new GuavaCacheProvider<>();
+    @Override
+    public Executor getAsyncExecutor() {
+        return executorService();
+    }
+
+    @Override
+    public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+        taskRegistrar.setScheduler(taskScheduler());
     }
 }

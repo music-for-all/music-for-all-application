@@ -19,7 +19,7 @@ function Stream() {
         }));
     };
 
-    self.publish = function (toPublish) {
-        return $.when($.post(baseUrl + "/publish/" + toPublish));
+    self.switchRadio = function () {
+        return $.when($.post(baseUrl + "/switchRadio" ));
     };
 }

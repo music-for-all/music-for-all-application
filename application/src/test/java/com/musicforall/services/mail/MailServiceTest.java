@@ -4,6 +4,7 @@ import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import com.musicforall.model.user.User;
+import com.musicforall.model.user.UserData;
 import com.musicforall.services.template.TemplateService;
 import com.musicforall.util.ServicesTestConfig;
 import org.junit.AfterClass;
@@ -73,7 +74,8 @@ public class MailServiceTest {
     @Test
     public void testSendMessage() throws Exception {
         final String testMessage = "Test email message";
-        final User user = new User("user", "password1", "user@mail.com");
+        final User user = new User("password1", "user@mail.com");
+        user.setUserData(new UserData(user, "user"));
 
         when(templateService.from(any(), any())).thenReturn(testMessage);
         mailService.send(mails.welcomeMail(user));

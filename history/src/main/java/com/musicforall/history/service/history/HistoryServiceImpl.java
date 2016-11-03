@@ -101,9 +101,6 @@ public class HistoryServiceImpl implements HistoryService {
         if (params.getTrackId() != null) {
             criteria.add(Property.forName(TRACK_ID).eq(params.getTrackId()));
         }
-        if (params.getDate() != null) {
-            criteria.add(Property.forName("date").eq(params.getDate()));
-        }
         return criteria;
     }
 

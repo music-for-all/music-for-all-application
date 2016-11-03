@@ -214,10 +214,10 @@ public class TrackServiceTest {
         trackService.save(track4);
         final List<Integer> trackIds = Arrays.asList(track1.getId(), track2.getId(), track3.getId());
 
-        final User followingUser = new User("Valera", "228", "ya@gmail.com");
+        final User followingUser = new User("228", "ya@gmail.com");
         userService.save(followingUser);
 
-        followerService.follow(SecurityUtil.currentUser().getId(), followingUser.getId());
+        followerService.follow(SecurityUtil.currentUserId(), followingUser.getId());
 
         dbHistoryPopulateService.populateTrackLikedByFollowedUsers(trackIds, followingUser.getId());
 

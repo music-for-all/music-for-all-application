@@ -1,0 +1,12 @@
+.notifications-reminder{
+    display: none;
+    padding-left: 7px;
+    color: #ed250a;
+    position: absolute;
+    top: 0px;
+    left:60px;
+}
+#notification-num {
+    color: #ffffff;
+    font-size:60%;
+}

@@ -5,6 +5,7 @@
 <html lang="en">
 <@m.head>
 <title><@spring.message "profilepage.Title"/></title>
+<script src="<@spring.url "/resources/js/following.js" />"></script>
 <link href="<@spring.url "/resources/css/userpage.css" />" rel="stylesheet"/>
 <script src="<@spring.url "/resources/js/social.js" />"></script>
 <script src="<@spring.url "/resources/js/playlist.js" />"></script>
@@ -13,6 +14,7 @@
 
 <script src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
 <script src="<@spring.url "/resources/js/player.js" />"></script>
+<link href="<@spring.url "/resources/css/notification.css" />" rel="stylesheet"/>
 <link href="<@spring.url "/resources/css/additionalTracksTable.css" />" rel="stylesheet">
 <link href="<@spring.url "/resources/css/player.css" />" rel="stylesheet">
 
@@ -20,6 +22,7 @@
 </@m.head>
 <@m.body>
     <@m.navigation m.pages.Profile/>
+
 <div id="popupBlock">
     <@p.followersPopup "followersPopup"></@p.followersPopup>
        <@p.followingPopup "followingPopup"></@p.followingPopup>
@@ -27,7 +30,7 @@
 </div>
 <div id="container" class="container">
     <div class="row">
-        <div class="col-md-2 well">
+        <div class="col-md-3 well">
             <div id="userHeader" class="profile-info">
             </div>
             <div class="btn-group">
@@ -64,13 +67,16 @@
     </div>
 </div>
 <script type="text/template" class="userHeader">
-    <img class="img-responsive img-rounded" src="<%= data.settings.picture %>">
+    <img class="img-responsive img-rounded" src="<%= data.picture %>">
     <div class="profile-info">
         <div class="caption">
             <h3><%= data.firstName %> <%= data.lastName %></h3>
         </div>
         <div class="profile-usertitle-job">
-            <p><%= data.username %></p>
+            <h4><%= data.username %></h4>
+        </div>
+        <div class="profile-bio">
+            <p><%= data.bio %></p>
         </div>
     </div>
 </script>

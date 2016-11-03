@@ -4,12 +4,14 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <@m.head>
 <title><@spring.message "contactpage.Title"/></title>
+<script src="<@spring.url "/resources/js/following.js" />"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.1/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
 
 <link href="<@spring.url "/resources/css/contactManager.css" />" rel="stylesheet"/>
+<link href="<@spring.url "/resources/css/notification.css" />" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
 
 <script src="<@spring.url "/resources/js/user.js" />"></script>
@@ -35,7 +37,8 @@
         <div class="col-md-offset-1 col-md-6">
             <form id="search-form" class="form-inline text-center ">
                 <div class="input-group">
-                    <input id="username" class="form-control" type="text" placeholder="<@spring.message "placeholder.Username"/>"/>
+                    <input id="username" class="form-control" type="text"
+                           placeholder="<@spring.message "placeholder.Username"/>"/>
 
                     <div class="input-group-btn">
                         <input id="searchButton" data-style="slide-left" class="btn btn-success "
@@ -61,15 +64,15 @@
 <script type="text/template" class="followersRow">
     <tbody>
     <% _.each(data, function(contact){ %>
-    <tr id="<%= contact.id %>">
+    <tr id="<%= contact.userId %>">
         <td>
             <i class="fa fa-user" aria-hidden="true"></i>
         </td>
         <td>
-            <a id="user_link" href="/user/show?user_id=<%= contact.id %>"><%= contact.username %></a>
+            <a id="user_link" href="/user/show?user_id=<%= contact.userId %>"><%= contact.username %></a>
         </td>
         <td>
-            <button type="button" class="btn btn-default" onclick="follow('<%= contact.id %>')">
+            <button type="button" class="btn btn-default" onclick="follow('<%= contact.userId %>')">
                 <i class="fa fa-user-plus" aria-hidden="true"></i>
             </button>
         </td>
@@ -80,12 +83,12 @@
 <script type="text/template" class="followingRow">
     <tbody>
     <% _.each(data, function(contact){ %>
-    <tr id="<%= contact.id %>">
+    <tr id="<%= contact.userId %>">
         <td>
             <i class="fa fa-user" aria-hidden="true"></i>
         </td>
         <td>
-            <a href="/user/show?user_id=<%= contact.id %>"><%= contact.username %></a>
+            <a href="/user/show?user_id=<%= contact.userId %>"><%= contact.username %></a>
         </td>
         <td>
             <div class="track-container <%= contact.track ? 'playing' : '' %>">
@@ -99,7 +102,7 @@
             <button type="button" class="btn btn-xs btn-warning stop-stream-button" onclick="leftCurrentStream()">
                 <span class='glyphicon glyphicon-pause' aria-hidden='true'></span>
             </button>
-            <button type="button" class="btn btn-default" onclick="unsubscribe('<%= contact.id %>')">
+            <button type="button" class="btn btn-default" onclick="unsubscribe('<%= contact.userId %>')">
                 <i class="fa fa-user-times" aria-hidden="true"></i>
             </button>
         </td>
@@ -197,11 +200,11 @@
         clearContacts();
         user.getFollowing().then(function (users) {
             var ids = users.map(function (user) {
-                return user.id;
+                return user.userId;
             });
             stream.streamsByUsers(ids).then(function (userToTrack) {
                 users.forEach(function (user) {
-                    var track = userToTrack[user.id];
+                    var track = userToTrack[user.userId];
                     if (track) {
                         user.track = track;
                     }

@@ -6,7 +6,6 @@ import com.musicforall.model.SearchArtistRequest;
 import com.musicforall.services.SearchCriteriaFactory;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -35,10 +34,14 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public Artist get(String name) {
-        final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Artist.class)
-                .add(Property.forName("name").eq(name));
-        return dao.getBy(detachedCriteria);
+    public void delete(Integer artistId) {
+        final Artist artist = dao.get(Artist.class, artistId);
+        dao.delete(artist);
+    }
+
+    @Override
+    public Artist get(Integer artistId) {
+        return dao.get(Artist.class, artistId);
     }
 
     @Override

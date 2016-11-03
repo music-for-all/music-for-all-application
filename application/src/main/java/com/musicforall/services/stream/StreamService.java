@@ -14,7 +14,7 @@ public interface StreamService {
 
     void stop(Integer userId);
 
-    void publish(Integer userId, boolean toPublish);
+    void switchRadio(Integer userId);
 
     Map<Integer, Track> getGroupedPublicStreams(Collection<Integer> ids);
 }
