@@ -1,9 +1,9 @@
 package com.musicforall.history.service.history;
 
-import com.musicforall.common.dao.HistoryDao;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.DBHistoryPopulateService;
+import com.musicforall.history.service.artistHistory.ArtistHistoryService;
 import com.musicforall.history.util.ServicesTestConfig;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
@@ -17,22 +17,12 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.util.Assert;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.validation.constraints.AssertTrue;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-import static com.musicforall.history.handlers.events.EventType.TRACK_LISTENED;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.omg.PortableServer.IdAssignmentPolicyValue.USER_ID;
 
 /**
  * Created by Pukho on 25.10.2016.
@@ -60,7 +50,7 @@ public class ArtistHistroryServiceTest {
 
     public static final int LOW_GAP = 120000;
 
-    public static final List<String> ARTIST_NAMES = Arrays.asList("Pol", "Foals", "Bowie", "Arny");//{"Pol", "Foals", "Bowie"};
+    public static final List<String> ARTIST_NAMES = Arrays.asList("Pol", "Foals", "Bowie", "Arny");
 
     @Before
     public void setUp() {

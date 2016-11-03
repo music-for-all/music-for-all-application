@@ -1,16 +1,16 @@
-package com.musicforall.history.service.history;
+package com.musicforall.history.service.artistHistory;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.common.dao.HistoryDao;
-import com.musicforall.common.dao.QueryParams;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.ArtistHistory;
 import com.musicforall.history.model.History;
+import com.musicforall.history.service.artistHistory.ArtistHistoryService;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.social.google.api.plus.moments.Artist;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +30,12 @@ public class ArtistHistoryServiceImpl implements ArtistHistoryService {
     private static final Logger LOG = LoggerFactory.getLogger(ArtistHistoryService.class);
 
     @Autowired
-    private HistoryDao dao;
+    private Dao dao;
 
+    @Autowired
+    public void setDao(@Autowired @Qualifier("history_session") SessionFactory sessionFactory) {
+        dao.setSessionFactory(sessionFactory);
+    }
     @Override
     public ArtistHistory get(String name) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(ArtistHistory.class)

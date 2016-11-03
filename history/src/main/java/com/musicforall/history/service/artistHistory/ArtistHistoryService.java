@@ -1,4 +1,4 @@
-package com.musicforall.history.service.history;
+package com.musicforall.history.service.artistHistory;
 
 import com.musicforall.history.model.ArtistHistory;
 
@@ -15,5 +15,5 @@ public interface ArtistHistoryService {
 
     ArtistHistory get(String name);
 
-    public Map<String, Integer> getStatistic(Date begin, Date end);
+    Map<String, Integer> getStatistic(Date begin, Date end);
 }
