@@ -24,7 +24,7 @@ public class UserProfileController {
     @RequestMapping("/profile")
     public String profile(Model model) {
 
-        model.addAttribute("user", SecurityUtil.currentUser());
+        model.addAttribute("user", SecurityUtil.currentUser().getUserData());
         return "profile";
     }
 }
