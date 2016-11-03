@@ -1,5 +1,6 @@
 package com.musicforall.web.profile;
 
+import com.musicforall.model.Artist;
 import com.musicforall.services.artist.ArtistService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,14 +22,15 @@ public class ArtistProfileController {
         LOG.info("");
     }
 
-    @RequestMapping("/artist/{name}")
-    public String profile(Model model, @PathVariable String name) {
+    @RequestMapping("/artist/{id}")
+    public String profile(Model model, @PathVariable Integer id) {
 
-        if (artistService.get(name) == null) {
+        Artist artist = artistService.get(id);
+        if (artist  == null) {
             return "redirect:/";
         }
 
-        model.addAttribute("artistName", name);
+        model.addAttribute("artistName", artist.getName());
         return "artistProfile";
     }
 }
