@@ -31,9 +31,19 @@ public final class SearchCriteriaFactory {
         if (name != null && !name.isEmpty()) {
             detachedCriteria.add(Restrictions.ilike("name", QueryUtil.like(name)));
         }
-        //Check correctness of using Artist entity
         if (artist != null) {
-            detachedCriteria.add(Restrictions.ilike("artist.name", QueryUtil.like(artist.getName())));
+
+            final Disjunction disjunction = Restrictions.disjunction();
+
+            disjunction.add(Restrictions.ilike("artist.name", QueryUtil.like(artist.getName())));
+
+            final DetachedCriteria subcriteria = DetachedCriteria.forClass(Track.class)
+                    .createAlias("artist", "artist")
+                    .add(disjunction)
+                    .setProjection(Projections.property(Constants.NAME));
+
+            detachedCriteria
+                    .add(Subqueries.propertyIn(Constants.NAME, subcriteria));
         }
         if (album != null && !album.isEmpty()) {
             detachedCriteria.add(Restrictions.ilike("album", QueryUtil.like(album)));

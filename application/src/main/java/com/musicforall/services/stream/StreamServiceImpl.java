@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.musicforall.common.cache.config.CacheConfig.GUAVA;
+import static com.musicforall.config.CacheConfig.STREAM;
 
 /**
  * @author Evgeniy on 06.10.2016.
@@ -23,7 +23,7 @@ import static com.musicforall.common.cache.config.CacheConfig.GUAVA;
 public class StreamServiceImpl implements StreamService {
 
     @Autowired
-    @Qualifier(GUAVA)
+    @Qualifier(STREAM)
     private CacheProvider<Integer, Track> cache;
     @Autowired
     private TrackService trackService;

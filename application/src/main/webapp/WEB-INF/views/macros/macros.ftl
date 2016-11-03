@@ -22,7 +22,7 @@
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic"
           rel="stylesheet"/>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-
+    <link rel="icon" type="image/x-icon" href="<@spring.url "/resources/img/favicon.ico"/>"/>
     <#nested>
 </head>
 </#macro>
@@ -131,6 +131,12 @@
     <a href=<@spring.url '${item.url}'/>>
         <i class="fa ${item.icon}"></i> ${item.title}
     </a>
+    <#if item.url ==  pages.Feed.url && activePage.url != pages.Feed.url>
+        <span class="fa-stack fa-lg notifications-reminder">
+            <i class="fa fa-comment fa-stack-1x"></i>
+            <strong class="fa-stack-1x" id="notification-num"></strong>
+        </span>
+    </#if>
 </li>
 </#macro>
 
@@ -191,14 +197,14 @@
 
 <#macro playlistRowTemplateWithoutDeleting >
 <script type="text/template" class="playlistRowTemplateWithoutDeleting">
-<ul class="nav nav-pills nav-stacked">
-    <% _.each(data, function(playlist){ %>
+    <ul class="nav nav-pills nav-stacked">
+        <% _.each(data, function(playlist){ %>
         <li id="<%= playlist.id %>">
             <a href="#">
                 <%= playlist.name %>
             </a>
         </li>
-    <% }); %>
-</ul>
+        <% }); %>
+    </ul>
 </script>
 </#macro>
