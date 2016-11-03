@@ -35,14 +35,14 @@ public class UserRestController {
     private UserService userService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    public ResponseEntity follow(@PathVariable(Constants.ID) Integer user_id) {
-        followerService.follow(currentUser().getId(), user_id);
+    public ResponseEntity follow(@PathVariable(Constants.ID) Integer userId) {
+        followerService.follow(currentUser().getId(), userId);
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity unfollow(@PathVariable(Constants.ID) Integer user_id) {
-        followerService.unfollow(currentUser().getId(), user_id);
+    public ResponseEntity unfollow(@PathVariable(Constants.ID) Integer userId) {
+        followerService.unfollow(currentUser().getId(), userId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

@@ -132,7 +132,7 @@ public class DbPopulateService {
         userService.save(user);
         LOG.info(USER_IS_SAVED, user);
 
-        final User user2 = new User("password2", "dev_C-3PO@musicforall.com");
+        final User user2 = new User("password", "dev_C-3PO@musicforall.com");
         setDefaultValues(user2, "C-3PO");
         userService.save(user2);
         LOG.info(USER_IS_SAVED, user2);
@@ -142,7 +142,7 @@ public class DbPopulateService {
         followerService.follow(user2.getId(), user.getId());
         LOG.info(USER_IS_FOLLOW, user2, user);
 
-        final User user3 = new User("password3", "dev_R2-D2@musicforall.com");
+        final User user3 = new User("password", "dev_R2-D2@musicforall.com");
         setDefaultValues(user3, "R2-D2");
         userService.save(user3);
         LOG.info(USER_IS_SAVED, user3);
