@@ -4,9 +4,11 @@ import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Artist;
 import com.musicforall.model.SearchArtistRequest;
 import com.musicforall.services.SearchCriteriaFactory;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,9 +21,14 @@ import java.util.List;
 @Service("artistService")
 @Transactional
 public class ArtistServiceImpl implements ArtistService {
+
     @Autowired
     private Dao dao;
 
+    @Autowired
+    public void setDao(@Autowired @Qualifier("main_session") SessionFactory sessionFactory) {
+        dao.setSessionFactory(sessionFactory);
+    }
     @Override
     public Artist save(Artist artist) {
         return dao.save(artist);

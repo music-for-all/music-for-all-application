@@ -2,7 +2,9 @@ package com.musicforall.services.playlist;
 
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Playlist;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,11 @@ public class PlaylistBootstrap {
 
     @Autowired
     private Dao dao;
+
+    @Autowired
+    public void setDao(@Autowired @Qualifier("main_session") SessionFactory sessionFactory) {
+        dao.setSessionFactory(sessionFactory);
+    }
 
     private boolean bootstraped;
 
@@ -40,9 +47,5 @@ public class PlaylistBootstrap {
         all.stream().forEach(dao::delete);
         bootstraped = false;
         lock.unlock();
-    }
-
-    public void setDao(Dao dao) {
-        this.dao = dao;
     }
 }

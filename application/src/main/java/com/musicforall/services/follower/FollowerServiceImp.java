@@ -2,9 +2,11 @@ package com.musicforall.services.follower;
 
 import com.musicforall.common.dao.Dao;
 import com.musicforall.model.Followers;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,10 @@ public class FollowerServiceImp implements FollowerService {
     @Autowired
     private Dao dao;
 
+    @Autowired
+    public void setDao(@Autowired @Qualifier("main_session") SessionFactory sessionFactory) {
+        dao.setSessionFactory(sessionFactory);
+    }
     @Override
     public void follow(Integer userId, Integer followingUserId) {
         Followers followers = dao.get(Followers.class, userId);

@@ -7,9 +7,11 @@ import com.musicforall.model.SearchTrackRequest;
 import com.musicforall.model.Tag;
 import com.musicforall.model.Track;
 import com.musicforall.services.SearchCriteriaFactory;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,11 @@ public class TrackServiceImpl implements TrackService {
 
     @Autowired
     private Dao dao;
+
+    @Autowired
+    public void setDao(@Autowired @Qualifier("main_session") SessionFactory sessionFactory) {
+        dao.setSessionFactory(sessionFactory);
+    }
 
     @Override
     public Track save(Track track) {

@@ -1,21 +1,18 @@
 package com.musicforall.history.service.history;
 
 import com.musicforall.common.dao.Dao;
-import com.musicforall.common.dao.HistoryDao;
 import com.musicforall.common.dao.QueryParams;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.TemporalType;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 /**
  * Created by Pukho on 08.08.2016.
@@ -28,7 +25,12 @@ public class HistoryServiceImpl implements HistoryService {
     private static final String TRACK_ID = "trackId";
 
     @Autowired
-    private HistoryDao dao;
+    private Dao dao;
+
+    @Autowired
+    public void setDao(@Autowired @Qualifier("history_session") SessionFactory sessionFactory) {
+        dao.setSessionFactory(sessionFactory);
+    }
 
     @Override
     public void record(final History history) {

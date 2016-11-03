@@ -4,7 +4,9 @@ import com.musicforall.common.dao.Dao;
 import com.musicforall.common.dao.QueryParams;
 import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Tag;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,10 @@ public class PopularHistoryServiceImpl implements PopularHistoryService {
     @Autowired
     private Dao dao;
 
+    @Autowired
+    public void setDao(@Autowired @Qualifier("main_session") SessionFactory sessionFactory) {
+        dao.setSessionFactory(sessionFactory);
+    }
     @Autowired
     private HistoryService historyService;
 

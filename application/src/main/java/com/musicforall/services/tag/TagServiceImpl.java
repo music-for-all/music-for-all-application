@@ -4,9 +4,11 @@ import com.musicforall.common.Constants;
 import com.musicforall.common.dao.Dao;
 import com.musicforall.common.query.QueryUtil;
 import com.musicforall.model.Tag;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,10 @@ public class TagServiceImpl implements TagService {
     @Autowired
     private Dao dao;
 
+    @Autowired
+    public void setDao(@Autowired @Qualifier("main_session") SessionFactory sessionFactory) {
+        dao.setSessionFactory(sessionFactory);
+    }
     @Override
     public Tag save(String name) {
         return dao.save(new Tag(name));

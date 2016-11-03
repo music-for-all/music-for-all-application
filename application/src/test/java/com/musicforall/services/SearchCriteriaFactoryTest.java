@@ -38,6 +38,7 @@ public class SearchCriteriaFactoryTest {
     public static final String USER = "user";
     public static final String PASSWORD = "password";
 
+    @Autowired
     private Dao dao;
 
     @Autowired
@@ -48,8 +49,8 @@ public class SearchCriteriaFactoryTest {
     private UserService userService;
 
     @Autowired
-    public void setDao(Dao dao) {
-        this.dao = dao;
+    public void setDao(@Autowired @Qualifier("main_session") SessionFactory sessionFactory) {
+        dao.setSessionFactory(sessionFactory);
     }
 
     @Before

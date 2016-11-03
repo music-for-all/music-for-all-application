@@ -6,9 +6,11 @@ import com.musicforall.model.Track;
 import com.musicforall.model.user.User;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.util.SecurityUtil;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,12 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Autowired
     private Dao dao;
+
+    @Autowired
+    public void setDao(@Autowired @Qualifier("main_session") SessionFactory sessionFactory) {
+        dao.setSessionFactory(sessionFactory);
+    }
+
     @Autowired
     private TrackService trackService;
 
