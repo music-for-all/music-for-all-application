@@ -12,35 +12,42 @@ jQuery(document).ready(function () {
 var baseUrl = dict.contextPath;
 
 function search() {
+
+    var trackData = {};
+
     var artist = $("#artist").val();
     var tag = $('#tags .active').attr('id');
-
-    /* If a field is empty or too short, ignore it. */
-    const MIN_QUERY = 2;
-
-    if (artist.length < MIN_QUERY) {
-        artist = null;
-    }
+    var title = $("#title").val();
 
     /* If all the fields are empty, do not proceed with search. */
-    if (!artist && !tag) {
+    if (!title && !artist && !tag) {
         return;
     }
 
-    if (tag === "popular") {
-        tag = null;
+    if (tag !== "popular") {
+        trackData.tags = tag;
     }
+
     /* Truncate the query string to the maximum allowed size. */
     const MAX_QUERY = 16;
+    if (title && title.length > MAX_QUERY) {
+        title = title.substr(0, MAX_QUERY);
+    }
 
     if (artist && artist.length > MAX_QUERY) {
         artist = artist.substr(0, MAX_QUERY);
     }
 
-    var trackData = {
-        artist: artist,
-        tags: tag
-    };
+    /* If a field is empty or too short, ignore it. */
+    const MIN_QUERY = 2;
+
+    if (artist.length >= MIN_QUERY) {
+        trackData.artistName = artist;
+    }
+
+    if (title.length >= MIN_QUERY) {
+        trackData.trackName = title;
+    }
 
     return $.when($.getJSON(baseUrl + "/api/search", trackData));
 }
