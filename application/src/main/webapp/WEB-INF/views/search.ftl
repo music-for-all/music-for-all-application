@@ -48,10 +48,10 @@
                 <input id="artist" class="form-control" type="text" value=""
                        placeholder="<@spring.message "placeholder.Artist"/>"
                        name="artist"/>
-                <input id="tags" class="form-control" type="text" value=""
-                       placeholder="<@spring.message "placeholder.Tags"/>"
-                       name="tags"/>
             </div>
+        <#--<div class="form-control" name="tagsContainer">-->
+            <select class="form-control" id="searchTags" name="searchTags"></select>
+        <#--</div>-->
 
             <div class="input-group-btn">
                 <button id="searchButton" data-style="slide-left" class="btn btn-success "
@@ -108,6 +108,9 @@
     <@popup.player_Footer/>
 
 <script type="text/javascript">
+    var placeholder = "<@spring.message "placeholder.Tags"/>";
+
+    $("#searchTags").select2(tagAutocomplete(placeholder));
     _.templateSettings.variable = "data";
     var trackTable = _.template(
             $("script.addTrackRowTemplate").html()

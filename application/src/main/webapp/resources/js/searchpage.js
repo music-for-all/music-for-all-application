@@ -18,7 +18,7 @@ function search() {
     var artist = $("#artist").val();
     var tag = $('#tags .active').attr('id');
     var title = $("#title").val();
-
+// var tags = $("#tags").val();
     /* If all the fields are empty, do not proceed with search. */
     if (!title && !artist && !tag) {
         return;
