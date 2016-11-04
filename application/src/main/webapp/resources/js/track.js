@@ -31,6 +31,7 @@ function Track() {
     };
 
     self.get = function (id) {
+        history.trackListened(id);
         return $.when($.get(baseUrl + "/" + id));
     };
 
