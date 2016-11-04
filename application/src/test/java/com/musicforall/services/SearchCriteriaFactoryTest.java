@@ -53,23 +53,23 @@ public class SearchCriteriaFactoryTest {
         trackService.saveAll(tracks);
 
         tracks = trackService.getAllLike(
-                new SearchTrackRequest("Sonata", new Artist(""), null, null));
+                new SearchTrackRequest("Sonata", "", null, null));
         assertEquals(2, tracks.size());
 
         tracks = trackService.getAllLike(
-                new SearchTrackRequest("", new Artist("Beethoven"), null, null));
+                new SearchTrackRequest("", "Beethoven", null, null));
         assertEquals(1, tracks.size());
 
         tracks = trackService.getAllLike(
-                new SearchTrackRequest("Moonlight Sonata", new Artist("Beethoven"), "3", null));
+                new SearchTrackRequest("Moonlight Sonata", "Beethoven", "3", null));
         assertEquals(1, tracks.size());
 
         tracks = trackService.getAllLike(
-                new SearchTrackRequest("minor", new Artist("Mozart"), "album", null));
+                new SearchTrackRequest("minor", "Mozart", "album", null));
         assertEquals(1, tracks.size());
 
         tracks = trackService.getAllLike(
-                new SearchTrackRequest("No_title", new Artist("Scarlatti"), "album", singletonList(TAG1)));
+                new SearchTrackRequest("No_title", "Scarlatti", "album", singletonList(TAG1)));
         assertEquals(0, tracks.size());
 
         tracks = trackService.getAllLike(
@@ -77,7 +77,7 @@ public class SearchCriteriaFactoryTest {
         assertEquals(1, tracks.size());
 
         tracks = trackService.getAllLike(
-                new SearchTrackRequest("Sonata", new Artist("Bach"), "album2", Arrays.asList(TAG1, TAG2)));
+                new SearchTrackRequest("Sonata", "Bach", "album2", Arrays.asList(TAG1, TAG2)));
         assertEquals(1, tracks.size());
     }
 

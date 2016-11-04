@@ -24,18 +24,18 @@ public final class SearchCriteriaFactory {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Track.class);
 
         final String name = searchCriteria.getTrackName();
-        final Artist artist = searchCriteria.getArtist();
+        final String artistName = searchCriteria.getArtistName();
         final String album = searchCriteria.getAlbum();
         final List<String> tags = searchCriteria.getTags();
 
         if (name != null && !name.isEmpty()) {
             detachedCriteria.add(Restrictions.ilike("name", QueryUtil.like(name)));
         }
-        if (artist != null) {
+        if (artistName != null) {
 
             final Disjunction disjunction = Restrictions.disjunction();
 
-            disjunction.add(Restrictions.ilike("artist.name", QueryUtil.like(artist.getName())));
+            disjunction.add(Restrictions.ilike("artist.name", QueryUtil.like(artistName)));
 
             final DetachedCriteria subcriteria = DetachedCriteria.forClass(Track.class)
                     .createAlias("artist", "artist")
