@@ -31,7 +31,7 @@
 <div class="container">
 
     <div class="well well-sm">
-        <div id="tags" data-toggle="buttons">
+        <div id="topTags" data-toggle="buttons">
             <label id="popular" name="tag" class="btn btn-success active" onclick="getPopularTracks()">
                 <input type="radio">
                 popular
@@ -50,7 +50,7 @@
                        name="artist"/>
             </div>
         <#--<div class="form-control" name="tagsContainer">-->
-            <select class="form-control" id="searchTags" name="searchTags"></select>
+            <select class="form-control" id="tags" name="tags"></select>
         <#--</div>-->
 
             <div class="input-group-btn">
@@ -110,7 +110,7 @@
 <script type="text/javascript">
     var placeholder = "<@spring.message "placeholder.Tags"/>";
 
-    $("#searchTags").select2(tagAutocomplete(placeholder));
+    $("#tags").select2(tagAutocomplete(placeholder));
     _.templateSettings.variable = "data";
     var trackTable = _.template(
             $("script.addTrackRowTemplate").html()
@@ -128,7 +128,7 @@
     var track = new Track();
 
     $("input[name=artist]").autocomplete(artistAutocomplete(function () {
-        var tag = $('#tags .active').attr('id');
+        var tag = $('#topTags .active').attr('id');
         if (tag === "popular") {
             return null;
         }

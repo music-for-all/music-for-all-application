@@ -16,7 +16,7 @@ function search() {
     var trackData = {};
 
     var artist = $("#artist").val();
-    var tag = $('#tags .active').attr('id');
+    var tag = $("#topTags .active").attr("id");
     var title = $("#title").val();
 // var tags = $("#tags").val();
     /* If all the fields are empty, do not proceed with search. */
@@ -24,8 +24,10 @@ function search() {
         return;
     }
 
+    trackData.tags = $("#tags").val();
+
     if (tag !== "popular") {
-        trackData.tags = tag;
+        trackData.tags.add(tag);
     }
 
     /* Truncate the query string to the maximum allowed size. */
