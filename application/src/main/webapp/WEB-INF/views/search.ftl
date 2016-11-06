@@ -49,9 +49,7 @@
                        placeholder="<@spring.message "placeholder.Artist"/>"
                        name="artist"/>
             </div>
-        <#--<div class="form-control" name="tagsContainer">-->
             <select class="form-control" id="tags" name="tags"></select>
-        <#--</div>-->
 
             <div class="input-group-btn">
                 <button id="searchButton" data-style="slide-left" class="btn btn-success "
