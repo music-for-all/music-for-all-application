@@ -11,23 +11,31 @@ jQuery(document).ready(function () {
 
 var baseUrl = dict.contextPath;
 
+function getTagsForSearch() {
+    var tags = [];
+    var tag = $("#topTags .active").attr("id");
+
+    if (tag !== "popular") {
+        tags.push(tag);
+    }
+
+    return tags.concat($("#tags").val()).toString();
+}
+
 function search() {
 
     var trackData = {};
 
     var artist = $("#artist").val();
-    var tag = $("#topTags .active").attr("id");
+    var tags = getTagsForSearch();
     var title = $("#title").val();
-// var tags = $("#tags").val();
     /* If all the fields are empty, do not proceed with search. */
-    if (!title && !artist && !tag) {
+    if (!title && !artist && !tags) {
         return;
     }
 
-    trackData.tags = $("#tags").val();
-
-    if (tag !== "popular") {
-        trackData.tags.add(tag);
+    if (tags) {
+        trackData.tags = tags;
     }
 
     /* Truncate the query string to the maximum allowed size. */

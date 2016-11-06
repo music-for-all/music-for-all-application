@@ -144,10 +144,13 @@
     }
 
     $("#search-form").on("submit", function () {
-        search().then(function (tracks) {
-            $("#status-message").text('<@spring.message "searchpage.Found"/>' + " :" + tracks.length);
-            buildTrackTable(tracks);
-        });
+        var result = search();
+        if (result) {
+            result.then(function (tracks) {
+                $("#status-message").text('<@spring.message "searchpage.Found"/>' + " :" + tracks.length);
+                buildTrackTable(tracks);
+            });
+        }
         return false;
     });
 
