@@ -143,7 +143,7 @@
     });
 
     function connect() {
-        var socket = new SockJS("/sockjs");
+        var socket = new SockJS(dict.contextPath + "/sockjs");
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
         });
@@ -170,7 +170,7 @@
 
     function joinStream(userId) {
         if (!radioSub) {
-            radioSub = stompClient.subscribe("/radio/subscribers/" + userId, onMessage);
+            radioSub = stompClient.subscribe(dict.contextPath + "/radio/subscribers/" + userId, onMessage);
         }
     }
 
