@@ -4,6 +4,8 @@ import com.musicforall.common.dao.Dao;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.ArtistHistory;
 import com.musicforall.history.model.History;
+
+import com.musicforall.history.model.TrackHistory;
 import com.musicforall.history.service.artistHistory.ArtistHistoryService;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.*;
@@ -36,6 +38,7 @@ public class ArtistHistoryServiceImpl implements ArtistHistoryService {
     public void setDao(@Autowired @Qualifier("history_session") SessionFactory sessionFactory) {
         dao.setSessionFactory(sessionFactory);
     }
+
     @Override
     public ArtistHistory get(String name) {
         final DetachedCriteria detachedCriteria = DetachedCriteria.forClass(ArtistHistory.class)
@@ -65,11 +68,13 @@ public class ArtistHistoryServiceImpl implements ArtistHistoryService {
         params.put("end", end);
         params.put("eventType", EventType.TRACK_LISTENED);
 
-        Collection<History> histories = dao.getAllByNamedQuery(History.class, History.ALL_HISTORY_BY_TIME, params);
+
+        Collection<TrackHistory> histories = dao.getAllByNamedQuery(TrackHistory.class, TrackHistory.ALL_HISTORY_BY_TIME, params);
         return
                 histories.stream()
                         .collect(Collectors.toConcurrentMap(
-                                History::getArtistName, w -> 1, Integer::sum));
+                                TrackHistory::getArtistName, w -> 1, Integer::sum));
+
     }
 }
 

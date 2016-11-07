@@ -7,6 +7,7 @@ public class PlaylistEvent extends Event {
     private final Integer playlistId;
     private final String playlistName;
 
+
     public PlaylistEvent(Integer playlistId, String playlistName, int userId, EventType type) {
         super(userId, type);
         this.playlistId = playlistId;

@@ -2,6 +2,7 @@ package com.musicforall.services.recommendation;
 
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
+import com.musicforall.history.model.TrackHistory;
 import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
@@ -60,7 +61,8 @@ public class RecommendationService {
         final Collection<Integer> userTracks = usersTracksIds(user);
 
         final Map<Integer, Integer> likesCountsByTrackId = histories.stream()
-                .map(History::getTrackId)
+                .map(t  -> (TrackHistory)t)
+                .map(TrackHistory::getTrackId)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toMap(Function.identity(), i -> 1, Integer::sum));
 

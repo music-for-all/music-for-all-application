@@ -27,10 +27,11 @@ public class FollowerServiceImp implements FollowerService {
     @Autowired
     private Dao dao;
 
-    @Autowired
     public void setDao(@Autowired @Qualifier("main_session") SessionFactory sessionFactory) {
         dao.setSessionFactory(sessionFactory);
     }
+
+    @Autowired
     private NotificationService notificationService;
 
     @Override

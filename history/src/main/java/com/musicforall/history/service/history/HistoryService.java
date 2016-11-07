@@ -3,11 +3,9 @@ package com.musicforall.history.service.history;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
 import org.hibernate.criterion.DetachedCriteria;
-
+import com.musicforall.history.model.TrackHistory;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Pukho on 05.08.2016.
@@ -19,7 +17,7 @@ public interface HistoryService {
 
     List<Integer> getTheMostPopularTracks();
 
-    Collection<History> getAllBy(SearchHistoryParams params);
+    Collection<TrackHistory> getAllBy(SearchHistoryParams params);
 
     long getLikeCount(Integer trackId);
 
@@ -28,4 +26,6 @@ public interface HistoryService {
     Collection<History> getUsersHistories(Collection<Integer> usersIds);
 
     Collection<History> getAllForUsers(EventType type, Collection<Integer> usersIds);
+
+    Collection<History> histories();
 }

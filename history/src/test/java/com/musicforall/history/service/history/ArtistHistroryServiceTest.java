@@ -2,6 +2,7 @@ package com.musicforall.history.service.history;
 
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
+import com.musicforall.history.model.TrackHistory;
 import com.musicforall.history.service.DBHistoryPopulateService;
 import com.musicforall.history.service.artistHistory.ArtistHistoryService;
 import com.musicforall.history.util.ServicesTestConfig;
@@ -69,7 +70,7 @@ public class ArtistHistroryServiceTest {
         Map<String, Integer> statistic = artistService.getStatistic(new Date(CURRENT_TIME-LOW_GAP), new Date(CURRENT_TIME));
         assertTrue(ARTIST_NAMES.stream()
                 .allMatch(f -> {
-                    return histories.stream().map(History::getArtistName).filter(f::equals).count() == statistic.get(f);
+                    return histories.stream().map(t -> (TrackHistory) t).map(TrackHistory::getArtistName).filter(f::equals).count() == statistic.get(f);
                 }));
 }
 

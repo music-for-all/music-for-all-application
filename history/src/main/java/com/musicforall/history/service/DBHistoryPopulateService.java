@@ -2,6 +2,8 @@ package com.musicforall.history.service;
 
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
+import com.musicforall.history.model.PlaylistHistory;
+import com.musicforall.history.model.TrackHistory;
 import com.musicforall.history.service.history.HistoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +51,10 @@ public class DBHistoryPopulateService {
                         listened = rnd.nextInt(MAX);
                     }
                     return IntStream.range(0, listened)
-                            .mapToObj(i -> new History(t, null, new Date(), userId, eventType))
+                            .mapToObj(i ->
+                                    TrackHistory.create().trackId(t)
+                                            .date(new Date()).userId(userId)
+                                            .eventType(eventType).get())
                             .collect(Collectors.toList()).stream();
                 })
                 .forEach(historyService::record);
@@ -57,7 +62,10 @@ public class DBHistoryPopulateService {
 
     private void recordHistoriesTracksLiked(List<Integer> tracksIds, Integer userId) {
         tracksIds.stream()
-                .map(t -> new History(t, null, new Date(), userId, EventType.TRACK_LIKED))
+                .map(t -> TrackHistory.create()
+                        .trackId(t).date(new Date())
+                        .userId(userId).eventType(EventType.TRACK_LIKED)
+                        .get())
                 .forEach(historyService::record);
     }
 
@@ -70,7 +78,7 @@ public class DBHistoryPopulateService {
                         listened = rnd.nextInt(MAX);
                     }
                     return IntStream.range(0, listened)
-                            .mapToObj(i -> History.create()
+                            .mapToObj(i -> TrackHistory.create()
                                     .artistName(t)
                                     .eventType(eventType)
                                     .date(new Date(date)).userId(userId).get())

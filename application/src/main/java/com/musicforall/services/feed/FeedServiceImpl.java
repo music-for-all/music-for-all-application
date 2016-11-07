@@ -4,11 +4,14 @@ import com.musicforall.dto.feed.Feed;
 import com.musicforall.dto.feeds.UserFeedsDTO;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
+import com.musicforall.history.model.PlaylistHistory;
+import com.musicforall.history.model.TrackHistory;
 import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Artist;
 import com.musicforall.model.Track;
 import com.musicforall.model.user.User;
 import com.musicforall.services.follower.FollowerService;
+import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.services.track.TrackService;
 import com.musicforall.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +51,9 @@ public class FeedServiceImpl implements FeedService {
     private TrackService trackService;
 
     @Autowired
+    private PlaylistService playlistService;
+
+    @Autowired
     @Qualifier("messageSource")
     private MessageSource messageSource;
 
@@ -63,7 +69,9 @@ public class FeedServiceImpl implements FeedService {
     @Override
     public List<UserFeedsDTO> getGroupedFollowingFeeds(Integer userId) {
         final Collection<Integer> usersIds = followerService.getFollowingId(userId);
-        final Collection<History> usersHistories = historyService.getUsersHistories(usersIds);
+        final Collection<History> usersHistories =
+                historyService.getUsersHistories(usersIds).stream().map(t -> (TrackHistory) t).collect(Collectors.toList());
+
         final List<Integer> tracksIds = getTracksIds(usersHistories);
 
         final Map<Integer, User> usersByIds = getUsersByIds(usersIds);
@@ -78,7 +86,8 @@ public class FeedServiceImpl implements FeedService {
     private List<Integer> getTracksIds(Collection<History> usersHistories) {
         return usersHistories.stream()
                 .filter(h -> h.getEventType().isTrackEvent())
-                .map(History::getTrackId)
+                .map(t -> (TrackHistory) t)
+                .map(TrackHistory::getTrackId)
                 .collect(Collectors.toList());
     }
 
@@ -92,6 +101,23 @@ public class FeedServiceImpl implements FeedService {
                 .stream().collect(Collectors.toMap(Track::getId, Function.identity()));
     }
 
+    private Map<User, Collection<Feed>> getFeedsFromTrackHistories(Collection<TrackHistory> histories,
+                                                               Map<Integer, User> usersByIds,
+                                                               Map<Integer, Track> tracksByIds) {
+        return histories
+                .stream()
+                .collect(Collectors.groupingBy(
+                        h -> usersByIds.get(h.getUserId()),
+                        LinkedHashMap::new,
+                        Collectors.mapping(h -> generateContent(
+                                                h.getEventType(),
+                                                h.getDate(),
+                                                Arrays.asList(
+                                                         getFormattedTrack(h, tracksByIds),
+                                                         getFormattedPlaylist(h))),
+                                Collectors.toCollection(ArrayList::new))));
+    }
+
     private Map<User, Collection<Feed>> getFeedsFromHistories(Collection<History> histories,
                                                               Map<Integer, User> usersByIds,
                                                               Map<Integer, Track> tracksByIds) {
@@ -102,17 +128,18 @@ public class FeedServiceImpl implements FeedService {
                         LinkedHashMap::new,
                         Collectors.mapping(h -> {
                                     if (h.getEventType().isTrackEvent()) {
+                                        TrackHistory t = (TrackHistory) h;
                                         return generateContent(
                                                 h.getEventType(),
                                                 h.getDate(),
                                                 Arrays.asList(
-                                                        getFormattedTrack(h, tracksByIds),
-                                                        getFormattedPlaylist(h)));
+                                                        getFormattedTrack(t, tracksByIds)));
                                     } else if (h.getEventType().isPlaylistEvent()) {
+                                        PlaylistHistory p = (PlaylistHistory) h;
                                         return generateContent(
                                                 h.getEventType(),
                                                 h.getDate(),
-                                                Arrays.asList(getFormattedPlaylist(h)));
+                                                Arrays.asList(getFormattedPlaylist(p)));
                                     }
                                     return null;
                                 },
@@ -125,7 +152,7 @@ public class FeedServiceImpl implements FeedService {
                 .collect(Collectors.toList());
     }
 
-    private String getFormattedTrack(History history, Map<Integer, Track> tracksByIds) {
+    private String getFormattedTrack(TrackHistory history, Map<Integer, Track> tracksByIds) {
         final Track track = tracksByIds.get(history.getTrackId());
         final Artist artist = track.getArtist();
         if (artist == null) {
@@ -137,7 +164,7 @@ public class FeedServiceImpl implements FeedService {
     }
 
     private String getFormattedPlaylist(History history) {
-        return MessageFormat.format(PLAYLISTNAME_FORMAT, history.getPlaylistName());
+        return MessageFormat.format(PLAYLISTNAME_FORMAT, playlistService.get(history.getPlaylistId()));
     }
 
     private Feed generateContent(EventType eventType, Date date, List<String> params) {

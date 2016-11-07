@@ -62,14 +62,15 @@ public class HistoryController {
         firePlaylistEvent(playlistId, EventType.PLAYLIST_DELETED);
     }
 
-    private void fireTrackEvent(final Integer trackId, final Integer playlistId, final EventType type) {
+    private void fireTrackEvent(final Integer trackId, final Integer playlistId,
+                                final EventType type) {
         final User user = SecurityUtil.currentUser();
         if (user == null) {
             return;
         }
         final String trackName = trackService.get(trackId).getName();
-        final String playlistName = playlistId != null ? playlistService.get(playlistId).getName() : null;
-        publisher.publishEvent(new TrackEvent(trackId, playlistId, trackName, playlistName, user.getId(), type));
+        final String artistName = trackService.get(trackId).getArtist().getName();
+        publisher.publishEvent(new TrackEvent(trackId, trackName, user.getId(), type, artistName, playlistId));
     }
 
     private void firePlaylistEvent(final Integer playlistId, final EventType type) {

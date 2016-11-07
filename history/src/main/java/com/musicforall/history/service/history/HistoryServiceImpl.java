@@ -5,6 +5,7 @@ import com.musicforall.common.dao.QueryParams;
 import com.musicforall.history.handlers.events.EventType;
 import com.musicforall.history.model.History;
 import org.hibernate.SessionFactory;
+import com.musicforall.history.model.TrackHistory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * Created by Pukho on 08.08.2016.
@@ -35,10 +40,11 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public void record(final History history) {
         if (history.getEventType() == EventType.TRACK_LIKED) {
-            final Collection<History> histories = getAllBy(SearchHistoryParams.create()
+            TrackHistory trackHistory = (TrackHistory) history;
+            final Collection<TrackHistory> histories = getAllBy(SearchHistoryParams.create()
                     .eventType(EventType.TRACK_LIKED)
-                    .trackId(history.getTrackId())
-                    .userId(history.getUserId())
+                    .trackId(trackHistory.getTrackId())
+                    .userId(trackHistory.getUserId())
                     .get());
             if (histories.isEmpty()) {
                 dao.save(history);
@@ -57,12 +63,12 @@ public class HistoryServiceImpl implements HistoryService {
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put(EVENT_TYPE, EventType.TRACK_LISTENED);
 
-        return dao.getAllByNamedQuery(Integer.class, History.POPULAR_TRACKS_QUERY,
+        return dao.getAllByNamedQuery(Integer.class, TrackHistory.POPULAR_TRACKS_QUERY,
                 parameters, new QueryParams(count, offset));
     }
 
     @Override
-    public Collection<History> getAllBy(SearchHistoryParams params) {
+    public Collection<TrackHistory> getAllBy(SearchHistoryParams params) {
         return dao.getAllBy(toDetachedCriteria(params));
     }
 
@@ -78,20 +84,27 @@ public class HistoryServiceImpl implements HistoryService {
         parameters.put(TRACK_ID, trackId);
         parameters.put(EVENT_TYPE, EventType.TRACK_LIKED);
 
-        return dao.getByNamedQuery(Long.class, History.TRACK_LIKES_COUNT_QUERY,
+        return dao.getByNamedQuery(Long.class, TrackHistory.TRACK_LIKES_COUNT_QUERY,
                 parameters);
     }
 
     @Override
     public Collection<History> getAllForUsers(EventType type, Collection<Integer> usersIds) {
-        final Map<String, Object> params = new HashMap<>();
+     /*   final Map<String, Object> params = new HashMap<>();
         params.put("usersIds", usersIds);
         params.put("eventType", type);
         return dao.getAllByNamedQuery(History.class, "all_for_users_by_type", params);
+        */return null;
+    }
+
+    @Override
+    public Collection<History> histories() {
+        return null;
+     //  return dao.getAllByNamedQuery(TrackHistory.class, History.USERS_HISTORIES_QUERY, null);
     }
 
     private DetachedCriteria toDetachedCriteria(SearchHistoryParams params) {
-        final DetachedCriteria criteria = DetachedCriteria.forClass(History.class);
+        final DetachedCriteria criteria = DetachedCriteria.forClass(TrackHistory.class);
         if (params.getUserId() != null) {
             criteria.add(Property.forName("userId").eq(params.getUserId()));
         }
@@ -107,11 +120,12 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public Collection<History> getUsersHistories(Collection<Integer> usersIds) {
 
-        final Map<String, Object> parameters = new HashMap<>();
+       /* final Map<String, Object> parameters = new HashMap<>();
         parameters.put("usersIds", usersIds);
 
         return dao.getAllByNamedQuery(History.class, History.USERS_HISTORIES_QUERY,
-                parameters);
+                parameters);*/
+       return null;
     }
 
 }

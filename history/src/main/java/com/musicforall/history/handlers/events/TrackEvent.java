@@ -4,16 +4,16 @@ public class TrackEvent extends Event {
 
     private final Integer trackId;
     private final String trackName;
+    private final String artistName;
     private final Integer playlistId;
-    private final String playlistName;
 
-    public TrackEvent(Integer trackId, Integer playlistId, String trackName, String playlistName,
-                      Integer userId, EventType type) {
+    public TrackEvent(Integer trackId, String trackName,
+                      Integer userId, EventType type, String artistName, Integer playlistId) {
         super(userId, type);
         this.trackId = trackId;
         this.trackName = trackName;
+        this.artistName = artistName;
         this.playlistId = playlistId;
-        this.playlistName = playlistName;
     }
 
     public int getTrackId() {
@@ -24,11 +24,11 @@ public class TrackEvent extends Event {
         return trackName;
     }
 
-    public Integer getPlaylistId() {
-        return playlistId;
+    public String getArtistName() {
+        return artistName;
     }
 
-    public String getPlaylistName() {
-        return playlistName;
+    public Integer getPlaylistId() {
+        return playlistId;
     }
 }
