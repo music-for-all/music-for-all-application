@@ -29,7 +29,9 @@ public interface PlaylistService {
 
     Collection<Track> getAllTracks();
 
-    Collection<Track> getAllTracksByUserId(Integer user_id);
+    Collection<Track> getAllTracks(Integer userId, Integer count, Integer offset);
+
+    Collection<Track> getAllTracks(Integer userId);
 
     void addTrack(Integer playlistId, Integer trackId);
 

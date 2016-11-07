@@ -10,8 +10,6 @@ import com.musicforall.services.user.UserService;
 import com.musicforall.util.SecurityUtil;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +22,7 @@ import java.util.*;
 @Service("playlistService")
 @Transactional
 public class PlaylistServiceImpl implements PlaylistService {
-    
+
     @Autowired
     private Dao dao;
 
@@ -57,9 +55,16 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public Collection<Track> getAllTracksByUserId(Integer user_id) {
+    public Collection<Track> getAllTracks(Integer userId, Integer count, Integer offset) {
+
         return trackService.getAllByIds(
-                historyService.getAllUserTracks(user_id));
+                historyService.getAllUserTracksWithLim(userId, count, offset));
+    }
+
+    @Override
+    public Collection<Track> getAllTracks(Integer userId) {
+        return trackService.getAllByIds(
+                historyService.getAllUserTracks(userId));
     }
 
     @Override
