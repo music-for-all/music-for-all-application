@@ -5,6 +5,8 @@ import com.musicforall.files.manager.FileManager;
 import com.musicforall.history.model.History;
 import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Artist;
+import com.musicforall.dto.profile.ProfileData;
+import com.musicforall.model.SearchArtistRequest;
 import com.musicforall.model.Track;
 import com.musicforall.services.artist.ArtistService;
 import com.musicforall.services.track.TrackService;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static com.musicforall.history.handlers.events.EventType.TRACK_UPLOADED;
@@ -61,7 +64,7 @@ public class FileServiceImpl implements FileService {
 
             trackForSaving = updateArtistForTrack(track);
             Track savedTrack = trackService.save(trackForSaving);
-
+            
             final History history = new History(savedTrack.getId(), null,
                     new Date(), SecurityUtil.currentUserId(), TRACK_UPLOADED);
             historyService.record(history);
@@ -87,12 +90,16 @@ public class FileServiceImpl implements FileService {
     }
 
     private Track updateArtistForTrack(Track track) {
-        final Artist existingArtist = artistService.get(track.getArtist().getName());
-        if (existingArtist != null) {
-            if (track.getTags() != null) {
-                existingArtist.extendTags(track.getTags());
+        final List<Artist> listArtists =
+                artistService.getAllLike(new SearchArtistRequest(track.getArtist().getName(), null));
+        if (listArtists != null && !listArtists.isEmpty()) {
+            final Artist existingArtist = listArtists.get(0);
+            if (existingArtist != null) {
+                if (track.getTags() != null) {
+                    existingArtist.extendTags(track.getTags());
+                }
+                track.setArtist(existingArtist);
             }
-            track.setArtist(existingArtist);
         }
         return track;
     }

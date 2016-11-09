@@ -5,7 +5,9 @@
 <@m.head>
 <title><@spring.message "profilepage.Title"/></title>
 <script src="<@spring.url "/resources/js/user.js" />"></script>
+<script src="<@spring.url "/resources/js/following.js" />"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<link href="<@spring.url "/resources/css/notification.css" />" rel="stylesheet"/>
 <link href="<@spring.url "/resources/css/profilepage.css" />" rel="stylesheet"/>
 <link href="<@spring.url "/resources/css/switch.css" />" rel="stylesheet"/>
 <script src="<@spring.url "/resources/js/profile.js"/>"></script>
@@ -14,6 +16,7 @@
 <@m.body>
 
     <@m.navigation m.pages.Profile/>
+
 <div id="container" class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3">

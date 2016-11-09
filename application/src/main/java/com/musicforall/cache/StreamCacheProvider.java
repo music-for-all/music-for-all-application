@@ -1,37 +1,39 @@
-package com.musicforall.common.cache;
+package com.musicforall.cache;
 
+import com.musicforall.common.cache.CacheProvider;
+import com.musicforall.model.Track;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 
-import static com.musicforall.common.cache.config.CacheConfig.GUAVA;
+import static com.musicforall.config.CacheConfig.STREAM;
 
 /**
- * @author ENikolskiy.
+ * @author IliaNik on 20.10.2016.
  */
 
-@CacheConfig(cacheNames = {GUAVA})
-public class GuavaCacheProvider<K, V> implements CacheProvider<K, V> {
+@CacheConfig(cacheNames = STREAM)
+public class StreamCacheProvider implements CacheProvider<Integer, Track> {
 
     private static final String SPEL_KEY = "#key";
 
     @Override
     @CachePut(key = SPEL_KEY)
-    public V put(K key, V value) {
+    public Track put(Integer key, Track value) {
         return value;
     }
 
     @Override
     @Cacheable(key = SPEL_KEY)
-    public V get(K key) {
+    public Track get(Integer key) {
         return null;
     }
 
     @Override
     @Cacheable(key = SPEL_KEY)
     @CacheEvict(key = SPEL_KEY)
-    public V remove(K key) {
+    public Track remove(Integer key) {
         return null;
     }
 }

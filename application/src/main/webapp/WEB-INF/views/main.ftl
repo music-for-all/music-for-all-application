@@ -6,6 +6,7 @@
 <html lang="en">
 <@m.head>
 <title><@spring.message "mainpage.Title"/></title>
+<script src="<@spring.url "/resources/js/following.js" />"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="<@spring.url "/resources/js/playlist.js" />"></script>
 <script src="<@spring.url "/resources/js/chunksplayer.js" />"></script>
@@ -13,6 +14,7 @@
 <script src="<@spring.url "/resources/js/player.js" />"></script>
 <script src="<@spring.url "/resources/js/main.js" />"></script>
 <script src="<@spring.url "/resources/js/history.js" />"></script>
+<link href="<@spring.url "/resources/css/notification.css" />" rel="stylesheet"/>
 <link href="<@spring.url "/resources/css/mainpage.css" />" rel="stylesheet"/>
 <link href="<@spring.url "/resources/css/switch.css" />" rel="stylesheet"/>
 <link href="<@spring.url "/resources/css/player.css" />" rel="stylesheet">
@@ -345,9 +347,8 @@
     }
 
     $(document).ready(function () {
-
+        getNotifications();
         refreshPlaylistTable();
-
         refreshRecommendationTable();
 
         /* Handle the Like button (Ajax). */

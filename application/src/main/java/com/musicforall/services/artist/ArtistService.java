@@ -15,7 +15,9 @@ public interface ArtistService {
 
     Collection<Artist> saveAll(Collection<Artist> artists);
 
-    Artist get(String artist);
+    void delete(Integer artistId);
+
+    Artist get(Integer artistId);
 
     List<Artist> getAllArtists();
 

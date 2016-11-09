@@ -46,9 +46,6 @@ public class Track implements Serializable {
 
     @ManyToOne
     @Cascade(CascadeType.SAVE_UPDATE)
-    @JoinTable(name = "artists_tracks",
-            inverseJoinColumns = {@JoinColumn(name = "artist_name")},
-            joinColumns = {@JoinColumn(name = "track_id")})
     private Artist artist;
 
     @Size(min = 2, max = 30)
@@ -189,7 +186,7 @@ public class Track implements Serializable {
                 "id=" + id +
                 ", tags=" + tags +
                 ", name='" + name + '\'' +
-                ", artist='" + artist + '\'' +
+                ", artist=" + artist +
                 ", album='" + album + '\'' +
                 ", location='" + location + '\'' +
                 ", size='" + size + '\'' +
