@@ -30,9 +30,6 @@ public class PlaylistServiceImpl implements PlaylistService {
     private TrackService trackService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private HistoryService historyService;
 
     @Override

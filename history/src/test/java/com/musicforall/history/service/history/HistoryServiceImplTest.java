@@ -142,7 +142,7 @@ public class HistoryServiceImplTest {
     }
 
     @Test
-    public void testGetUserTracks(){
+    public void testGetUserTracks() {
         final int UNIQUE_USER_ID = 5555;
 
         final History history2 = new History(TRACK_ID, null,
@@ -150,11 +150,11 @@ public class HistoryServiceImplTest {
         service.record(history2);
         List<Integer> ids = service.getAllUserTracks(UNIQUE_USER_ID);
 
-        assertEquals(1,ids.size());
+        assertEquals(1, ids.size());
     }
 
     @Test
-    public void testGetUserTracksWithLim(){
+    public void testGetUserTracksWithLim() {
         final int UNIQUE_USER_ID = 6666;
         final History history3 = new History(TRACK_ID, null,
                 new Date(), UNIQUE_USER_ID, TRACK_UPLOADED);
@@ -167,7 +167,7 @@ public class HistoryServiceImplTest {
         service.record(history4);
         service.record(history5);
 
-        List<Integer> ids = service.getAllUserTracksWithLim(UNIQUE_USER_ID,2,1);
-        assertEquals(2,ids.size());
+        List<Integer> ids = service.getAllUserTracksWithLim(UNIQUE_USER_ID, 2, 1);
+        assertEquals(2, ids.size());
     }
 }

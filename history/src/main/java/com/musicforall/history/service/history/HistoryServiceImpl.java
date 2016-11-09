@@ -73,7 +73,7 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public List<Integer> getAllUserTracksWithLim(Integer userId, Integer count, Integer offset) {
         final Map<String, Object> parameters = new HashMap<>();
-        parameters.put(EVENT_TYPE, EventType.TRACK_UPLOADED);
+        parameters.put(EVENT_TYPE, TRACK_UPLOADED);
         parameters.put("userId", userId);
 
         return dao.getAllByNamedQuery(Integer.class, History.GET_TRACKS_LIM,
