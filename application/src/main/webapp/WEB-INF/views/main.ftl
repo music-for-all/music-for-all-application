@@ -76,7 +76,11 @@
         <section id="playlists-section" class="well col-md-2">
             <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">
                 <@spring.message "mainpage.CreatePlaylist"/></button>
-            <ul id="playlists" class="nav nav-pills nav-stacked"></ul>
+            <button id="defaultPlaylistButton" onclick="loadDefaultPlaylist()" class="btn  btn-primary btn-block " type="button">
+                <@spring.message "mainpage.DefaultPlaylist"/></button>
+            <ul id="playlists" class="nav nav-pills nav-stacked">
+
+            </ul>
         </section>
     </div>
 </div>
@@ -257,6 +261,18 @@
         playlist.get(id)
                 .then(function (response) {
                     response.tracks.forEach(function (track) {
+                        $("#tracks").append(trackRow(track));
+                        updateLikeCount(track.id);
+                    });
+                });
+    }
+
+    function loadDefaultPlaylist() {
+        clearTracks();
+
+        playlist.getAllTracks(50,0)
+                .then(function (tracks) {
+                    $.each(tracks, function (i, track) {
                         $("#tracks").append(trackRow(track));
                         updateLikeCount(track.id);
                     });

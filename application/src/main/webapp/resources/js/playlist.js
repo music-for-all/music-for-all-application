@@ -42,9 +42,19 @@ function Playlist() {
 
     self.removeTrack = function (playlistId, trackId) {
         history.trackDeleted(trackId, playlistId);
-        return $.when($.ajax({
+        return $.when(
+            $.ajax({
             type: "DELETE",
             url: baseUrl + "/" + playlistId + "/remove/" + trackId
+        }));
+    };
+
+    self.getAllTracks = function (count, offset) {
+        return $.when($.ajax({
+            type: "GET",
+            url: baseUrl + "/allTracks",
+            data: "count=" + count + "&offset=" + offset,
+            dataType: "json"
         }));
     };
 }
