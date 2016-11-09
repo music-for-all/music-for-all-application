@@ -25,7 +25,7 @@ public class ArtistProfileController {
     @RequestMapping("/artist/{id}")
     public String profile(Model model, @PathVariable Integer id) {
 
-        Artist artist = artistService.get(id);
+        final Artist artist = artistService.get(id);
         if (artist  == null) {
             return "redirect:/";
         }

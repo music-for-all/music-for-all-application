@@ -184,7 +184,7 @@ public class DbPopulateService {
 
             final Playlist playlist = new Playlist("Hype", new HashSet<>(tracks), user);
 
-            for (Track track : tracks) {
+            for (final Track track : tracks) {
                 track.getPlaylists().add(playlist);
             }
             playlistService.save(playlist);

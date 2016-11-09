@@ -119,7 +119,7 @@ public class TrackServiceImpl implements TrackService {
                 parameters);
 
         parameters.put("trackIds", trackIds);
-        List<String> albums = dao.getAllByNamedQuery(String.class, Track.TOP_ALBUMS_QUERY,
+        final List<String> albums = dao.getAllByNamedQuery(String.class, Track.TOP_ALBUMS_QUERY,
                 parameters, new QueryParams(count, offset));
         return albums;
     }

@@ -30,8 +30,7 @@ import java.util.Set;
                 query = "select distinct track.album" +
                         " from Track track" +
                         " where track.id in" +
-                        " (:trackIds)")
-})
+                        " (:trackIds)")})
 @Entity
 @Table(name = "tracks")
 public class Track implements Serializable {
