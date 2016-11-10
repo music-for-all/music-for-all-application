@@ -31,23 +31,6 @@
 
 <div class="container">
     <div class="col-md-10">
-        <section id="tracks-section" class="well col-md-11">
-            <table id="tracks"
-                   class="table table-hover table-striped table-condensed tracks-table no-checkbox no-plus-button">
-                <thead>
-                <tr>
-                    <th><@spring.message "welcomepage.Actions"/></th>
-                    <th><@spring.message "welcomepage.Artist"/></th>
-                    <th><@spring.message "welcomepage.Title"/></th>
-                    <th><@spring.message "welcomepage.Duration"/></th>
-                </tr>
-                </thead>
-            </table>
-        </section>
-
-        <a class="btn btn-success" href="<@spring.url '${m.pages.Add.url}' />" title="Upload">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        </a>
 
         <section id="recommendations-section" class="well col-md-11 col-md-offset-0">
             <h4><@spring.message "mainpage.YouMightAlsoLike"/></h4>
@@ -69,6 +52,23 @@
                     <th><@spring.message "songTable.Artist"/></th>
                     <th><@spring.message "songTable.Title"/></th>
                     <th><@spring.message "songTable.Duration"/></th>
+                </tr>
+                </thead>
+            </table>
+        </section>
+        <a class="btn btn-success" href="<@spring.url '${m.pages.Add.url}' />" title="Upload">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </a>
+
+        <section id="tracks-section" class="well col-md-11">
+            <table id="tracks"
+                   class="table table-hover table-striped table-condensed tracks-table no-checkbox no-plus-button">
+                <thead>
+                <tr>
+                    <th><@spring.message "welcomepage.Actions"/></th>
+                    <th><@spring.message "welcomepage.Artist"/></th>
+                    <th><@spring.message "welcomepage.Title"/></th>
+                    <th><@spring.message "welcomepage.Duration"/></th>
                 </tr>
                 </thead>
             </table>
@@ -380,6 +380,26 @@
         $("#deletePlaylistModal").on("shown.bs.modal", function () {
             $("#acceptRemovingPlaylistButton").focus();
         });
+
+        var inProgress = false;
+        var offset = 50;
+        $(window).scroll(function () {
+            if ($(window).scrollTop() + $(window).height() >= $(document).height() - 200 && !inProgress) {
+                inProgress = true;
+                playlist.getAllTracks(50, offset)
+                        .then(function (tracks) {
+                            $.each(tracks, function (i, track) {
+                                $("#tracks").append(trackRow(track));
+                                updateLikeCount(track.id);
+                            });
+                            if (tracks.length > 0) {
+                                inProgress = false;
+                                offset += 50;
+                            }
+                        });
+            }
+        });
+
     });
 </script>
 </@m.body>
