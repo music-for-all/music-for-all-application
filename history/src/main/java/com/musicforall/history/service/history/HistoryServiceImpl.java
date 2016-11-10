@@ -14,6 +14,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static com.musicforall.history.handlers.events.EventType.TRACK_UPLOADED;
 
 /**
  * Created by Pukho on 08.08.2016.
@@ -54,6 +57,26 @@ public class HistoryServiceImpl implements HistoryService {
         parameters.put(EVENT_TYPE, EventType.TRACK_LISTENED);
 
         return dao.getAllByNamedQuery(Integer.class, History.POPULAR_TRACKS_QUERY,
+                parameters, new QueryParams(count, offset));
+    }
+
+    @Override
+    public List<Integer> getAllUserTracks(Integer user_id) {
+        Collection<History> histories = getAllBy(SearchHistoryParams.create()
+                .eventType(TRACK_UPLOADED)
+                .userId(user_id)
+                .get());
+
+        return histories.stream().map(History::getTrackId).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Integer> getAllUserTracksWithLim(Integer userId, Integer count, Integer offset) {
+        final Map<String, Object> parameters = new HashMap<>();
+        parameters.put(EVENT_TYPE, TRACK_UPLOADED);
+        parameters.put("userId", userId);
+
+        return dao.getAllByNamedQuery(Integer.class, History.GET_TRACKS_LIM,
                 parameters, new QueryParams(count, offset));
     }
 

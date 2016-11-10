@@ -16,6 +16,10 @@ public interface HistoryService {
 
     List<Integer> getTheMostPopularTracks();
 
+    List<Integer> getAllUserTracks(Integer user_id);
+
+    List<Integer> getAllUserTracksWithLim(Integer userId, Integer count, Integer offset);
+
     Collection<History> getAllBy(SearchHistoryParams params);
 
     long getLikeCount(Integer trackId);

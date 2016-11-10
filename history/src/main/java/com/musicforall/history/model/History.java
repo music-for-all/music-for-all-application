@@ -36,6 +36,13 @@ import java.util.Objects;
                 name = History.ALL_USERS_BY_TYPE_QUERY,
                 query = "select h from History h where h.eventType = :eventType and h.userId in " +
                         "(:usersIds) order by h.date desc"
+        ),
+        @NamedQuery(
+                name = History.GET_TRACKS_LIM,
+                query = "select h.trackId " +
+                        "from History h " +
+                        "where h.userId = :userId " +
+                        "and h.eventType = :eventType"
         )
 })
 
@@ -49,6 +56,8 @@ public class History {
     public static final String USERS_HISTORIES_QUERY = "get_users_histories";
 
     public static final String ALL_USERS_BY_TYPE_QUERY = "all_for_users_by_type";
+
+    public static final String GET_TRACKS_LIM = "get_tracks_lim";
 
     @Id
     @Column(name = Constants.ID)

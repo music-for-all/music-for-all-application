@@ -2,6 +2,7 @@ package com.musicforall.web.playlist;
 
 import com.musicforall.common.Constants;
 import com.musicforall.model.Playlist;
+import com.musicforall.model.Track;
 import com.musicforall.services.playlist.PlaylistService;
 import com.musicforall.util.SecurityUtil;
 import com.musicforall.web.MainController;
@@ -64,5 +65,11 @@ public class PlaylistRestController {
                                     @RequestParam("tracksIds[]") Collection<Integer> tracksIds) {
         playlistService.addTracks(playlistId, tracksIds);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/allTracks", method = RequestMethod.GET)
+    public Collection<Track> getDefaultPlaylist(@RequestParam("count") Integer count,
+                                                @RequestParam("offset") Integer offset) {
+        return playlistService.getAllTracks(SecurityUtil.currentUserId(), count, offset);
     }
 }

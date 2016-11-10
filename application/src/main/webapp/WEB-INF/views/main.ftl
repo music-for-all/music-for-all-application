@@ -31,23 +31,6 @@
 
 <div class="container">
     <div class="col-md-10">
-        <section id="tracks-section" class="well col-md-11">
-            <table id="tracks"
-                   class="table table-hover table-striped table-condensed tracks-table no-checkbox no-plus-button">
-                <thead>
-                <tr>
-                    <th><@spring.message "welcomepage.Actions"/></th>
-                    <th><@spring.message "welcomepage.Artist"/></th>
-                    <th><@spring.message "welcomepage.Title"/></th>
-                    <th><@spring.message "welcomepage.Duration"/></th>
-                </tr>
-                </thead>
-            </table>
-        </section>
-
-        <a class="btn btn-success" href="<@spring.url '${m.pages.Add.url}' />" title="Upload">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        </a>
 
         <section id="recommendations-section" class="well col-md-11 col-md-offset-0">
             <h4><@spring.message "mainpage.YouMightAlsoLike"/></h4>
@@ -73,12 +56,33 @@
                 </thead>
             </table>
         </section>
+        <a class="btn btn-success" href="<@spring.url '${m.pages.Add.url}' />" title="Upload">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </a>
+
+        <section id="tracks-section" class="well col-md-11">
+            <table id="tracks"
+                   class="table table-hover table-striped table-condensed tracks-table no-checkbox no-plus-button">
+                <thead>
+                <tr>
+                    <th><@spring.message "welcomepage.Actions"/></th>
+                    <th><@spring.message "welcomepage.Artist"/></th>
+                    <th><@spring.message "welcomepage.Title"/></th>
+                    <th><@spring.message "welcomepage.Duration"/></th>
+                </tr>
+                </thead>
+            </table>
+        </section>
     </div>
     <div class="row">
         <section id="playlists-section" class="well col-md-2">
             <button id="createPlaylistButton" class="btn  btn-success btn-block " type="button">
                 <@spring.message "mainpage.CreatePlaylist"/></button>
-            <ul id="playlists" class="nav nav-pills nav-stacked"></ul>
+            <button id="defaultPlaylistButton" onclick="loadDefaultPlaylist()" class="btn  btn-primary btn-block " type="button">
+                <@spring.message "mainpage.DefaultPlaylist"/></button>
+            <ul id="playlists" class="nav nav-pills nav-stacked">
+
+            </ul>
         </section>
     </div>
 </div>
@@ -265,6 +269,18 @@
                 });
     }
 
+    function loadDefaultPlaylist() {
+        clearTracks();
+
+        playlist.getAllTracks(50,0)
+                .then(function (tracks) {
+                    $.each(tracks, function (i, track) {
+                        $("#tracks").append(trackRow(track));
+                        updateLikeCount(track.id);
+                    });
+                });
+    }
+
     $("#acceptRemovingPlaylistButton").on("click", function (e) {
         var playlistToRemove = $("#playlists").find("li.active");
         playlist.remove(playlistToRemove.attr("id"))
@@ -324,9 +340,7 @@
                     });
                 })
                 .done(function () {
-                    /* For testing purpose, select the first playlist (named 'Hype'). */
-                    $("#playlists li:first").addClass("active");
-                    $("#playlists li:first a").trigger("click");
+                   loadDefaultPlaylist();
                 });
     }
 
@@ -364,6 +378,26 @@
         $("#deletePlaylistModal").on("shown.bs.modal", function () {
             $("#acceptRemovingPlaylistButton").focus();
         });
+
+        var inProgress = false;
+        var offset = 50;
+        $(window).scroll(function () {
+            if ($(window).scrollTop() + $(window).height() >= $(document).height() - 200 && !inProgress) {
+                inProgress = true;
+                playlist.getAllTracks(50, offset)
+                        .then(function (tracks) {
+                            $.each(tracks, function (i, track) {
+                                $("#tracks").append(trackRow(track));
+                                updateLikeCount(track.id);
+                            });
+                            if (tracks.length > 0) {
+                                inProgress = false;
+                                offset += 50;
+                            }
+                        });
+            }
+        });
+
     });
 </script>
 </@m.body>

@@ -1,10 +1,12 @@
 package com.musicforall.services.playlist;
 
 import com.musicforall.common.dao.Dao;
+import com.musicforall.history.service.history.HistoryService;
 import com.musicforall.model.Playlist;
 import com.musicforall.model.Track;
 import com.musicforall.model.user.User;
 import com.musicforall.services.track.TrackService;
+import com.musicforall.services.user.UserService;
 import com.musicforall.util.SecurityUtil;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
@@ -23,8 +25,12 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Autowired
     private Dao dao;
+
     @Autowired
     private TrackService trackService;
+
+    @Autowired
+    private HistoryService historyService;
 
     @Override
     public Set<Playlist> getAllUserPlaylists(Integer userId) {
@@ -37,6 +43,25 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public Playlist get(Integer playlistId) {
         return dao.get(Playlist.class, playlistId);
+    }
+
+    @Override
+    public Collection<Track> getAllTracks() {
+        return trackService.getAllByIds(
+                historyService.getAllUserTracks(SecurityUtil.currentUserId()));
+    }
+
+    @Override
+    public Collection<Track> getAllTracks(Integer userId, Integer count, Integer offset) {
+
+        return trackService.getAllByIds(
+                historyService.getAllUserTracksWithLim(userId, count, offset));
+    }
+
+    @Override
+    public Collection<Track> getAllTracks(Integer userId) {
+        return trackService.getAllByIds(
+                historyService.getAllUserTracks(userId));
     }
 
     @Override
