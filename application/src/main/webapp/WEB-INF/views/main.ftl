@@ -340,9 +340,7 @@
                     });
                 })
                 .done(function () {
-                    /* For testing purpose, select the first playlist (named 'Hype'). */
-                    $("#playlists li:first").addClass("active");
-                    $("#playlists li:first a").trigger("click");
+                   loadDefaultPlaylist();
                 });
     }
 
