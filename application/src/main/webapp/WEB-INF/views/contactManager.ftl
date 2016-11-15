@@ -145,7 +145,12 @@
     function connect() {
         var socket = new SockJS(dict.contextPath + "/sockjs");
         stompClient = Stomp.over(socket);
-        stompClient.connect({}, function (frame) {
+
+        var token = $("meta[name='_csrf']").attr("content");
+        var headers = {
+            "X-CSRF-TOKEN": token
+        };
+        stompClient.connect(headers, function (frame) {
         });
     }
 
