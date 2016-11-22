@@ -1,7 +1,6 @@
 package com.musicforall.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.musicforall.common.Constants;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -69,13 +68,6 @@ public class Track implements Serializable {
 
     private Long size;
 
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "playlist_track",
-            joinColumns = {@JoinColumn(name = "track_id")},
-            inverseJoinColumns = {@JoinColumn(name = "playlist_id")})
-    private Set<Playlist> playlists = new HashSet<>();
-
     public Track() {
     }
 
@@ -96,14 +88,6 @@ public class Track implements Serializable {
         this.album = album;
         this.location = location;
         this.tags = tags;
-    }
-
-    public Set<Playlist> getPlaylists() {
-        return playlists;
-    }
-
-    public void setPlaylists(Set<Playlist> playlists) {
-        this.playlists = playlists;
     }
 
     public void addTags(Set<Tag> tags) {

@@ -40,8 +40,11 @@ public class Playlist implements Serializable {
     @Column(name = Constants.NAME, nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "playlists")
+    @ManyToMany
     @Cascade(CascadeType.SAVE_UPDATE)
+    @JoinTable(name = "playlist_track",
+            joinColumns = {@JoinColumn(name = "playlist_id")},
+            inverseJoinColumns = {@JoinColumn(name = "track_id")})
     private Set<Track> tracks;
 
     @JsonIgnore

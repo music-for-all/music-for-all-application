@@ -183,10 +183,6 @@ public class DbPopulateService {
                     .collect(toList());
 
             final Playlist playlist = new Playlist("Hype", new HashSet<>(tracks), user);
-
-            for (final Track track : tracks) {
-                track.getPlaylists().add(playlist);
-            }
             playlistService.save(playlist);
 
             final List<Integer> tracksId = tracks.stream().map(Track::getId).collect(toList());
