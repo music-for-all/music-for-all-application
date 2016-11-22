@@ -12,10 +12,6 @@ public class UserProfileController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserProfileController.class);
 
-    public UserProfileController() {
-        LOG.info("");
-    }
-
     @RequestMapping("/profile")
     public String profile(Model model) {
 

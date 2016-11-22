@@ -18,10 +18,6 @@ public class ArtistProfileController {
     @Autowired
     private ArtistService artistService;
 
-    public ArtistProfileController() {
-        LOG.info("");
-    }
-
     @RequestMapping("/artist/{id}")
     public String profile(Model model, @PathVariable Integer id) {
 
