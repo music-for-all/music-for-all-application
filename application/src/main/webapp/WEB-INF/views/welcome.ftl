@@ -106,8 +106,8 @@
                             <thead>
                             <tr>
                                 <td><@spring.message "welcomepage.Actions"/></td>
-                                <td><@spring.message "welcomepage.Artist"/></td>
                                 <td><@spring.message "welcomepage.Title"/></td>
+                                <td><@spring.message "welcomepage.Artist"/></td>
                                 <td><@spring.message "welcomepage.Duration"/></td>
                             </tr>
                             </thead>
@@ -160,9 +160,7 @@
         /* Set focus on the name input field when the pop-up window has been shown. */
         $("#popover").on("shown.bs.popover", function () {
 
-            // TODO
-//            $("#inputEmail").focus();
-            $(".facebook").focus();
+            $("#inputEmail").focus();
         });
     });
 </script>

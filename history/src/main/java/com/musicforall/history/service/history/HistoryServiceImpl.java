@@ -45,7 +45,7 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public List<Integer> getTheMostPopularTracks() {
+    public List<Integer> getMostPopularTracks() {
 
         final int count = 10;
         final int offset = 0;

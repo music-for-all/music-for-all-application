@@ -2,10 +2,9 @@ package com.musicforall.services;
 
 import com.musicforall.files.manager.FileManager;
 import com.musicforall.history.service.DBHistoryPopulateService;
-import com.musicforall.model.Playlist;
-import com.musicforall.model.Tag;
-import com.musicforall.model.Track;
+import com.musicforall.model.*;
 import com.musicforall.model.user.User;
+import com.musicforall.services.artist.ArtistService;
 import com.musicforall.model.user.UserData;
 import com.musicforall.services.follower.FollowerService;
 import com.musicforall.services.playlist.PlaylistService;
@@ -52,12 +51,19 @@ public class DbPopulateService {
     private static final String USER_IS_FOLLOW = "user {} is follow {}";
 
     static {
+        /*
         LINKS.put("Jerry-Lee-Lewis-part-1", OPEN_SOURCE_MUSIC_HOST +
                 "/2010/04/01-Selvin-On-The-City-Jerry-Lee-Lewis-part-1.mp3");
         LINKS.put("Tom-Waits-part-1", OPEN_SOURCE_MUSIC_HOST +
                 "/2012/10/01-Tom-Waits-on-Selvin-On-The-City-part-1.mp3");
         LINKS.put("Jerry-Lee-Lewis-part-4", OPEN_SOURCE_MUSIC_HOST +
                 "/2010/04/04-Selvin-On-The-City-Jerry-Lee-Lewis-part-4.mp3");
+        */
+        LINKS.put("Prelude 01", "http://www.mfiles.co.uk/mp3-downloads/book1-prelude01.mp3");
+        LINKS.put("Prelude 02", "http://www.mfiles.co.uk/mp3-downloads/book1-prelude02.mp3");
+        LINKS.put("Fugue 02", "http://www.mfiles.co.uk/mp3-downloads/book1-fugue02.mp3");
+        LINKS.put("Prelude 03", "http://www.mfiles.co.uk/mp3-downloads/book1-prelude03.mp3");
+        LINKS.put("Prelude 06", "http://www.mfiles.co.uk/mp3-downloads/book1-prelude06.mp3");
     }
 
     @Autowired
@@ -65,6 +71,9 @@ public class DbPopulateService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ArtistService artistService;
 
     @Autowired
     private PlaylistService playlistService;
@@ -83,6 +92,7 @@ public class DbPopulateService {
             return new URL(url);
         } catch (MalformedURLException e) {
             LOG.error("URL is malformed {}", url, e);
+
         }
         return null;
     }
@@ -122,7 +132,7 @@ public class DbPopulateService {
         userService.save(user);
         LOG.info(USER_IS_SAVED, user);
 
-        final User user2 = new User("password2", "dev_C-3PO@musicforall.com");
+        final User user2 = new User("password", "dev_C-3PO@musicforall.com");
         setDefaultValues(user2, "C-3PO");
         userService.save(user2);
         LOG.info(USER_IS_SAVED, user2);
@@ -132,7 +142,7 @@ public class DbPopulateService {
         followerService.follow(user2.getId(), user.getId());
         LOG.info(USER_IS_FOLLOW, user2, user);
 
-        final User user3 = new User("password3", "dev_R2-D2@musicforall.com");
+        final User user3 = new User("password", "dev_R2-D2@musicforall.com");
         setDefaultValues(user3, "R2-D2");
         userService.save(user3);
         LOG.info(USER_IS_SAVED, user3);
@@ -160,9 +170,13 @@ public class DbPopulateService {
 
             final Iterator<Long> iterator = sizes.iterator();
 
+            final Artist artist = new Artist("Johann Sebastian Bach");
+            artistService.save(artist);
+
             final List<Track> tracks = LINKS.entrySet().stream()
                     .map(entry -> {
-                        final Track track = new Track(entry.getKey(), getName(entry.getValue()), tags);
+                        final Track track = new Track(entry.getKey(), artist, "The Best",
+                                getName(entry.getValue()), tags);
                         track.setSize(iterator.next());
                         return track;
                     })
@@ -178,10 +192,9 @@ public class DbPopulateService {
 
             LOG.info("playlist {} is saved", playlist);
 
+            LOG.info("finished database population");
         } catch (InterruptedException e) {
             LOG.error("Saving failed", e);
-        } finally {
-            LOG.info("finished database population");
         }
     }
 }

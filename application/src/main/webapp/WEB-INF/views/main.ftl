@@ -37,8 +37,8 @@
                 <thead>
                 <tr>
                     <th><@spring.message "welcomepage.Actions"/></th>
-                    <th><@spring.message "welcomepage.Artist"/></th>
                     <th><@spring.message "welcomepage.Title"/></th>
+                    <th><@spring.message "welcomepage.Artist"/></th>
                     <th><@spring.message "welcomepage.Duration"/></th>
                 </tr>
                 </thead>
@@ -47,6 +47,7 @@
 
         <a class="btn btn-success" href="<@spring.url '${m.pages.Add.url}' />" title="Upload">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            <span><@spring.message "mainpage.Upload" /></span>
         </a>
 
         <section id="recommendations-section" class="well col-md-11 col-md-offset-0">
@@ -66,8 +67,8 @@
                 <thead>
                 <tr>
                     <th><@spring.message "songTable.Actions"/></th>
-                    <th><@spring.message "songTable.Artist"/></th>
                     <th><@spring.message "songTable.Title"/></th>
+                    <th><@spring.message "songTable.Artist"/></th>
                     <th><@spring.message "songTable.Duration"/></th>
                 </tr>
                 </thead>
@@ -89,6 +90,7 @@
         <div class="input-group">
             <a type="button" class="btn btn-default btn-block playlist" data-value="<%= data.name %>">
                 <%= data.name %>
+                [<%= data.tracks.length %>]
             </a>
 
             <div class="input-group-btn">
@@ -231,6 +233,7 @@
     $("#acceptCreatingPlaylistButton").on("click", function (e) {
         playlist.create($("#inputNamePlaylist").val())
                 .then(function (playlist) {
+                    playlist.tracks = [];
                     addPlaylist(playlist);
                     $("#inputNamePlaylist").val("");
                     $("#addPlaylistModal").modal("hide");
@@ -360,7 +363,7 @@
             }
         });
 
-        /* Set focus on the name input field when the modal window has been shown. */
+        /* Set focus on the 'accept' button when the modal window has been shown. */
         $("#deletePlaylistModal").on("shown.bs.modal", function () {
             $("#acceptRemovingPlaylistButton").focus();
         });

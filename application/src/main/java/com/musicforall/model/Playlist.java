@@ -42,7 +42,7 @@ public class Playlist implements Serializable {
 
     @ManyToMany
     @Cascade(CascadeType.SAVE_UPDATE)
-    @JoinTable(name = "playlists_tracks",
+    @JoinTable(name = "playlist_track",
             joinColumns = {@JoinColumn(name = "playlist_id")},
             inverseJoinColumns = {@JoinColumn(name = "track_id")})
     private Set<Track> tracks;

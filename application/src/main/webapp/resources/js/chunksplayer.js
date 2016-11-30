@@ -83,7 +83,15 @@ function ChunksPlayer() {
     function onChunkLoaded() {
         const startPlaying = !audioContext;
         if (startPlaying) {
-            audioContext = new AudioContext();
+            var AudioContext = window.AudioContext  // Default
+                || window.webkitAudioContext        // Safari and old versions of Chrome
+                || false;
+
+            if (AudioContext) {
+                audioContext = new AudioContext;
+            } else {
+                alert("This web browser does not support the Web Audio API.");
+            }
         }
 
         if (request.response.byteLength <= 0) {

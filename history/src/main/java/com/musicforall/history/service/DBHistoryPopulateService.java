@@ -24,7 +24,7 @@ public class DBHistoryPopulateService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DBHistoryPopulateService.class);
 
-    private static final int MAX = 10;
+    private static final int MAX_LISTENED = 10;
 
     @Autowired
     private HistoryService historyService;
@@ -46,7 +46,7 @@ public class DBHistoryPopulateService {
                 .flatMap(t -> {
                     int listened = 0;
                     while (listened == 0) {
-                        listened = rnd.nextInt(MAX);
+                        listened = rnd.nextInt(MAX_LISTENED);
                     }
                     return IntStream.range(0, listened)
                             .mapToObj(i -> new History(t, null, new Date(), userId, eventType))

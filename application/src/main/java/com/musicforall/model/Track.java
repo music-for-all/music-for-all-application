@@ -1,7 +1,6 @@
 package com.musicforall.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.musicforall.common.Constants;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -20,14 +19,26 @@ import java.util.Set;
         @NamedQuery(
                 name = Track.ALL_BY_ID_QUERY,
                 query = "select t from Track t where t.id in (:ids)"
-        )})
-
+        ),
+        @NamedQuery(
+                name = Track.ALL_BY_ARTIST_QUERY,
+                query = "select t.id from Track t where t.artist.name=:artistName"
+        ),
+        @NamedQuery(
+                name = Track.TOP_ALBUMS_QUERY,
+                query = "select distinct track.album" +
+                        " from Track track" +
+                        " where track.id in" +
+                        " (:trackIds)")})
 @Entity
 @Table(name = "tracks")
 public class Track implements Serializable {
 
-    public static final String ALL_BY_ID_QUERY = "all_tracks_by_id";
     private static final long serialVersionUID = -6851477594231058789L;
+    public static final String ALL_BY_ID_QUERY = "all_tracks_by_id";
+    public static final String ALL_BY_ARTIST_QUERY = "all_by_artist";
+    public static final String TOP_ALBUMS_QUERY = "top_albums";
+
     @Id
     @Column(name = Constants.ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,16 +66,7 @@ public class Track implements Serializable {
     @Column(name = "location", nullable = false)
     private String location;
 
-    @Column
     private Long size;
-
-    @JsonIgnore
-    @ManyToMany
-    @Cascade(CascadeType.SAVE_UPDATE)
-    @JoinTable(name = "playlists_tracks",
-            inverseJoinColumns = {@JoinColumn(name = "playlist_id")},
-            joinColumns = {@JoinColumn(name = "track_id")})
-    private Set<Playlist> playlists;
 
     public Track() {
     }
@@ -86,14 +88,6 @@ public class Track implements Serializable {
         this.album = album;
         this.location = location;
         this.tags = tags;
-    }
-
-    public Set<Playlist> getPlaylists() {
-        return playlists;
-    }
-
-    public void setPlaylists(Set<Playlist> playlists) {
-        this.playlists = playlists;
     }
 
     public void addTags(Set<Tag> tags) {

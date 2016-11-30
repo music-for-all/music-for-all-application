@@ -1,6 +1,8 @@
 package com.musicforall.services.track;
 
+import com.musicforall.history.model.History;
 import com.musicforall.history.service.DBHistoryPopulateService;
+import com.musicforall.history.service.history.SearchHistoryParams;
 import com.musicforall.model.*;
 import com.musicforall.model.user.User;
 import com.musicforall.services.follower.FollowerService;
@@ -24,7 +26,11 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
+import static com.musicforall.history.handlers.events.EventType.TRACK_LISTENED;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 import static org.junit.Assert.*;
 
 /**
@@ -236,5 +242,43 @@ public class TrackServiceTest {
         assertEquals(0, tracks.size());
 
         playlistService.delete(playlist.getId());
+    }
+
+    @Test
+    @WithUserDetails("user@example.com")
+    public void testGetArtistMostPopularTracks() throws Exception {
+
+        final Track track1 = new Track("track1", new Artist("The Beatles"), "album1", "/root/track1.mp3", null);
+        final Track track2 = new Track("track2", new Artist("The Beatles"), "album2", "/root/track2.mp3", null);
+        final Track track3 = new Track("track3", new Artist("Not The Beatles"), "album3", "/root/track3.mp3", null);
+        final Track track4 = new Track("track4", new Artist("The Beatles"), "album4", "/root/track4.mp3", null);
+
+        trackService.save(track1);
+        trackService.save(track2);
+        trackService.save(track3);
+        trackService.save(track4);
+        final List<Integer> trackIds = Arrays.asList(track1.getId(), track2.getId(), track3.getId(), track4.getId());
+        dbHistoryPopulateService.populateTrackListened(trackIds, SecurityUtil.currentUser().getId());
+
+        assertEquals(trackIds.size() - 1, trackService.getArtistMostPopularTracks("The Beatles").size());
+    }
+
+    @Test
+    @WithUserDetails("user@example.com")
+    public void testGetArtistMostPopularAlbums() throws Exception {
+
+        final Track track1 = new Track("track1", new Artist("Johann Sebastian Bach"), "The Best", "/root/track1.mp3", null);
+        final Track track2 = new Track("track2", new Artist("Johann Sebastian Bach"), "The Best", "/root/track2.mp3", null);
+        final Track track3 = new Track("track3", new Artist("Johann Sebastian Bach"), "The Best", "/root/track3.mp3", null);
+        final Track track4 = new Track("track4", new Artist("Johann Sebastian Bach"), "Not The Best", "/root/track4.mp3", null);
+
+        trackService.save(track1);
+        trackService.save(track2);
+        trackService.save(track3);
+        trackService.save(track4);
+        final List<Integer> trackIds = Arrays.asList(track1.getId(), track2.getId(), track3.getId(), track4.getId());
+        dbHistoryPopulateService.populateTrackListened(trackIds, SecurityUtil.currentUser().getId());
+
+        assertEquals(2, trackService.getArtistMostPopularAlbums("Johann Sebastian Bach").size());
     }
 }

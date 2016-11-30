@@ -24,7 +24,8 @@ import java.util.Map;
 @Repository
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class Dao {
-    public static final String FOUND_ENTITY = "Found entity - {}";
+    public static final String FOUND_ENTITY = "Found entity: {}";
+    public static final String FOUND_ENTITIES = "Found {} entities: {}";
     private static final Logger LOG = LoggerFactory.getLogger(Dao.class);
     private final int batchSize = 20;
 
@@ -156,7 +157,7 @@ public class Dao {
         query.setMaxResults(queryParams.getMaxCount());
         query.setFirstResult(queryParams.getOffset());
         final List<T> entities = query.list();
-        LOG.info(FOUND_ENTITY, entities);
+        LOG.info(FOUND_ENTITIES, entities.size(), entities);
         return entities;
     }
 
@@ -190,7 +191,7 @@ public class Dao {
         LOG.info("Going to find entities by criteria - {}", criteria);
         final Criteria executableCriteria = criteria.getExecutableCriteria(currentSession());
         final List<T> entities = executableCriteria.list();
-        LOG.info(FOUND_ENTITY, entities);
+        LOG.info(FOUND_ENTITIES, entities.size(), entities);
         return entities;
     }
 
@@ -209,7 +210,7 @@ public class Dao {
         final Query<T> query = currentSession().createNamedQuery(namedQuery, clazz);
         query.setProperties(params);
         final List<T> entities = query.list();
-        LOG.info(FOUND_ENTITY, entities);
+        LOG.info(FOUND_ENTITIES, entities.size(), entities);
         return entities;
     }
 

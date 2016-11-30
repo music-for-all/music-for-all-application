@@ -34,3 +34,15 @@ body {
     cursor: inherit;
     display: block;
 }
+
+.left {
+    float: left;
+}
+
+.clear {
+    clear: both;
+}
+
+.artist-image {
+    margin: 1em;
+}

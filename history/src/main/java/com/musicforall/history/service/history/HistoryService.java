@@ -14,7 +14,7 @@ public interface HistoryService {
 
     void record(History history);
 
-    List<Integer> getTheMostPopularTracks();
+    List<Integer> getMostPopularTracks();
 
     Collection<History> getAllBy(SearchHistoryParams params);
 

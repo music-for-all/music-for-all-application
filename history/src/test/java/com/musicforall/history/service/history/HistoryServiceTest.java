@@ -31,14 +31,14 @@ import static org.junit.Assert.*;
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {ServicesTestConfig.class})
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 @ActiveProfiles("dev")
-public class HistoryServiceImplTest {
+public class HistoryServiceTest {
 
     private static final Integer USER_ID = 1111;
     private static final Integer TRACK_ID = 2222;
     private static final Integer TOP_TRACK_ID = 2225;
 
     @Autowired
-    private HistoryService service;
+    private HistoryService historyService;
 
     @Autowired
     private DBHistoryPopulateService populateService;
@@ -53,18 +53,18 @@ public class HistoryServiceImplTest {
         final SearchHistoryParams params = SearchHistoryParams.create()
                 .eventType(TRACK_LISTENED)
                 .userId(USER_ID).trackId(TRACK_ID).get();
-        int initialSize = service.getAllBy(params).size();
-        service.record(new History(TRACK_ID, null, new Date(), USER_ID, TRACK_LISTENED));
-        int currentSize = service.getAllBy(params).size();
+        int initialSize = historyService.getAllBy(params).size();
+        historyService.record(new History(TRACK_ID, null, new Date(), USER_ID, TRACK_LISTENED));
+        int currentSize = historyService.getAllBy(params).size();
         assertEquals(currentSize - initialSize, 1);
     }
 
     @Test
-    public void testGetTheMostPopularTracks() throws Exception {
+    public void testGetMostPopularTracks() throws Exception {
         IntStream.range(0, 100)
                 .mapToObj(i -> new History(TOP_TRACK_ID, null, new Date(), USER_ID, TRACK_LISTENED))
-                .forEach(service::record);
-        final Collection<History> histories = service.getAllBy(SearchHistoryParams.create()
+                .forEach(historyService::record);
+        final Collection<History> histories = historyService.getAllBy(SearchHistoryParams.create()
                 .eventType(TRACK_LISTENED)
                 .get());
 
@@ -77,40 +77,40 @@ public class HistoryServiceImplTest {
                 .collect(toList());
 //compare only first top listened track 
 //because number of listenings for other tracks is generated randomly 
-        assertEquals(service.getTheMostPopularTracks().get(0), TOP_TRACK_ID);
-        assertEquals(service.getTheMostPopularTracks().size(), topListened.size());
+        assertEquals(historyService.getMostPopularTracks().get(0), TOP_TRACK_ID);
+        assertEquals(historyService.getMostPopularTracks().size(), topListened.size());
     }
 
     @Test
     public void testGetAllBy() throws Exception {
-        Collection<History> histories = service.getAllBy(SearchHistoryParams.create()
+        Collection<History> histories = historyService.getAllBy(SearchHistoryParams.create()
                 .eventType(TRACK_LIKED)
                 .get());
         assertTrue(histories.stream().allMatch(h -> h.getEventType() == TRACK_LIKED));
 
-        histories = service.getAllBy(SearchHistoryParams.create()
+        histories = historyService.getAllBy(SearchHistoryParams.create()
                 .eventType(TRACK_LISTENED)
                 .userId(USER_ID)
                 .get());
         assertTrue(histories.stream().allMatch(h -> h.getEventType() == TRACK_LISTENED && h.getUserId().equals(USER_ID)));
 
-        histories = service.getAllBy(SearchHistoryParams.create().trackId(TRACK_ID).get());
+        histories = historyService.getAllBy(SearchHistoryParams.create().trackId(TRACK_ID).get());
         assertTrue(histories.stream().allMatch(h -> h.getTrackId().equals(TRACK_ID)));
     }
 
     @Test
     public void testGetLikeCount() throws Exception {
         final Integer trackId = 321;
-        service.record(new History(trackId, null, new Date(), USER_ID, TRACK_LIKED));
-        long numLikes = service.getLikeCount(trackId);
+        historyService.record(new History(trackId, null, new Date(), USER_ID, TRACK_LIKED));
+        long numLikes = historyService.getLikeCount(trackId);
         assertTrue(numLikes == 1);
 
-        service.record(new History(trackId, null, new Date(), USER_ID, TRACK_LIKED));
-        numLikes = service.getLikeCount(trackId);
+        historyService.record(new History(trackId, null, new Date(), USER_ID, TRACK_LIKED));
+        numLikes = historyService.getLikeCount(trackId);
         assertTrue(numLikes == 1);
 
 /* Try to get the like count for non-existing track. */
-        numLikes = service.getLikeCount(trackId + 1234);
+        numLikes = historyService.getLikeCount(trackId + 1234);
         assertEquals(0, numLikes);
     }
 
@@ -120,9 +120,9 @@ public class HistoryServiceImplTest {
 
         final History history = new History(TRACK_ID, null,
                 new Date(), UNIQUE_USER_ID, TRACK_LIKED);
-        service.record(history);
+        historyService.record(history);
 
-        final Collection<History> histories = service.getUsersHistories(Collections.singletonList(UNIQUE_USER_ID));
+        final Collection<History> histories = historyService.getUsersHistories(Collections.singletonList(UNIQUE_USER_ID));
         assertTrue(histories.contains(history));
     }
 
@@ -133,9 +133,9 @@ public class HistoryServiceImplTest {
 
         final History history = new History(TRACK_ID, null,
                 new Date(new Date().getTime() - 2 * 24 * 3600 * 1000L), UNIQUE_USER_ID, TRACK_LISTENED);
-        service.record(history);
+        historyService.record(history);
 
-        final Collection<History> histories = service.getUsersHistories(Collections.singletonList(UNIQUE_USER_ID));
+        final Collection<History> histories = historyService.getUsersHistories(Collections.singletonList(UNIQUE_USER_ID));
         assertFalse(histories.contains(history));
     }
 }
