@@ -31,7 +31,7 @@
 <div class="container">
 
     <div class="well well-sm">
-        <div id="tags" data-toggle="buttons">
+        <div id="topTags" data-toggle="buttons">
             <label id="popular" name="tag" class="btn btn-success active" onclick="getPopularTracks()">
                 <input type="radio">
                 popular
@@ -41,9 +41,15 @@
 
     <form id="search-form" class="form-inline text-center ">
         <div class="input-group">
-            <input id="artist" class="form-control" type="text" value=""
-                   placeholder="<@spring.message "placeholder.Artist"/>"
-                   name="artist" autofocus="autofocus"/>
+            <div class="search-group">
+                <input id="title" class="form-control" type="text" value=""
+                       placeholder="<@spring.message "placeholder.Title"/>"
+                       name="title" autofocus="autofocus"/>
+                <input id="artist" class="form-control" type="text" value=""
+                       placeholder="<@spring.message "placeholder.Artist"/>"
+                       name="artist"/>
+            </div>
+            <select class="form-control" id="tags" name="tags"></select>
 
             <div class="input-group-btn">
                 <button id="searchButton" data-style="slide-left" class="btn btn-success "
@@ -100,6 +106,9 @@
     <@popup.player_Footer/>
 
 <script type="text/javascript">
+    var placeholder = "<@spring.message "placeholder.Tags"/>";
+
+    $("#tags").select2(tagAutocomplete(placeholder));
     _.templateSettings.variable = "data";
     var trackTable = _.template(
             $("script.addTrackRowTemplate").html()
@@ -117,7 +126,7 @@
     var track = new Track();
 
     $("input[name=artist]").autocomplete(artistAutocomplete(function () {
-        var tag = $('#tags .active').attr('id');
+        var tag = $('#topTags .active').attr('id');
         if (tag === "popular") {
             return null;
         }
@@ -133,10 +142,13 @@
     }
 
     $("#search-form").on("submit", function () {
-        search().then(function (tracks) {
-            $("#status-message").text('<@spring.message "searchpage.Found"/>' + " :" + tracks.length);
-            buildTrackTable(tracks);
-        });
+        var result = search();
+        if (result) {
+            result.then(function (tracks) {
+                $("#status-message").text('<@spring.message "searchpage.Found"/>' + " :" + tracks.length);
+                buildTrackTable(tracks);
+            });
+        }
         return false;
     });
 

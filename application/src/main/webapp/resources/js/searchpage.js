@@ -11,36 +11,53 @@ jQuery(document).ready(function () {
 
 var baseUrl = dict.contextPath;
 
-function search() {
-    var artist = $("#artist").val();
-    var tag = $('#tags .active').attr('id');
+function getTagsForSearch() {
+    var tags = [];
+    var tag = $("#topTags .active").attr("id");
 
-    /* If a field is empty or too short, ignore it. */
-    const MIN_QUERY = 2;
-
-    if (artist.length < MIN_QUERY) {
-        artist = null;
+    if (tag !== "popular") {
+        tags.push(tag);
     }
 
+    return tags.concat($("#tags").val()).toString();
+}
+
+function search() {
+
+    var trackData = {};
+
+    var artist = $("#artist").val();
+    var tags = getTagsForSearch();
+    var title = $("#title").val();
     /* If all the fields are empty, do not proceed with search. */
-    if (!artist && !tag) {
+    if (!title && !artist && !tags) {
         return;
     }
 
-    if (tag === "popular") {
-        tag = null;
+    if (tags) {
+        trackData.tags = tags;
     }
+
     /* Truncate the query string to the maximum allowed size. */
     const MAX_QUERY = 16;
+    if (title && title.length > MAX_QUERY) {
+        title = title.substr(0, MAX_QUERY);
+    }
 
     if (artist && artist.length > MAX_QUERY) {
         artist = artist.substr(0, MAX_QUERY);
     }
 
-    var trackData = {
-        artist: artist,
-        tags: tag
-    };
+    /* If a field is empty or too short, ignore it. */
+    const MIN_QUERY = 2;
+
+    if (artist.length >= MIN_QUERY) {
+        trackData.artistName = artist;
+    }
+
+    if (title.length >= MIN_QUERY) {
+        trackData.trackName = title;
+    }
 
     return $.when($.getJSON(baseUrl + "/api/search", trackData));
 }
